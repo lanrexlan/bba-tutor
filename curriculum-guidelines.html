@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" sizes="32x32" href="/Images/logo.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Curriculum Guidelines - Tutor Portal - Baobab Online Academy</title>
+
+  <!-- Fonts & Icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --baobab-brown:#8D4004;
+      --canopy-green:#2E7D32;
+      --sunset-gold:#F57C00;
+      --trunk-gray:#5D4037;
+      --sky-blue:#1976D2;
+      --earth-cream:#FFF8E1;
+      --desert-orange:#FF5722;
+      --sage-green:#689F38;
+      --deep-charcoal:#263238;
+      --white:#FFFFFF;
+      --tutor-teal:#00695C;
+      --tutor-light-teal:#B2DFDB;
+
+      --transition-slow:all .6s cubic-bezier(.165,.84,.44,1);
+      --transition-medium:all .4s cubic-bezier(.165,.84,.44,1);
+      --transition-fast:all .3s cubic-bezier(.165,.84,.44,1);
+
+      --shadow-sm:0 1px 3px rgba(0,0,0,.1);
+      --shadow-md:0 4px 6px rgba(0,0,0,.1);
+      --shadow-lg:0 10px 15px -3px rgba(0,0,0,.1);
+      --shadow-xl:0 20px 25px -5px rgba(0,0,0,.1);
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      font-family:'Open Sans',sans-serif;
+      color:var(--deep-charcoal);
+      line-height:1.6;
+      background:var(--white);
+      overflow-x:hidden;
+    }
+    h1,h2,h3,h4,h5{
+      font-family:'Merriweather',serif;
+      font-weight:700;
+      line-height:1.25;
+      color:var(--deep-charcoal);
+    }
+    .container{
+      width:100%;
+      max-width:1200px;
+      margin:0 auto;
+      padding:0 20px;
+      position:relative;
+    }
+    .section{padding:80px 0;position:relative}
+    .btn{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:12px 28px;border-radius:30px;font-weight:600;
+      transition:var(--transition-fast);text-decoration:none;cursor:pointer;
+      border:2px solid transparent;
+    }
+    .btn-primary{background:var(--tutor-teal);color:var(--white);border-color:var(--tutor-teal)}
+    .btn-primary:hover{background:var(--canopy-green);border-color:var(--canopy-green);transform:translateY(-2px);box-shadow:var(--shadow-md)}
+    .btn-outlined{background:transparent;color:var(--tutor-teal);border-color:var(--tutor-teal)}
+    .btn-outlined:hover{background:var(--tutor-teal);color:var(--white)}
+    .btn-secondary{background:var(--sunset-gold);color:var(--deep-charcoal);border-color:var(--sunset-gold)}
+    .badge{
+      display:inline-flex;align-items:center;gap:8px;
+      background:rgba(255,255,255,.15);color:#fff;
+      padding:8px 14px;border-radius:999px;font-weight:700;font-size:.9rem;
+      letter-spacing:.2px
+    }
+
+    /* Header */
+    .header{
+      position:sticky;top:0;left:0;width:100%;z-index:1000;
+      background:var(--white);box-shadow:var(--shadow-md);padding:10px 0
+    }
+    .nav-wrapper{display:flex;justify-content:space-between;align-items:center}
+    .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .logo-icon{
+      width:34px;height:34px;border-radius:8px;background:var(--tutor-teal);
+      color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px
+    }
+    .logo-text{font-weight:800;font-size:20px;color:var(--baobab-brown)}
+    .nav-menu{display:flex;gap:28px;list-style:none}
+    .nav-link{text-decoration:none;color:var(--deep-charcoal);font-weight:600}
+    .nav-link:hover{color:var(--tutor-teal)}
+    .nav-buttons{display:flex;gap:12px}
+    .menu-toggle{display:none;font-size:24px;color:var(--tutor-teal);cursor:pointer}
+
+    /* Mobile menu */
+    .mobile-menu-panel{
+      position:fixed;top:0;right:-100%;width:300px;height:100vh;background:#fff;z-index:1100;
+      padding:80px 28px 28px;box-shadow:var(--shadow-xl);transition:var(--transition-medium);overflow-y:auto
+    }
+    .mobile-menu-panel.active{right:0}
+    .mobile-menu{list-style:none;display:flex;flex-direction:column;gap:10px}
+    .mobile-link{display:block;padding:12px 0;border-bottom:1px solid var(--earth-cream);text-decoration:none;color:var(--deep-charcoal);font-weight:600}
+    .mobile-link:hover{color:var(--tutor-teal)}
+    .mobile-buttons{display:flex;flex-direction:column;gap:12px;margin-top:20px}
+    .menu-overlay{
+      position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);
+      z-index:1090;opacity:0;visibility:hidden;transition:var(--transition-medium)
+    }
+    .menu-overlay.active{opacity:1;visibility:visible}
+
+    /* Hero */
+    .hero{
+      background:linear-gradient(135deg, var(--tutor-teal) 0%, var(--canopy-green) 60%, var(--sky-blue) 100%);
+      color:#fff;padding:120px 0 60px;position:relative;overflow:hidden
+    }
+    .hero::after{
+      content:"";position:absolute;right:-80px;bottom:-80px;width:260px;height:260px;border-radius:50%;
+      background:radial-gradient(circle at center, rgba(255,255,255,.22), rgba(255,255,255,0) 60%)
+    }
+    .hero-title{font-size:2.8rem;margin-top:12px;margin-bottom:14px}
+    .hero-subtitle{font-size:1.12rem;opacity:.95;max-width:820px}
+    .breadcrumbs{
+      display:inline-flex;align-items:center;gap:8px;color:#fff;opacity:.9;text-decoration:none;font-weight:700
+    }
+    .breadcrumbs:hover{opacity:1;text-decoration:underline}
+
+    /* Intro */
+    .intro{
+      background:var(--earth-cream);
+    }
+    .lead{
+      font-size:1.1rem;color:var(--trunk-gray);max-width:980px;margin:0 auto
+    }
+
+    /* Principles */
+    .cards-grid{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:24px
+    }
+    .card{
+      background:#fff;border-radius:18px;padding:26px;box-shadow:var(--shadow-lg);border:3px solid transparent;transition:var(--transition-medium)
+    }
+    .card:hover{transform:translateY(-8px);border-color:var(--tutor-teal);box-shadow:var(--shadow-xl)}
+    .card-icon{
+      width:60px;height:60px;border-radius:14px;background:linear-gradient(135deg, var(--tutor-teal), var(--tutor-light-teal));
+      color:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:14px
+    }
+    .card h4{margin-bottom:10px}
+    .card p{color:var(--trunk-gray)}
+
+    /* Timeline / Architecture */
+    .timeline{
+      display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:14px
+    }
+    .timeline-item{
+      background:#fff;border-left:5px solid var(--tutor-teal);border-radius:12px;padding:18px 18px 18px 16px;
+      box-shadow:var(--shadow-md);position:relative
+    }
+    .timeline-item .kicker{font-weight:800;color:var(--tutor-teal);text-transform:uppercase;font-size:.8rem;letter-spacing:.6px}
+    .timeline-item h5{margin:6px 0 6px}
+    .timeline-item ul{padding-left:18px;color:var(--trunk-gray)}
+    .timeline-item::after{
+      content:"";position:absolute;top:50%;right:-10px;transform:translateY(-50%);
+      width:18px;height:18px;border-radius:50%;background:var(--tutor-teal)
+    }
+
+    /* Tabs (Subjects) */
+    .tabs{
+      background:#fff;border-radius:16px;box-shadow:var(--shadow-lg);overflow:hidden
+    }
+    .tab-list{
+      display:flex;gap:8px;flex-wrap:wrap;list-style:none;margin:0;padding:14px;background:var(--tutor-light-teal)
+    }
+    .tab-btn{
+      border:none;background:#fff;color:var(--deep-charcoal);padding:10px 14px;border-radius:999px;font-weight:700;cursor:pointer;
+      box-shadow:var(--shadow-sm);transition:var(--transition-fast)
+    }
+    .tab-btn:hover{transform:translateY(-2px)}
+    .tab-btn.active{background:var(--tutor-teal);color:#fff}
+    .tab-panel{display:none;padding:22px}
+    .tab-panel.active{display:block;animation:fadeIn .35s ease}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+    .panel-grid{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:10px
+    }
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;background:var(--earth-cream);color:var(--deep-charcoal);
+      padding:6px 12px;border-radius:999px;font-weight:700;font-size:.9rem
+    }
+    .mini-card{
+      background:#fff;border:2px solid var(--earth-cream);border-radius:12px;padding:16px;box-shadow:var(--shadow-sm)
+    }
+    .mini-card h6{font-weight:800;margin-bottom:8px;color:var(--tutor-teal)}
+    .check{color:var(--canopy-green)}
+
+    /* Assessment */
+    .assessment-grid{
+      display:grid;grid-template-columns:repeat(4,1fr);gap:18px
+    }
+    .assessment{
+      background:#fff;border-radius:14px;padding:20px;box-shadow:var(--shadow-md);border-top:5px solid var(--sunset-gold)
+    }
+    .assessment h5{margin:6px 0 10px}
+    .progress{
+      height:8px;background:#ececec;border-radius:999px;overflow:hidden
+    }
+    .progress > span{
+      display:block;height:100%;background:var(--tutor-teal);width:70%
+    }
+
+    /* Toolkit */
+    .toolkit{
+      background:linear-gradient(135deg, #ffffff, #f4fffb)
+    }
+    .toolkit-wrap{
+      display:grid;grid-template-columns:1.2fr .8fr;gap:22px;align-items:stretch
+    }
+    .template{
+      background:#fff;border-radius:16px;padding:18px;border:2px dashed var(--tutor-teal)
+    }
+    textarea.template-area{
+      width:100%;min-height:260px;border:0;outline:none;font-family:'Open Sans',sans-serif;border-radius:10px;padding:14px;background:#f9fffd
+    }
+    .tools{
+      background:#fff;border-radius:16px;padding:22px;box-shadow:var(--shadow-lg)
+    }
+    .kpi{
+      display:flex;gap:12px;align-items:center;background:var(--earth-cream);padding:12px;border-radius:12px;margin-bottom:12px
+    }
+    .kpi i{color:var(--tutor-teal)}
+
+    /* Accordions (FAQs) */
+    .accordion{border-radius:16px;overflow:hidden;box-shadow:var(--shadow-lg);background:#fff}
+    .acc-item + .acc-item{border-top:1px solid #f0f0f0}
+    .acc-header{
+      width:100%;text-align:left;border:0;background:#fff;padding:18px 20px;font-weight:800;cursor:pointer;display:flex;justify-content:space-between;align-items:center
+    }
+    .acc-header:hover{background:#fafafa}
+    .acc-content{display:none;padding:0 20px 20px;color:var(--trunk-gray)}
+    .acc-item.active .acc-content{display:block}
+    .rotate{transition:transform .25s ease}
+    .acc-item.active .rotate{transform:rotate(180deg)}
+
+    /* Footer */
+    .footer{background:var(--deep-charcoal);color:#fff;padding:60px 0 28px;margin-top:40px}
+    .footer-content{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:36px;margin-bottom:28px
+    }
+    .footer h4{color:var(--tutor-teal);margin-bottom:12px}
+    .footer-link{color:rgba(255,255,255,.8);text-decoration:none;display:block;padding:6px 0}
+    .footer-link:hover{color:var(--sunset-gold)}
+    .footer-bottom{border-top:1px solid rgba(255,255,255,.12);margin-top:10px;padding-top:18px;text-align:center;color:rgba(255,255,255,.8)}
+
+    /* Utilities */
+    .section-title{font-size:2.2rem;color:var(--tutor-teal);margin-bottom:10px}
+    .section-subtitle{color:var(--trunk-gray);margin-bottom:18px}
+    .muted{color:var(--trunk-gray)}
+    .spacer{height:14px}
+
+    /* Responsive */
+    @media (max-width: 1100px){
+      .panel-grid{grid-template-columns:repeat(2,1fr)}
+      .timeline{grid-template-columns:repeat(2,1fr)}
+      .assessment-grid{grid-template-columns:repeat(2,1fr)}
+      .toolkit-wrap{grid-template-columns:1fr}
+    }
+    @media (max-width: 768px){
+      .menu-toggle{display:block}
+      .nav-menu,.nav-buttons{display:none}
+      .hero{padding:100px 0 50px}
+      .hero-title{font-size:2.2rem}
+      .cards-grid{grid-template-columns:1fr}
+      .panel-grid{grid-template-columns:1fr}
+      .timeline{grid-template-columns:1fr}
+      .assessment-grid{grid-template-columns:1fr}
+      .section{padding:60px 0}
+      .container{padding:0 16px}
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="nav-wrapper">
+        <a href="index (18).html" class="logo" aria-label="Tutor Portal Home">
+          <div class="logo-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+          <div class="logo-text">Tutor Portal</div>
+        </a>
+
+        <div class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+          <i class="fas fa-bars"></i>
+        </div>
+
+        <ul class="nav-menu">
+          <li><a class="nav-link" href="index (18).html">Home</a></li>
+          <li><a class="nav-link" href="index (18).html#why-choose">Why Choose Us</a></li>
+          <li><a class="nav-link" href="index (18).html#earnings">Earnings</a></li>
+          <li><a class="nav-link" href="index (18).html#apply">Apply Now</a></li>
+          <li><a class="nav-link" href="https://baobabonlineacademy.com">Main Site</a></li>
+        </ul>
+
+        <div class="nav-buttons">
+          <button class="btn btn-outlined" onclick="openLoginModal()"><i class="fas fa-right-to-bracket"></i> Login</button>
+          <a class="btn btn-primary" href="index (18).html#apply"><i class="fas fa-paper-plane"></i> Apply</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu-panel" id="mobileMenuPanel" aria-hidden="true">
+    <ul class="mobile-menu">
+      <li><a class="mobile-link" href="index (18).html">Home</a></li>
+      <li><a class="mobile-link" href="index (18).html#why-choose">Why Choose Us</a></li>
+      <li><a class="mobile-link" href="index (18).html#earnings">Earnings</a></li>
+      <li><a class="mobile-link" href="index (18).html#apply">Apply Now</a></li>
+      <li><a class="mobile-link" href="https://baobabonlineacademy.com">Main Site</a></li>
+    </ul>
+    <div class="mobile-buttons">
+      <button class="btn btn-outlined" onclick="openLoginModal()"><i class="fas fa-right-to-bracket"></i> Login</button>
+      <a class="btn btn-primary" href="index (18).html#apply"><i class="fas fa-paper-plane"></i> Apply</a>
+    </div>
+  </div>
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <a class="breadcrumbs" href="index (18).html" aria-label="Back to home">
+        <i class="fas fa-arrow-left"></i> Back to Home
+      </a>
+      <div class="spacer"></div>
+      <span class="badge"><i class="fas fa-book-open"></i> Academic Framework</span>
+      <h1 class="hero-title">Curriculum Guidelines</h1>
+      <p class="hero-subtitle">
+        A clear, culturally grounded roadmap for teaching excellence across subjects and age groups.
+        Use this guide to plan rigorous, engaging lessons that celebrate Nigerian heritage while meeting
+        global standards.
+      </p>
+    </div>
+  </section>
+
+  <!-- Intro -->
+  <section class="section intro">
+    <div class="container">
+      <h2 class="section-title"><i class="fas fa-compass"></i> Purpose & Scope</h2>
+      <p class="lead">
+        These guidelines outline the philosophy, scope-and-sequence, assessment expectations, and practical tools
+        for lesson design across the Baobab Online Academy. Tutors are encouraged to adapt with professional judgement,
+        ensuring learning is inclusive, inquiry-driven, and connected to authentic African contexts.
+      </p>
+    </div>
+  </section>
+
+  <!-- Principles -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title"><i class="fas fa-seedling"></i> Guiding Principles</h2>
+      <p class="section-subtitle">The Baobab approach blends rigor, relevance, and cultural resonance.</p>
+      <div class="cards-grid">
+        <div class="card">
+          <div class="card-icon"><i class="fas fa-lightbulb"></i></div>
+          <h4>Conceptual Understanding</h4>
+          <p>Move beyond memorisation—focus on core ideas, patterns, and transfer of learning.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"><i class="fas fa-globe-africa"></i></div>
+          <h4>Cultural Integration</h4>
+          <p>Embed Nigerian languages, stories, arts, and histories to enrich global curricula.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"><i class="fas fa-people-carry-box"></i></div>
+          <h4>Student-Centred</h4>
+          <p>Design for agency: inquiry, collaboration, and choice anchored by clear outcomes.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"><i class="fas fa-chart-line"></i></div>
+          <h4>Data-Informed</h4>
+          <p>Use diagnostics and formative checks to differentiate and accelerate progress.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"><i class="fas fa-shield-heart"></i></div>
+          <h4>Wellbeing & Inclusion</h4>
+          <p>Plan accessible learning that supports diverse needs and celebrates identity.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"><i class="fas fa-pen-ruler"></i></div>
+          <h4>Quality Assurance</h4>
+          <p>Align with standards, moderate assessments, and reflect to improve practice.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Curriculum Architecture -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title"><i class="fas fa-diagram-project"></i> Curriculum Architecture</h2>
+      <p class="section-subtitle">How learning is structured from big ideas down to daily lessons.</p>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="kicker">Stage</div>
+          <h5>Age Bands</h5>
+          <ul>
+            <li>Lower Primary (5–7)</li>
+            <li>Upper Primary (8–10)</li>
+            <li>Lower Secondary (11–13)</li>
+            <li>Upper Secondary (14–16+)</li>
+          </ul>
+        </div>
+        <div class="timeline-item">
+          <div class="kicker">Term</div>
+          <h5>Scope & Sequence</h5>
+          <ul>
+            <li>Termly focus concepts</li>
+            <li>Skill progressions</li>
+            <li>Assessment plan</li>
+          </ul>
+        </div>
+        <div class="timeline-item">
+          <div class="kicker">Unit</div>
+          <h5>Big Ideas & Inquiry</h5>
+          <ul>
+            <li>Enduring understandings</li>
+            <li>Essential questions</li>
+            <li>Performance tasks</li>
+          </ul>
+        </div>
+        <div class="timeline-item">
+          <div class="kicker">Lesson</div>
+          <h5>Daily Design</h5>
+          <ul>
+            <li>Objectives (SWBAT)</li>
+            <li>Checks for understanding</li>
+            <li>Differentiation & reflection</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Subject Frameworks (Tabs) -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title"><i class="fas fa-layer-group"></i> Subject Frameworks</h2>
+      <p class="section-subtitle">Click a subject to view strands, time guidance, assessments, and a sample unit outline.</p>
+
+      <div class="tabs" id="subjectTabs">
+        <ul class="tab-list" role="tablist">
+          <li><button class="tab-btn active" data-tab="math"><i class="fas fa-square-root-variable"></i> Mathematics</button></li>
+          <li><button class="tab-btn" data-tab="english"><i class="fas fa-language"></i> English</button></li>
+          <li><button class="tab-btn" data-tab="science"><i class="fas fa-flask"></i> Sciences</button></li>
+          <li><button class="tab-btn" data-tab="history"><i class="fas fa-landmark"></i> History</button></li>
+          <li><button class="tab-btn" data-tab="geography"><i class="fas fa-globe"></i> Geography</button></li>
+          <li><button class="tab-btn" data-tab="literature"><i class="fas fa-book"></i> Literature</button></li>
+          <li><button class="tab-btn" data-tab="art"><i class="fas fa-palette"></i> Art & Creativity</button></li>
+          <li><button class="tab-btn" data-tab="music"><i class="fas fa-music"></i> Music</button></li>
+        </ul>
+
+        <!-- Mathematics -->
+        <div class="tab-panel active" id="panel-math" role="tabpanel" aria-labelledby="tab-math">
+          <span class="pill"><i class="fas fa-clock"></i> Recommended: 180–240 mins/week</span>
+          <div class="panel-grid">
+            <div class="mini-card">
+              <h6>Core Strands</h6>
+              <ul class="muted">
+                <li><i class="fas fa-check-circle check"></i> Number & Operations</li>
+                <li><i class="fas fa-check-circle check"></i> Algebraic Thinking</li>
+                <li><i class="fas fa-check-circle check"></i> Geometry & Measurement</li>
+                <li><i class="fas fa-check-circle check"></i> Data & Probability</li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h6>Assessment Types</h6>
+              <ul class="muted">
+                <li>Weekly quizzes</li>
+                <li>Problem-solving journals</li>
+                <li>Performance tasks</li>
+                <li>End-of-unit exam</li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h6>Sample Unit (6 weeks): Ratios in Daily Life</h6>
+              <ol class="muted">
+                <li>Intro to ratios; visuals and manipulatives</li>
+                <li>Equivalent ratios; tables and graphs</li>
+                <li>Rates & unit rates; real-world tasks</li>
+                <li>Proportional relationships; word problems</li>
+                <li>Cumulative performance task: Market pricing in Lagos</li>
+                <li>Review & assessment; reflection</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <!-- English -->
+        <div class="tab-panel" id="panel-english">
+          <span class="pill"><i class="fas fa-clock"></i> Recommended: 240–300 mins/week</span>
+          <div class="panel-grid">
+            <div class="mini-card">
+              <h6>Core Strands</h6>
+              <ul class="muted">
+                <li><i class="fas fa-check-circle check"></i> Reading & Viewing</li>
+                <li><i class="fas fa-check-circle check"></i> Writing & Presenting</li>
+                <li><i class="fas fa-check-circle check"></i> Speaking & Listening</li>
+                <li><i class="fas fa-check-circle check"></i> Language & Vocabulary</li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h6>Assessment Types</h6>
+              <ul class="muted">
+                <li>Fluency checks; reading logs</li>
+                <li>Narratives & informational writing</li>
+                <li>Oral presentations; debates</li>
+                <li>Language conventions quizzes</li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h6>Sample Unit (6 weeks): Voices from Nigeria</h6>
+              <ol class="muted">
+                <li>Short story analysis (theme & character)</li>
+                <li>Comparing folktales across regions</li>
+                <li>Writing: Narrative with cultural lens</li>
+                <li>Speaking: Storytelling performance</li>
+                <li>Peer review & revision workshops</li>
+                <li>Publication & reflection portfolio</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sciences -->
+        <div class="tab-panel" id="panel-science">
+          <span class="pill"><i class="fas fa-clock"></i> Recommended: 180–240 mins/week</span>
+          <div class="panel-grid">
+            <div class="mini-card">
+              <h6>Core Strands</h6>
+              <ul class="muted">
+                <li><i class="fas fa-check-circle check"></i> Life Science</li>
+                <li><i class="fas fa-check-circle check"></i> Physical Science</li>
+                <li><i class="fas fa-check-circle check"></i> Earth & Space</li>
+                <li><i class="fas fa-check-circle check"></i> Scientific Inquiry</li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h6>Assessment Types</h6>
+              <ul class="muted">
+                <li>Lab notebooks & investigations</li>
+                <li>Design challenges</li>
+                <li>Data analysis tasks</li>
+                <li>Practical exam</li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h6>Sample Unit (6 weeks): Renewable Energy in West Africa</h6>
+              <ol class="muted">
+                <li>Energy forms & transformations</li>
+                <li>Solar & wind—pros/cons in Nigeria</li>
+                <li>Design: Build a mini solar cooker</li>
+                <li>Data collection & optimisation</li>
+                <li>Community impact analysis</li>
+                <li>Expo: Present prototype findings</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <!-- History -->
+        <div class="tab-panel" id="panel-history">
+          <span class="pill"><i class="fas fa-clock"></i> Recommended: 120–180 mins/week</span>
+          <div class="panel-grid">
+            <div class="mini-card">
+              <h6>Core Strands</h6>
+              <ul class="muted">
+                <li><i class="fas fa-check-circle check"></i> Historical Inquiry & Sources</li>
+                <li><i class="fas fa-check-circle check"></i> Chronology & Change</li>
+                <li><i class="fas fa-check-circle check"></i> Civics & Identity</li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h6>Assessment Types</h6>
+              <ul class="muted">
+                <li>Source analysis</li>
+                <li>Position papers</li>
+                <li>Project exhibitions</li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h6>Sample Unit (6 weeks): Kingdoms of West Africa</h6>
+              <ol class="muted">
+                <li>Geo-historical context</li>
+                <li>Benin, Oyo, Kanem-Bornu</li>
+                <li>Trade networks & culture</li>
+                <li>Primary sources & artifacts</li>
+                <li>Comparative essay</li>
+                <li>Museum-style showcase</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <!-- Geography -->
+        <div class="tab-panel" id="panel-geography">
+          <span class="pill"><i class="fas fa-clock"></i> Recommended: 120–180 mins/week</span>
+          <div class="panel-grid">
+            <div class="mini-card">
+              <h6>Core Strands</h6>
+              <ul class="muted">
+                <li><i class="fas fa-check-circle check"></i> Physical Systems</li>
+                <li><i class="fas fa-check-circle check"></i> Human-Environment Interaction</li>
+                <li><i class="fas fa-check-circle check"></i> Spatial Thinking & GIS</li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h6>Assessment Types</h6>
+              <ul class="muted">
+                <li>Map skills checks</li>
+                <li>Fieldwork reports</li>
+                <li>Case study presentations</li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h6>Sample Unit (6 weeks): Urbanisation in Nigeria</h6>
+              <ol class="muted">
+                <li>Urban growth patterns</li>
+                <li>Push-pull factors</li>
+                <li>Infrastructure & services</li>
+                <li>Environmental impacts</li>
+                <li>City planning simulation</li>
+                <li>Policy pitch to class council</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <!-- Literature -->
+        <div class="tab-panel" id="panel-literature">
+          <span class="pill"><i class="fas fa-clock"></i> Recommended: 180–240 mins/week</span>
+          <div class="panel-grid">
+            <div class="mini-card">
+              <h6>Core Strands</h6>
+              <ul class="muted">
+                <li><i class="fas fa-check-circle check"></i> Genre Study</li>
+                <li><i class="fas fa-check-circle check"></i> Literary Analysis</li>
+                <li><i class="fas fa-check-circle check"></i> Comparative Texts</li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h6>Assessment Types</h6>
+              <ul class="muted">
+                <li>Analytical essays</li>
+                <li>Socratic seminars</li>
+                <li>Creative responses</li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h6>Sample Unit (6 weeks): Modern African Voices</h6>
+              <ol class="muted">
+                <li>Poetry close reading</li>
+                <li>Drama & staging choices</li>
+                <li>Novel study circles</li>
+                <li>Comparative criticism</li>
+                <li>Creative remake (poetry slam)</li>
+                <li>Portfolio & viva voce</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <!-- Art -->
+        <div class="tab-panel" id="panel-art">
+          <span class="pill"><i class="fas fa-clock"></i> Recommended: 90–150 mins/week</span>
+          <div class="panel-grid">
+            <div class="mini-card">
+              <h6>Core Strands</h6>
+              <ul class="muted">
+                <li><i class="fas fa-check-circle check"></i> Techniques & Media</li>
+                <li><i class="fas fa-check-circle check"></i> Art History & Culture</li>
+                <li><i class="fas fa-check-circle check"></i> Critique & Curation</li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h6>Assessment Types</h6>
+              <ul class="muted">
+                <li>Process journals</li>
+                <li>Exhibitions</li>
+                <li>Artist statements</li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h6>Sample Unit (6 weeks): Adire & Pattern</h6>
+              <ol class="muted">
+                <li>Textiles of Nigeria</li>
+                <li>Motif design & symbolism</li>
+                <li>Resist-dye techniques (safe demo)</li>
+                <li>Pattern composition</li>
+                <li>Curatorial notes</li>
+                <li>Virtual gallery show</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <!-- Music -->
+        <div class="tab-panel" id="panel-music">
+          <span class="pill"><i class="fas fa-clock"></i> Recommended: 90–150 mins/week</span>
+          <div class="panel-grid">
+            <div class="mini-card">
+              <h6>Core Strands</h6>
+              <ul class="muted">
+                <li><i class="fas fa-check-circle check"></i> Performing</li>
+                <li><i class="fas fa-check-circle check"></i> Creating & Composing</li>
+                <li><i class="fas fa-check-circle check"></i> Listening & Appraising</li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h6>Assessment Types</h6>
+              <ul class="muted">
+                <li>Performance recordings</li>
+                <li>Compositions</li>
+                <li>Listening journals</li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <h6>Sample Unit (6 weeks): Rhythms of Afrobeat</h6>
+              <ol class="muted">
+                <li>Afrobeat history & structure</li>
+                <li>Polyrhythms & call-and-response</li>
+                <li>Composition workshop</li>
+                <li>Lyric themes & social commentary</li>
+                <li>Ensemble rehearsal</li>
+                <li>Showcase & reflection</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="spacer"></div>
+      <p class="muted">
+        Tip: Blend English-language literacy goals into all subjects through reading, speaking, and writing across the curriculum.
+      </p>
+    </div>
+  </section>
+
+  <!-- Assessment & Reporting -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title"><i class="fas fa-clipboard-check"></i> Assessment & Reporting</h2>
+      <p class="section-subtitle">Balance formative feedback with rigorous summative evaluations.</p>
+
+      <div class="assessment-grid">
+        <div class="assessment">
+          <span class="pill"><i class="fas fa-magnifying-glass-chart"></i> Diagnostic</span>
+          <h5>Starting Point</h5>
+          <p class="muted">Entry tasks to benchmark prior knowledge and plan differentiation.</p>
+          <div class="progress" aria-label="Diagnostic weighting"><span style="width:20%"></span></div>
+          <small class="muted">Weighting: ~10%</small>
+        </div>
+
+        <div class="assessment">
+          <span class="pill"><i class="fas fa-comment-dots"></i> Formative</span>
+          <h5>During Learning</h5>
+          <p class="muted">Low-stakes checks: exit tickets, think-pair-share, journals, mini-quizzes.</p>
+          <div class="progress" aria-label="Formative weighting"><span style="width:30%"></span></div>
+          <small class="muted">Weighting: ~30%</small>
+        </div>
+
+        <div class="assessment">
+          <span class="pill"><i class="fas fa-award"></i> Summative</span>
+          <h5>Mastery Evidence</h5>
+          <p class="muted">Performance tasks, projects, practicals, and cumulative exams.</p>
+          <div class="progress" aria-label="Summative weighting"><span style="width:50%"></span></div>
+          <small class="muted">Weighting: ~50%</small>
+        </div>
+
+        <div class="assessment">
+          <span class="pill"><i class="fas fa-handshake-angle"></i> Engagement</span>
+          <h5>Habits of Learning</h5>
+          <p class="muted">Attendance, participation, collaboration, and academic integrity.</p>
+          <div class="progress" aria-label="Engagement weighting"><span style="width:10%"></span></div>
+          <small class="muted">Weighting: ~10%</small>
+        </div>
+      </div>
+
+      <div class="spacer"></div>
+      <ul class="muted">
+        <li><i class="fas fa-check-circle check"></i> Provide rubric-aligned feedback within 5–7 days of major submissions.</li>
+        <li><i class="fas fa-check-circle check"></i> Maintain a gradebook with clear evidence for each standard/outcome.</li>
+        <li><i class="fas fa-check-circle check"></i> Use moderation with colleagues for fairness and consistency.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Lesson Planning Toolkit -->
+  <section class="section toolkit" id="toolkit">
+    <div class="container">
+      <h2 class="section-title"><i class="fas fa-toolbox"></i> Lesson Planning Toolkit</h2>
+      <p class="section-subtitle">Use the template to plan aligned, engaging lessons. Copy or download to get started.</p>
+
+      <div class="toolkit-wrap">
+        <div class="template">
+          <div class="pill" style="margin-bottom:10px;"><i class="fas fa-file-alt"></i> Lesson Template</div>
+          <textarea id="lessonTemplate" class="template-area" aria-label="Lesson plan template">
+Subject: 
+Age Group: 
+Date: 
+Time Allocation: 
+
+Learning Objective(s) (SWBAT):
+- 
+
+Standards/Outcomes Alignment:
+- 
+
+Cultural Integration (language, story, artifact, example):
+- 
+
+Materials/Resources:
+- 
+
+Lesson Sequence:
+1) Hook/Activator (5 min): 
+2) Explicit Instruction/Modelling (10–15 min): 
+3) Guided Practice (10–15 min): 
+4) Independent/Collaborative Practice (10–15 min): 
+5) Exit Ticket/Check for Understanding (5 min): 
+
+Differentiation & Support:
+- 
+
+Assessment Evidence:
+- 
+
+Reflection (after lesson):
+- What went well?
+- What to adjust next time?
+          </textarea>
+
+          <div class="spacer"></div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn btn-primary" onclick="copyTemplate()"><i class="fas fa-copy"></i> Copy Template</button>
+            <button class="btn btn-outlined" onclick="downloadTemplate()"><i class="fas fa-download"></i> Download .txt</button>
+          </div>
+        </div>
+
+        <div class="tools">
+          <div class="kpi">
+            <i class="fas fa-language"></i>
+            <div>
+              <strong>Language Integration</strong>
+              <div class="muted">Encourage code-switching practice with Yoruba, Igbo, or Hausa phrases.</div>
+            </div>
+          </div>
+          <div class="kpi">
+            <i class="fas fa-universal-access"></i>
+            <div>
+              <strong>Accessibility</strong>
+              <div class="muted">Offer visuals, sentence starters, and challenge pathways.</div>
+            </div>
+          </div>
+          <div class="kpi">
+            <i class="fas fa-person-chalkboard"></i>
+            <div>
+              <strong>Engagement</strong>
+              <div class="muted">Rotate between inquiry, projects, and micro-presentations.</div>
+            </div>
+          </div>
+          <div class="kpi">
+            <i class="fas fa-shield"></i>
+            <div>
+              <strong>Safeguarding</strong>
+              <div class="muted">Follow online safety guidelines and parent communication norms.</div>
+            </div>
+          </div>
+
+          <div class="spacer"></div>
+          <a href="cultural-integration.html" class="btn btn-secondary"><i class="fas fa-feather-pointed"></i> Cultural Integration Handbook</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQs -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title"><i class="fas fa-circle-question"></i> FAQs</h2>
+      <p class="section-subtitle">Common questions about planning and curriculum alignment.</p>
+
+      <div class="accordion" id="faqAccordion">
+        <div class="acc-item">
+          <button class="acc-header">
+            How do I adapt pacing for mixed-ability groups?
+            <i class="fas fa-chevron-down rotate"></i>
+          </button>
+          <div class="acc-content">
+            Use diagnostics in week 1 to identify readiness levels. Create core tasks for all, scaffolded
+            supports for learners needing more time, and extension challenges for advanced learners. Record
+            the grouping plan in your lesson template and rotate supports weekly.
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-header">
+            What if technology limits certain activities?
+            <i class="fas fa-chevron-down rotate"></i>
+          </button>
+          <div class="acc-content">
+            Provide low-tech alternatives (printables, screenshots, verbal explanations) and leverage
+            offline tasks like reading, sketching, or data collection. Note the adaptation in your reflection
+            for continuous improvement.
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-header">
+            How much cultural content is expected per unit?
+            <i class="fas fa-chevron-down rotate"></i>
+          </button>
+          <div class="acc-content">
+            Aim for at least two meaningful integrations per unit—e.g., a local case study plus a language,
+            proverb, or artifact analysis—ensuring authenticity and curricular relevance.
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-header">
+            How are assessments moderated?
+            <i class="fas fa-chevron-down rotate"></i>
+          </button>
+          <div class="acc-content">
+            Teams sample student work against shared rubrics at mid-unit and end-of-unit checkpoints.
+            Calibration discussions ensure shared standards and fair grading practices.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="section" style="text-align:center;background:#fff">
+    <div class="container">
+      <h2 class="section-title"><i class="fas fa-person-circle-plus"></i> Ready to Put This Into Practice?</h2>
+      <p class="section-subtitle">Start shaping your next high-impact lesson with our template and cultural handbook.</p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+        <a class="btn btn-primary" href="#toolkit"><i class="fas fa-file-pen"></i> Use the Lesson Template</a>
+        <a class="btn btn-outlined" href="teaching-practices.html"><i class="fas fa-graduation-cap"></i> Explore Best Practices</a>
+        <a class="btn btn-secondary" href="index (18).html#apply"><i class="fas fa-paper-plane"></i> Apply to Teach</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div>
+          <h4><i class="fas fa-chalkboard-teacher"></i> Teaching Resources</h4>
+          <a class="footer-link" href="curriculum-guidelines.html">Curriculum Guidelines</a>
+          <a class="footer-link" href="cultural-integration.html">Cultural Integration Handbook</a>
+          <a class="footer-link" href="teaching-practices.html">Teaching Best Practices</a>
+          <a class="footer-link" href="technology-training.html">Technology Training</a>
+        </div>
+
+        <div>
+          <h4><i class="fas fa-users"></i> Community</h4>
+          <a class="footer-link" href="educator-forum.html">Educator Forum</a>
+          <a class="footer-link" href="mentorship-program.html">Mentorship Program</a>
+          <a class="footer-link" href="success-stories.html">Success Stories</a>
+          <a class="footer-link" href="professional-development.html">Professional Development</a>
+        </div>
+
+        <div>
+          <h4><i class="fas fa-life-ring"></i> Support</h4>
+          <a class="footer-link" href="help-center.html">Tutor Help Center</a>
+          <a class="footer-link" href="technical-support.html">Technical Support</a>
+          <a class="footer-link" href="payment-information.html">Payment Information</a>
+          <a class="footer-link" href="platform-guidelines.html">Platform Guidelines</a>
+        </div>
+
+        <div>
+          <h4><i class="fas fa-phone"></i> Contact</h4>
+          <p style="color:rgba(255,255,255,.8);margin-bottom:8px"><i class="fas fa-envelope"></i> tutors@baobabonlineacademy.com</p>
+          <p style="color:rgba(255,255,255,.8);margin-bottom:8px"><i class="fas fa-phone"></i> +234 (0) 816 501 1291</p>
+          <p style="color:rgba(255,255,255,.8)"><i class="fas fa-clock"></i> Mon–Fri: 9AM–5PM WAT</p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 Baobab Online Academy Tutor Portal. Empowering Nigerian Educators Globally.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenuPanel = document.getElementById('mobileMenuPanel');
+    const menuOverlay = document.getElementById('menuOverlay');
+
+    function openMenu(){
+      mobileMenuPanel.classList.add('active');
+      menuOverlay.classList.add('active');
+      document.body.style.overflow='hidden';
+      menuToggle.innerHTML='<i class="fas fa-times"></i>';
+    }
+    function closeMenu(){
+      mobileMenuPanel.classList.remove('active');
+      menuOverlay.classList.remove('active');
+      document.body.style.overflow='auto';
+      menuToggle.innerHTML='<i class="fas fa-bars"></i>';
+    }
+    function toggleMenu(){ mobileMenuPanel.classList.contains('active') ? closeMenu() : openMenu(); }
+    menuToggle.addEventListener('click', toggleMenu);
+    menuOverlay.addEventListener('click', closeMenu);
+
+    // Tabs
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const panels = {
+      math: document.getElementById('panel-math'),
+      english: document.getElementById('panel-english'),
+      science: document.getElementById('panel-science'),
+      history: document.getElementById('panel-history'),
+      geography: document.getElementById('panel-geography'),
+      literature: document.getElementById('panel-literature'),
+      art: document.getElementById('panel-art'),
+      music: document.getElementById('panel-music'),
+    };
+
+    tabButtons.forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const key = btn.dataset.tab;
+        // activate button
+        tabButtons.forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        // show panel
+        Object.values(panels).forEach(p=>p.classList.remove('active'));
+        const panel = document.getElementById('panel-' + key);
+        if(panel) panel.classList.add('active');
+        // close menu if on mobile
+        closeMenu();
+      });
+    });
+
+    // Accordions
+    document.querySelectorAll('.acc-item').forEach(item=>{
+      item.querySelector('.acc-header').addEventListener('click', ()=>{
+        const open = item.classList.contains('active');
+        document.querySelectorAll('.acc-item').forEach(i=>i.classList.remove('active'));
+        if(!open) item.classList.add('active');
+      });
+    });
+
+    // Toolkit actions
+    function copyTemplate(){
+      const el = document.getElementById('lessonTemplate');
+      el.select();
+      el.setSelectionRange(0, 99999);
+      document.execCommand('copy');
+      alert('Lesson template copied to clipboard.');
+    }
+    function downloadTemplate(){
+      const content = document.getElementById('lessonTemplate').value;
+      const blob = new Blob([content], {type:'text/plain;charset=utf-8'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Baobab_Lesson_Template.txt';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+    window.copyTemplate = copyTemplate;
+    window.downloadTemplate = downloadTemplate;
+
+    // Login modal (placeholder)
+    function openLoginModal(){
+      alert('Tutor Portal Login\n\nIn the full version, this links to a secure login for:\n• Schedule & student profiles\n• Lesson prep resources\n• Earnings & payments\n• Parent communications\n• Professional development\n\nNeed help? Email tutors@baobabonlineacademy.com');
+    }
+    window.openLoginModal = openLoginModal;
+
+    // Smooth scroll for on-page anchors
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', (e)=>{
+        const id = a.getAttribute('href');
+        if(id.length>1){
+          const target = document.querySelector(id);
+          if(target){
+            e.preventDefault();
+            target.scrollIntoView({behavior:'smooth', block:'start'});
+            closeMenu();
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
