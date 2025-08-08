@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" sizes="32x32" href="/Images/logo.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Technology Training - Tutor Portal - Baobab Online Academy</title>
+
+  <!-- Fonts & Icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --baobab-brown:#8D4004;
+      --canopy-green:#2E7D32;
+      --sunset-gold:#F57C00;
+      --trunk-gray:#5D4037;
+      --sky-blue:#1976D2;
+      --earth-cream:#FFF8E1;
+      --desert-orange:#FF5722;
+      --sage-green:#689F38;
+      --deep-charcoal:#263238;
+      --white:#FFFFFF;
+      --tutor-teal:#00695C;
+      --tutor-light-teal:#B2DFDB;
+
+      --transition-slow:all .6s cubic-bezier(.165,.84,.44,1);
+      --transition-medium:all .4s cubic-bezier(.165,.84,.44,1);
+      --transition-fast:all .3s cubic-bezier(.165,.84,.44,1);
+
+      --shadow-sm:0 1px 3px rgba(0,0,0,.1);
+      --shadow-md:0 4px 6px rgba(0,0,0,.1);
+      --shadow-lg:0 10px 15px -3px rgba(0,0,0,.1);
+      --shadow-xl:0 20px 25px -5px rgba(0,0,0,.1);
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      font-family:'Open Sans',sans-serif;
+      color:var(--deep-charcoal);
+      line-height:1.6;
+      background:var(--white);
+      overflow-x:hidden;
+    }
+    h1,h2,h3,h4,h5{
+      font-family:'Merriweather',serif;
+      font-weight:700;
+      line-height:1.25;
+      color:var(--deep-charcoal);
+    }
+    .container{
+      width:100%;
+      max-width:1200px;
+      margin:0 auto;
+      padding:0 20px;
+      position:relative;
+    }
+    .section{padding:80px 0;position:relative}
+    .btn{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:12px 28px;border-radius:30px;font-weight:600;
+      transition:var(--transition-fast);text-decoration:none;cursor:pointer;
+      border:2px solid transparent;
+    }
+    .btn-primary{background:var(--tutor-teal);color:var(--white);border-color:var(--tutor-teal)}
+    .btn-primary:hover{background:var(--canopy-green);border-color:var(--canopy-green);transform:translateY(-2px);box-shadow:var(--shadow-md)}
+    .btn-outlined{background:transparent;color:var(--tutor-teal);border-color:var(--tutor-teal)}
+    .btn-outlined:hover{background:var(--tutor-teal);color:var(--white)}
+    .btn-secondary{background:var(--sunset-gold);color:var(--deep-charcoal);border-color:var(--sunset-gold)}
+    .badge{
+      display:inline-flex;align-items:center;gap:8px;
+      background:rgba(255,255,255,.18);color:#fff;
+      padding:8px 14px;border-radius:999px;font-weight:700;font-size:.9rem;
+      letter-spacing:.2px
+    }
+
+    /* Header */
+    .header{
+      position:sticky;top:0;left:0;width:100%;z-index:1000;
+      background:var(--white);box-shadow:var(--shadow-md);padding:10px 0
+    }
+    .nav-wrapper{display:flex;justify-content:space-between;align-items:center}
+    .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .logo-icon{
+      width:34px;height:34px;border-radius:8px;background:var(--tutor-teal);
+      color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px
+    }
+    .logo-text{font-weight:800;font-size:20px;color:var(--baobab-brown)}
+    .nav-menu{display:flex;gap:28px;list-style:none}
+    .nav-link{text-decoration:none;color:var(--deep-charcoal);font-weight:600}
+    .nav-link:hover{color:var(--tutor-teal)}
+    .nav-buttons{display:flex;gap:12px}
+    .menu-toggle{display:none;font-size:24px;color:var(--tutor-teal);cursor:pointer}
+
+    /* Mobile menu */
+    .mobile-menu-panel{
+      position:fixed;top:0;right:-100%;width:300px;height:100vh;background:#fff;z-index:1100;
+      padding:80px 28px 28px;box-shadow:var(--shadow-xl);transition:var(--transition-medium);overflow-y:auto
+    }
+    .mobile-menu-panel.active{right:0}
+    .mobile-menu{list-style:none;display:flex;flex-direction:column;gap:10px}
+    .mobile-link{display:block;padding:12px 0;border-bottom:1px solid var(--earth-cream);text-decoration:none;color:var(--deep-charcoal);font-weight:600}
+    .mobile-link:hover{color:var(--tutor-teal)}
+    .mobile-buttons{display:flex;flex-direction:column;gap:12px;margin-top:20px}
+    .menu-overlay{
+      position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);
+      z-index:1090;opacity:0;visibility:hidden;transition:var(--transition-medium)
+    }
+    .menu-overlay.active{opacity:1;visibility:visible}
+
+    /* Hero - unique gradient */
+    .hero{
+      background:linear-gradient(135deg, #5b2cff 0%, var(--sky-blue) 50%, var(--tutor-teal) 100%);
+      color:#fff;padding:120px 0 60px;position:relative;overflow:hidden
+    }
+    .hero::before{
+      content:"";position:absolute;top:-100px;left:-100px;width:280px;height:280px;border-radius:50%;
+      background:radial-gradient(circle at center, rgba(255,255,255,.2), rgba(255,255,255,0) 60%)
+    }
+    .hero::after{
+      content:"";position:absolute;right:-120px;bottom:-120px;width:320px;height:320px;border-radius:50%;
+      background:radial-gradient(circle at center, rgba(255,255,255,.14), rgba(255,255,255,0) 60%)
+    }
+    .hero-title{font-size:2.8rem;margin-top:12px;margin-bottom:14px}
+    .hero-subtitle{font-size:1.12rem;opacity:.95;max-width:900px}
+    .breadcrumbs{
+      display:inline-flex;align-items:center;gap:8px;color:#fff;opacity:.9;text-decoration:none;font-weight:700
+    }
+    .breadcrumbs:hover{opacity:1;text-decoration:underline}
+
+    /* Intro */
+    .intro{background:var(--earth-cream)}
+    .lead{font-size:1.08rem;color:var(--trunk-gray);max-width:980px;margin:0 auto}
+
+    /* System Check */
+    .syscheck{
+      background:#fff;border-radius:18px;box-shadow:var(--shadow-xl);padding:22px
+    }
+    .check-grid{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:12px
+    }
+    .check{
+      border:2px solid var(--earth-cream);border-radius:12px;padding:14px;background:#fff
+    }
+    .status{
+      display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;font-weight:800;font-size:.9rem
+    }
+    .ok{background:#e6f7ed;color:#116b39;border:1px solid #b8ebcd}
+    .warn{background:#fff6e9;color:#8a4b00;border:1px solid #ffe0b3}
+    .fail{background:#ffefef;color:#8a0000;border:1px solid #ffd0d0}
+    .muted{color:var(--trunk-gray)}
+    .split{
+      display:grid;grid-template-columns:1.2fr .8fr;gap:16px
+    }
+    .tone-controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+
+    /* Stepper */
+    .stepper{
+      background:#fff;border-radius:16px;box-shadow:var(--shadow-lg);overflow:hidden
+    }
+    .steps-header{display:flex;gap:8px;flex-wrap:wrap;padding:12px;background:var(--tutor-light-teal)}
+    .step-pill{
+      padding:8px 12px;border-radius:999px;background:#fff;border:2px solid var(--tutor-teal);color:var(--tutor-teal);font-weight:800
+    }
+    .step-pill.active{background:var(--tutor-teal);color:#fff}
+    .step-content{padding:20px}
+    .nav-steps{display:flex;justify-content:space-between;margin-top:10px}
+
+    /* Micro-courses */
+    .courses-grid{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:18px
+    }
+    .course{
+      background:#fff;border-radius:14px;padding:16px;border:2px solid var(--earth-cream);box-shadow:var(--shadow-sm)
+    }
+    .course .title{font-weight:800;color:var(--tutor-teal)}
+    .meta{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0}
+    .meta .pill{
+      display:inline-flex;align-items:center;gap:8px;background:var(--earth-cream);color:var(--deep-charcoal);
+      padding:6px 12px;border-radius:999px;font-weight:700;font-size:.85rem
+    }
+    .progress{
+      height:8px;background:#ececec;border-radius:999px;overflow:hidden;margin-top:10px
+    }
+    .progress > span{display:block;height:100%;background:var(--canopy-green);width:0%}
+
+    /* Troubleshooting (accordion) */
+    .accordion{border-radius:16px;overflow:hidden;box-shadow:var(--shadow-lg);background:#fff}
+    .acc-item + .acc-item{border-top:1px solid #f0f0f0}
+    .acc-header{
+      width:100%;text-align:left;border:0;background:#fff;padding:18px 20px;font-weight:800;cursor:pointer;display:flex;justify-content:space-between;align-items:center
+    }
+    .acc-header:hover{background:#fafafa}
+    .acc-content{display:none;padding:0 20px 20px;color:var(--trunk-gray)}
+    .acc-item.active .acc-content{display:block}
+    .rotate{transition:transform .25s ease}
+    .acc-item.active .rotate{transform:rotate(180deg)}
+    .fix-list{padding-left:18px}
+
+    /* Downloads */
+    .downloads{
+      background:#fff;border-radius:16px;padding:18px;box-shadow:var(--shadow-lg)
+    }
+
+    /* Footer */
+    .footer{background:var(--deep-charcoal);color:#fff;padding:60px 0 28px;margin-top:40px}
+    .footer-content{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:36px;margin-bottom:28px
+    }
+    .footer h4{color:var(--tutor-teal);margin-bottom:12px}
+    .footer-link{color:rgba(255,255,255,.8);text-decoration:none;display:block;padding:6px 0}
+    .footer-link:hover{color:var(--sunset-gold)}
+    .footer-bottom{border-top:1px solid rgba(255,255,255,.12);margin-top:10px;padding-top:18px;text-align:center;color:rgba(255,255,255,.8)}
+
+    /* Utilities */
+    .section-title{font-size:2.2rem;color:var(--tutor-teal);margin-bottom:10px}
+    .section-subtitle{color:var(--trunk-gray);margin-bottom:18px}
+    .spacer{height:14px}
+    .kicker{font-weight:800;color:var(--tutor-teal);text-transform:uppercase;font-size:.8rem;letter-spacing:.5px}
+
+    /* Responsive */
+    @media (max-width: 1100px){
+      .split{grid-template-columns:1fr}
+      .check-grid{grid-template-columns:repeat(2,1fr)}
+      .courses-grid{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width: 768px){
+      .menu-toggle{display:block}
+      .nav-menu,.nav-buttons{display:none}
+      .hero{padding:100px 0 50px}
+      .hero-title{font-size:2.2rem}
+      .check-grid{grid-template-columns:1fr}
+      .courses-grid{grid-template-columns:1fr}
+      .section{padding:60px 0}
+      .container{padding:0 16px}
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="nav-wrapper">
+        <a href="index.html" class="logo" aria-label="Tutor Portal Home">
+          <div class="logo-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+          <div class="logo-text">Tutor Portal</div>
+        </a>
+
+        <div class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+          <i class="fas fa-bars"></i>
+        </div>
+
+        <ul class="nav-menu">
+          <li><a class="nav-link" href="index.html">Home</a></li>
+          <li><a class="nav-link" href="index.html#why-choose">Why Choose Us</a></li>
+          <li><a class="nav-link" href="index.html#earnings">Earnings</a></li>
+          <li><a class="nav-link" href="index.html#apply">Apply Now</a></li>
+          <li><a class="nav-link" href="https://baobabonlineacademy.com">Main Site</a></li>
+        </ul>
+
+        <div class="nav-buttons">
+          <button class="btn btn-outlined" onclick="openLoginModal()"><i class="fas fa-right-to-bracket"></i> Login</button>
+          <a class="btn btn-primary" href="index.html#apply"><i class="fas fa-paper-plane"></i> Apply</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu-panel" id="mobileMenuPanel" aria-hidden="true">
+    <ul class="mobile-menu">
+      <li><a class="mobile-link" href="index.html">Home</a></li>
+      <li><a class="mobile-link" href="index.html#why-choose">Why Choose Us</a></li>
+      <li><a class="mobile-link" href="index.html#earnings">Earnings</a></li>
+      <li><a class="mobile-link" href="index.html#apply">Apply Now</a></li>
+      <li><a class="mobile-link" href="https://baobabonlineacademy.com">Main Site</a></li>
+    </ul>
+    <div class="mobile-buttons">
+      <button class="btn btn-outlined" onclick="openLoginModal()"><i class="fas fa-right-to-bracket"></i> Login</button>
+      <a class="btn btn-primary" href="index.html#apply"><i class="fas fa-paper-plane"></i> Apply</a>
+    </div>
+  </div>
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <a class="breadcrumbs" href="index.html" aria-label="Back to home">
+        <i class="fas fa-arrow-left"></i> Back to Home
+      </a>
+      <div class="spacer"></div>
+      <span class="badge"><i class="fas fa-laptop-code"></i> Confident with Tech</span>
+      <h1 class="hero-title">Technology Training</h1>
+      <p class="hero-subtitle">
+        Master the essential tools for world-class online teaching: camera, audio, connectivity, video platforms,
+        and classroom apps—optimised for Nigeria’s context and bandwidth realities.
+      </p>
+    </div>
+  </section>
+
+  <!-- Intro -->
+  <section class="section intro">
+    <div class="container">
+      <h2 class="section-title"><i class="fas fa-compass"></i> Purpose & Outcomes</h2>
+      <p class="lead">
+        This training helps you design a reliable home setup, troubleshoot fast, and deliver engaging lessons on any device.
+        By the end, you’ll run smooth video sessions, manage materials securely, and support learners with confidence.
+      </p>
+    </div>
+  </section>
+
+  <!-- Quick System Check -->
+  <section class="section">
+    <div class="container">
+      <div class="split">
+        <div class="syscheck">
+          <h2 class="section-title"><i class="fas fa-microscope"></i> Quick System Check</h2>
+          <p class="section-subtitle">Test your browser, camera, microphone, speakers, and connection.</p>
+
+          <div class="check-grid">
+            <div class="check">
+              <div class="kicker">Browser</div>
+              <h4>Support & Version</h4>
+              <p class="muted" id="browserInfo">Detecting...</p>
+              <div class="spacer"></div>
+              <span class="status ok" id="browserStatus"><i class="fas fa-check-circle"></i> Supported</span>
+            </div>
+
+            <div class="check">
+              <div class="kicker">Camera</div>
+              <h4>Video Access</h4>
+              <p class="muted">Ensure a stable mount and good lighting.</p>
+              <div class="spacer"></div>
+              <span class="status warn" id="camStatus"><i class="fas fa-circle-exclamation"></i> Not tested</span>
+            </div>
+
+            <div class="check">
+              <div class="kicker">Microphone</div>
+              <h4>Audio Access</h4>
+              <p class="muted">Use a headset for best clarity; avoid echo.</p>
+              <div class="spacer"></div>
+              <span class="status warn" id="micStatus"><i class="fas fa-circle-exclamation"></i> Not tested</span>
+            </div>
+
+            <div class="check">
+              <div class="kicker">Speakers</div>
+              <h4>Sound Output</h4>
+              <p class="muted">Play a short tone and adjust volume.</p>
+              <div class="tone-controls">
+                <button class="btn btn-outlined" id="playTone"><i class="fas fa-volume-up"></i> Play Test Tone</button>
+                <button class="btn btn-outlined" id="stopTone" disabled><i class="fas fa-volume-xmark"></i> Stop</button>
+              </div>
+              <div class="spacer"></div>
+              <span class="status warn" id="spkStatus"><i class="fas fa-circle-exclamation"></i> Not tested</span>
+            </div>
+
+            <div class="check">
+              <div class="kicker">Internet</div>
+              <h4>Connection</h4>
+              <p class="muted" id="netInfo">Checking network...</p>
+              <div class="spacer"></div>
+              <span class="status warn" id="netStatus"><i class="fas fa-circle-exclamation"></i> Not tested</span>
+            </div>
+
+            <div class="check">
+              <div class="kicker">Device</div>
+              <h4>Capabilities</h4>
+              <p class="muted" id="deviceInfo">Analysing CPU & memory...</p>
+              <div class="spacer"></div>
+              <span class="status ok" id="devStatus"><i class="fas fa-check-circle"></i> Ready</span>
+            </div>
+          </div>
+
+          <div class="spacer"></div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn btn-primary" id="runChecks"><i class="fas fa-play"></i> Run Full Check</button>
+            <button class="btn btn-outlined" id="privacyNote"><i class="fas fa-shield"></i> Privacy</button>
+          </div>
+        </div>
+
+        <div class="syscheck">
+          <h2 class="section-title"><i class="fas fa-list-check"></i> Hardware Checklist</h2>
+          <p class="section-subtitle">Tick items you have. Saved locally on this device.</p>
+          <label class="item" style="display:flex;gap:10px;align-items:flex-start;margin:10px 0;">
+            <input type="checkbox" id="hc_camera"> <div>HD webcam (720p+). Position at eye level; use front lighting.</div>
+          </label>
+          <label class="item" style="display:flex;gap:10px;align-items:flex-start;margin:10px 0;">
+            <input type="checkbox" id="hc_headset"> <div>USB headset or lapel mic to reduce echo and noise.</div>
+          </label>
+          <label class="item" style="display:flex;gap:10px;align-items:flex-start;margin:10px 0;">
+            <input type="checkbox" id="hc_internet"> <div>Reliable internet (prefer wired or strong Wi‑Fi, 10+ Mbps down).</div>
+          </label>
+          <label class="item" style="display:flex;gap:10px;align-items:flex-start;margin:10px 0;">
+            <input type="checkbox" id="hc_power"> <div>Power backup plan (charged laptop, UPS, or data hotspot).</div>
+          </label>
+          <label class="item" style="display:flex;gap:10px;align-items:flex-start;margin:10px 0;">
+            <input type="checkbox" id="hc_background"> <div>Quiet space and neutral background (or virtual background).</div>
+          </label>
+          <div class="spacer"></div>
+          <div class="progress" aria-label="Hardware readiness">
+            <span id="hc_progress" style="width:0%"></span>
+          </div>
+          <small class="muted">Progress stored as “baobab_tech_hardware_checklist”.</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Video Conferencing Setup -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title"><i class="fas fa-video"></i> Video Conferencing Setup</h2>
+      <p class="section-subtitle">Follow the steps to get camera, audio, and sharing perfect for live lessons.</p>
+
+      <div class="stepper" id="vcStepper">
+        <div class="steps-header" id="stepPills"></div>
+        <div class="step-content" id="stepContent"></div>
+        <div class="nav-steps">
+          <button class="btn btn-outlined" id="prevStep"><i class="fas fa-arrow-left"></i> Previous</button>
+          <button class="btn btn-primary" id="nextStep">Next <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+      <small class="muted">Tip: Close bandwidth-heavy apps (cloud backups, streaming) during sessions.</small>
+    </div>
+  </section>
+
+  <!-- Micro-courses -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title"><i class="fas fa-graduation-cap"></i> Micro‑Courses (Self‑Paced)</h2>
+      <p class="section-subtitle">Short, focused lessons—earn confidence fast. Progress saves locally.</p>
+
+      <div class="courses-grid" id="coursesGrid">
+        <div class="course" data-key="course_classroom">
+          <div class="title">Baobab Classroom Basics</div>
+          <div class="meta">
+            <span class="pill"><i class="fas fa-clock"></i> 20–30 min</span>
+            <span class="pill"><i class="fas fa-signal"></i> Low bandwidth</span>
+          </div>
+          <p class="muted">Set up classes, share materials, and manage submissions.</p>
+          <div class="progress"><span></span></div>
+          <div class="spacer"></div>
+          <button class="btn btn-outlined start-course"><i class="fas fa-play"></i> Start</button>
+          <button class="btn btn-secondary complete-course" style="display:none"><i class="fas fa-flag-checkered"></i> Mark Complete</button>
+        </div>
+
+        <div class="course" data-key="course_video">
+          <div class="title">Video Platform Mastery</div>
+          <div class="meta">
+            <span class="pill"><i class="fas fa-clock"></i> 25–35 min</span>
+            <span class="pill"><i class="fas fa-shield"></i> Safety</span>
+          </div>
+          <p class="muted">Waiting rooms, screen share, breakout rooms, and recording etiquette.</p>
+          <div class="progress"><span></span></div>
+          <div class="spacer"></div>
+          <button class="btn btn-outlined start-course"><i class="fas fa-play"></i> Start</button>
+          <button class="btn btn-secondary complete-course" style="display:none"><i class="fas fa-flag-checkered"></i> Mark Complete</button>
+        </div>
+
+        <div class="course" data-key="course_whiteboard">
+          <div class="title">Interactive Whiteboards</div>
+          <div class="meta">
+            <span class="pill"><i class="fas fa-clock"></i> 15–25 min</span>
+            <span class="pill"><i class="fas fa-pen-ruler"></i> Engagement</span>
+          </div>
+          <p class="muted">Annotate, draw, and share boards that students can collaborate on.</p>
+          <div class="progress"><span></span></div>
+          <div class="spacer"></div>
+          <button class="btn btn-outlined start-course"><i class="fas fa-play"></i> Start</button>
+          <button class="btn btn-secondary complete-course" style="display:none"><i class="fas fa-flag-checkered"></i> Mark Complete</button>
+        </div>
+
+        <div class="course" data-key="course_files">
+          <div class="title">File Sharing & Organisation</div>
+          <div class="meta">
+            <span class="pill"><i class="fas fa-clock"></i> 15–20 min</span>
+            <span class="pill"><i class="fas fa-folder-open"></i> Workflow</span>
+          </div>
+          <p class="muted">Folder structure, naming conventions, and secure sharing.</p>
+          <div class="progress"><span></span></div>
+          <div class="spacer"></div>
+          <button class="btn btn-outlined start-course"><i class="fas fa-play"></i> Start</button>
+          <button class="btn btn-secondary complete-course" style="display:none"><i class="fas fa-flag-checkered"></i> Mark Complete</button>
+        </div>
+
+        <div class="course" data-key="course_assess">
+          <div class="title">Quizzes & Forms</div>
+          <div class="meta">
+            <span class="pill"><i class="fas fa-clock"></i> 15–25 min</span>
+            <span class="pill"><i class="fas fa-clipboard-check"></i> Assessment</span>
+          </div>
+          <p class="muted">Build low‑bandwidth checks for understanding and auto‑marking quizzes.</p>
+          <div class="progress"><span></span></div>
+          <div class="spacer"></div>
+          <button class="btn btn-outlined start-course"><i class="fas fa-play"></i> Start</button>
+          <button class="btn btn-secondary complete-course" style="display:none"><i class="fas fa-flag-checkered"></i> Mark Complete</button>
+        </div>
+
+        <div class="course" data-key="course_safeguard">
+          <div class="title">Online Safety & Privacy</div>
+          <div class="meta">
+            <span class="pill"><i class="fas fa-clock"></i> 10–15 min</span>
+            <span class="pill"><i class="fas fa-user-shield"></i> Safeguarding</span>
+          </div>
+          <p class="muted">Protect student data, manage chat, and report concerns promptly.</p>
+          <div class="progress"><span></span></div>
+          <div class="spacer"></div>
+          <button class="btn btn-outlined start-course"><i class="fas fa-play"></i> Start</button>
+          <button class="btn btn-secondary complete-course" style="display:none"><i class="fas fa-flag-checkered"></i> Mark Complete</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Troubleshooting Playbook -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title"><i class="fas fa-screwdriver-wrench"></i> Troubleshooting Playbook</h2>
+      <p class="section-subtitle">Quick fixes to resolve the most common issues during lessons.</p>
+
+      <div class="accordion" id="fixAccordion">
+        <div class="acc-item">
+          <button class="acc-header">
+            Camera or Microphone Not Working
+            <i class="fas fa-chevron-down rotate"></i>
+          </button>
+          <div class="acc-content">
+            <ul class="fix-list">
+              <li>Close other apps using camera/mic (e.g., other meeting tabs).</li>
+              <li>Check browser site permissions: allow camera and microphone.</li>
+              <li>Select the correct device in meeting settings.</li>
+              <li>Unplug and replug USB devices; try a different USB port.</li>
+              <li>Restart browser; if needed, restart computer.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-header">
+            Students Can’t Hear Me / Echo
+            <i class="fas fa-chevron-down rotate"></i>
+          </button>
+          <div class="acc-content">
+            <ul class="fix-list">
+              <li>Use a headset; mute laptop speakers to prevent feedback.</li>
+              <li>In the platform, enable noise suppression if available.</li>
+              <li>Ask students to mute when not speaking; avoid dual devices nearby.</li>
+              <li>Check input level and device selected.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-header">
+            Weak Internet / Video Freezing
+            <i class="fas fa-chevron-down rotate"></i>
+          </button>
+          <div class="acc-content">
+            <ul class="fix-list">
+              <li>Move closer to router; switch to 5 GHz if supported.</li>
+              <li>Turn off HD video; disable incoming video when needed.</li>
+              <li>Close downloads/streaming; pause cloud backups.</li>
+              <li>Use a wired connection or mobile hotspot as backup.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-header">
+            Low Computer Performance
+            <i class="fas fa-chevron-down rotate"></i>
+          </button>
+          <div class="acc-content">
+            <ul class="fix-list">
+              <li>Close unused tabs/apps; clear temporary files.</li>
+              <li>Disable virtual background; use static image or plain wall.</li>
+              <li>Lower video resolution to 360p or audio‑only as needed.</li>
+              <li>Keep your browser up to date.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-header">
+            Screen Share Issues
+            <i class="fas fa-chevron-down rotate"></i>
+          </button>
+          <div class="acc-content">
+            <ul class="fix-list">
+              <li>Share a specific window/tab to reduce bandwidth.</li>
+              <li>Enable “Share system audio” only when needed.</li>
+              <li>Close sensitive content; tidy your desktop before sharing.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <small class="muted">Need more help? Visit the <a href="help-center.html">Tutor Help Center</a> or <a href="technical-support.html">Technical Support</a>.</small>
+    </div>
+  </section>
+
+  <!-- Downloads -->
+  <section class="section">
+    <div class="container">
+      <div class="downloads">
+        <h2 class="section-title"><i class="fas fa-download"></i> Downloadable Checklists</h2>
+        <p class="section-subtitle">Keep these handy before and after every lesson.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-primary" id="dlPre"><i class="fas fa-file-arrow-down"></i> Pre‑Lesson Tech Checklist</button>
+          <button class="btn btn-outlined" id="dlPost"><i class="fas fa-file-arrow-down"></i> Post‑Lesson Wrap‑Up</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section" style="text-align:center;background:#fff">
+    <div class="container">
+      <h2 class="section-title"><i class="fas fa-headset"></i> Stuck or Want Guidance?</h2>
+      <p class="section-subtitle">We’re here to help. Browse the Help Center or contact Technical Support.</p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+        <a class="btn btn-primary" href="help-center.html"><i class="fas fa-life-ring"></i> Tutor Help Center</a>
+        <a class="btn btn-outlined" href="technical-support.html"><i class="fas fa-screwdriver-wrench"></i> Technical Support</a>
+        <a class="btn btn-secondary" href="index.html#apply"><i class="fas fa-paper-plane"></i> Apply to Teach</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div>
+          <h4><i class="fas fa-chalkboard-teacher"></i> Teaching Resources</h4>
+          <a class="footer-link" href="curriculum-guidelines.html">Curriculum Guidelines</a>
+          <a class="footer-link" href="cultural-integration.html">Cultural Integration Handbook</a>
+          <a class="footer-link" href="teaching-practices.html">Teaching Best Practices</a>
+          <a class="footer-link" href="technology-training.html">Technology Training</a>
+        </div>
+
+
+        <div>
+          <h4><i class="fas fa-life-ring"></i> Support</h4>
+          <a class="footer-link" href="help-center.html">Tutor Help Center</a>
+          <a class="footer-link" href="technical-support.html">Technical Support</a>
+          <a class="footer-link" href="payment-information.html">Payment Information</a>
+          <a class="footer-link" href="platform-guidelines.html">Platform Guidelines</a>
+        </div>
+
+        <div>
+          <h4><i class="fas fa-phone"></i> Contact</h4>
+          <p style="color:rgba(255,255,255,.8);margin-bottom:8px"><i class="fas fa-envelope"></i> tutors@baobabonlineacademy.com</p>
+          <p style="color:rgba(255,255,255,.8);margin-bottom:8px"><i class="fas fa-phone"></i> +234 (0) 816 501 1291</p>
+          <p style="color:rgba(255,255,255,.8)"><i class="fas fa-clock"></i> Mon–Fri: 9AM–5PM WAT</p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 Baobab Online Academy Tutor Portal. Empowering Nigerian Educators Globally.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenuPanel = document.getElementById('mobileMenuPanel');
+    const menuOverlay = document.getElementById('menuOverlay');
+
+    function openMenu(){
+      mobileMenuPanel.classList.add('active');
+      menuOverlay.classList.add('active');
+      document.body.style.overflow='hidden';
+      menuToggle.innerHTML='<i class="fas fa-times"></i>';
+    }
+    function closeMenu(){
+      mobileMenuPanel.classList.remove('active');
+      menuOverlay.classList.remove('active');
+      document.body.style.overflow='auto';
+      menuToggle.innerHTML='<i class="fas fa-bars"></i>';
+    }
+    function toggleMenu(){ mobileMenuPanel.classList.contains('active') ? closeMenu() : openMenu(); }
+    if(menuToggle){ menuToggle.addEventListener('click', toggleMenu); }
+    if(menuOverlay){ menuOverlay.addEventListener('click', closeMenu); }
+
+    // Login modal (placeholder)
+    function openLoginModal(){
+      alert('Tutor Portal Login\n\nIn the full version, this links to a secure login for:\n• Schedule & student profiles\n• Lesson prep resources\n• Earnings & payments\n• Parent communications\n• Professional development\n\nNeed help? Email tutors@baobabonlineacademy.com');
+    }
+    window.openLoginModal = openLoginModal;
+
+    // System info & checks
+    const browserInfo = document.getElementById('browserInfo');
+    const browserStatus = document.getElementById('browserStatus');
+    const camStatus = document.getElementById('camStatus');
+    const micStatus = document.getElementById('micStatus');
+    const spkStatus = document.getElementById('spkStatus');
+    const netInfo = document.getElementById('netInfo');
+    const netStatus = document.getElementById('netStatus');
+    const deviceInfo = document.getElementById('deviceInfo');
+    const devStatus = document.getElementById('devStatus');
+    const runChecksBtn = document.getElementById('runChecks');
+    const privacyBtn = document.getElementById('privacyNote');
+
+    // Browser details
+    (function initBrowser(){
+      const ua = navigator.userAgent;
+      let name = 'Your browser';
+      if(/Chrome/.test(ua) && !/Edge/.test(ua)) name = 'Chrome';
+      if(/Edg\//.test(ua)) name = 'Microsoft Edge';
+      if(/Firefox/.test(ua)) name = 'Firefox';
+      if(/Safari/.test(ua) && !/Chrome/.test(ua)) name = 'Safari';
+      const ver = (ua.match(/(Chrome|Edg|Firefox)\/([\d\.]+)/) || [,'', 'latest'])[2];
+      browserInfo.textContent = `${name} ${ver}`;
+      const support = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+      browserStatus.className = 'status ' + (support ? 'ok' : 'fail');
+      browserStatus.innerHTML = support ? '<i class="fas fa-check-circle"></i> Supported' : '<i class="fas fa-xmark-circle"></i> Update Browser';
+    })();
+
+    // Device info
+    (function initDevice(){
+      const cores = navigator.hardwareConcurrency || 'n/a';
+      const mem = navigator.deviceMemory ? `${navigator.deviceMemory} GB` : 'n/a';
+      deviceInfo.textContent = `CPU cores: ${cores} • Approx. memory: ${mem}`;
+      devStatus.className = 'status ok';
+      devStatus.innerHTML = '<i class="fas fa-check-circle"></i> Ready';
+    })();
+
+    // Network info
+    (function initNetwork(){
+      const c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+      if(c){
+        netInfo.textContent = `Downlink: ${c.downlink} Mbps • Type: ${c.effectiveType.toUpperCase()}`;
+        const ok = c.downlink >= 5;
+        netStatus.className = 'status ' + (ok ? 'ok' : 'warn');
+        netStatus.innerHTML = ok ? '<i class="fas fa-check-circle"></i> Good' : '<i class="fas fa-triangle-exclamation"></i> May be limited';
+      }else{
+        netInfo.textContent = 'Connection API not available. Ensure stable Wi‑Fi or wired network.';
+        netStatus.className = 'status warn';
+        netStatus.innerHTML = '<i class="fas fa-circle-exclamation"></i> Not tested';
+      }
+    })();
+
+    // Audio tone test using Web Audio API
+    let audioCtx, osc, gain;
+    const playBtn = document.getElementById('playTone');
+    const stopBtn = document.getElementById('stopTone');
+    playBtn.addEventListener('click', ()=>{
+      try{
+        const AC = window.AudioContext || window.webkitAudioContext;
+        audioCtx = audioCtx || new AC();
+        osc = audioCtx.createOscillator();
+        gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = 440;
+        gain.gain.value = 0.05; // gentle volume
+        osc.connect(gain).connect(audioCtx.destination);
+        osc.start();
+        spkStatus.className = 'status ok';
+        spkStatus.innerHTML = '<i class="fas fa-check-circle"></i> Playing tone';
+        playBtn.disabled = true; stopBtn.disabled = false;
+      }catch(e){
+        spkStatus.className = 'status fail';
+        spkStatus.innerHTML = '<i class="fas fa-xmark-circle"></i> Audio not available';
+      }
+    });
+    stopBtn.addEventListener('click', ()=>{
+      if(osc){ try{ osc.stop(); }catch(e){} }
+      if(gain){ try{ gain.disconnect(); }catch(e){} }
+      if(audioCtx && audioCtx.state !== 'closed'){ /* keep ctx open */ }
+      spkStatus.className = 'status ok';
+      spkStatus.innerHTML = '<i class="fas fa-check-circle"></i> Tested';
+      playBtn.disabled = false; stopBtn.disabled = true;
+    });
+
+    // Run camera & mic tests
+    runChecksBtn.addEventListener('click', async ()=>{
+      // Camera
+      try{
+        const s = await navigator.mediaDevices.getUserMedia({video:true});
+        camStatus.className = 'status ok';
+        camStatus.innerHTML = '<i class="fas fa-check-circle"></i> Working';
+        s.getTracks().forEach(t=>t.stop());
+      }catch(err){
+        camStatus.className = 'status fail';
+        camStatus.innerHTML = '<i class="fas fa-xmark-circle"></i> Blocked/Unavailable';
+      }
+      // Mic
+      try{
+        const s = await navigator.mediaDevices.getUserMedia({audio:true});
+        micStatus.className = 'status ok';
+        micStatus.innerHTML = '<i class="fas fa-check-circle"></i> Working';
+        s.getTracks().forEach(t=>t.stop());
+      }catch(err){
+        micStatus.className = 'status fail';
+        micStatus.innerHTML = '<i class="fas fa-xmark-circle"></i> Blocked/Unavailable';
+      }
+      // Network re-check
+      const c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+      if(c){
+        netInfo.textContent = `Downlink: ${c.downlink} Mbps • Type: ${c.effectiveType.toUpperCase()}`;
+        const ok = c.downlink >= 5;
+        netStatus.className = 'status ' + (ok ? 'ok' : 'warn');
+        netStatus.innerHTML = ok ? '<i class="fas fa-check-circle"></i> Good' : '<i class="fas fa-triangle-exclamation"></i> May be limited';
+      }
+    });
+
+    privacyBtn.addEventListener('click', ()=>{
+      alert('Privacy & Permissions\n\n• Camera and mic tests only run when you click “Run Full Check”.\n• Media access stays in your browser; we do not capture or store audio/video.\n• You can revoke permissions anytime in your browser settings.\n• Test tone is generated locally via the Web Audio API (no external audio).');
+    });
+
+    // Hardware checklist localStorage
+    const HC_KEY='baobab_tech_hardware_checklist';
+    const hcBoxes=[...document.querySelectorAll('#hc_camera,#hc_headset,#hc_internet,#hc_power,#hc_background')];
+    const hcBar=document.getElementById('hc_progress');
+    function loadHC(){
+      try{
+        const data=JSON.parse(localStorage.getItem(HC_KEY)||'{}');
+        hcBoxes.forEach(b=>b.checked=!!data[b.id]);
+      }catch(e){}
+      updateHC();
+    }
+    function saveHC(){
+      const data={}; hcBoxes.forEach(b=>data[b.id]=b.checked);
+      localStorage.setItem(HC_KEY, JSON.stringify(data));
+      updateHC();
+    }
+    function updateHC(){
+      const total=hcBoxes.length, done=hcBoxes.filter(b=>b.checked).length;
+      const pct= total? Math.round(done/total*100):0;
+      hcBar.style.width=pct+'%';
+      hcBar.style.background= pct>=80? 'var(--canopy-green)': (pct>=40? 'var(--sunset-gold)':'#d0d0d0');
+      hcBar.title=pct+'% complete';
+    }
+    hcBoxes.forEach(b=>b.addEventListener('change', saveHC));
+    loadHC();
+
+    // Video Conferencing Stepper
+    const steps=[
+      {title:'Camera Framing', content:'Position camera at eye level. Use front lighting (lamp/window). Keep background tidy or use a tame virtual background.'},
+      {title:'Microphone Levels', content:'Use a headset if possible. Speak at a steady volume. In settings, check you are on the correct microphone and monitor levels.'},
+      {title:'Background & Privacy', content:'Avoid personal/sensitive items on camera. Disable on‑screen notifications when sharing.'},
+      {title:'Screen Share', content:'Share a single window/tab for privacy and bandwidth. Pre‑open materials in order. Close unrelated apps.'},
+      {title:'Recording Etiquette', content:'Record only when required and with consent. Store recordings securely and follow retention guidelines.'},
+      {title:'Security & Participants', content:'Use waiting rooms, lock session after start, and remove disruptive participants. Control chat and screen‑share permissions.'}
+    ];
+    const stepPills = document.getElementById('stepPills');
+    const stepContent = document.getElementById('stepContent');
+    const prevStep = document.getElementById('prevStep');
+    const nextStep = document.getElementById('nextStep');
+    let stepIndex=0;
+    function renderStepper(){
+      stepPills.innerHTML='';
+      steps.forEach((s,i)=>{
+        const pill=document.createElement('span');
+        pill.className='step-pill'+(i===stepIndex?' active':'');
+        pill.textContent=(i+1)+'. '+s.title;
+        pill.addEventListener('click', ()=>{stepIndex=i; renderStepper();});
+        stepPills.appendChild(pill);
+      });
+      const s=steps[stepIndex];
+      stepContent.innerHTML=`<h4>${s.title}</h4><p class="muted" style="margin-top:6px">${s.content}</p>`;
+      prevStep.disabled = stepIndex===0;
+      nextStep.innerHTML = stepIndex===steps.length-1 ? 'Finish <i class="fas fa-check"></i>' : 'Next <i class="fas fa-arrow-right"></i>';
+    }
+    prevStep.addEventListener('click', ()=>{ if(stepIndex>0){ stepIndex--; renderStepper(); } });
+    nextStep.addEventListener('click', ()=>{
+      if(stepIndex<steps.length-1){ stepIndex++; renderStepper(); }
+      else { alert('Setup complete! You’re ready to host a smooth session.'); }
+    });
+    renderStepper();
+
+    // Micro-courses local progress
+    const COURSE_KEY='baobab_tech_courses_progress';
+    function loadCourses(){
+      let data={};
+      try{ data=JSON.parse(localStorage.getItem(COURSE_KEY)||'{}'); }catch(e){}
+      document.querySelectorAll('.course').forEach(card=>{
+        const key=card.getAttribute('data-key');
+        const p=card.querySelector('.progress span');
+        const startBtn=card.querySelector('.start-course');
+        const completeBtn=card.querySelector('.complete-course');
+        const status=data[key]||'new';
+        if(status==='new'){ p.style.width='0%'; startBtn.style.display='inline-flex'; completeBtn.style.display='none'; }
+        if(status==='inprogress'){ p.style.width='60%'; startBtn.textContent='Resume'; startBtn.style.display='inline-flex'; completeBtn.style.display='inline-flex'; }
+        if(status==='done'){ p.style.width='100%'; startBtn.textContent='Review'; startBtn.style.display='inline-flex'; completeBtn.style.display='none'; }
+        startBtn.onclick=()=>{
+          data[key]= data[key]==='done' ? 'done' : 'inprogress';
+          localStorage.setItem(COURSE_KEY, JSON.stringify(data));
+          loadCourses();
+        };
+        completeBtn.onclick=()=>{
+          data[key]='done';
+          localStorage.setItem(COURSE_KEY, JSON.stringify(data));
+          loadCourses();
+        };
+      });
+    }
+    loadCourses();
+
+    // Troubleshooting accordion
+    document.querySelectorAll('.acc-item').forEach(item=>{
+      item.querySelector('.acc-header').addEventListener('click', ()=>{
+        const open = item.classList.contains('active');
+        document.querySelectorAll('.acc-item').forEach(i=>i.classList.remove('active'));
+        if(!open) item.classList.add('active');
+      });
+    });
+
+    // Downloads
+    function downloadText(filename, content){
+      const blob=new Blob([content],{type:'text/plain;charset=utf-8'});
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement('a'); a.href=url; a.download=filename;
+      document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    }
+    document.getElementById('dlPre').addEventListener('click', ()=>{
+      const txt = `Pre‑Lesson Tech Checklist (Baobab Online Academy)
+      
+[ ] Open lesson materials and test links
+[ ] Camera at eye level; good lighting
+[ ] Headset connected and mic level set
+[ ] Background tidy or virtual background applied
+[ ] Close heavy apps (downloads/streams)
+[ ] Stable internet (backup hotspot ready)
+[ ] Screen-share window prepared; notifications muted
+[ ] Safety: waiting room enabled; share settings set
+[ ] Accessible resources available (large text/alt formats)
+[ ] Emergency plan: what if connection drops?`;
+      downloadText('Baobab_Pre_Lesson_Tech_Checklist.txt', txt);
+    });
+    document.getElementById('dlPost').addEventListener('click', ()=>{
+      const txt = `Post‑Lesson Wrap‑Up (Baobab Online Academy)
+      
+[ ] Stop recording (if used) and store securely
+[ ] Save/export whiteboards and chat notes
+[ ] Share homework/resources with clear deadlines
+[ ] Log attendance and key notes
+[ ] Reflect: tech issues? engagement level? fixes for next time
+[ ] Back up files to organised folders
+[ ] Sign out of shared platforms (if on shared device)`;
+      downloadText('Baobab_Post_Lesson_Wrap_Up.txt', txt);
+    });
+
+    // Smooth scroll for on-page anchors
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', (e)=>{
+        const id = a.getAttribute('href');
+        if(id.length>1){
+          const target = document.querySelector(id);
+          if(target){
+            e.preventDefault();
+            target.scrollIntoView({behavior:'smooth', block:'start'});
+            closeMenu();
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
