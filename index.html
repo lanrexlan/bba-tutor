@@ -83,6 +83,14 @@
             text-decoration: none;
             cursor: pointer;
         }
+
+        .btn[disabled] {
+            opacity: 0.6;
+            cursor: not-allowed;
+            pointer-events: none;
+            box-shadow: none !important;
+            transform: none !important;
+        }
         
         .btn-primary {
             background-color: var(--tutor-teal);
@@ -1118,13 +1126,13 @@
                     <li><a href="#" class="nav-link" onclick="showPage('home')">Home</a></li>
                     <li><a href="#why-choose" class="nav-link">Why Choose Us</a></li>
                     <li><a href="#earnings" class="nav-link">Earnings</a></li>
-                    <li><a href="#" class="nav-link" onclick="showPage('apply')">Apply Now</a></li>
+                    <li><a href="#/apply" class="nav-link" onclick="showPage('apply')">Apply Now</a></li>
                     <li><a href="https://baobabonlineacademy.com" class="nav-link">Main Site</a></li>
                 </ul>
                 
                 <div class="nav-buttons">
                     <a href="#login" class="btn btn-outlined">Login</a>
-                    <a href="#" class="btn btn-primary" onclick="showPage('apply')">Apply Now</a>
+                    <a href="#/apply" class="btn btn-primary" onclick="showPage('apply')">Apply Now</a>
                 </div>
             </div>
         </div>
@@ -1136,12 +1144,12 @@
             <li><a href="#" class="mobile-link" onclick="showPage('home'); closeMenu();">Home</a></li>
             <li><a href="#why-choose" class="mobile-link">Why Choose Us</a></li>
             <li><a href="#earnings" class="mobile-link">Earnings</a></li>
-            <li><a href="#" class="mobile-link" onclick="showPage('apply'); closeMenu();">Apply Now</a></li>
+            <li><a href="#/apply" class="mobile-link" onclick="showPage('apply'); closeMenu();">Apply Now</a></li>
             <li><a href="https://baobabonlineacademy.com" class="mobile-link">Main Site</a></li>
         </ul>
         <div class="mobile-buttons">
             <a href="#" class="btn btn-outlined" onclick="openLoginModal()">Login</a>
-            <a href="#" class="btn btn-primary" onclick="showPage('apply'); closeMenu();">Apply</a>
+            <a href="#/apply" class="btn btn-primary" onclick="showPage('apply'); closeMenu();">Apply</a>
         </div>
     </div>
     
@@ -1163,7 +1171,7 @@
                         Join our community of passionate Nigerian educators earning 75% of lesson fees while the academy handles operations and support.
                     </p>
                     <div class="hero-buttons">
-                        <a href="#" class="btn btn-secondary btn-hero" onclick="showPage('apply')">
+                        <a href="#/apply" class="btn btn-secondary btn-hero" onclick="showPage('apply')">
                             <i class="fas fa-user-plus"></i>
                             Apply to Teach
                         </a>
@@ -1288,7 +1296,7 @@
                         while proudly sharing their cultural heritage. Your expertise and passion can shape young minds worldwide.
                     </p>
                     <div class="cta-buttons">
-                        <a href="#" class="btn btn-primary btn-hero" onclick="showPage('apply')">
+                        <a href="#/apply" class="btn btn-primary btn-hero" onclick="showPage('apply')">
                             <i class="fas fa-paper-plane"></i>
                             Start Your Application
                         </a>
@@ -1301,39 +1309,47 @@
             </div>
         </section>
 
-                <!-- Footer -->
+        <!-- Footer -->
         <footer class="footer">
             <div class="container">
                 <div class="footer-content">
                     <div class="footer-section">
                         <h4><i class="fas fa-chalkboard-teacher"></i> Teaching Resources</h4>
-                        <a href="curriculum-guidelines.html" class="footer-link">Curriculum Guidelines</a>
-                        <a href="cultural-integration.html" class="footer-link">Cultural Integration Handbook</a>
-                        <a href="teaching-practices.html" class="footer-link">Teaching Best Practices</a>
-                        <a href="technology-training.html" class="footer-link">Technology Training</a>
+                        <a href="#" class="footer-link">Curriculum Guidelines</a>
+                        <a href="#" class="footer-link">Cultural Integration Handbook</a>
+                        <a href="#" class="footer-link">Teaching Best Practices</a>
+                        <a href="#" class="footer-link">Technology Training</a>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h4><i class="fas fa-users"></i> Community</h4>
+                        <a href="#" class="footer-link">Educator Forum</a>
+                        <a href="#" class="footer-link">Mentorship Program</a>
+                        <a href="#" class="footer-link">Success Stories</a>
+                        <a href="#" class="footer-link">Professional Development</a>
                     </div>
                     
                     <div class="footer-section">
                         <h4><i class="fas fa-life-ring"></i> Support</h4>
-                        <a href="help-center.html" class="footer-link">Tutor Help Center</a>
-                        <a href="technical-support.html" class="footer-link">Technical Supports</a>
-                        <a href="payment-information.html" class="footer-link">Payment Information</a>
-                        <a href="platform-guidelines.html" class="footer-link">Platform Guidelines</a>
+                        <a href="#" class="footer-link">Tutor Help Center</a>
+                        <a href="#" class="footer-link">Technical Support</a>
+                        <a href="#" class="footer-link">Payment Information</a>
+                        <a href="#" class="footer-link">Platform Guidelines</a>
                     </div>
                     
                     <div class="footer-section">
                         <h4><i class="fas fa-phone"></i> Contact</h4>
                         <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 15px;">
                             <i class="fas fa-envelope"></i>
-                            tutors@baobabonlineacademy.com
+                            tutors@baobabacademy.com
                         </p>
                         <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 15px;">
                             <i class="fas fa-phone"></i>
-                            +234 (0) 816 501 1291
+                            +234 (0) 123 456 7890
                         </p>
                         <p style="color: rgba(255, 255, 255, 0.7);">
                             <i class="fas fa-clock"></i>
-                            Mon-Fri: 9AM-5PM WAT
+                            Mon-Fri: 9AM-6PM WAT
                         </p>
                     </div>
                 </div>
@@ -1458,9 +1474,9 @@
                                         <option value="">Select your experience level</option>
                                         <option value="No formal teaching experience">No formal teaching experience</option>
                                         <option value="Less than 1 year">Less than 1 year</option>
-                                        <option value="1–2 years">1–2 years</option>
-                                        <option value="3–5 years">3–5 years</option>
-                                        <option value="6–10 years">6–10 years</option>
+                                        <option value="1--2 years">1--2 years</option>
+                                        <option value="3--5 years">3--5 years</option>
+                                        <option value="6--10 years">6--10 years</option>
                                         <option value="More than 10 years">More than 10 years</option>
                                     </select>
                                 </div>
@@ -1525,20 +1541,20 @@
                                 </label>
                                 <div class="checkbox-group" id="ageGroupsGroup">
                                     <div class="checkbox-item">
-                                        <input type="checkbox" value="Ages 5–7" name="ageGroups" id="age5-7">
-                                        <label for="age5-7">Ages 5–7</label>
+                                        <input type="checkbox" value="Ages 5--7" name="ageGroups" id="age5-7">
+                                        <label for="age5-7">Ages 5--7</label>
                                     </div>
                                     <div class="checkbox-item">
-                                        <input type="checkbox" value="Ages 8–10" name="ageGroups" id="age8-10">
-                                        <label for="age8-10">Ages 8–10</label>
+                                        <input type="checkbox" value="Ages 8--10" name="ageGroups" id="age8-10">
+                                        <label for="age8-10">Ages 8--10</label>
                                     </div>
                                     <div class="checkbox-item">
-                                        <input type="checkbox" value="Ages 11–13" name="ageGroups" id="age11-13">
-                                        <label for="age11-13">Ages 11–13</label>
+                                        <input type="checkbox" value="Ages 11--13" name="ageGroups" id="age11-13">
+                                        <label for="age11-13">Ages 11--13</label>
                                     </div>
                                     <div class="checkbox-item">
-                                        <input type="checkbox" value="Ages 14–16" name="ageGroups" id="age14-16">
-                                        <label for="age14-16">Ages 14–16</label>
+                                        <input type="checkbox" value="Ages 14--16" name="ageGroups" id="age14-16">
+                                        <label for="age14-16">Ages 14--16</label>
                                     </div>
                                     <div class="checkbox-item">
                                         <input type="checkbox" value="Ages 17+" name="ageGroups" id="age17plus">
@@ -1654,7 +1670,7 @@
                                 <label class="form-label">
                                     Curriculum Vitae (CV) <span class="required">*</span>
                                 </label>
-                                <div class="file-upload-area" id="fileUploadArea">
+                                <div class="file-upload-area" id="fileUploadArea" title="Accepted: PDF, DOC, DOCX up to 10MB">
                                     <div class="file-upload-icon">
                                         <i class="fas fa-cloud-upload-alt"></i>
                                     </div>
@@ -1669,7 +1685,7 @@
                                 <div class="uploaded-file" id="uploadedFile">
                                     <i class="fas fa-file-alt"></i>
                                     <span id="fileName"></span>
-                                    <i class="fas fa-times" style="margin-left: auto; cursor: pointer;" onclick="removeFile()"></i>
+                                    <i class="fas fa-times" style="margin-left: auto; cursor: pointer;" onclick="removeFile()" title="Remove file"></i>
                                 </div>
                                 
                                 <div class="upload-progress" id="uploadProgress">
@@ -1711,40 +1727,97 @@
             </div>
         </section>
 
-
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <h4><i class="fas fa-chalkboard-teacher"></i> Teaching Resources</h4>
+                        <a href="curriculum-guidelines.html" class="footer-link">Curriculum Guidelines</a>
+                        <a href="cultural-integration.html" class="footer-link">Cultural Integration Handbook</a>
+                        <a href="teaching-practices.html" class="footer-link">Teaching Best Practices</a>
+                        <a href="technology-training.html" class="footer-link">Technology Training</a>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h4><i class="fas fa-life-ring"></i> Support</h4>
+                        <a href="help-center.html" class="footer-link">Tutor Help Center</a>
+                        <a href="technical-support.html" class="footer-link">Technical Supports</a>
+                        <a href="payment-information.html" class="footer-link">Payment Information</a>
+                        <a href="platform-guidelines.html" class="footer-link">Platform Guidelines</a>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h4><i class="fas fa-phone"></i> Contact</h4>
+                        <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 15px;">
+                            <i class="fas fa-envelope"></i>
+                            tutors@baobabonlineacademy.com
+                        </p>
+                        <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 15px;">
+                            <i class="fas fa-phone"></i>
+                            +234 (0) 816 501 1291
+                        </p>
+                        <p style="color: rgba(255, 255, 255, 0.7);">
+                            <i class="fas fa-clock"></i>
+                            Mon-Fri: 9AM-5PM WAT
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="footer-bottom">
+                    <p>&copy; 2025 Baobab Online Academy Tutor Portal. Empowering Nigerian Educators Globally.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
 
     <script>
         let currentStep = 1;
         const totalSteps = 5;
         let uploadedCvUrl = '';
         let uploadedCvPublicId = '';
+        let isUploading = false;
 
         // Cloudinary configuration
         const CLOUDINARY_CLOUD_NAME = 'dv5wnmbay';
         const CLOUDINARY_UPLOAD_PRESET = 'tutor_cvs';
 
-        // Initialize EmailJS with your user ID
-        emailjs.init("M3bhpqgz-dJKzGfh7"); // Replace with your actual EmailJS user ID
+        // Initialize EmailJS with your public key
+        emailjs.init("M3bhpqgz-dJKzGfh7"); // Ensure this is your current EmailJS public key
 
-        // Step navigation functions
+        // Step navigation functions (improved logic)
         function changeStep(direction) {
-            if (direction === 1 && !validateCurrentStep()) {
+            // Prevent moving forward without validation
+            if (direction === 1 && !validateCurrentStep()) return;
+
+            // Prevent leaving step 5 while file is uploading
+            if (currentStep === 5 && isUploading) {
+                alert('Please wait for the CV upload to complete before leaving this step.');
                 return;
             }
-            
-            // Hide current step
-            document.getElementById(`formStep${currentStep}`).classList.remove('active');
-            document.getElementById(`step${currentStep}`).classList.remove('active');
-            document.getElementById(`step${currentStep}`).classList.add('completed');
-            
-            // Update current step
-            currentStep += direction;
-            
-            // Show new step
-            document.getElementById(`formStep${currentStep}`).classList.add('active');
-            document.getElementById(`step${currentStep}`).classList.add('active');
-            
-            // Update navigation buttons
+
+            const targetStep = currentStep + direction;
+            if (targetStep < 1 || targetStep > totalSteps) return;
+
+            currentStep = targetStep;
+            showStep(currentStep);
+        }
+
+        function showStep(stepNumber) {
+            // Hide all and reset step states
+            for (let i = 1; i <= totalSteps; i++) {
+                document.getElementById(`formStep${i}`).classList.remove('active');
+                const stepEl = document.getElementById(`step${i}`);
+                stepEl.classList.remove('active', 'completed');
+            }
+            // Mark completed steps
+            for (let i = 1; i < stepNumber; i++) {
+                document.getElementById(`step${i}`).classList.add('completed');
+            }
+            // Activate current step
+            document.getElementById(`formStep${stepNumber}`).classList.add('active');
+            document.getElementById(`step${stepNumber}`).classList.add('active');
+
             updateNavigationButtons();
         }
 
@@ -1752,9 +1825,9 @@
             const prevBtn = document.getElementById('prevBtn');
             const nextBtn = document.getElementById('nextBtn');
             const submitBtn = document.getElementById('submitBtn');
-            
+
             prevBtn.style.display = currentStep === 1 ? 'none' : 'flex';
-            
+
             if (currentStep === totalSteps) {
                 nextBtn.style.display = 'none';
                 submitBtn.style.display = 'flex';
@@ -1762,6 +1835,11 @@
                 nextBtn.style.display = 'flex';
                 submitBtn.style.display = 'none';
             }
+
+            // Disable next/submit if uploading on step 5
+            const disableOnUpload = (currentStep === 5 && isUploading);
+            nextBtn.disabled = disableOnUpload;
+            submitBtn.disabled = disableOnUpload;
         }
 
         function validateCurrentStep() {
@@ -1774,7 +1852,7 @@
                         alert('Please upload your CV before continuing.');
                         return false;
                     }
-                } else if (!field.value.trim()) {
+                } else if (!String(field.value || '').trim()) {
                     field.focus();
                     alert('Please fill in all required fields before continuing.');
                     return false;
@@ -1808,7 +1886,11 @@
             
             // For final step, ensure CV is uploaded
             if (currentStep === 5 && !uploadedCvUrl) {
-                alert('Please wait for CV upload to complete or upload a CV file.');
+                if (isUploading) {
+                    alert('Please wait for CV upload to complete.');
+                } else {
+                    alert('Please upload your CV to proceed.');
+                }
                 return false;
             }
             
@@ -1838,22 +1920,25 @@
         fileUploadArea.addEventListener('drop', (e) => {
             e.preventDefault();
             fileUploadArea.classList.remove('dragover');
-            
             const files = e.dataTransfer.files;
-            if (files.length > 0) {
+            if (files && files.length > 0) {
                 handleFileUpload(files[0]);
             }
         });
 
         fileInput.addEventListener('change', (e) => {
-            if (e.target.files.length > 0) {
+            if (e.target.files && e.target.files.length > 0) {
                 handleFileUpload(e.target.files[0]);
             }
         });
 
         function handleFileUpload(file) {
             const maxSize = 10 * 1024 * 1024; // 10MB
-            const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+            const allowedTypes = [
+                'application/pdf',
+                'application/msword',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+            ];
             
             if (file.size > maxSize) {
                 alert('File size must be less than 10MB.');
@@ -1864,6 +1949,9 @@
                 alert('Please upload a PDF, DOC, or DOCX file.');
                 return;
             }
+
+            isUploading = true;
+            updateNavigationButtons();
             
             // Show uploading state
             fileName.textContent = `Uploading ${file.name}...`;
@@ -1879,13 +1967,14 @@
             const formData = new FormData();
             formData.append('file', file);
             formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
-            formData.append('resource_type', 'raw'); // For non-image files
-            formData.append('folder', 'tutor-applications'); // Organize files in folder
-            
+            formData.append('folder', 'tutor-applications'); // Organize files in a folder
+
+            let progressIntervalId = null;
+
             try {
                 // Simulate progress for user experience
                 let progress = 0;
-                const progressInterval = setInterval(() => {
+                progressIntervalId = setInterval(() => {
                     progress += Math.random() * 15;
                     if (progress > 90) progress = 90;
                     progressFill.style.width = progress + '%';
@@ -1896,37 +1985,48 @@
                     method: 'POST',
                     body: formData
                 });
-                
+
                 const data = await response.json();
-                
-                clearInterval(progressInterval);
-                
-                if (data.secure_url) {
-                    uploadedCvUrl = data.secure_url;
-                    uploadedCvPublicId = data.public_id;
-                    
-                    // Complete progress
-                    progressFill.style.width = '100%';
-                    progressText.textContent = '100%';
-                    
-                    setTimeout(() => {
-                        fileName.textContent = `✅ ${file.name} (Uploaded successfully)`;
-                        fileName.style.color = '#4caf50';
-                        uploadedFile.classList.remove('uploading');
-                        uploadProgress.style.display = 'none';
-                        
-                        // Update file input to show it's been handled
-                        fileInput.setAttribute('data-uploaded', 'true');
-                    }, 500);
-                } else {
-                    throw new Error('Upload failed');
+
+                if (progressIntervalId) {
+                    clearInterval(progressIntervalId);
+                    progressIntervalId = null;
                 }
+
+                if (!response.ok || !data.secure_url) {
+                    const msg = (data && (data.error?.message || data.message)) || 'Upload failed. Please check your Cloudinary preset and permissions.';
+                    throw new Error(msg);
+                }
+
+                uploadedCvUrl = data.secure_url;
+                uploadedCvPublicId = data.public_id;
+
+                // Complete progress
+                progressFill.style.width = '100%';
+                progressText.textContent = '100%';
+                
+                setTimeout(() => {
+                    fileName.textContent = `✅ ${file.name} (Uploaded successfully)`;
+                    fileName.style.color = '#4caf50';
+                    uploadedFile.classList.remove('uploading');
+                    uploadProgress.style.display = 'none';
+                    
+                    // Mark file input as handled
+                    fileInput.setAttribute('data-uploaded', 'true');
+                }, 300);
+
             } catch (error) {
                 console.error('Upload error:', error);
-                clearInterval(progressInterval);
+                if (progressIntervalId) {
+                    clearInterval(progressIntervalId);
+                    progressIntervalId = null;
+                }
                 uploadProgress.style.display = 'none';
-                alert('Failed to upload CV. Please try again.');
+                alert(`Failed to upload CV. ${error?.message || ''}`.trim());
                 removeFile();
+            } finally {
+                isUploading = false;
+                updateNavigationButtons();
             }
         }
 
@@ -1940,6 +2040,10 @@
             uploadedCvPublicId = '';
             progressFill.style.width = '0%';
             progressText.textContent = '0%';
+            isUploading = false;
+            updateNavigationButtons();
+            fileName.style.color = '';
+            fileName.textContent = '';
         }
 
         // Checkbox styling
@@ -1966,13 +2070,18 @@
         document.getElementById('tutorApplicationForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
+            if (isUploading) {
+                alert('Please wait for the CV upload to complete.');
+                return;
+            }
+
             if (!validateCurrentStep()) {
                 return;
             }
             
-            // Check if CV is uploaded
+            // Ensure CV is uploaded
             if (!uploadedCvUrl) {
-                alert('Please wait for CV upload to complete.');
+                alert('Please upload your CV before submitting.');
                 return;
             }
             
@@ -2008,7 +2117,7 @@
                     culturalBackground: formData.get('culturalBackground') || '',
                     availability: availability.join(', '),
                     additionalComments: formData.get('additionalComments') || '',
-                    submissionDate: new Date().toLocaleDateString('en-GB', {
+                    submissionDate: new Date().toLocaleString('en-GB', {
                         weekday: 'long',
                         year: 'numeric',
                         month: 'long',
@@ -2051,36 +2160,16 @@
             } catch (error) {
                 console.error('Error submitting form:', error);
                 document.getElementById('loadingOverlay').style.display = 'none';
-                alert('There was an error submitting your application. Please try again or contact support at tutors@baobabacademy.com');
+                alert('There was an error submitting your application. Please verify your EmailJS configuration (service, template, allowed origins) or try again. If the issue persists, contact tutors@baobabacademy.com');
             }
         });
-
-        function showStep(stepNumber) {
-            // Hide all steps
-            for (let i = 1; i <= totalSteps; i++) {
-                document.getElementById(`formStep${i}`).classList.remove('active');
-                document.getElementById(`step${i}`).classList.remove('active', 'completed');
-            }
-            
-            // Show current step
-            document.getElementById(`formStep${stepNumber}`).classList.add('active');
-            document.getElementById(`step${stepNumber}`).classList.add('active');
-            
-            // Mark previous steps as completed
-            for (let i = 1; i < stepNumber; i++) {
-                document.getElementById(`step${i}`).classList.add('completed');
-            }
-            
-            currentStep = stepNumber;
-            updateNavigationButtons();
-        }
 
         function closeSuccessModal() {
             document.getElementById('successModal').style.display = 'none';
             showPage('home');
         }
 
-        // Page navigation functionality
+        // Page navigation functionality (+ hash-friendly routing)
         function showPage(pageId) {
             document.querySelectorAll('.page-content').forEach(page => {
                 page.classList.remove('active');
@@ -2102,6 +2191,16 @@
             if (event.state && event.state.page) {
                 showPage(event.state.page);
             } else {
+                showPage('home');
+            }
+        });
+
+        // Hash-based routing support (works without server rewrites)
+        window.addEventListener('hashchange', function() {
+            const activeIsApply = document.getElementById('applyPage').classList.contains('active');
+            if (location.hash === '#/apply' && !activeIsApply) {
+                showPage('apply');
+            } else if ((location.hash === '' || location.hash === '#') && activeIsApply) {
                 showPage('home');
             }
         });
@@ -2137,7 +2236,7 @@
             link.addEventListener('click', closeMenu);
         });
 
-        // Smooth scrolling for navigation links (only for home page)
+        // Smooth scrolling for in-page nav links (home page only) + route links handling
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 const href = this.getAttribute('href');
@@ -2145,10 +2244,20 @@
                     e.preventDefault();
                     return;
                 }
+
+                // Route link like #/apply
+                if (href.startsWith('#/')) {
+                    e.preventDefault();
+                    if (href === '#/apply') {
+                        showPage('apply');
+                    }
+                    return;
+                }
                 
-                e.preventDefault();
+                // In-page smooth scroll only on home page
                 const target = document.querySelector(href);
                 if (target && document.getElementById('homePage').classList.contains('active')) {
+                    e.preventDefault();
                     target.scrollIntoView({
                         behavior: 'smooth',
                         block: 'start'
@@ -2173,10 +2282,11 @@
             });
         });
 
-        // Initialize the page based on URL
+        // Initialize the page based on URL or hash
         window.addEventListener('load', function() {
-            const path = window.location.pathname;
-            if (path.includes('apply')) {
+            const path = window.location.pathname || '';
+            const hash = window.location.hash || '';
+            if (hash === '#/apply' || path.includes('apply')) {
                 showPage('apply');
             } else {
                 showPage('home');
@@ -2184,6 +2294,4 @@
         });
     </script>
 </body>
-
 </html>
-
