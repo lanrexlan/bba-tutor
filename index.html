@@ -2123,12 +2123,17 @@
                     cvStatus: uploadedCvUrl ? 'CV Successfully Uploaded and Available' : 'No CV Provided'
                 };
 
-                // Send email using EmailJS
-                const response = await emailjs.send(
-                    'service_02brniu', // Your Service ID
-                    'template_8xrj4li', // Your Template ID
-                    templateParams
-                );
+                                    // NEW: send to your Vercel API route
+                    const resp = await fetch('/api/send-application', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(templateParams)
+                    });
+
+                    if (!resp.ok) {
+                    const err = await resp.json().catch(() => ({}));
+                    throw new Error(err?.error || 'Failed to submit via server');
+                    }
                 
                 console.log('Email sent successfully:', response);
                 
