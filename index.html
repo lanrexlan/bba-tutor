@@ -2054,102 +2054,106 @@
             });
         });
 
+        let isSubmitting = false;
+
         document.getElementById('tutorApplicationForm').addEventListener('submit', onTutorFormSubmit);
 
-async function onTutorFormSubmit(e) {
-  e.preventDefault();
+        async function onTutorFormSubmit(e) {
+            e.preventDefault();
 
-  // Block if still uploading CV
-  if (isUploading) {
-    alert('Please wait for the CV upload to complete.');
-    return;
-  }
+            if (isSubmitting) return; // prevent double-submit
+            isSubmitting = true;
 
-  // Validate current step
-  if (!validateCurrentStep()) return;
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
 
-  if (!uploadedCvUrl) {
-    alert('Please upload your CV before submitting.');
-    return;
-  }
+            try {
+            if (isUploading) {
+                throw new Error('Please wait for the CV upload to complete.');
+            }
+            if (!validateCurrentStep()) return;
+            if (!uploadedCvUrl) {
+                throw new Error('Please upload your CV before submitting.');
+            }
 
-  // Show loading overlay
-  document.getElementById('loadingOverlay').style.display = 'flex';
+            document.getElementById('loadingOverlay').style.display = 'flex';
 
-  try {
-    const form = e.currentTarget;
-    const formData = new FormData(form);
+            const form = e.currentTarget;
+            const formData = new FormData(form);
 
-    const subjects = Array.from(document.querySelectorAll('input[name="subjects"]:checked')).map(cb => cb.value);
-    const ageGroups = Array.from(document.querySelectorAll('input[name="ageGroups"]:checked')).map(cb => cb.value);
-    const availability = Array.from(document.querySelectorAll('input[name="availability"]:checked')).map(cb => cb.value);
+            const subjects = Array.from(document.querySelectorAll('input[name="subjects"]:checked')).map(cb => cb.value);
+            const ageGroups = Array.from(document.querySelectorAll('input[name="ageGroups"]:checked')).map(cb => cb.value);
+            const availability = Array.from(document.querySelectorAll('input[name="availability"]:checked')).map(cb => cb.value);
 
-    const templateParams = {
-      fullName: formData.get('fullName') || '',
-      email: formData.get('email') || '',
-      phone: formData.get('phone') || '',
-      location: formData.get('location') || '',
-      educationLevel: formData.get('educationLevel') || '',
-      fieldOfStudy: formData.get('fieldOfStudy') || '',
-      qualification: formData.get('qualification') || '',
-      teachingExperience: formData.get('teachingExperience') || '',
-      teachingDetails: formData.get('teachingDetails') || '',
-      subjects: subjects.join(', '),
-      ageGroups: ageGroups.join(', '),
-      internet: formData.get('internet') || '',
-      device: formData.get('device') || '',
-      quietEnvironment: formData.get('quietEnvironment') || '',
-      timeZone: formData.get('timeZone') || '',
-      culturalBackground: formData.get('culturalBackground') || '',
-      availability: availability.join(', '),
-      additionalComments: formData.get('additionalComments') || '',
-      submissionDate: new Date().toLocaleString('en-GB', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        timeZone: 'Africa/Lagos'
-      }),
-      cvFileName: fileInput.files[0] ? fileInput.files[0].name : 'CV uploaded via form',
-      cvDownloadUrl: uploadedCvUrl,
-      cvStatus: uploadedCvUrl ? 'CV Successfully Uploaded and Available' : 'No CV Provided'
-    };
+            const templateParams = {
+                fullName: formData.get('fullName') || '',
+                email: formData.get('email') || '',
+                phone: formData.get('phone') || '',
+                location: formData.get('location') || '',
+                educationLevel: formData.get('educationLevel') || '',
+                fieldOfStudy: formData.get('fieldOfStudy') || '',
+                qualification: formData.get('qualification') || '',
+                teachingExperience: formData.get('teachingExperience') || '',
+                teachingDetails: formData.get('teachingDetails') || '',
+                subjects: subjects.join(', '),
+                ageGroups: ageGroups.join(', '),
+                internet: formData.get('internet') || '',
+                device: formData.get('device') || '',
+                quietEnvironment: formData.get('quietEnvironment') || '',
+                timeZone: formData.get('timeZone') || '',
+                culturalBackground: formData.get('culturalBackground') || '',
+                availability: availability.join(', '),
+                additionalComments: formData.get('additionalComments') || '',
+                submissionDate: new Date().toLocaleString('en-GB', {
+                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+                hour: '2-digit', minute: '2-digit', timeZone: 'Africa/Lagos'
+                }),
+                cvFileName: fileInput.files[0] ? fileInput.files[0].name : 'CV uploaded via form',
+                cvDownloadUrl: uploadedCvUrl,
+                cvStatus: uploadedCvUrl ? 'CV Successfully Uploaded and Available' : 'No CV Provided',
 
-    console.log('[Submit] Sending to /api/send-application', templateParams);
+                // Helpful for EmailJS header mapping:
+                reply_to: formData.get('email') || '',
+                from_name: (formData.get('fullName') || '') + ' via Baobab Online Academy'
+            };
 
-    const resp = await fetch('/api/send-application', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(templateParams)
-    });
+            console.log('[Submit] Sending to /api/send-application', templateParams);
 
-    const payload = await resp.json().catch(() => ({}));
-    console.log('[Submit] API response', resp.status, payload);
+            const resp = await fetch('/api/send-application', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(templateParams)
+            });
 
-    if (!resp.ok) {
-      throw new Error(
-        (payload && (payload.details?.error || payload.details || payload.error)) ||
-        `Server responded with ${resp.status}`
-      );
-    }
+            const payload = await resp.json().catch(() => ({}));
+            console.log('[Submit] API response', resp.status, payload);
 
-    // Success UI
-    document.getElementById('loadingOverlay').style.display = 'none';
-    document.getElementById('successModal').style.display = 'flex';
-    e.currentTarget.reset();
-    currentStep = 1;
-    showStep(1);
-    removeFile();
-    document.querySelectorAll('.checkbox-item').forEach(item => item.classList.remove('checked'));
+            if (!resp.ok) {
+                throw new Error(
+                (payload && (payload.details?.error || payload.details || payload.error)) ||
+                `Server responded with ${resp.status}`
+                );
+            }
 
-  } catch (err) {
-    console.error('Error submitting form:', err);
-    document.getElementById('loadingOverlay').style.display = 'none';
-    alert(`There was an error submitting your application.\n\nDetails: ${err?.message || err}`);
-  }
-}
+            // Success UI
+            document.getElementById('loadingOverlay').style.display = 'none';
+            document.getElementById('successModal').style.display = 'flex';
+            e.currentTarget.reset();
+            currentStep = 1;
+            showStep(1);
+            removeFile();
+            document.querySelectorAll('.checkbox-item').forEach(item => item.classList.remove('checked'));
+
+            } catch (err) {
+            console.error('Error submitting form:', err);
+            document.getElementById('loadingOverlay').style.display = 'none';
+            alert(`There was an error submitting your application.\n\nDetails: ${err?.message || err}`);
+            } finally {
+            isSubmitting = false;
+            submitBtn.disabled = false;
+            }
+        }
+
 
         function closeSuccessModal() {
             document.getElementById('successModal').style.display = 'none';
