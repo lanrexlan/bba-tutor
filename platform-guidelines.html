@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" sizes="32x32" href="/Images/logo.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Platform Guidelines - Tutor Portal - Baobab Online Academy</title>
+
+  <!-- Fonts & Icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --baobab-brown:#8D4004;
+      --canopy-green:#2E7D32;
+      --sunset-gold:#F57C00;
+      --trunk-gray:#5D4037;
+      --sky-blue:#1976D2;
+      --earth-cream:#FFF8E1;
+      --desert-orange:#FF5722;
+      --sage-green:#689F38;
+      --deep-charcoal:#263238;
+      --white:#FFFFFF;
+      --tutor-teal:#00695C;
+      --tutor-light-teal:#B2DFDB;
+
+      --transition-slow:all .6s cubic-bezier(.165,.84,.44,1);
+      --transition-medium:all .4s cubic-bezier(.165,.84,.44,1);
+      --transition-fast:all .3s cubic-bezier(.165,.84,.44,1);
+
+      --shadow-sm:0 1px 3px rgba(0,0,0,.1);
+      --shadow-md:0 4px 6px rgba(0,0,0,.1);
+      --shadow-lg:0 10px 15px -3px rgba(0,0,0,.1);
+      --shadow-xl:0 20px 25px -5px rgba(0,0,0,.1);
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      font-family:'Open Sans',sans-serif;
+      color:var(--deep-charcoal);
+      line-height:1.6;
+      background:var(--white);
+      overflow-x:hidden;
+    }
+    h1,h2,h3,h4,h5{
+      font-family:'Merriweather',serif;
+      font-weight:700;
+      line-height:1.25;
+      color:var(--deep-charcoal);
+    }
+    .container{
+      width:100%;
+      max-width:1200px;
+      margin:0 auto;
+      padding:0 20px;
+      position:relative;
+    }
+    .section{padding:80px 0;position:relative}
+    .btn{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:12px 28px;border-radius:30px;font-weight:600;
+      transition:var(--transition-fast);text-decoration:none;cursor:pointer;
+      border:2px solid transparent;
+    }
+    .btn-primary{background:var(--tutor-teal);color:var(--white);border-color:var(--tutor-teal)}
+    .btn-primary:hover{background:var(--canopy-green);border-color:var(--canopy-green);transform:translateY(-2px);box-shadow:var(--shadow-md)}
+    .btn-outlined{background:transparent;color:var(--tutor-teal);border-color:var(--tutor-teal)}
+    .btn-outlined:hover{background:var(--tutor-teal);color:var(--white)}
+    .btn-secondary{background:var(--sunset-gold);color:var(--deep-charcoal);border-color:var(--sunset-gold)}
+    .badge{
+      display:inline-flex;align-items:center;gap:8px;
+      background:rgba(255,255,255,.18);color:#fff;
+      padding:8px 14px;border-radius:999px;font-weight:700;font-size:.9rem;
+      letter-spacing:.2px
+    }
+
+    /* Header */
+    .header{
+      position:sticky;top:0;left:0;width:100%;z-index:1000;
+      background:var(--white);box-shadow:var(--shadow-md);padding:10px 0
+    }
+    .nav-wrapper{display:flex;justify-content:space-between;align-items:center}
+    .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .logo-icon{
+      width:34px;height:34px;border-radius:8px;background:var(--tutor-teal);
+      color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px
+    }
+    .logo-text{font-weight:800;font-size:20px;color:var(--baobab-brown)}
+    .nav-menu{display:flex;gap:28px;list-style:none}
+    .nav-link{text-decoration:none;color:var(--deep-charcoal);font-weight:600}
+    .nav-link:hover{color:var(--tutor-teal)}
+    .nav-buttons{display:flex;gap:12px}
+    .menu-toggle{display:none;font-size:24px;color:var(--tutor-teal);cursor:pointer}
+
+    /* Mobile menu */
+    .mobile-menu-panel{
+      position:fixed;top:0;right:-100%;width:300px;height:100vh;background:#fff;z-index:1100;
+      padding:80px 28px 28px;box-shadow:var(--shadow-xl);transition:var(--transition-medium);overflow-y:auto
+    }
+    .mobile-menu-panel.active{right:0}
+    .mobile-menu{list-style:none;display:flex;flex-direction:column;gap:10px}
+    .mobile-link{display:block;padding:12px 0;border-bottom:1px solid var(--earth-cream);text-decoration:none;color:var(--deep-charcoal);font-weight:600}
+    .mobile-link:hover{color:var(--tutor-teal)}
+    .mobile-buttons{display:flex;flex-direction:column;gap:12px;margin-top:20px}
+    .menu-overlay{
+      position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);
+      z-index:1090;opacity:0;visibility:hidden;transition:var(--transition-medium)
+    }
+    .menu-overlay.active{opacity:1;visibility:visible}
+
+    /* Hero - unique gradient */
+    .hero{
+      background:linear-gradient(135deg, var(--baobab-brown) 0%, var(--tutor-teal) 55%, var(--sky-blue) 100%);
+      color:#fff;padding:120px 0 60px;position:relative;overflow:hidden
+    }
+    .hero::before{
+      content:"";position:absolute;top:-100px;right:-100px;width:300px;height:300px;border-radius:50%;
+      background:radial-gradient(circle at center, rgba(255,255,255,.18), rgba(255,255,255,0) 60%)
+    }
+    .hero-title{font-size:2.8rem;margin-top:12px;margin-bottom:14px}
+    .hero-subtitle{font-size:1.12rem;opacity:.95;max-width:920px}
+    .breadcrumbs{
+      display:inline-flex;align-items:center;gap:8px;color:#fff;opacity:.9;text-decoration:none;font-weight:700
+    }
+    .breadcrumbs:hover{opacity:1;text-decoration:underline}
+
+    /* Layout */
+    .grid{
+      display:grid;grid-template-columns:1.3fr .7fr;gap:20px
+    }
+    .card{
+      background:#fff;border-radius:16px;padding:18px;box-shadow:var(--shadow-lg);border:2px solid var(--earth-cream)
+    }
+    .muted{color:var(--trunk-gray)}
+
+    /* Accordion/Policies */
+    .accordion{border-radius:16px;overflow:hidden;box-shadow:var(--shadow-lg);background:#fff}
+    .acc-item + .acc-item{border-top:1px solid #f0f0f0}
+    .acc-header{
+      width:100%;text-align:left;border:0;background:#fff;padding:16px 18px;font-weight:800;cursor:pointer;display:flex;justify-content:space-between;align-items:center
+    }
+    .acc-header:hover{background:#fafafa}
+    .acc-content{display:none;padding:0 18px 16px;color:var(--trunk-gray)}
+    .acc-item.active .acc-content{display:block}
+    .rotate{transition:transform .25s ease}
+    .acc-item.active .rotate{transform:rotate(180deg)}
+
+    /* Acknowledgement */
+    .ack{
+      background:#fff;border-radius:16px;padding:18px;box-shadow:var(--shadow-lg);border:2px dashed var(--tutor-teal)
+    }
+    .input,.select,.textarea{
+      width:100%;border:2px solid var(--earth-cream);border-radius:10px;padding:10px;font-family:'Open Sans',sans-serif
+    }
+    .textarea{min-height:120px;resize:vertical}
+    .receipt{background:#f9fffd;border:2px dashed var(--tutor-teal);padding:12px;border-radius:12px;white-space:pre-wrap}
+
+    /* Decision helper */
+    .helper{
+      background:#fff;border-radius:16px;padding:18px;box-shadow:var(--shadow-lg);border:2px solid var(--earth-cream)
+    }
+    .pill{display:inline-flex;align-items:center;gap:8px;background:var(--earth-cream);color:var(--deep-charcoal);padding:6px 12px;border-radius:999px;font-weight:700;font-size:.9rem}
+
+    /* Scenario quiz */
+    .quiz{background:#fff;border-radius:16px;padding:18px;box-shadow:var(--shadow-lg);border:2px solid var(--earth-cream)}
+    .opt{display:flex;gap:10px;align-items:flex-start;border:2px solid var(--earth-cream);border-radius:12px;padding:10px;margin-bottom:8px}
+
+    /* Footer */
+    .footer{background:var(--deep-charcoal);color:#fff;padding:60px 0 28px;margin-top:40px}
+    .footer-content{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:36px;margin-bottom:28px
+    }
+    .footer h4{color:var(--tutor-teal);margin-bottom:12px}
+    .footer-link{color:rgba(255,255,255,.8);text-decoration:none;display:block;padding:6px 0}
+    .footer-link:hover{color:var(--sunset-gold)}
+    .footer-bottom{border-top:1px solid rgba(255,255,255,.12);margin-top:10px;padding-top:18px;text-align:center;color:rgba(255,255,255,.8)}
+
+    /* Responsive */
+    @media (max-width: 992px){
+      .grid{grid-template-columns:1fr}
+    }
+    @media (max-width: 768px){
+      .menu-toggle{display:block}
+      .nav-menu,.nav-buttons{display:none}
+      .hero{padding:100px 0 50px}
+      .hero-title{font-size:2.2rem}
+      .section{padding:60px 0}
+      .container{padding:0 16px}
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="nav-wrapper">
+        <a href="index (18).html" class="logo" aria-label="Tutor Portal Home">
+          <div class="logo-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+          <div class="logo-text">Tutor Portal</div>
+        </a>
+
+        <div class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+          <i class="fas fa-bars"></i>
+        </div>
+
+        <ul class="nav-menu">
+          <li><a class="nav-link" href="index (18).html">Home</a></li>
+          <li><a class="nav-link" href="index (18).html#why-choose">Why Choose Us</a></li>
+          <li><a class="nav-link" href="index (18).html#earnings">Earnings</a></li>
+          <li><a class="nav-link" href="index (18).html#apply">Apply Now</a></li>
+          <li><a class="nav-link" href="https://baobabonlineacademy.com">Main Site</a></li>
+        </ul>
+
+        <div class="nav-buttons">
+          <button class="btn btn-outlined" onclick="openLoginModal()"><i class="fas fa-right-to-bracket"></i> Login</button>
+          <a class="btn btn-primary" href="index (18).html#apply"><i class="fas fa-paper-plane"></i> Apply</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu-panel" id="mobileMenuPanel" aria-hidden="true">
+    <ul class="mobile-menu">
+      <li><a class="mobile-link" href="index (18).html">Home</a></li>
+      <li><a class="mobile-link" href="index (18).html#why-choose">Why Choose Us</a></li>
+      <li><a class="mobile-link" href="index (18).html#earnings">Earnings</a></li>
+      <li><a class="mobile-link" href="index (18).html#apply">Apply Now</a></li>
+      <li><a class="mobile-link" href="https://baobabonlineacademy.com">Main Site</a></li>
+    </ul>
+    <div class="mobile-buttons">
+      <button class="btn btn-outlined" onclick="openLoginModal()"><i class="fas fa-right-to-bracket"></i> Login</button>
+      <a class="btn btn-primary" href="index (18).html#apply"><i class="fas fa-paper-plane"></i> Apply</a>
+    </div>
+  </div>
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <a class="breadcrumbs" href="index (18).html" aria-label="Back to home">
+        <i class="fas fa-arrow-left"></i> Back to Home
+      </a>
+      <div style="height:14px"></div>
+      <span class="badge"><i class="fas fa-shield-halved"></i> Standards & Safety</span>
+      <h1 class="hero-title">Platform Guidelines</h1>
+      <p class="hero-subtitle">
+        Our shared standards for respectful, safe, and high‑quality teaching. Review carefully and acknowledge to start tutoring.
+      </p>
+    </div>
+  </section>
+
+  <!-- Policies + Sidebar -->
+  <section class="section" style="padding-top:50px">
+    <div class="container grid">
+      <div>
+        <div class="accordion" id="policies">
+          <div class="acc-item">
+            <button class="acc-header">
+              Code of Conduct
+              <i class="fas fa-chevron-down rotate"></i>
+            </button>
+            <div class="acc-content">
+              <ul class="muted" style="margin-left:18px">
+                <li>Be punctual, prepared, and professional in all communications.</li>
+                <li>Use respectful, inclusive language; honour names and pronouns.</li>
+                <li>Avoid conflicts of interest; keep tutor–student boundaries clear.</li>
+                <li>Do not share personal contact details outside the platform.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <button class="acc-header">
+              Safeguarding & Child Protection
+              <i class="fas fa-chevron-down rotate"></i>
+            </button>
+            <div class="acc-content">
+              <ul class="muted" style="margin-left:18px">
+                <li>Never meet students in private channels; keep communication on approved platforms.</li>
+                <li>Report any safeguarding concern immediately to Support.</li>
+                <li>Use age‑appropriate materials; avoid sensitive or graphic content.</li>
+                <li>No recording or sharing of student images without explicit guardian consent.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <button class="acc-header">
+              Data Privacy & Security
+              <i class="fas fa-chevron-down rotate"></i>
+            </button>
+            <div class="acc-content">
+              <ul class="muted" style="margin-left:18px">
+                <li>Protect student data; do not download/share outside approved systems.</li>
+                <li>Use strong passwords and enable device lock screens.</li>
+                <li>Only store lesson files in approved cloud folders with correct permissions.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <button class="acc-header">
+              Academic Integrity & Assessment
+              <i class="fas fa-chevron-down rotate"></i>
+            </button>
+            <div class="acc-content">
+              <ul class="muted" style="margin-left:18px">
+                <li>Support learning without doing work for students.</li>
+                <li>Use approved rubrics and give timely, actionable feedback.</li>
+                <li>Moderate assessments with colleagues for fairness.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <button class="acc-header">
+              Scheduling, Attendance, and Cancellations
+              <i class="fas fa-chevron-down rotate"></i>
+            </button>
+            <div class="acc-content">
+              <ul class="muted" style="margin-left:18px">
+                <li>Confirm time zones; start and end on time.</li>
+                <li>Follow no‑show policy (wait at least 10 minutes; document).</li>
+                <li>For changes within 24 hours, secure guardian approval and update the scheduler.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <button class="acc-header">
+              Communications & Professional Boundaries
+              <i class="fas fa-chevron-down rotate"></i>
+            </button>
+            <div class="acc-content">
+              <ul class="muted" style="margin-left:18px">
+                <li>Keep communications on the platform; keep tone warm and professional.</li>
+                <li>Avoid personal social media connections with students.</li>
+                <li>Escalate difficult conversations to Support promptly.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <button class="acc-header">
+              Recording & Consent
+              <i class="fas fa-chevron-down rotate"></i>
+            </button>
+            <div class="acc-content">
+              <ul class="muted" style="margin-left:18px">
+                <li>Record only if required and with explicit consent; notify participants at the start.</li>
+                <li>Store recordings securely and follow retention timelines.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <button class="acc-header">
+              Consequences & Strikes Policy
+              <i class="fas fa-chevron-down rotate"></i>
+            </button>
+            <div class="acc-content">
+              <ol class="muted" style="margin-left:18px">
+                <li>Reminder/Coaching: For minor one‑off issues.</li>
+                <li>Formal Warning: If issues persist or are more serious.</li>
+                <li>Final Warning/Suspension: For repeated or significant breaches.</li>
+                <li>Termination: For severe violations (e.g., safeguarding breach).</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <div style="height:20px"></div>
+
+        <!-- Acknowledgement -->
+        <div class="ack">
+          <h3 style="margin-bottom:6px"><i class="fas fa-clipboard-check"></i> Acknowledge Guidelines</h3>
+          <p class="muted">Type your full name and check the box to confirm you have read and will follow the guidelines. Saved locally.</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <input class="input" id="ackName" placeholder="Full name">
+            <select class="select" id="ackRole">
+              <option value="">Select role…</option>
+              <option value="Tutor">Tutor</option>
+              <option value="Lead Tutor">Lead Tutor</option>
+              <option value="Coordinator">Coordinator</option>
+            </select>
+          </div>
+          <label style="display:flex;gap:10px;align-items:flex-start;margin-top:10px">
+            <input type="checkbox" id="ackCheck">
+            <div>I have read and agree to follow the Platform Guidelines, including Safeguarding, Data Privacy, and Conduct.</div>
+          </label>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
+            <button class="btn btn-primary" id="ackSave"><i class="fas fa-file-signature"></i> Save Acknowledgement</button>
+            <button class="btn btn-outlined" id="ackCopy" disabled><i class="fas fa-copy"></i> Copy Receipt</button>
+            <button class="btn btn-outlined" id="ackDownload" disabled><i class="fas fa-download"></i> Download Receipt</button>
+          </div>
+          <div class="receipt" id="ackReceipt" style="display:none;margin-top:10px"></div>
+          <small class="muted">Stored locally as “baobab_guidelines_ack”. You may be asked to share the receipt.</small>
+        </div>
+
+        <div style="height:20px"></div>
+
+        <!-- Scenario Quiz -->
+        <div class="quiz" id="quizBox">
+          <h3 style="margin-bottom:6px"><i class="fas fa-lightbulb"></i> Scenario Check</h3>
+          <p class="muted" id="quizPrompt">Loading scenario…</p>
+          <div id="quizOptions"></div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn btn-primary" id="quizSubmit"><i class="fas fa-check"></i> Submit</button>
+            <button class="btn btn-outlined" id="quizNext"><i class="fas fa-rotate"></i> New Scenario</button>
+          </div>
+          <div class="receipt" id="quizFeedback" style="display:none;margin-top:10px"></div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <aside>
+        <div class="helper">
+          <h3 style="margin-bottom:6px"><i class="fas fa-compass"></i> Is This Allowed?</h3>
+          <p class="muted">Select a topic to view the status.</p>
+          <select class="select" id="helpTopic">
+            <option value="">Choose topic…</option>
+            <option value="contact">Sharing personal contact</option>
+            <option value="recording">Recording a session</option>
+            <option value="materials">Using external materials</option>
+            <option value="social">Connecting on social media</option>
+            <option value="data">Downloading student data</option>
+          </select>
+          <div style="height:8px"></div>
+          <div id="helpResult" class="pill" style="display:none"></div>
+          <ul class="muted" id="helpDetails" style="margin-left:18px;margin-top:8px"></ul>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <h3 style="margin-bottom:6px"><i class="fas fa-flag"></i> Report a Concern</h3>
+          <p class="muted">Use this template for conduct or safeguarding concerns.</p>
+          <textarea class="textarea" id="repText" placeholder="Who is involved, what happened, when/where, immediate risks…"></textarea>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
+            <button class="btn btn-outlined" id="repCopy"><i class="fas fa-copy"></i> Copy Template</button>
+            <a class="btn btn-secondary" id="repEmail" href="#" style="pointer-events:none;opacity:.7"><i class="fas fa-envelope"></i> Email Safeguarding</a>
+          </div>
+          <small class="muted">Send urgent issues immediately with “HIGH” in the subject.</small>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <h3 style="margin-bottom:6px"><i class="fas fa-link"></i> Useful Links</h3>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <a class="btn btn-outlined" href="help-center.html"><i class="fas fa-book-open"></i> Tutor Help Center</a>
+            <a class="btn btn-outlined" href="technical-support.html"><i class="fas fa-screwdriver-wrench"></i> Technical Support</a>
+            <a class="btn btn-outlined" href="payment-information.html"><i class="fas fa-credit-card"></i> Payment Information</a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section" style="text-align:center;background:#fff">
+    <div class="container">
+      <h2 class="section-title"><i class="fas fa-people-carry-box"></i> Thank you for upholding our standards</h2>
+      <p class="muted">Your professionalism protects students and lifts our community.</p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+        <a class="btn btn-primary" href="curriculum-guidelines.html"><i class="fas fa-book-open"></i> Curriculum Guidelines</a>
+        <a class="btn btn-outlined" href="cultural-integration.html"><i class="fas fa-feather"></i> Cultural Integration</a>
+        <a class="btn btn-secondary" href="index (18).html#apply"><i class="fas fa-paper-plane"></i> Apply to Teach</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div>
+          <h4><i class="fas fa-chalkboard-teacher"></i> Teaching Resources</h4>
+          <a class="footer-link" href="curriculum-guidelines.html">Curriculum Guidelines</a>
+          <a class="footer-link" href="cultural-integration.html">Cultural Integration Handbook</a>
+          <a class="footer-link" href="teaching-practices.html">Teaching Best Practices</a>
+          <a class="footer-link" href="technology-training.html">Technology Training</a>
+        </div>
+
+        <div>
+          <h4><i class="fas fa-life-ring"></i> Support</h4>
+          <a class="footer-link" href="help-center.html">Tutor Help Center</a>
+          <a class="footer-link" href="technical-support.html">Technical Support</a>
+          <a class="footer-link" href="payment-information.html">Payment Information</a>
+          <a class="footer-link" href="platform-guidelines.html">Platform Guidelines</a>
+        </div>
+
+        <div>
+          <h4><i class="fas fa-phone"></i> Contact</h4>
+          <p style="color:rgba(255,255,255,.8);margin-bottom:8px"><i class="fas fa-envelope"></i> tutors@baobabonlineacademy.com</p>
+          <p style="color:rgba(255,255,255,.8);margin-bottom:8px"><i class="fas fa-phone"></i> +234 (0) 816 501 1291</p>
+          <p style="color:rgba(255,255,255,.8)"><i class="fas fa-clock"></i> Mon–Fri: 9AM–5PM WAT</p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 Baobab Online Academy Tutor Portal. Empowering Nigerian Educators Globally.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenuPanel = document.getElementById('mobileMenuPanel');
+    const menuOverlay = document.getElementById('menuOverlay');
+    function openMenu(){
+      mobileMenuPanel.classList.add('active'); menuOverlay.classList.add('active');
+      document.body.style.overflow='hidden'; menuToggle.innerHTML='<i class="fas fa-times"></i>';
+    }
+    function closeMenu(){
+      mobileMenuPanel.classList.remove('active'); menuOverlay.classList.remove('active');
+      document.body.style.overflow='auto'; menuToggle.innerHTML='<i class="fas fa-bars"></i>';
+    }
+    function toggleMenu(){ mobileMenuPanel.classList.contains('active') ? closeMenu() : openMenu(); }
+    if(menuToggle){ menuToggle.addEventListener('click', toggleMenu); }
+    if(menuOverlay){ menuOverlay.addEventListener('click', closeMenu); }
+
+    // Login placeholder
+    function openLoginModal(){
+      alert('Tutor Portal Login\n\nIn the full version, this links to a secure login for:\n• Schedule & student profiles\n• Lesson prep resources\n• Earnings & payments\n• Parent communications\n• Professional development\n\nNeed help? Email tutors@baobabonlineacademy.com');
+    }
+    window.openLoginModal = openLoginModal;
+
+    // Accordion
+    document.querySelectorAll('.acc-item').forEach(item=>{
+      item.querySelector('.acc-header').addEventListener('click', ()=>{
+        const open = item.classList.contains('active');
+        document.querySelectorAll('.acc-item').forEach(i=>i.classList.remove('active'));
+        if(!open) item.classList.add('active');
+      });
+    });
+
+    // Acknowledgement
+    const ACK_KEY='baobab_guidelines_ack';
+    const ackName=document.getElementById('ackName');
+    const ackRole=document.getElementById('ackRole');
+    const ackCheck=document.getElementById('ackCheck');
+    const ackSave=document.getElementById('ackSave');
+    const ackCopy=document.getElementById('ackCopy');
+    const ackDownload=document.getElementById('ackDownload');
+    const ackReceipt=document.getElementById('ackReceipt');
+
+    function renderReceipt(data){
+      const text = `Baobab Online Academy — Platform Guidelines Acknowledgement
+Name: ${data.name}
+Role: ${data.role}
+Agreed: ${data.agreed ? 'Yes' : 'No'}
+Timestamp: ${data.time}
+
+Statement:
+I confirm that I have read and agree to follow the Platform Guidelines, including Safeguarding, Data Privacy, and Conduct.`;
+      ackReceipt.textContent = text;
+      ackReceipt.style.display='block';
+      ackCopy.disabled=false;
+      ackDownload.disabled=false;
+    }
+    function saveAck(){
+      if(!ackName.value || !ackRole.value || !ackCheck.checked){
+        alert('Please enter your full name, select your role, and tick the agreement box.');
+        return;
+      }
+      const data={name:ackName.value, role:ackRole.value, agreed:true, time:new Date().toLocaleString()};
+      localStorage.setItem(ACK_KEY, JSON.stringify(data));
+      renderReceipt(data);
+      alert('Acknowledgement saved on this device.');
+    }
+    ackSave.addEventListener('click', saveAck);
+    // load if exists
+    (function loadAck(){
+      try{
+        const d=JSON.parse(localStorage.getItem(ACK_KEY)||'{}');
+        if(d && d.name){ ackName.value=d.name; ackRole.value=d.role||''; ackCheck.checked=!!d.agreed; renderReceipt(d); }
+      }catch(e){}
+    })();
+    ackCopy.addEventListener('click', ()=>{
+      navigator.clipboard.writeText(ackReceipt.textContent||'').then(()=>{
+        ackCopy.innerHTML='<i class="fas fa-check"></i> Copied';
+        setTimeout(()=>{ ackCopy.innerHTML='<i class="fas fa-copy"></i> Copy Receipt'; }, 1200);
+      });
+    });
+    ackDownload.addEventListener('click', ()=>{
+      const blob=new Blob([ackReceipt.textContent||''],{type:'text/plain;charset=utf-8'});
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement('a'); a.href=url; a.download='Baobab_Guidelines_Acknowledgement.txt';
+      document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    });
+
+    // Decision helper
+    const helpTopic=document.getElementById('helpTopic');
+    const helpResult=document.getElementById('helpResult');
+    const helpDetails=document.getElementById('helpDetails');
+    const RULES={
+      contact:{status:'Prohibited', color:'#d66', points:['Keep all communications on approved channels.','Do not share phone numbers or personal emails.','Use platform messaging for all scheduling and updates.']},
+      recording:{status:'Needs consent', color:'var(--sunset-gold)', points:['Announce and obtain guardian consent before recording.','Record only when required; store securely.','Follow retention timelines.']},
+      materials:{status:'Permitted', color:'var(--canopy-green)', points:['Use age‑appropriate, copyright‑compliant resources.','Avoid sensitive or graphic content.','Provide accessible formats where needed.']},
+      social:{status:'Prohibited', color:'#d66', points:['Do not connect with students on personal social media.','Keep boundaries clear and professional.']},
+      data:{status:'Prohibited', color:'#d66', points:['Do not download or store student data on personal devices.','Use approved cloud folders and permissions only.']}
+    };
+    helpTopic.addEventListener('change', ()=>{
+      const key=helpTopic.value;
+      if(!key){ helpResult.style.display='none'; helpDetails.innerHTML=''; return; }
+      const r=RULES[key];
+      helpResult.style.display='inline-flex';
+      helpResult.textContent = r.status;
+      helpResult.style.background = key==='materials' ? '#e6f7ed' : (key==='recording' ? '#fff6e9' : '#ffefef');
+      helpResult.style.color = key==='materials' ? '#116b39' : (key==='recording' ? '#8a4b00' : '#8a0000');
+      helpDetails.innerHTML = r.points.map(p=>`<li>${p}</li>`).join('');
+    });
+
+    // Report concern
+    const repText=document.getElementById('repText');
+    const repCopy=document.getElementById('repCopy');
+    const repEmail=document.getElementById('repEmail');
+    function buildMailto(subject, body){
+      return `mailto:tutors@baobabonlineacademy.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    }
+    repCopy.addEventListener('click', ()=>{
+      const body = `Safeguarding/Conduct Concern\n\nDetails:\n${repText.value}\n\nInclude:\n- Names of people involved\n- What happened (facts only)\n- Time and date\n- Evidence (screenshots)\n- Any immediate risks`;
+      navigator.clipboard.writeText(body).then(()=>{
+        repEmail.href = buildMailto('HIGH — Safeguarding/Conduct Concern', body);
+        repEmail.style.pointerEvents='auto';
+        repEmail.style.opacity='1';
+        alert('Template copied. Click “Email Safeguarding” to open an email draft.');
+      });
+    });
+
+    // Scenario quiz
+    const quizData=[
+      {
+        prompt:'A guardian asks for your personal WhatsApp to “make things quicker”. What should you do?',
+        options:[
+          'Share your number—it’s faster for scheduling.',
+          'Politely decline and use platform messaging only.',
+          'Create a new personal account just for this family.'
+        ],
+        correct:1,
+        feedback:[
+          'Not allowed. Keep communications on the platform.',
+          'Correct. Maintain professional boundaries and use approved channels.',
+          'Still not allowed. Personal accounts should not be used.'
+        ]
+      },
+      {
+        prompt:'You want to record a lesson to review your teaching. What’s the correct approach?',
+        options:[
+          'Record quietly without telling anyone.',
+          'Ask for guardian consent, announce at the start, and store securely.',
+          'Record only the student’s audio to avoid consent requirements.'
+        ],
+        correct:1,
+        feedback:[
+          'Recording without consent breaches policy.',
+          'Correct. Consent and secure storage are required.',
+          'Audio still requires consent; do not record without it.'
+        ]
+      },
+      {
+        prompt:'A student requests you complete their assignment because they are “too busy”. What do you do?',
+        options:[
+          'Decline and guide them through the process/skills instead.',
+          'Agree but change some words to avoid detection.',
+          'Do it this once to build rapport.'
+        ],
+        correct:0,
+        feedback:[
+          'Correct. Support learning, do not do the work.',
+          'Academic dishonesty is prohibited.',
+          'This undermines integrity and is not allowed.'
+        ]
+      }
+    ];
+    const quizPrompt=document.getElementById('quizPrompt');
+    const quizOptions=document.getElementById('quizOptions');
+    const quizSubmit=document.getElementById('quizSubmit');
+    const quizNext=document.getElementById('quizNext');
+    const quizFeedback=document.getElementById('quizFeedback');
+    let qIndex=0, selected=null;
+
+    function renderQuiz(i){
+      const q=quizData[i % quizData.length];
+      quizPrompt.textContent=q.prompt;
+      quizOptions.innerHTML=q.options.map((opt,idx)=>`
+        <label class="opt"><input type="radio" name="qopt" value="${idx}"> <div>${opt}</div></label>
+      `).join('');
+      quizFeedback.style.display='none';
+      selected=null;
+      quizOptions.querySelectorAll('input[name="qopt"]').forEach(r=>{
+        r.addEventListener('change', ()=>{ selected=Number(r.value); });
+      });
+    }
+    quizSubmit.addEventListener('click', ()=>{
+      if(selected===null){ alert('Please select an option.'); return; }
+      const q=quizData[qIndex % quizData.length];
+      const correct = selected===q.correct;
+      quizFeedback.textContent = q.feedback[selected];
+      quizFeedback.style.display='block';
+      quizFeedback.style.borderColor = correct ? 'var(--canopy-green)' : '#d66';
+    });
+    quizNext.addEventListener('click', ()=>{
+      qIndex=(qIndex+1)%quizData.length;
+      renderQuiz(qIndex);
+    });
+    renderQuiz(qIndex);
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', (e)=>{
+        const id = a.getAttribute('href');
+        if(id.length>1){
+          const target = document.querySelector(id);
+          if(target){
+            e.preventDefault();
+            target.scrollIntoView({behavior:'smooth', block:'start'});
+            closeMenu();
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

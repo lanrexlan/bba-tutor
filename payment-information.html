@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" sizes="32x32" href="/Images/logo.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Information - Tutor Portal - Baobab Online Academy</title>
+
+  <!-- Fonts & Icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --baobab-brown:#8D4004;
+      --canopy-green:#2E7D32;
+      --sunset-gold:#F57C00;
+      --trunk-gray:#5D4037;
+      --sky-blue:#1976D2;
+      --earth-cream:#FFF8E1;
+      --desert-orange:#FF5722;
+      --sage-green:#689F38;
+      --deep-charcoal:#263238;
+      --white:#FFFFFF;
+      --tutor-teal:#00695C;
+      --tutor-light-teal:#B2DFDB;
+
+      --transition-slow:all .6s cubic-bezier(.165,.84,.44,1);
+      --transition-medium:all .4s cubic-bezier(.165,.84,.44,1);
+      --transition-fast:all .3s cubic-bezier(.165,.84,.44,1);
+
+      --shadow-sm:0 1px 3px rgba(0,0,0,.1);
+      --shadow-md:0 4px 6px rgba(0,0,0,.1);
+      --shadow-lg:0 10px 15px -3px rgba(0,0,0,.1);
+      --shadow-xl:0 20px 25px -5px rgba(0,0,0,.1);
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      font-family:'Open Sans',sans-serif;
+      color:var(--deep-charcoal);
+      line-height:1.6;
+      background:var(--white);
+      overflow-x:hidden;
+    }
+    h1,h2,h3,h4,h5{
+      font-family:'Merriweather',serif;
+      font-weight:700;
+      line-height:1.25;
+      color:var(--deep-charcoal);
+    }
+    .container{
+      width:100%;
+      max-width:1200px;
+      margin:0 auto;
+      padding:0 20px;
+      position:relative;
+    }
+    .section{padding:80px 0;position:relative}
+    .btn{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:12px 28px;border-radius:30px;font-weight:600;
+      transition:var(--transition-fast);text-decoration:none;cursor:pointer;
+      border:2px solid transparent;
+    }
+    .btn-primary{background:var(--tutor-teal);color:var(--white);border-color:var(--tutor-teal)}
+    .btn-primary:hover{background:var(--canopy-green);border-color:var(--canopy-green);transform:translateY(-2px);box-shadow:var(--shadow-md)}
+    .btn-outlined{background:transparent;color:var(--tutor-teal);border-color:var(--tutor-teal)}
+    .btn-outlined:hover{background:var(--tutor-teal);color:var(--white)}
+    .btn-secondary{background:var(--sunset-gold);color:var(--deep-charcoal);border-color:var(--sunset-gold)}
+    .badge{
+      display:inline-flex;align-items:center;gap:8px;
+      background:rgba(255,255,255,.18);color:#fff;
+      padding:8px 14px;border-radius:999px;font-weight:700;font-size:.9rem;
+      letter-spacing:.2px
+    }
+
+    /* Header */
+    .header{
+      position:sticky;top:0;left:0;width:100%;z-index:1000;
+      background:var(--white);box-shadow:var(--shadow-md);padding:10px 0
+    }
+    .nav-wrapper{display:flex;justify-content:space-between;align-items:center}
+    .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .logo-icon{
+      width:34px;height:34px;border-radius:8px;background:var(--tutor-teal);
+      color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px
+    }
+    .logo-text{font-weight:800;font-size:20px;color:var(--baobab-brown)}
+    .nav-menu{display:flex;gap:28px;list-style:none}
+    .nav-link{text-decoration:none;color:var(--deep-charcoal);font-weight:600}
+    .nav-link:hover{color:var(--tutor-teal)}
+    .nav-buttons{display:flex;gap:12px}
+    .menu-toggle{display:none;font-size:24px;color:var(--tutor-teal);cursor:pointer}
+
+    /* Mobile menu */
+    .mobile-menu-panel{
+      position:fixed;top:0;right:-100%;width:300px;height:100vh;background:#fff;z-index:1100;
+      padding:80px 28px 28px;box-shadow:var(--shadow-xl);transition:var(--transition-medium);overflow-y:auto
+    }
+    .mobile-menu-panel.active{right:0}
+    .mobile-menu{list-style:none;display:flex;flex-direction:column;gap:10px}
+    .mobile-link{display:block;padding:12px 0;border-bottom:1px solid var(--earth-cream);text-decoration:none;color:var(--deep-charcoal);font-weight:600}
+    .mobile-link:hover{color:var(--tutor-teal)}
+    .mobile-buttons{display:flex;flex-direction:column;gap:12px;margin-top:20px}
+    .menu-overlay{
+      position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);
+      z-index:1090;opacity:0;visibility:hidden;transition:var(--transition-medium)
+    }
+    .menu-overlay.active{opacity:1;visibility:visible}
+
+    /* Hero - unique gradient */
+    .hero{
+      background:linear-gradient(135deg, var(--sunset-gold) 0%, var(--sage-green) 55%, var(--tutor-teal) 100%);
+      color:#fff;padding:120px 0 60px;position:relative;overflow:hidden
+    }
+    .hero::before{
+      content:"";position:absolute;top:-100px;left:-100px;width:300px;height:300px;border-radius:50%;
+      background:radial-gradient(circle at center, rgba(255,255,255,.18), rgba(255,255,255,0) 60%)
+    }
+    .hero-title{font-size:2.8rem;margin-top:12px;margin-bottom:14px}
+    .hero-subtitle{font-size:1.12rem;opacity:.95;max-width:900px}
+    .breadcrumbs{
+      display:inline-flex;align-items:center;gap:8px;color:#fff;opacity:.9;text-decoration:none;font-weight:700
+    }
+    .breadcrumbs:hover{opacity:1;text-decoration:underline}
+
+    /* Key facts */
+    .facts{
+      display:grid;grid-template-columns:repeat(4,1fr);gap:16px
+    }
+    .fact{
+      background:#fff;border-radius:16px;padding:18px;box-shadow:var(--shadow-lg);border-top:6px solid var(--tutor-teal)
+    }
+    .fact h4{margin-bottom:6px}
+    .muted{color:var(--trunk-gray)}
+
+    /* Calculator */
+    .calc{
+      background:#fff;border-radius:16px;padding:18px;box-shadow:var(--shadow-lg)
+    }
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .input,.select{
+      width:100%;border:2px solid var(--earth-cream);border-radius:10px;padding:10px;font-family:'Open Sans',sans-serif
+    }
+    .result{
+      background:#f9fffd;border:2px dashed var(--tutor-teal);border-radius:12px;padding:12px
+    }
+    .kicker{font-weight:800;color:var(--tutor-teal);text-transform:uppercase;font-size:.8rem;letter-spacing:.5px}
+
+    /* Timeline */
+    .timeline{
+      display:grid;grid-template-columns:repeat(5,1fr);gap:12px
+    }
+    .tl-item{
+      background:#fff;border-radius:12px;padding:14px;border-left:6px solid var(--baobab-brown);box-shadow:var(--shadow-sm)
+    }
+    .progress{height:8px;background:#ececec;border-radius:999px;overflow:hidden;margin-top:8px}
+    .progress > span{display:block;height:100%;background:var(--tutor-teal);width:0%}
+
+    /* Checklist */
+    .checklist{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .item{display:flex;gap:10px;align-items:flex-start;background:#fff;border:2px solid var(--earth-cream);padding:10px;border-radius:12px}
+
+    /* Disputes & Downloads */
+    .card{
+      background:#fff;border-radius:16px;padding:18px;box-shadow:var(--shadow-lg);border:2px solid var(--earth-cream)
+    }
+    .textarea{width:100%;min-height:120px;border:2px solid var(--earth-cream);border-radius:10px;padding:10px;font-family:'Open Sans',sans-serif;resize:vertical}
+
+    /* Accordion */
+    .accordion{border-radius:16px;overflow:hidden;box-shadow:var(--shadow-lg);background:#fff}
+    .acc-item + .acc-item{border-top:1px solid #f0f0f0}
+    .acc-header{
+      width:100%;text-align:left;border:0;background:#fff;padding:16px 18px;font-weight:800;cursor:pointer;display:flex;justify-content:space-between;align-items:center
+    }
+    .acc-header:hover{background:#fafafa}
+    .acc-content{display:none;padding:0 18px 16px;color:var(--trunk-gray)}
+    .acc-item.active .acc-content{display:block}
+    .rotate{transition:transform .25s ease}
+    .acc-item.active .rotate{transform:rotate(180deg)}
+
+    /* Footer */
+    .footer{background:var(--deep-charcoal);color:#fff;padding:60px 0 28px;margin-top:40px}
+    .footer-content{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:36px;margin-bottom:28px
+    }
+    .footer h4{color:var(--tutor-teal);margin-bottom:12px}
+    .footer-link{color:rgba(255,255,255,.8);text-decoration:none;display:block;padding:6px 0}
+    .footer-link:hover{color:var(--sunset-gold)}
+    .footer-bottom{border-top:1px solid rgba(255,255,255,.12);margin-top:10px;padding-top:18px;text-align:center;color:rgba(255,255,255,.8)}
+
+    /* Responsive */
+    @media (max-width: 1100px){
+      .facts{grid-template-columns:repeat(2,1fr)}
+      .timeline{grid-template-columns:repeat(3,1fr)}
+      .grid-2{grid-template-columns:1fr}
+      .checklist{grid-template-columns:1fr}
+    }
+    @media (max-width: 768px){
+      .menu-toggle{display:block}
+      .nav-menu,.nav-buttons{display:none}
+      .hero{padding:100px 0 50px}
+      .hero-title{font-size:2.2rem}
+      .facts{grid-template-columns:1fr}
+      .timeline{grid-template-columns:1fr}
+      .section{padding:60px 0}
+      .container{padding:0 16px}
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="nav-wrapper">
+        <a href="index (18).html" class="logo" aria-label="Tutor Portal Home">
+          <div class="logo-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+          <div class="logo-text">Tutor Portal</div>
+        </a>
+
+        <div class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+          <i class="fas fa-bars"></i>
+        </div>
+
+        <ul class="nav-menu">
+          <li><a class="nav-link" href="index (18).html">Home</a></li>
+          <li><a class="nav-link" href="index (18).html#why-choose">Why Choose Us</a></li>
+          <li><a class="nav-link" href="index (18).html#earnings">Earnings</a></li>
+          <li><a class="nav-link" href="index (18).html#apply">Apply Now</a></li>
+          <li><a class="nav-link" href="https://baobabonlineacademy.com">Main Site</a></li>
+        </ul>
+
+        <div class="nav-buttons">
+          <button class="btn btn-outlined" onclick="openLoginModal()"><i class="fas fa-right-to-bracket"></i> Login</button>
+          <a class="btn btn-primary" href="index (18).html#apply"><i class="fas fa-paper-plane"></i> Apply</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu-panel" id="mobileMenuPanel" aria-hidden="true">
+    <ul class="mobile-menu">
+      <li><a class="mobile-link" href="index (18).html">Home</a></li>
+      <li><a class="mobile-link" href="index (18).html#why-choose">Why Choose Us</a></li>
+      <li><a class="mobile-link" href="index (18).html#earnings">Earnings</a></li>
+      <li><a class="mobile-link" href="index (18).html#apply">Apply Now</a></li>
+      <li><a class="mobile-link" href="https://baobabonlineacademy.com">Main Site</a></li>
+    </ul>
+    <div class="mobile-buttons">
+      <button class="btn btn-outlined" onclick="openLoginModal()"><i class="fas fa-right-to-bracket"></i> Login</button>
+      <a class="btn btn-primary" href="index (18).html#apply"><i class="fas fa-paper-plane"></i> Apply</a>
+    </div>
+  </div>
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <a class="breadcrumbs" href="index (18).html" aria-label="Back to home">
+        <i class="fas fa-arrow-left"></i> Back to Home
+      </a>
+      <div style="height:14px"></div>
+      <span class="badge"><i class="fas fa-credit-card"></i> Payments & Earnings</span>
+      <h1 class="hero-title">Payment Information</h1>
+      <p class="hero-subtitle">
+        Understand your earnings, payout schedule, and how to get paid securely. Use the calculator to estimate your take‑home.
+      </p>
+    </div>
+  </section>
+
+  <!-- Key Facts -->
+  <section class="section" style="padding-top:50px">
+    <div class="container">
+      <div class="facts">
+        <div class="fact">
+          <h4><i class="fas fa-hand-holding-dollar"></i> Tutor Share</h4>
+          <p class="muted">Tutors receive 75% of lesson fees. The platform share covers operations, support, and payment processing.</p>
+        </div>
+        <div class="fact">
+          <h4><i class="fas fa-calendar-week"></i> Payout Window</h4>
+          <p class="muted">Payouts are processed weekly on Fridays by 6PM WAT for approved lessons delivered Mon–Sun of the prior week.</p>
+        </div>
+        <div class="fact">
+          <h4><i class="fas fa-building-columns"></i> Methods</h4>
+          <p class="muted">Bank transfer (NGN). For USD or other currencies, contact Support to discuss options and fees.</p>
+        </div>
+        <div class="fact">
+          <h4><i class="fas fa-receipt"></i> Taxes</h4>
+          <p class="muted">Tutors are independent contractors. Keep your records and comply with local tax laws. We provide payout summaries.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Earnings Calculator -->
+  <section class="section" id="calculator">
+    <div class="container">
+      <h2 class="section-title" style="color:var(--tutor-teal)"><i class="fas fa-calculator"></i> Earnings Calculator</h2>
+      <p class="muted">Estimate your gross and net payouts. Values are indicative; actual payouts depend on approved lessons and applicable fees.</p>
+
+      <div class="calc">
+        <div class="grid-2">
+          <div>
+            <div class="kicker">Inputs</div>
+            <div style="height:8px"></div>
+            <label>Hourly lesson rate
+              <input class="input" id="rate" type="number" min="0" step="100" placeholder="e.g., 5000 (NGN)">
+            </label>
+            <div style="height:8px"></div>
+            <label>Hours per week
+              <input class="input" id="hours" type="number" min="0" step="0.5" placeholder="e.g., 6">
+            </label>
+            <div style="height:8px"></div>
+            <label>Weeks
+              <input class="input" id="weeks" type="number" min="1" step="1" placeholder="e.g., 4">
+            </label>
+            <div style="height:8px"></div>
+            <label>Tutor share (%)
+              <input class="input" id="share" type="number" min="50" max="100" step="1" value="75">
+            </label>
+            <div style="height:8px"></div>
+            <label>Estimated tax/withholding (%)
+              <input class="input" id="tax" type="number" min="0" max="50" step="1" value="0">
+            </label>
+            <div style="height:8px"></div>
+            <label>Currency
+              <select class="select" id="currency">
+                <option value="NGN">NGN (₦)</option>
+                <option value="USD">USD ($)</option>
+              </select>
+            </label>
+            <div style="height:10px"></div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <button class="btn btn-primary" id="calcBtn"><i class="fas fa-equals"></i> Calculate</button>
+              <button class="btn btn-outlined" id="saveCalc"><i class="fas fa-save"></i> Save</button>
+              <button class="btn btn-outlined" id="loadCalc"><i class="fas fa-rotate"></i> Load</button>
+              <button class="btn btn-outlined" id="resetCalc"><i class="fas fa-broom"></i> Reset</button>
+            </div>
+          </div>
+          <div>
+            <div class="kicker">Results</div>
+            <div class="result" id="resultsBox" style="margin-top:8px">
+              <strong>Summary</strong>
+              <ul class="muted" id="resList" style="margin-left:18px">
+                <li>Gross earnings: —</li>
+                <li>Platform share: —</li>
+                <li>Tutor gross (after platform share): —</li>
+                <li>Estimated tax/withholding: —</li>
+                <li><strong>Estimated net payout:</strong> —</li>
+              </ul>
+              <small class="muted" id="resNote">Enter values and click Calculate.</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      <small class="muted">Note: Currency conversion, if applicable, is handled by your bank or processor; amounts may vary due to FX and fees.</small>
+    </div>
+  </section>
+
+  <!-- Payout Timeline -->
+  <section class="section" id="timeline">
+    <div class="container">
+      <h2 class="section-title" style="color:var(--tutor-teal)"><i class="fas fa-timeline"></i> From Lesson to Payout</h2>
+      <p class="muted">Track the typical flow. Timings can vary on public holidays or bank delays.</p>
+      <div class="timeline">
+        <div class="tl-item">
+          <strong>1) Lesson Delivered</strong>
+          <p class="muted">You teach a lesson and mark it complete.</p>
+          <div class="progress"><span style="width:20%"></span></div>
+        </div>
+        <div class="tl-item">
+          <strong>2) Approval</strong>
+          <p class="muted">Attendance and delivery confirmed; issues flagged if any.</p>
+          <div class="progress"><span style="width:40%"></span></div>
+        </div>
+        <div class="tl-item">
+          <strong>3) Weekly Close (Fri 6PM WAT)</strong>
+          <p class="muted">Lessons from the week are batched for payout.</p>
+          <div class="progress"><span style="width:60%"></span></div>
+        </div>
+        <div class="tl-item">
+          <strong>4) Payout Initiated</strong>
+          <p class="muted">Transfer submitted to your bank or processor.</p>
+          <div class="progress"><span style="width:80%"></span></div>
+        </div>
+        <div class="tl-item">
+          <strong>5) Funds Received</strong>
+          <p class="muted">Bank processing takes ~1–2 business days.</p>
+          <div class="progress"><span style="width:100%"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Payment Setup Checklist -->
+  <section class="section" id="checklist">
+    <div class="container">
+      <h2 class="section-title" style="color:var(--tutor-teal)"><i class="fas fa-list-check"></i> Payment Setup Checklist</h2>
+      <p class="muted">Save progress locally on this device.</p>
+
+      <div class="checklist" id="payChecklist">
+        <label class="item"><input type="checkbox" data-key="profile"> <div>Complete tutor profile (legal name matches bank).</div></label>
+        <label class="item"><input type="checkbox" data-key="bank"> <div>Submit bank details securely in the portal.</div></label>
+        <label class="item"><input type="checkbox" data-key="id"> <div>Provide any required ID or compliance documents.</div></label>
+        <label class="item"><input type="checkbox" data-key="tax"> <div>Review your local tax obligations and record keeping.</div></label>
+        <label class="item"><input type="checkbox" data-key="rate"> <div>Confirm your rates and currency.</div></label>
+        <label class="item"><input type="checkbox" data-key="notify"> <div>Enable payout notifications (email).</div></label>
+      </div>
+      <div style="height:10px"></div>
+      <div class="progress" aria-label="Checklist progress"><span id="payProgress" style="width:0%"></span></div>
+      <small class="muted">Saved locally as “baobab_payment_setup”.</small>
+    </div>
+  </section>
+
+  <!-- Disputes and Downloads -->
+  <section class="section">
+    <div class="container">
+      <div style="display:grid;grid-template-columns:1.2fr .8fr;gap:20px">
+        <div class="card">
+          <h3><i class="fas fa-scale-balanced"></i> Raise a Payment Query/Dispute</h3>
+          <p class="muted">If something looks off, send a detailed note. We’ll review within 2–3 business days.</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <input class="input" id="dqName" placeholder="Your name">
+            <input class="input" id="dqEmail" placeholder="Your email">
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
+            <input class="input" id="dqPeriod" placeholder="Payout period (e.g., Week of 3–9 Mar)">
+            <input class="input" id="dqAmount" placeholder="Amount expected vs received (optional)">
+          </div>
+          <textarea class="textarea" id="dqDetails" placeholder="Describe the issue: lesson dates, IDs, discrepancy, screenshots (if any)…"></textarea>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn btn-primary" id="dqCopy"><i class="fas fa-copy"></i> Copy Summary</button>
+            <a class="btn btn-outlined" id="dqEmailBtn" href="#" style="pointer-events:none;opacity:.7"><i class="fas fa-envelope"></i> Email Finance</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3><i class="fas fa-file-arrow-down"></i> Download Templates</h3>
+          <p class="muted">Use these for your records.</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn btn-outlined" id="dlInvoice"><i class="fas fa-file-invoice"></i> Simple Invoice (.txt)</button>
+            <button class="btn btn-outlined" id="dlSummary"><i class="fas fa-table"></i> Payout Summary (.txt)</button>
+          </div>
+          <div style="height:12px"></div>
+          <h4 style="color:var(--tutor-teal)"><i class="fas fa-circle-info"></i> Notes</h4>
+          <ul class="muted" style="margin-left:18px">
+            <li>Invoices are not required for weekly payouts but can help with bookkeeping.</li>
+            <li>Keep copies of bank alerts and payout emails.</li>
+            <li>Contact <a href="mailto:tutors@baobabonlineacademy.com">tutors@baobabonlineacademy.com</a> for statements.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQs -->
+  <section class="section" style="background:var(--earth-cream)">
+    <div class="container">
+      <h2 class="section-title" style="color:var(--tutor-teal)"><i class="fas fa-circle-question"></i> FAQs</h2>
+      <div class="accordion">
+        <div class="acc-item">
+          <button class="acc-header">
+            When will I receive my first payout?
+            <i class="fas fa-chevron-down rotate"></i>
+          </button>
+          <div class="acc-content">
+            After you complete your payment setup and deliver your first approved lessons, you’ll be included in the next Friday payout run. Banks may take 1–2 business days to settle.
+          </div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-header">
+            What happens with no‑shows or late cancellations?
+            <i class="fas fa-chevron-down rotate"></i>
+          </button>
+          <div class="acc-content">
+            Follow the scheduling and no‑show policy. Approved compensations/charges are reflected in the payout for that period.
+          </div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-header">
+            Can I be paid in USD?
+            <i class="fas fa-chevron-down rotate"></i>
+          </button>
+          <div class="acc-content">
+            NGN bank transfer is standard. If you require USD, contact Support to discuss feasibility, fees, and timelines.
+          </div>
+        </div>
+      </div>
+      <div style="height:10px"></div>
+      <small class="muted">Need assistance? Visit the <a href="help-center.html">Tutor Help Center</a> or <a href="technical-support.html">Technical Support</a>.</small>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section" style="text-align:center;background:#fff">
+    <div class="container">
+      <h2 class="section-title"><i class="fas fa-handshake-angle"></i> Questions about payouts?</h2>
+      <p class="muted">We’re here to help. Share details and we’ll investigate promptly.</p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+        <a class="btn btn-primary" href="help-center.html"><i class="fas fa-book-open"></i> Help Center</a>
+        <a class="btn btn-outlined" href="technical-support.html"><i class="fas fa-screwdriver-wrench"></i> Technical Support</a>
+        <a class="btn btn-secondary" href="index (18).html#apply"><i class="fas fa-paper-plane"></i> Apply to Teach</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div>
+          <h4><i class="fas fa-chalkboard-teacher"></i> Teaching Resources</h4>
+          <a class="footer-link" href="curriculum-guidelines.html">Curriculum Guidelines</a>
+          <a class="footer-link" href="cultural-integration.html">Cultural Integration Handbook</a>
+          <a class="footer-link" href="teaching-practices.html">Teaching Best Practices</a>
+          <a class="footer-link" href="technology-training.html">Technology Training</a>
+        </div>
+
+
+        <div>
+          <h4><i class="fas fa-life-ring"></i> Support</h4>
+          <a class="footer-link" href="help-center.html">Tutor Help Center</a>
+          <a class="footer-link" href="technical-support.html">Technical Support</a>
+          <a class="footer-link" href="payment-information.html">Payment Information</a>
+          <a class="footer-link" href="platform-guidelines.html">Platform Guidelines</a>
+        </div>
+
+        <div>
+          <h4><i class="fas fa-phone"></i> Contact</h4>
+          <p style="color:rgba(255,255,255,.8);margin-bottom:8px"><i class="fas fa-envelope"></i> tutors@baobabonlineacademy.com</p>
+          <p style="color:rgba(255,255,255,.8);margin-bottom:8px"><i class="fas fa-phone"></i> +234 (0) 816 501 1291</p>
+          <p style="color:rgba(255,255,255,.8)"><i class="fas fa-clock"></i> Mon–Fri: 9AM–5PM WAT</p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 Baobab Online Academy Tutor Portal. Empowering Nigerian Educators Globally.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenuPanel = document.getElementById('mobileMenuPanel');
+    const menuOverlay = document.getElementById('menuOverlay');
+    function openMenu(){
+      mobileMenuPanel.classList.add('active'); menuOverlay.classList.add('active');
+      document.body.style.overflow='hidden'; menuToggle.innerHTML='<i class="fas fa-times"></i>';
+    }
+    function closeMenu(){
+      mobileMenuPanel.classList.remove('active'); menuOverlay.classList.remove('active');
+      document.body.style.overflow='auto'; menuToggle.innerHTML='<i class="fas fa-bars"></i>';
+    }
+    function toggleMenu(){ mobileMenuPanel.classList.contains('active') ? closeMenu() : openMenu(); }
+    if(menuToggle){ menuToggle.addEventListener('click', toggleMenu); }
+    if(menuOverlay){ menuOverlay.addEventListener('click', closeMenu); }
+
+    // Login modal (placeholder)
+    function openLoginModal(){
+      alert('Tutor Portal Login\n\nIn the full version, this links to a secure login for:\n• Schedule & student profiles\n• Lesson prep resources\n• Earnings & payments\n• Parent communications\n• Professional development\n\nNeed help? Email tutors@baobabonlineacademy.com');
+    }
+    window.openLoginModal = openLoginModal;
+
+    // Calculator
+    const rateEl = document.getElementById('rate');
+    const hoursEl = document.getElementById('hours');
+    const weeksEl = document.getElementById('weeks');
+    const shareEl = document.getElementById('share');
+    const taxEl = document.getElementById('tax');
+    const currEl = document.getElementById('currency');
+    const resList = document.getElementById('resList');
+    const resNote = document.getElementById('resNote');
+    const calcBtn = document.getElementById('calcBtn');
+    const saveCalc = document.getElementById('saveCalc');
+    const loadCalc = document.getElementById('loadCalc');
+    const resetCalc = document.getElementById('resetCalc');
+    const CALC_KEY = 'baobab_pay_calc';
+
+    function fmt(n, curr){
+      const sym = curr==='USD' ? '$' : '₦';
+      return sym + (Number(n).toLocaleString(undefined,{maximumFractionDigits:0}));
+    }
+    function calculate(){
+      const rate = Number(rateEl.value)||0;
+      const hrs = Number(hoursEl.value)||0;
+      const w = Number(weeksEl.value)||0;
+      const share = (Number(shareEl.value)||0)/100;
+      const tax = (Number(taxEl.value)||0)/100;
+      const curr = currEl.value;
+
+      const gross = rate * hrs * w;
+      const tutorGross = gross * share;
+      const platformShare = gross - tutorGross;
+      const taxAmt = tutorGross * tax;
+      const net = Math.max(0, tutorGross - taxAmt);
+
+      resList.innerHTML = `
+        <li>Gross earnings: ${fmt(gross,curr)}</li>
+        <li>Platform share: ${fmt(platformShare,curr)}</li>
+        <li>Tutor gross (after platform share): ${fmt(tutorGross,curr)}</li>
+        <li>Estimated tax/withholding: ${fmt(taxAmt,curr)}</li>
+        <li><strong>Estimated net payout:</strong> ${fmt(net,curr)}</li>
+      `;
+      resNote.textContent = 'Estimates only; actual payouts depend on approved sessions and fees.';
+    }
+    calcBtn.addEventListener('click', calculate);
+    saveCalc.addEventListener('click', ()=>{
+      const data = {
+        rate:rateEl.value, hours:hoursEl.value, weeks:weeksEl.value,
+        share:shareEl.value, tax:taxEl.value, curr:currEl.value
+      };
+      localStorage.setItem(CALC_KEY, JSON.stringify(data));
+      alert('Calculator inputs saved on this device.');
+    });
+    loadCalc.addEventListener('click', ()=>{
+      try{
+        const d = JSON.parse(localStorage.getItem(CALC_KEY)||'{}');
+        rateEl.value=d.rate||''; hoursEl.value=d.hours||''; weeksEl.value=d.weeks||'';
+        shareEl.value=d.share||'75'; taxEl.value=d.tax||'0'; currEl.value=d.curr||'NGN';
+        calculate();
+      }catch(e){}
+    });
+    resetCalc.addEventListener('click', ()=>{
+      rateEl.value=''; hoursEl.value=''; weeksEl.value=''; shareEl.value='75'; taxEl.value='0'; currEl.value='NGN';
+      resList.innerHTML='<li>Gross earnings: —</li><li>Platform share: —</li><li>Tutor gross (after platform share): —</li><li>Estimated tax/withholding: —</li><li><strong>Estimated net payout:</strong> —</li>';
+      resNote.textContent='Enter values and click Calculate.';
+    });
+
+    // Checklist localStorage
+    const CK_KEY='baobab_payment_setup';
+    const ckBoxes=[...document.querySelectorAll('#payChecklist input[type="checkbox"][data-key]')];
+    const ckBar=document.getElementById('payProgress');
+    function loadCK(){
+      try{
+        const data=JSON.parse(localStorage.getItem(CK_KEY)||'{}');
+        ckBoxes.forEach(b=>b.checked=!!data[b.dataset.key]);
+      }catch(e){}
+      updateCK();
+    }
+    function saveCK(){
+      const data={}; ckBoxes.forEach(b=>data[b.dataset.key]=b.checked);
+      localStorage.setItem(CK_KEY, JSON.stringify(data)); updateCK();
+    }
+    function updateCK(){
+      const total=ckBoxes.length, done=ckBoxes.filter(b=>b.checked).length;
+      const pct= total? Math.round(done/total*100):0;
+      ckBar.style.width=pct+'%';
+      ckBar.style.background= pct>=80? 'var(--canopy-green)': (pct>=40? 'var(--sunset-gold)':'#d0d0d0');
+      ckBar.title=pct+'% complete';
+    }
+    ckBoxes.forEach(b=>b.addEventListener('change', saveCK));
+    loadCK();
+
+    // Dispute helper
+    const dqName=document.getElementById('dqName');
+    const dqEmail=document.getElementById('dqEmail');
+    const dqPeriod=document.getElementById('dqPeriod');
+    const dqAmount=document.getElementById('dqAmount');
+    const dqDetails=document.getElementById('dqDetails');
+    const dqCopy=document.getElementById('dqCopy');
+    const dqEmailBtn=document.getElementById('dqEmailBtn');
+    function buildMailto(subject, body){
+      return `mailto:tutors@baobabonlineacademy.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    }
+    dqCopy.addEventListener('click', ()=>{
+      const subj = `[Payment Query] ${dqPeriod.value||'Period not specified'}`;
+      const body = `Name: ${dqName.value}\nEmail: ${dqEmail.value}\nPayout period: ${dqPeriod.value}\nAmount (if any): ${dqAmount.value}\n\nDetails:\n${dqDetails.value}\n\nAttachments: (please include screenshots if possible)`;
+      navigator.clipboard.writeText(`Subject: ${subj}\n\n${body}`).then(()=>{
+        dqEmailBtn.href = buildMailto(subj, body);
+        dqEmailBtn.style.pointerEvents='auto';
+        dqEmailBtn.style.opacity='1';
+        alert('Summary copied. You can now click “Email Finance” to open an email draft.');
+      });
+    });
+
+    // Downloads
+    function downloadText(filename, content){
+      const blob=new Blob([content],{type:'text/plain;charset=utf-8'});
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement('a'); a.href=url; a.download=filename;
+      document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    }
+    document.getElementById('dlInvoice').addEventListener('click', ()=>{
+      const txt = `Simple Invoice (For Your Records)
+Vendor (Tutor): ______________________
+Contact: _____________________________
+Date: ________________________________
+
+Services:
+- Tutoring sessions (details): ______________________________
+- Hours x Rate: ______________________
+
+Totals:
+- Gross: _____________________________
+- Platform share: ____________________
+- Tutor gross: _______________________
+- Taxes (if applicable): _____________
+- Net: _______________________________
+
+Notes:
+- This template is optional; weekly payouts are automated.
+- Keep this for your bookkeeping.`;
+      downloadText('Baobab_Simple_Invoice.txt', txt);
+    });
+    document.getElementById('dlSummary').addEventListener('click', ()=>{
+      const txt = `Payout Summary (Personal Record)
+
+Period: ____________________
+Lessons approved: __________
+Gross: _____________________
+Platform share: ____________
+Tutor gross: _______________
+Tax/withholding: ___________
+Net paid: __________________
+
+Paid on (date/time): _______
+Bank reference: ____________
+
+Notes:
+- Cross-check with bank alerts and platform emails.
+- For discrepancies, email tutors@baobabonlineacademy.com`;
+      downloadText('Baobab_Payout_Summary.txt', txt);
+    });
+
+    // Accordion
+    document.querySelectorAll('.acc-item').forEach(item=>{
+      item.querySelector('.acc-header').addEventListener('click', ()=>{
+        const open = item.classList.contains('active');
+        document.querySelectorAll('.acc-item').forEach(i=>i.classList.remove('active'));
+        if(!open) item.classList.add('active');
+      });
+    });
+
+    // Smooth scroll for on-page anchors
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', (e)=>{
+        const id = a.getAttribute('href');
+        if(id.length>1){
+          const target = document.querySelector(id);
+          if(target){
+            e.preventDefault();
+            target.scrollIntoView({behavior:'smooth', block:'start'});
+            closeMenu();
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
