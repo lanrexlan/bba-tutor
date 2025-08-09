@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" sizes="32x32" href="/Images/logo.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Technical Support - Tutor Portal - Baobab Online Academy</title>
+
+  <!-- Fonts & Icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --baobab-brown:#8D4004;
+      --canopy-green:#2E7D32;
+      --sunset-gold:#F57C00;
+      --trunk-gray:#5D4037;
+      --sky-blue:#1976D2;
+      --earth-cream:#FFF8E1;
+      --desert-orange:#FF5722;
+      --sage-green:#689F38;
+      --deep-charcoal:#263238;
+      --white:#FFFFFF;
+      --tutor-teal:#00695C;
+      --tutor-light-teal:#B2DFDB;
+
+      --transition-slow:all .6s cubic-bezier(.165,.84,.44,1);
+      --transition-medium:all .4s cubic-bezier(.165,.84,.44,1);
+      --transition-fast:all .3s cubic-bezier(.165,.84,.44,1);
+
+      --shadow-sm:0 1px 3px rgba(0,0,0,.1);
+      --shadow-md:0 4px 6px rgba(0,0,0,.1);
+      --shadow-lg:0 10px 15px -3px rgba(0,0,0,.1);
+      --shadow-xl:0 20px 25px -5px rgba(0,0,0,.1);
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      font-family:'Open Sans',sans-serif;
+      color:var(--deep-charcoal);
+      line-height:1.6;
+      background:var(--white);
+      overflow-x:hidden;
+    }
+    h1,h2,h3,h4,h5{
+      font-family:'Merriweather',serif;
+      font-weight:700;
+      line-height:1.25;
+      color:var(--deep-charcoal);
+    }
+    .container{
+      width:100%;
+      max-width:1200px;
+      margin:0 auto;
+      padding:0 20px;
+      position:relative;
+    }
+    .section{padding:80px 0;position:relative}
+    .btn{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:12px 28px;border-radius:30px;font-weight:600;
+      transition:var(--transition-fast);text-decoration:none;cursor:pointer;
+      border:2px solid transparent;
+    }
+    .btn-primary{background:var(--tutor-teal);color:var(--white);border-color:var(--tutor-teal)}
+    .btn-primary:hover{background:var(--canopy-green);border-color:var(--canopy-green);transform:translateY(-2px);box-shadow:var(--shadow-md)}
+    .btn-outlined{background:transparent;color:var(--tutor-teal);border-color:var(--tutor-teal)}
+    .btn-outlined:hover{background:var(--tutor-teal);color:var(--white)}
+    .btn-secondary{background:var(--sunset-gold);color:var(--deep-charcoal);border-color:var(--sunset-gold)}
+    .badge{
+      display:inline-flex;align-items:center;gap:8px;
+      background:rgba(255,255,255,.18);color:#fff;
+      padding:8px 14px;border-radius:999px;font-weight:700;font-size:.9rem;
+      letter-spacing:.2px
+    }
+
+    /* Header */
+    .header{
+      position:sticky;top:0;left:0;width:100%;z-index:1000;
+      background:var(--white);box-shadow:var(--shadow-md);padding:10px 0
+    }
+    .nav-wrapper{display:flex;justify-content:space-between;align-items:center}
+    .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .logo-icon{
+      width:34px;height:34px;border-radius:8px;background:var(--tutor-teal);
+      color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px
+    }
+    .logo-text{font-weight:800;font-size:20px;color:var(--baobab-brown)}
+    .nav-menu{display:flex;gap:28px;list-style:none}
+    .nav-link{text-decoration:none;color:var(--deep-charcoal);font-weight:600}
+    .nav-link:hover{color:var(--tutor-teal)}
+    .nav-buttons{display:flex;gap:12px}
+    .menu-toggle{display:none;font-size:24px;color:var(--tutor-teal);cursor:pointer}
+
+    /* Mobile menu */
+    .mobile-menu-panel{
+      position:fixed;top:0;right:-100%;width:300px;height:100vh;background:#fff;z-index:1100;
+      padding:80px 28px 28px;box-shadow:var(--shadow-xl);transition:var(--transition-medium);overflow-y:auto
+    }
+    .mobile-menu-panel.active{right:0}
+    .mobile-menu{list-style:none;display:flex;flex-direction:column;gap:10px}
+    .mobile-link{display:block;padding:12px 0;border-bottom:1px solid var(--earth-cream);text-decoration:none;color:var(--deep-charcoal);font-weight:600}
+    .mobile-link:hover{color:var(--tutor-teal)}
+    .mobile-buttons{display:flex;flex-direction:column;gap:12px;margin-top:20px}
+    .menu-overlay{
+      position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);
+      z-index:1090;opacity:0;visibility:hidden;transition:var(--transition-medium)
+    }
+    .menu-overlay.active{opacity:1;visibility:visible}
+
+    /* Hero - unique gradient */
+    .hero{
+      background:linear-gradient(135deg, #222 0%, var(--baobab-brown) 45%, var(--sunset-gold) 100%);
+      color:#fff;padding:120px 0 60px;position:relative;overflow:hidden
+    }
+    .hero::before{
+      content:"";position:absolute;top:-120px;left:-120px;width:300px;height:300px;border-radius:50%;
+      background:radial-gradient(circle at center, rgba(255,255,255,.16), rgba(255,255,255,0) 60%)
+    }
+    .hero::after{
+      content:"";position:absolute;right:-120px;bottom:-120px;width:300px;height:300px;border-radius:50%;
+      background:radial-gradient(circle at center, rgba(255,255,255,.12), rgba(255,255,255,0) 60%)
+    }
+    .hero-title{font-size:2.8rem;margin-top:12px;margin-bottom:14px}
+    .hero-subtitle{font-size:1.12rem;opacity:.95;max-width:900px}
+    .breadcrumbs{
+      display:inline-flex;align-items:center;gap:8px;color:#fff;opacity:.9;text-decoration:none;font-weight:700
+    }
+    .breadcrumbs:hover{opacity:1;text-decoration:underline}
+
+    /* Grid */
+    .grid{
+      display:grid;grid-template-columns:1.2fr .8fr;gap:20px
+    }
+    .card{
+      background:#fff;border-radius:16px;padding:18px;box-shadow:var(--shadow-lg);border:2px solid var(--earth-cream)
+    }
+    .muted{color:var(--trunk-gray)}
+
+    /* Diagnostics */
+    .diag-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .diag{border:2px solid var(--earth-cream);border-radius:12px;padding:12px}
+    .status{
+      display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;font-weight:800;font-size:.9rem;margin-top:6px
+    }
+    .ok{background:#e6f7ed;color:#116b39;border:1px solid #b8ebcd}
+    .warn{background:#fff6e9;color:#8a4b00;border:1px solid #ffe0b3}
+    .fail{background:#ffefef;color:#8a0000;border:1px solid #ffd0d0}
+    .progress{height:8px;background:#ececec;border-radius:999px;overflow:hidden;margin-top:6px}
+    .progress > span{display:block;height:100%;background:var(--canopy-green);width:0%}
+
+    /* Decision Tree */
+    .accordion{border-radius:16px;overflow:hidden;box-shadow:var(--shadow-lg);background:#fff}
+    .acc-item + .acc-item{border-top:1px solid #f0f0f0}
+    .acc-header{
+      width:100%;text-align:left;border:0;background:#fff;padding:16px 18px;font-weight:800;cursor:pointer;display:flex;justify-content:space-between;align-items:center
+    }
+    .acc-header:hover{background:#fafafa}
+    .acc-content{display:none;padding:0 18px 16px;color:var(--trunk-gray)}
+    .acc-item.active .acc-content{display:block}
+    .rotate{transition:transform .25s ease}
+    .acc-item.active .rotate{transform:rotate(180deg)}
+
+    /* Reporter */
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .input, .textarea, .select{
+      width:100%;border:2px solid var(--earth-cream);border-radius:10px;padding:10px;font-family:'Open Sans',sans-serif
+    }
+    .textarea{min-height:120px;resize:vertical}
+    .log{
+      background:#f9fffd;border:2px dashed var(--tutor-teal);padding:12px;border-radius:12px;white-space:pre-wrap
+    }
+
+    /* Footer */
+    .footer{background:var(--deep-charcoal);color:#fff;padding:60px 0 28px;margin-top:40px}
+    .footer-content{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:36px;margin-bottom:28px
+    }
+    .footer h4{color:var(--tutor-teal);margin-bottom:12px}
+    .footer-link{color:rgba(255,255,255,.8);text-decoration:none;display:block;padding:6px 0}
+    .footer-link:hover{color:var(--sunset-gold)}
+    .footer-bottom{border-top:1px solid rgba(255,255,255,.12);margin-top:10px;padding-top:18px;text-align:center;color:rgba(255,255,255,.8)}
+
+    /* Responsive */
+    @media (max-width: 992px){
+      .grid{grid-template-columns:1fr}
+      .diag-grid{grid-template-columns:1fr}
+      .row{grid-template-columns:1fr}
+    }
+    @media (max-width: 768px){
+      .menu-toggle{display:block}
+      .nav-menu,.nav-buttons{display:none}
+      .hero{padding:100px 0 50px}
+      .hero-title{font-size:2.2rem}
+      .section{padding:60px 0}
+      .container{padding:0 16px}
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="nav-wrapper">
+        <a href="index (18).html" class="logo" aria-label="Tutor Portal Home">
+          <div class="logo-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+          <div class="logo-text">Tutor Portal</div>
+        </a>
+
+        <div class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+          <i class="fas fa-bars"></i>
+        </div>
+
+        <ul class="nav-menu">
+          <li><a class="nav-link" href="index (18).html">Home</a></li>
+          <li><a class="nav-link" href="index (18).html#why-choose">Why Choose Us</a></li>
+          <li><a class="nav-link" href="index (18).html#earnings">Earnings</a></li>
+          <li><a class="nav-link" href="index (18).html#apply">Apply Now</a></li>
+          <li><a class="nav-link" href="https://baobabonlineacademy.com">Main Site</a></li>
+        </ul>
+
+        <div class="nav-buttons">
+          <button class="btn btn-outlined" onclick="openLoginModal()"><i class="fas fa-right-to-bracket"></i> Login</button>
+          <a class="btn btn-primary" href="index (18).html#apply"><i class="fas fa-paper-plane"></i> Apply</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu-panel" id="mobileMenuPanel" aria-hidden="true">
+    <ul class="mobile-menu">
+      <li><a class="mobile-link" href="index (18).html">Home</a></li>
+      <li><a class="mobile-link" href="index (18).html#why-choose">Why Choose Us</a></li>
+      <li><a class="mobile-link" href="index (18).html#earnings">Earnings</a></li>
+      <li><a class="mobile-link" href="index (18).html#apply">Apply Now</a></li>
+      <li><a class="mobile-link" href="https://baobabonlineacademy.com">Main Site</a></li>
+    </ul>
+    <div class="mobile-buttons">
+      <button class="btn btn-outlined" onclick="openLoginModal()"><i class="fas fa-right-to-bracket"></i> Login</button>
+      <a class="btn btn-primary" href="index (18).html#apply"><i class="fas fa-paper-plane"></i> Apply</a>
+    </div>
+  </div>
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <a class="breadcrumbs" href="index (18).html" aria-label="Back to home">
+        <i class="fas fa-arrow-left"></i> Back to Home
+      </a>
+      <div style="height:14px"></div>
+      <span class="badge"><i class="fas fa-screwdriver-wrench"></i> Fix issues fast</span>
+      <h1 class="hero-title">Technical Support</h1>
+      <p class="hero-subtitle">
+        Run diagnostics, follow decision trees to resolve common problems, and send a rich issue report.
+        Optimised for Nigeria’s connectivity and devices.
+      </p>
+    </div>
+  </section>
+
+  <!-- Diagnostics -->
+  <section class="section" style="padding-top:50px">
+    <div class="container grid">
+      <div class="card">
+        <h2 class="section-title" style="color:var(--tutor-teal)"><i class="fas fa-microscope"></i> Quick Diagnostics</h2>
+        <p class="muted">Test camera, mic, speakers, connection info, and device performance indicators.</p>
+        <div class="diag-grid">
+          <div class="diag">
+            <div class="kicker" style="font-weight:800;color:var(--tutor-teal);text-transform:uppercase;font-size:.8rem;letter-spacing:.5px">Camera</div>
+            <strong>Video Access</strong>
+            <p class="muted">Check permissions and basic functionality.</p>
+            <span class="status warn" id="camStatus"><i class="fas fa-circle-exclamation"></i> Not tested</span>
+          </div>
+          <div class="diag">
+            <div class="kicker" style="font-weight:800;color:var(--tutor-teal);text-transform:uppercase;font-size:.8rem;letter-spacing:.5px">Microphone</div>
+            <strong>Audio Input</strong>
+            <p class="muted">Verify mic selection and access.</p>
+            <span class="status warn" id="micStatus"><i class="fas fa-circle-exclamation"></i> Not tested</span>
+          </div>
+          <div class="diag">
+            <div class="kicker" style="font-weight:800;color:var(--tutor-teal);text-transform:uppercase;font-size:.8rem;letter-spacing:.5px">Speakers</div>
+            <strong>Output Test</strong>
+            <p class="muted">Play a test tone and adjust volume.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <button class="btn btn-outlined" id="playTone"><i class="fas fa-volume-high"></i> Play</button>
+              <button class="btn btn-outlined" id="stopTone" disabled><i class="fas fa-volume-xmark"></i> Stop</button>
+            </div>
+            <span class="status warn" id="spkStatus"><i class="fas fa-circle-exclamation"></i> Not tested</span>
+          </div>
+          <div class="diag">
+            <div class="kicker" style="font-weight:800;color:var(--tutor-teal);text-transform:uppercase;font-size:.8rem;letter-spacing:.5px">Network</div>
+            <strong>Connection Info</strong>
+            <p class="muted" id="netInfo">Checking…</p>
+            <span class="status warn" id="netStatus"><i class="fas fa-circle-exclamation"></i> Not tested</span>
+          </div>
+          <div class="diag">
+            <div class="kicker" style="font-weight:800;color:var(--tutor-teal);text-transform:uppercase;font-size:.8rem;letter-spacing:.5px">Browser</div>
+            <strong>Support</strong>
+            <p class="muted" id="browserInfo">Detecting…</p>
+            <span class="status ok" id="browserStatus"><i class="fas fa-check-circle"></i> Supported</span>
+          </div>
+          <div class="diag">
+            <div class="kicker" style="font-weight:800;color:var(--tutor-teal);text-transform:uppercase;font-size:.8rem;letter-spacing:.5px">Performance</div>
+            <strong>Event Loop Lag</strong>
+            <p class="muted">Estimate responsiveness of your device.</p>
+            <div class="progress"><span id="lagBar"></span></div>
+            <span class="status warn" id="lagStatus"><i class="fas fa-circle-exclamation"></i> Measuring…</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap">
+          <button class="btn btn-primary" id="runChecks"><i class="fas fa-play"></i> Run All</button>
+          <button class="btn btn-outlined" id="permBtn"><i class="fas fa-key"></i> Permission States</button>
+        </div>
+      </div>
+
+      <aside>
+        <div class="card">
+          <h3 style="margin-bottom:6px"><i class="fas fa-id-card-clip"></i> System Profile</h3>
+          <p class="muted" id="sysProfile">Gathering details…</p>
+          <div style="height:6px"></div>
+          <a class="btn btn-outlined" href="technology-training.html"><i class="fas fa-laptop-code"></i> Technology Training</a>
+        </div>
+        <div class="card">
+          <h3 style="margin-bottom:6px"><i class="fas fa-triangle-exclamation"></i> Urgent?</h3>
+          <p class="muted">If a live lesson is blocked right now, email support with “HIGH” in the subject.</p>
+          <a class="btn btn-secondary" href="mailto:tutors@baobabonlineacademy.com?subject=HIGH%20PRIORITY%20—%20Technical%20Issue"><i class="fas fa-envelope"></i> Email Support</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- Decision Trees -->
+  <section class="section" style="background:var(--earth-cream)">
+    <div class="container">
+      <h2 class="section-title" style="color:var(--tutor-teal)"><i class="fas fa-diagram-project"></i> Troubleshooting Flows</h2>
+      <p class="muted">Follow the steps in order. Most issues resolve within 3–5 minutes.</p>
+
+      <div class="accordion">
+        <div class="acc-item">
+          <button class="acc-header">
+            Camera/Microphone Not Detected
+            <i class="fas fa-chevron-down rotate"></i>
+          </button>
+          <div class="acc-content">
+            <ol class="muted" style="margin-left:16px">
+              <li>Close other apps/tabs using camera/mic (other meeting tools).</li>
+              <li>Browser address bar → Site settings → Allow camera & microphone.</li>
+              <li>Meeting settings → Select the correct input/output devices.</li>
+              <li>Unplug/replug USB headset; try another USB port.</li>
+              <li>Restart browser. If still failing, restart computer.</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-header">
+            Students Can’t Hear/See Me Clearly
+            <i class="fas fa-chevron-down rotate"></i>
+          </button>
+          <div class="acc-content">
+            <ol class="muted" style="margin-left:16px">
+              <li>Use a headset; turn laptop speakers down to avoid echo.</li>
+              <li>Reduce video resolution to 360p; disable incoming video if needed.</li>
+              <li>Move closer to router; pause downloads/streams and cloud backups.</li>
+              <li>Switch to 5 GHz Wi‑Fi or a wired connection; keep hotspot as backup.</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-header">
+            Screen Share Isn’t Working
+            <i class="fas fa-chevron-down rotate"></i>
+          </button>
+          <div class="acc-content">
+            <ol class="muted" style="margin-left:16px">
+              <li>Share a single tab/window for lower bandwidth and privacy.</li>
+              <li>Close sensitive content; mute notifications before sharing.</li>
+              <li>Enable “Share system audio” only when needed.</li>
+              <li>Update browser to the latest version.</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-header">
+            Platform Feels Slow or Laggy
+            <i class="fas fa-chevron-down rotate"></i>
+          </button>
+          <div class="acc-content">
+            <ol class="muted" style="margin-left:16px">
+              <li>Close unused tabs/programs; especially video or design apps.</li>
+              <li>Disable virtual background; use a plain wall or static image.</li>
+              <li>Clear browser cache and restart.</li>
+              <li>Check event loop lag below and try a different device if high.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Report an Issue -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title" style="color:var(--tutor-teal)"><i class="fas fa-bug"></i> Report an Issue</h2>
+      <p class="muted">Generate a detailed report including system info. Copy to clipboard or email support.</p>
+
+      <div class="card">
+        <div class="row">
+          <input class="input" id="rName" placeholder="Your full name">
+          <input class="input" id="rEmail" placeholder="Your email">
+        </div>
+        <div class="row" style="margin-top:8px">
+          <input class="input" id="rLesson" placeholder="Lesson ID or student name (optional)">
+          <select class="select" id="rSeverity">
+            <option value="">Severity…</option>
+            <option value="HIGH">HIGH — Blocking live lesson</option>
+            <option value="MEDIUM">MEDIUM — Affects upcoming lesson</option>
+            <option value="LOW">LOW — General question</option>
+          </select>
+        </div>
+        <textarea class="textarea" id="rDesc" placeholder="Describe the problem, steps to reproduce, and what you tried…"></textarea>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
+          <button class="btn btn-primary" id="genLog"><i class="fas fa-file-code"></i> Generate Report</button>
+          <button class="btn btn-outlined" id="copyLog" disabled><i class="fas fa-copy"></i> Copy</button>
+          <a class="btn btn-secondary" id="emailLog" href="#" style="pointer-events:none;opacity:.7"><i class="fas fa-envelope"></i> Email Support</a>
+        </div>
+        <div class="log" id="logBox" style="margin-top:10px;display:none"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section" style="text-align:center;background:#fff">
+    <div class="container">
+      <h2 class="section-title"><i class="fas fa-life-ring"></i> Prefer step-by-step guides?</h2>
+      <p class="muted">Browse the Help Center for articles on scheduling, payments, and best practices.</p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+        <a class="btn btn-primary" href="help-center.html"><i class="fas fa-book-open"></i> Go to Help Center</a>
+        <a class="btn btn-outlined" href="technology-training.html"><i class="fas fa-laptop-code"></i> Technology Training</a>
+        <a class="btn btn-secondary" href="index (18).html#apply"><i class="fas fa-paper-plane"></i> Apply to Teach</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div>
+          <h4><i class="fas fa-chalkboard-teacher"></i> Teaching Resources</h4>
+          <a class="footer-link" href="curriculum-guidelines.html">Curriculum Guidelines</a>
+          <a class="footer-link" href="cultural-integration.html">Cultural Integration Handbook</a>
+          <a class="footer-link" href="teaching-practices.html">Teaching Best Practices</a>
+          <a class="footer-link" href="technology-training.html">Technology Training</a>
+        </div>
+
+        <div>
+          <h4><i class="fas fa-life-ring"></i> Support</h4>
+          <a class="footer-link" href="help-center.html">Tutor Help Center</a>
+          <a class="footer-link" href="technical-support.html">Technical Support</a>
+          <a class="footer-link" href="payment-information.html">Payment Information</a>
+          <a class="footer-link" href="platform-guidelines.html">Platform Guidelines</a>
+        </div>
+
+        <div>
+          <h4><i class="fas fa-phone"></i> Contact</h4>
+          <p style="color:rgba(255,255,255,.8);margin-bottom:8px"><i class="fas fa-envelope"></i> tutors@baobabonlineacademy.com</p>
+          <p style="color:rgba(255,255,255,.8);margin-bottom:8px"><i class="fas fa-phone"></i> +234 (0) 816 501 1291</p>
+          <p style="color:rgba(255,255,255,.8)"><i class="fas fa-clock"></i> Mon–Fri: 9AM–5PM WAT</p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 Baobab Online Academy Tutor Portal. Empowering Nigerian Educators Globally.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenuPanel = document.getElementById('mobileMenuPanel');
+    const menuOverlay = document.getElementById('menuOverlay');
+    function openMenu(){
+      mobileMenuPanel.classList.add('active'); menuOverlay.classList.add('active');
+      document.body.style.overflow='hidden'; menuToggle.innerHTML='<i class="fas fa-times"></i>';
+    }
+    function closeMenu(){
+      mobileMenuPanel.classList.remove('active'); menuOverlay.classList.remove('active');
+      document.body.style.overflow='auto'; menuToggle.innerHTML='<i class="fas fa-bars"></i>';
+    }
+    function toggleMenu(){ mobileMenuPanel.classList.contains('active') ? closeMenu() : openMenu(); }
+    if(menuToggle){ menuToggle.addEventListener('click', toggleMenu); }
+    if(menuOverlay){ menuOverlay.addEventListener('click', closeMenu); }
+
+    // Login placeholder
+    function openLoginModal(){
+      alert('Tutor Portal Login\n\nIn the full version, this links to a secure login for:\n• Schedule & student profiles\n• Lesson prep resources\n• Earnings & payments\n• Parent communications\n• Professional development\n\nNeed help? Email tutors@baobabonlineacademy.com');
+    }
+    window.openLoginModal = openLoginModal;
+
+    // Browser info
+    const browserInfo = document.getElementById('browserInfo');
+    const browserStatus = document.getElementById('browserStatus');
+    (function initBrowser(){
+      const ua = navigator.userAgent;
+      let name = 'Your browser'; let ver = '';
+      if(/Edg\//.test(ua)) { name = 'Microsoft Edge'; ver = (ua.match(/Edg\/([\d\.]+)/)||[])[1]||''; }
+      else if(/Chrome/.test(ua) && !/Edge/.test(ua)) { name = 'Chrome'; ver = (ua.match(/Chrome\/([\d\.]+)/)||[])[1]||''; }
+      else if(/Firefox/.test(ua)) { name = 'Firefox'; ver = (ua.match(/Firefox\/([\d\.]+)/)||[])[1]||''; }
+      else if(/Safari/.test(ua) && !/Chrome/.test(ua)) { name = 'Safari'; ver = (ua.match(/Version\/([\d\.]+)/)||[])[1]||''; }
+      browserInfo.textContent = `${name} ${ver||''}`.trim();
+      const support = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+      browserStatus.className = 'status ' + (support ? 'ok' : 'fail');
+      browserStatus.innerHTML = support ? '<i class="fas fa-check-circle"></i> Supported' : '<i class="fas fa-xmark-circle"></i> Update Browser';
+    })();
+
+    // Network info
+    const netInfo = document.getElementById('netInfo');
+    const netStatus = document.getElementById('netStatus');
+    (function initNetwork(){
+      const c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+      if(c){
+        const type = (c.effectiveType||'unknown').toUpperCase();
+        const dl = c.downlink ? `${c.downlink} Mbps` : 'n/a';
+        netInfo.textContent = `Type: ${type} • Downlink: ${dl}`;
+        const ok = c.downlink >= 5 || ['4G','5G'].includes(type);
+        netStatus.className = 'status ' + (ok ? 'ok' : 'warn');
+        netStatus.innerHTML = ok ? '<i class="fas fa-check-circle"></i> Good' : '<i class="fas fa-triangle-exclamation"></i> May be limited';
+      }else{
+        netInfo.textContent = 'Connection API not available. Ensure strong Wi‑Fi or wired network.';
+        netStatus.className = 'status warn';
+        netStatus.innerHTML = '<i class="fas fa-circle-exclamation"></i> Not tested';
+      }
+    })();
+
+    // Event loop lag measurement
+    const lagBar = document.getElementById('lagBar');
+    const lagStatus = document.getElementById('lagStatus');
+    function measureLag(durationMs=1500){
+      return new Promise(resolve=>{
+        const start = performance.now();
+        let samples = 0, totalLag = 0;
+        function tick(){
+          samples++;
+          const expected = performance.now();
+          setTimeout(()=>{
+            const actual = performance.now();
+            const lag = Math.max(0, actual - expected);
+            totalLag += lag;
+            if(performance.now()-start < durationMs){ tick(); }
+            else{
+              const avg = totalLag / samples;
+              resolve(avg);
+            }
+          }, 0);
+        }
+        tick();
+      });
+    }
+    (async function initLag(){
+      const avg = await measureLag();
+      const capped = Math.min(100, avg*5); // scale to 0-100
+      lagBar.style.width = Math.round(capped) + '%';
+      if(avg <= 8){ lagStatus.className='status ok'; lagStatus.innerHTML='<i class="fas fa-check-circle"></i> Responsive'; }
+      else if(avg <= 20){ lagStatus.className='status warn'; lagStatus.innerHTML='<i class="fas fa-triangle-exclamation"></i> Moderate'; }
+      else { lagStatus.className='status fail'; lagStatus.innerHTML='<i class="fas fa-xmark-circle"></i> High lag'; }
+      lagBar.style.background = (avg<=8)? 'var(--canopy-green)' : (avg<=20? 'var(--sunset-gold)' : '#d66');
+      lagBar.title = `Avg lag: ${avg.toFixed(1)} ms`;
+    })();
+
+    // Audio tone test
+    let audioCtx, osc, gain;
+    const playBtn = document.getElementById('playTone');
+    const stopBtn = document.getElementById('stopTone');
+    const spkStatus = document.getElementById('spkStatus');
+    playBtn.addEventListener('click', ()=>{
+      try{
+        const AC = window.AudioContext || window.webkitAudioContext;
+        audioCtx = audioCtx || new AC();
+        osc = audioCtx.createOscillator();
+        gain = audioCtx.createGain();
+        osc.type = 'sine'; osc.frequency.value = 440;
+        gain.gain.value = 0.05;
+        osc.connect(gain).connect(audioCtx.destination);
+        osc.start();
+        spkStatus.className='status ok'; spkStatus.innerHTML='<i class="fas fa-check-circle"></i> Playing';
+        playBtn.disabled=true; stopBtn.disabled=false;
+      }catch(e){
+        spkStatus.className='status fail'; spkStatus.innerHTML='<i class="fas fa-xmark-circle"></i> Audio not available';
+      }
+    });
+    stopBtn.addEventListener('click', ()=>{
+      try{ if(osc) osc.stop(); if(gain) gain.disconnect(); }catch(e){}
+      spkStatus.className='status ok'; spkStatus.innerHTML='<i class="fas fa-check-circle"></i> Tested';
+      playBtn.disabled=false; stopBtn.disabled=true;
+    });
+
+    // Camera & Mic tests
+    const camStatus = document.getElementById('camStatus');
+    const micStatus = document.getElementById('micStatus');
+    const runChecksBtn = document.getElementById('runChecks');
+    runChecksBtn.addEventListener('click', async ()=>{
+      // camera
+      try{
+        const s = await navigator.mediaDevices.getUserMedia({video:true});
+        camStatus.className='status ok'; camStatus.innerHTML='<i class="fas fa-check-circle"></i> Working';
+        s.getTracks().forEach(t=>t.stop());
+      }catch(err){
+        camStatus.className='status fail'; camStatus.innerHTML='<i class="fas fa-xmark-circle"></i> Blocked/Unavailable';
+      }
+      // mic
+      try{
+        const s = await navigator.mediaDevices.getUserMedia({audio:true});
+        micStatus.className='status ok'; micStatus.innerHTML='<i class="fas fa-check-circle"></i> Working';
+        s.getTracks().forEach(t=>t.stop());
+      }catch(err){
+        micStatus.className='status fail'; micStatus.innerHTML='<i class="fas fa-xmark-circle"></i> Blocked/Unavailable';
+      }
+    });
+
+    // Permission states
+    const permBtn = document.getElementById('permBtn');
+    permBtn.addEventListener('click', async ()=>{
+      if(!navigator.permissions){ alert('Permissions API not supported by this browser.'); return; }
+      const checks = [['camera','microphone','notifications']];
+      async function q(name){ try{ const s=await navigator.permissions.query({name}); return s.state; }catch(e){ return 'unknown'; } }
+      const cam = await q('camera'); const mic = await q('microphone'); const noti = await q('notifications');
+      alert(`Permission States\n\nCamera: ${cam}\nMicrophone: ${mic}\nNotifications: ${noti}`);
+    });
+
+    // System Profile
+    const sysProfile = document.getElementById('sysProfile');
+    (function fillProfile(){
+      const lang = navigator.language || 'n/a';
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'n/a';
+      const cores = navigator.hardwareConcurrency || 'n/a';
+      const mem = navigator.deviceMemory ? `${navigator.deviceMemory} GB` : 'n/a';
+      const screenInfo = `${window.screen.width}x${window.screen.height} @${window.devicePixelRatio||1}x`;
+      const online = navigator.onLine ? 'online' : 'offline';
+      sysProfile.textContent = `Lang: ${lang} • TZ: ${tz} • CPU: ${cores} cores • RAM: ${mem} • Screen: ${screenInfo} • Status: ${online}`;
+    })();
+
+    // Reporter
+    const rName = document.getElementById('rName');
+    const rEmail = document.getElementById('rEmail');
+    const rLesson = document.getElementById('rLesson');
+    const rSeverity = document.getElementById('rSeverity');
+    const rDesc = document.getElementById('rDesc');
+    const genLog = document.getElementById('genLog');
+    const copyLog = document.getElementById('copyLog');
+    const emailLog = document.getElementById('emailLog');
+    const logBox = document.getElementById('logBox');
+
+    function buildMailto(subject, body){
+      return `mailto:tutors@baobabonlineacademy.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    }
+
+    genLog.addEventListener('click', ()=>{
+      const report = {
+        reporter:{
+          name:rName.value||'',
+          email:rEmail.value||'',
+        },
+        context:{
+          lesson:rLesson.value||'',
+          severity:rSeverity.value||'',
+          time:new Date().toLocaleString()
+        },
+        description:rDesc.value||'',
+        system:{
+          userAgent:navigator.userAgent,
+          language:navigator.language,
+          timeZone:Intl.DateTimeFormat().resolvedOptions().timeZone,
+          cores:navigator.hardwareConcurrency||null,
+          memory:navigator.deviceMemory||null,
+          screen:{w:screen.width,h:screen.height,dpr:window.devicePixelRatio||1},
+          connection:(function(){
+            const c = navigator.connection||navigator.mozConnection||navigator.webkitConnection;
+            if(!c) return null;
+            return {type:c.effectiveType||null, downlink:c.downlink||null, rtt:c.rtt||null};
+          })()
+        }
+      };
+      const text = JSON.stringify(report,null,2);
+      logBox.style.display='block';
+      logBox.textContent = text;
+      copyLog.disabled = false;
+      emailLog.style.pointerEvents = 'auto';
+      emailLog.style.opacity = '1';
+      const subj = `[${report.context.severity||'LOW'}] Tech Issue — ${report.context.lesson||'No Lesson ID'}`;
+      const body = `Reporter: ${report.reporter.name}\nEmail: ${report.reporter.email}\nLesson: ${report.context.lesson}\nSeverity: ${report.context.severity}\nTime: ${report.context.time}\n\nDescription:\n${report.description}\n\nSystem:\n${text}`;
+      emailLog.href = buildMailto(subj, body);
+    });
+
+    copyLog.addEventListener('click', ()=>{
+      const content = logBox.textContent || '';
+      navigator.clipboard.writeText(content).then(()=>{
+        copyLog.innerHTML = '<i class="fas fa-check"></i> Copied';
+        setTimeout(()=>{ copyLog.innerHTML='<i class="fas fa-copy"></i> Copy'; }, 1200);
+      });
+    });
+
+    // Accordion
+    document.querySelectorAll('.acc-item').forEach(item=>{
+      item.querySelector('.acc-header').addEventListener('click', ()=>{
+        const open = item.classList.contains('active');
+        document.querySelectorAll('.acc-item').forEach(i=>i.classList.remove('active'));
+        if(!open) item.classList.add('active');
+      });
+    });
+
+    // Smooth scroll (on-page)
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', (e)=>{
+        const id = a.getAttribute('href');
+        if(id.length>1){
+          const target = document.querySelector(id);
+          if(target){
+            e.preventDefault();
+            target.scrollIntoView({behavior:'smooth', block:'start'});
+            closeMenu();
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

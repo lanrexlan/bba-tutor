@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" sizes="32x32" href="/Images/logo.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tutor Help Center - Tutor Portal - Baobab Online Academy</title>
+
+  <!-- Fonts & Icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --baobab-brown:#8D4004;
+      --canopy-green:#2E7D32;
+      --sunset-gold:#F57C00;
+      --trunk-gray:#5D4037;
+      --sky-blue:#1976D2;
+      --earth-cream:#FFF8E1;
+      --desert-orange:#FF5722;
+      --sage-green:#689F38;
+      --deep-charcoal:#263238;
+      --white:#FFFFFF;
+      --tutor-teal:#00695C;
+      --tutor-light-teal:#B2DFDB;
+
+      --transition-slow:all .6s cubic-bezier(.165,.84,.44,1);
+      --transition-medium:all .4s cubic-bezier(.165,.84,.44,1);
+      --transition-fast:all .3s cubic-bezier(.165,.84,.44,1);
+
+      --shadow-sm:0 1px 3px rgba(0,0,0,.1);
+      --shadow-md:0 4px 6px rgba(0,0,0,.1);
+      --shadow-lg:0 10px 15px -3px rgba(0,0,0,.1);
+      --shadow-xl:0 20px 25px -5px rgba(0,0,0,.1);
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      font-family:'Open Sans',sans-serif;
+      color:var(--deep-charcoal);
+      line-height:1.6;
+      background:var(--white);
+      overflow-x:hidden;
+    }
+    h1,h2,h3,h4,h5{
+      font-family:'Merriweather',serif;
+      font-weight:700;
+      line-height:1.25;
+      color:var(--deep-charcoal);
+    }
+    .container{
+      width:100%;
+      max-width:1200px;
+      margin:0 auto;
+      padding:0 20px;
+      position:relative;
+    }
+    .section{padding:80px 0;position:relative}
+    .btn{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:12px 28px;border-radius:30px;font-weight:600;
+      transition:var(--transition-fast);text-decoration:none;cursor:pointer;
+      border:2px solid transparent;
+    }
+    .btn-primary{background:var(--tutor-teal);color:var(--white);border-color:var(--tutor-teal)}
+    .btn-primary:hover{background:var(--canopy-green);border-color:var(--canopy-green);transform:translateY(-2px);box-shadow:var(--shadow-md)}
+    .btn-outlined{background:transparent;color:var(--tutor-teal);border-color:var(--tutor-teal)}
+    .btn-outlined:hover{background:var(--tutor-teal);color:var(--white)}
+    .btn-secondary{background:var(--sunset-gold);color:var(--deep-charcoal);border-color:var(--sunset-gold)}
+    .badge{
+      display:inline-flex;align-items:center;gap:8px;
+      background:rgba(255,255,255,.18);color:#fff;
+      padding:8px 14px;border-radius:999px;font-weight:700;font-size:.9rem;
+      letter-spacing:.2px
+    }
+
+    /* Header */
+    .header{
+      position:sticky;top:0;left:0;width:100%;z-index:1000;
+      background:var(--white);box-shadow:var(--shadow-md);padding:10px 0
+    }
+    .nav-wrapper{display:flex;justify-content:space-between;align-items:center}
+    .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .logo-icon{
+      width:34px;height:34px;border-radius:8px;background:var(--tutor-teal);
+      color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px
+    }
+    .logo-text{font-weight:800;font-size:20px;color:var(--baobab-brown)}
+    .nav-menu{display:flex;gap:28px;list-style:none}
+    .nav-link{text-decoration:none;color:var(--deep-charcoal);font-weight:600}
+    .nav-link:hover{color:var(--tutor-teal)}
+    .nav-buttons{display:flex;gap:12px}
+    .menu-toggle{display:none;font-size:24px;color:var(--tutor-teal);cursor:pointer}
+
+    /* Mobile menu */
+    .mobile-menu-panel{
+      position:fixed;top:0;right:-100%;width:300px;height:100vh;background:#fff;z-index:1100;
+      padding:80px 28px 28px;box-shadow:var(--shadow-xl);transition:var(--transition-medium);overflow-y:auto
+    }
+    .mobile-menu-panel.active{right:0}
+    .mobile-menu{list-style:none;display:flex;flex-direction:column;gap:10px}
+    .mobile-link{display:block;padding:12px 0;border-bottom:1px solid var(--earth-cream);text-decoration:none;color:var(--deep-charcoal);font-weight:600}
+    .mobile-link:hover{color:var(--tutor-teal)}
+    .mobile-buttons{display:flex;flex-direction:column;gap:12px;margin-top:20px}
+    .menu-overlay{
+      position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);
+      z-index:1090;opacity:0;visibility:hidden;transition:var(--transition-medium)
+    }
+    .menu-overlay.active{opacity:1;visibility:visible}
+
+    /* Hero - unique gradient */
+    .hero{
+      background:linear-gradient(135deg, var(--tutor-teal) 0%, var(--sky-blue) 55%, #7f5af0 100%);
+      color:#fff;padding:120px 0 60px;position:relative;overflow:hidden
+    }
+    .hero::before{
+      content:"";position:absolute;top:-100px;right:-100px;width:300px;height:300px;border-radius:50%;
+      background:radial-gradient(circle at center, rgba(255,255,255,.18), rgba(255,255,255,0) 60%)
+    }
+    .hero-title{font-size:2.8rem;margin-top:12px;margin-bottom:14px}
+    .hero-subtitle{font-size:1.12rem;opacity:.95;max-width:900px}
+    .breadcrumbs{
+      display:inline-flex;align-items:center;gap:8px;color:#fff;opacity:.9;text-decoration:none;font-weight:700
+    }
+    .breadcrumbs:hover{opacity:1;text-decoration:underline}
+
+    /* Search Bar */
+    .search-wrap{
+      background:#fff;border-radius:16px;box-shadow:var(--shadow-xl);padding:16px;margin-top:-30px
+    }
+    .searchbar{
+      display:flex;gap:10px;align-items:center;border:2px solid var(--tutor-light-teal);border-radius:999px;padding:8px 12px
+    }
+    .searchbar input{border:0;outline:none;flex:1;padding:8px 6px;font-size:1rem}
+    .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .chip{
+      border:2px solid var(--tutor-teal);color:var(--tutor-teal);background:#fff;border-radius:999px;padding:6px 12px;font-weight:700;cursor:pointer
+    }
+    .chip.active{background:var(--tutor-teal);color:#fff}
+
+    /* Layout */
+    .grid{
+      display:grid;grid-template-columns:2fr 1fr;gap:24px
+    }
+    .card{
+      background:#fff;border-radius:16px;padding:18px;box-shadow:var(--shadow-lg);border:2px solid var(--earth-cream)
+    }
+    .muted{color:var(--trunk-gray)}
+    .mark{background:#fff59d}
+
+    /* Articles/FAQ */
+    .articles .item{
+      border-bottom:1px solid #f1f1f1;padding:14px 6px
+    }
+    .articles .item:last-child{border-bottom:0}
+    .item h4{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+    .item .meta{font-size:.9rem;color:var(--trunk-gray)}
+    .item .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+    .tag{background:#f3f8f8;border-radius:999px;padding:4px 10px;font-size:.85rem;color:var(--tutor-teal);border:1px solid var(--tutor-light-teal)}
+
+    /* Accordion (Quick FAQs) */
+    .accordion{border-radius:16px;overflow:hidden;box-shadow:var(--shadow-lg);background:#fff}
+    .acc-item + .acc-item{border-top:1px solid #f0f0f0}
+    .acc-header{
+      width:100%;text-align:left;border:0;background:#fff;padding:16px 18px;font-weight:800;cursor:pointer;display:flex;justify-content:space-between;align-items:center
+    }
+    .acc-header:hover{background:#fafafa}
+    .acc-content{display:none;padding:0 18px 16px;color:var(--trunk-gray)}
+    .acc-item.active .acc-content{display:block}
+    .rotate{transition:transform .25s ease}
+    .acc-item.active .rotate{transform:rotate(180deg)}
+
+    /* Wizard */
+    .wizard .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .select{border:2px solid var(--earth-cream);border-radius:10px;padding:10px}
+    .result{margin-top:10px;background:#f9fffd;border:2px dashed var(--tutor-teal);padding:12px;border-radius:12px}
+
+    /* Sidebar */
+    .side .block + .block{margin-top:16px}
+    .list a{display:flex;align-items:center;gap:10px;padding:8px 0;color:var(--deep-charcoal);text-decoration:none}
+    .list a:hover{color:var(--tutor-teal)}
+
+    /* Footer */
+    .footer{background:var(--deep-charcoal);color:#fff;padding:60px 0 28px;margin-top:40px}
+    .footer-content{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:36px;margin-bottom:28px
+    }
+    .footer h4{color:var(--tutor-teal);margin-bottom:12px}
+    .footer-link{color:rgba(255,255,255,.8);text-decoration:none;display:block;padding:6px 0}
+    .footer-link:hover{color:var(--sunset-gold)}
+    .footer-bottom{border-top:1px solid rgba(255,255,255,.12);margin-top:10px;padding-top:18px;text-align:center;color:rgba(255,255,255,.8)}
+
+    /* Responsive */
+    @media (max-width: 992px){
+      .grid{grid-template-columns:1fr}
+    }
+    @media (max-width: 768px){
+      .menu-toggle{display:block}
+      .nav-menu,.nav-buttons{display:none}
+      .hero{padding:100px 0 50px}
+      .hero-title{font-size:2.2rem}
+      .section{padding:60px 0}
+      .container{padding:0 16px}
+      .wizard .row{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="nav-wrapper">
+        <a href="index (18).html" class="logo" aria-label="Tutor Portal Home">
+          <div class="logo-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+          <div class="logo-text">Tutor Portal</div>
+        </a>
+
+        <div class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+          <i class="fas fa-bars"></i>
+        </div>
+
+        <ul class="nav-menu">
+          <li><a class="nav-link" href="index (18).html">Home</a></li>
+          <li><a class="nav-link" href="index (18).html#why-choose">Why Choose Us</a></li>
+          <li><a class="nav-link" href="index (18).html#earnings">Earnings</a></li>
+          <li><a class="nav-link" href="index (18).html#apply">Apply Now</a></li>
+          <li><a class="nav-link" href="https://baobabonlineacademy.com">Main Site</a></li>
+        </ul>
+
+        <div class="nav-buttons">
+          <button class="btn btn-outlined" onclick="openLoginModal()"><i class="fas fa-right-to-bracket"></i> Login</button>
+          <a class="btn btn-primary" href="index (18).html#apply"><i class="fas fa-paper-plane"></i> Apply</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu-panel" id="mobileMenuPanel" aria-hidden="true">
+    <ul class="mobile-menu">
+      <li><a class="mobile-link" href="index (18).html">Home</a></li>
+      <li><a class="mobile-link" href="index (18).html#why-choose">Why Choose Us</a></li>
+      <li><a class="mobile-link" href="index (18).html#earnings">Earnings</a></li>
+      <li><a class="mobile-link" href="index (18).html#apply">Apply Now</a></li>
+      <li><a class="mobile-link" href="https://baobabonlineacademy.com">Main Site</a></li>
+    </ul>
+    <div class="mobile-buttons">
+      <button class="btn btn-outlined" onclick="openLoginModal()"><i class="fas fa-right-to-bracket"></i> Login</button>
+      <a class="btn btn-primary" href="index (18).html#apply"><i class="fas fa-paper-plane"></i> Apply</a>
+    </div>
+  </div>
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <a class="breadcrumbs" href="index (18).html" aria-label="Back to home">
+        <i class="fas fa-arrow-left"></i> Back to Home
+      </a>
+      <div style="height:14px"></div>
+      <span class="badge"><i class="fas fa-life-ring"></i> We’re here to help</span>
+      <h1 class="hero-title">Tutor Help Center</h1>
+      <p class="hero-subtitle">
+        Find answers fast. Search common questions, browse categories, or use the assistant to get tailored help.
+        For technical issues, see Technical Support or contact us.
+      </p>
+    </div>
+  </section>
+
+  <!-- Search -->
+  <section class="section" style="padding-top:30px">
+    <div class="container">
+      <div class="search-wrap">
+        <div class="searchbar">
+          <i class="fas fa-search" style="color:var(--tutor-teal)"></i>
+          <input type="text" id="searchInput" placeholder="Search articles, e.g. payments, scheduling, Zoom, policies...">
+          <button class="btn btn-primary" id="clearSearch" style="display:none"><i class="fas fa-xmark"></i> Clear</button>
+        </div>
+        <div class="chips" id="chips">
+          <button class="chip active" data-filter="all">All</button>
+          <button class="chip" data-filter="account">Account</button>
+          <button class="chip" data-filter="scheduling">Scheduling</button>
+          <button class="chip" data-filter="payments">Payments</button>
+          <button class="chip" data-filter="teaching">Teaching Tools</button>
+          <button class="chip" data-filter="policies">Policies</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section class="section" style="padding-top:40px">
+    <div class="container grid">
+      <!-- Main -->
+      <div>
+        <div class="card articles" id="articles">
+          <!-- Filled by JS -->
+        </div>
+
+        <div style="height:20px"></div>
+
+        <!-- Quick FAQs -->
+        <div class="accordion">
+          <div class="acc-item">
+            <button class="acc-header">
+              What if a student doesn’t join the session within 10 minutes?
+              <i class="fas fa-chevron-down rotate"></i>
+            </button>
+            <div class="acc-content">
+              Wait at least 10 minutes while messaging the guardian. Document the no-show in the platform and offer a brief recap resource.
+              Follow the Payment Information policy for no‑shows.
+            </div>
+          </div>
+          <div class="acc-item">
+            <button class="acc-header">
+              Can I reschedule a lesson within 24 hours?
+              <i class="fas fa-chevron-down rotate"></i>
+            </button>
+            <div class="acc-content">
+              Yes, if the guardian agrees. Use the scheduling tool to propose 2–3 slots. Reconfirm time zone and update calendar invites.
+            </div>
+          </div>
+          <div class="acc-item">
+            <button class="acc-header">
+              How do I handle sensitive topics in class?
+              <i class="fas fa-chevron-down rotate"></i>
+            </button>
+            <div class="acc-content">
+              Follow Platform Guidelines and Safeguarding. Keep discussion factual, inclusive, and age‑appropriate. Escalate concerns to support.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="side">
+        <div class="card block">
+          <h3 style="margin-bottom:8px"><i class="fas fa-wand-magic-sparkles"></i> Help Assistant</h3>
+          <p class="muted">Tell us the issue to get suggested articles and next steps.</p>
+          <div class="wizard">
+            <div class="row">
+              <select id="wTopic" class="select" aria-label="Topic">
+                <option value="">Select topic…</option>
+                <option value="payments">Payments</option>
+                <option value="scheduling">Scheduling</option>
+                <option value="teaching">Teaching Tools</option>
+                <option value="account">Account</option>
+                <option value="policies">Policies</option>
+              </select>
+              <select id="wSeverity" class="select" aria-label="Severity">
+                <option value="">Severity…</option>
+                <option value="low">Low (question)</option>
+                <option value="medium">Medium (blocking soon)</option>
+                <option value="high">High (blocking now)</option>
+              </select>
+            </div>
+            <div class="result" id="wResult" style="display:none"></div>
+            <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap">
+              <button class="btn btn-primary" id="wSuggest"><i class="fas fa-lightbulb"></i> Suggest</button>
+              <a class="btn btn-outlined" id="wContact" href="#" target="_blank" rel="noopener"><i class="fas fa-envelope"></i> Contact Support</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card block">
+          <h3 style="margin-bottom:8px"><i class="fas fa-plug-circle-bolt"></i> Having technical issues?</h3>
+          <p class="muted">Run diagnostics and get targeted fixes.</p>
+          <a class="btn btn-outlined" href="technical-support.html"><i class="fas fa-screwdriver-wrench"></i> Technical Support</a>
+        </div>
+
+        <div class="card block">
+          <h3 style="margin-bottom:8px"><i class="fas fa-link"></i> Quick Links</h3>
+          <div class="list">
+            <a href="payment-information.html"><i class="fas fa-credit-card"></i> Payment Information</a>
+            <a href="platform-guidelines.html"><i class="fas fa-scale-balanced"></i> Platform Guidelines</a>
+            <a href="technology-training.html"><i class="fas fa-laptop-code"></i> Technology Training</a>
+            <a href="teaching-practices.html"><i class="fas fa-graduation-cap"></i> Teaching Best Practices</a>
+            <a href="cultural-integration.html"><i class="fas fa-feather"></i> Cultural Integration</a>
+          </div>
+        </div>
+
+        <div class="card block">
+          <h3 style="margin-bottom:8px"><i class="fas fa-clock"></i> Contact Hours</h3>
+          <p class="muted">Mon–Fri: 9AM–5PM WAT</p>
+          <a class="btn btn-secondary" href="mailto:tutors@baobabonlineacademy.com?subject=Tutor%20Support%20Request"><i class="fas fa-envelope"></i> Email: tutors@baobabonlineacademy.com</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- Updates -->
+  <section class="section" style="background:var(--earth-cream)">
+    <div class="container">
+      <h2 class="section-title" style="color:var(--tutor-teal)"><i class="fas fa-bullhorn"></i> Recent Updates</h2>
+      <p class="muted">A quick look at changes to policies, tools, or processes.</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:10px">
+        <div class="card">
+          <strong>New: Weekly Payout Window</strong>
+          <p class="muted">Payouts now processed every Friday by 6PM WAT. See Payment Information for details.</p>
+        </div>
+        <div class="card">
+          <strong>Classroom Update</strong>
+          <p class="muted">Whiteboard now supports export to PDF. Useful for sharing notes with guardians.</p>
+        </div>
+        <div class="card">
+          <strong>Safeguarding Refresh</strong>
+          <p class="muted">Updated online conduct and data privacy reminders. Review Platform Guidelines.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section" style="text-align:center;background:#fff">
+    <div class="container">
+      <h2 class="section-title"><i class="fas fa-hands-helping"></i> Still need help?</h2>
+      <p class="muted">Visit Technical Support for diagnostics or contact us with details of your issue.</p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+        <a class="btn btn-primary" href="technical-support.html"><i class="fas fa-screwdriver-wrench"></i> Go to Technical Support</a>
+        <a class="btn btn-outlined" href="mailto:tutors@baobabonlineacademy.com?subject=Tutor%20Support%20Request"><i class="fas fa-envelope"></i> Email Support</a>
+        <a class="btn btn-secondary" href="index (18).html#apply"><i class="fas fa-paper-plane"></i> Apply to Teach</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div>
+          <h4><i class="fas fa-chalkboard-teacher"></i> Teaching Resources</h4>
+          <a class="footer-link" href="curriculum-guidelines.html">Curriculum Guidelines</a>
+          <a class="footer-link" href="cultural-integration.html">Cultural Integration Handbook</a>
+          <a class="footer-link" href="teaching-practices.html">Teaching Best Practices</a>
+          <a class="footer-link" href="technology-training.html">Technology Training</a>
+        </div>
+
+        <div>
+          <h4><i class="fas fa-life-ring"></i> Support</h4>
+          <a class="footer-link" href="help-center.html">Tutor Help Center</a>
+          <a class="footer-link" href="technical-support.html">Technical Support</a>
+          <a class="footer-link" href="payment-information.html">Payment Information</a>
+          <a class="footer-link" href="platform-guidelines.html">Platform Guidelines</a>
+        </div>
+
+        <div>
+          <h4><i class="fas fa-phone"></i> Contact</h4>
+          <p style="color:rgba(255,255,255,.8);margin-bottom:8px"><i class="fas fa-envelope"></i> tutors@baobabonlineacademy.com</p>
+          <p style="color:rgba(255,255,255,.8);margin-bottom:8px"><i class="fas fa-phone"></i> +234 (0) 816 501 1291</p>
+          <p style="color:rgba(255,255,255,.8)"><i class="fas fa-clock"></i> Mon–Fri: 9AM–5PM WAT</p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 Baobab Online Academy Tutor Portal. Empowering Nigerian Educators Globally.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenuPanel = document.getElementById('mobileMenuPanel');
+    const menuOverlay = document.getElementById('menuOverlay');
+    function openMenu(){
+      mobileMenuPanel.classList.add('active'); menuOverlay.classList.add('active');
+      document.body.style.overflow='hidden'; menuToggle.innerHTML='<i class="fas fa-times"></i>';
+    }
+    function closeMenu(){
+      mobileMenuPanel.classList.remove('active'); menuOverlay.classList.remove('active');
+      document.body.style.overflow='auto'; menuToggle.innerHTML='<i class="fas fa-bars"></i>';
+    }
+    function toggleMenu(){ mobileMenuPanel.classList.contains('active') ? closeMenu() : openMenu(); }
+    if(menuToggle){ menuToggle.addEventListener('click', toggleMenu); }
+    if(menuOverlay){ menuOverlay.addEventListener('click', closeMenu); }
+
+    // Login placeholder
+    function openLoginModal(){
+      alert('Tutor Portal Login\n\nIn the full version, this links to a secure login for:\n• Schedule & student profiles\n• Lesson prep resources\n• Earnings & payments\n• Parent communications\n• Professional development\n\nNeed help? Email tutors@baobabonlineacademy.com');
+    }
+    window.openLoginModal = openLoginModal;
+
+    // Data: Articles
+    const ARTICLES = [
+      {
+        id:'a1',
+        title:'How to update your tutor profile',
+        excerpt:'Change your photo, bio, subjects, or availability from the Profile page.',
+        category:'account',
+        tags:['profile','availability','subjects'],
+        content:'Go to Profile → Edit. Update text fields and click Save. Changes reflect within 5 minutes.',
+        link:'#'
+      },
+      {
+        id:'a2',
+        title:'Scheduling lessons across time zones',
+        excerpt:'Always confirm student’s time zone and use platform invites to avoid confusion.',
+        category:'scheduling',
+        tags:['time zone','calendar','invite'],
+        content:'Use the built-in scheduler. It auto-converts to guardian time zone and sends updates.',
+        link:'#'
+      },
+      {
+        id:'a3',
+        title:'Understanding payouts and tutor share',
+        excerpt:'Tutors receive 75% of lesson fees; payouts are processed weekly.',
+        category:'payments',
+        tags:['payout','fees','bonus'],
+        content:'Payments go out every Friday. See Payment Information for bonuses and thresholds.',
+        link:'payment-information.html'
+      },
+      {
+        id:'a4',
+        title:'Using the virtual whiteboard effectively',
+        excerpt:'Annotate, save PDFs, and assign collaborative boards to groups.',
+        category:'teaching',
+        tags:['whiteboard','engagement','PDF'],
+        content:'Create layers for each activity, export snapshots, and assign to breakout groups.',
+        link:'technology-training.html'
+      },
+      {
+        id:'a5',
+        title:'Safeguarding and online conduct',
+        excerpt:'Follow privacy, consent, and respectful communication policies.',
+        category:'policies',
+        tags:['privacy','conduct','reporting'],
+        content:'Never share personal contacts. Report concerns via Technical Support → Report Issue.',
+        link:'platform-guidelines.html'
+      },
+      {
+        id:'a6',
+        title:'Rescheduling and cancellation rules',
+        excerpt:'Provide 24h notice where possible; coordinate with guardians for changes.',
+        category:'scheduling',
+        tags:['reschedule','cancel'],
+        content:'If within 24h, seek approval. Update the scheduler to reflect the new time.',
+        link:'#'
+      },
+      {
+        id:'a7',
+        title:'Uploading resources and homework',
+        excerpt:'Use folders with clear naming. Provide due dates and accessibility options.',
+        category:'teaching',
+        tags:['resources','homework','accessibility'],
+        content:'Share PDFs or low‑bandwidth formats; include large text versions where needed.',
+        link:'teaching-practices.html'
+      }
+    ];
+
+    // Render Articles
+    const articlesEl = document.getElementById('articles');
+    const chips = document.querySelectorAll('.chip');
+    const searchInput = document.getElementById('searchInput');
+    const clearBtn = document.getElementById('clearSearch');
+    let activeFilter = 'all';
+
+    function highlight(text, query){
+      if(!query) return text;
+      const re = new RegExp('('+query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')+')', 'ig');
+      return text.replace(re, '<span class="mark">$1</span>');
+    }
+
+    function renderArticles(){
+      const q = (searchInput.value || '').trim().toLowerCase();
+      const items = ARTICLES.filter(a=>{
+        const inFilter = activeFilter==='all' || a.category===activeFilter;
+        const body = (a.title + ' ' + a.excerpt + ' ' + a.content + ' ' + a.tags.join(' ')).toLowerCase();
+        const inQuery = !q || body.includes(q);
+        return inFilter && inQuery;
+      });
+
+      if(items.length === 0){
+        articlesEl.innerHTML = '<div class="item"><p class="muted">No results found. Try a different keyword or category.</p></div>';
+        return;
+      }
+
+      articlesEl.innerHTML = items.map(a=>{
+        const q = (searchInput.value || '').trim();
+        return `
+          <div class="item" data-id="${a.id}">
+            <h4><i class="fas fa-file-lines" style="color:var(--tutor-teal)"></i> ${highlight(a.title, q)}</h4>
+            <p class="muted">${highlight(a.excerpt, q)}</p>
+            <div class="meta">Category: <strong>${a.category}</strong></div>
+            <div class="tags">${a.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+            <div style="margin-top:8px;display:flex;gap:10px;flex-wrap:wrap">
+              <a class="btn btn-outlined btn-sm" href="${a.link}"><i class="fas fa-arrow-right"></i> Open</a>
+              <button class="btn btn-primary btn-sm" data-view="${a.id}"><i class="fas fa-eye"></i> Quick View</button>
+            </div>
+            <div class="muted" id="preview-${a.id}" style="display:none;margin-top:8px">${highlight(a.content, q)}</div>
+          </div>
+        `;
+      }).join('');
+      // Bind Quick View toggles
+      articlesEl.querySelectorAll('[data-view]').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          const id = btn.getAttribute('data-view');
+          const box = document.getElementById('preview-'+id);
+          const showing = box.style.display !== 'none';
+          box.style.display = showing ? 'none' : 'block';
+          btn.innerHTML = showing ? '<i class="fas fa-eye"></i> Quick View' : '<i class="fas fa-eye-slash"></i> Hide';
+        });
+      });
+    }
+
+    chips.forEach(ch=>{
+      ch.addEventListener('click', ()=>{
+        chips.forEach(c=>c.classList.remove('active'));
+        ch.classList.add('active');
+        activeFilter = ch.getAttribute('data-filter');
+        renderArticles();
+      });
+    });
+    searchInput.addEventListener('input', ()=>{
+      clearBtn.style.display = searchInput.value ? 'inline-flex' : 'none';
+      renderArticles();
+    });
+    clearBtn.addEventListener('click', ()=>{
+      searchInput.value=''; clearBtn.style.display='none'; renderArticles();
+    });
+    renderArticles();
+
+    // Accordion
+    document.querySelectorAll('.acc-item').forEach(item=>{
+      item.querySelector('.acc-header').addEventListener('click', ()=>{
+        const open = item.classList.contains('active');
+        document.querySelectorAll('.acc-item').forEach(i=>i.classList.remove('active'));
+        if(!open) item.classList.add('active');
+      });
+    });
+
+    // Wizard Assistant
+    const wTopic = document.getElementById('wTopic');
+    const wSeverity = document.getElementById('wSeverity');
+    const wResult = document.getElementById('wResult');
+    const wSuggest = document.getElementById('wSuggest');
+    const wContact = document.getElementById('wContact');
+
+    function buildMailto(subject, body){
+      const s = encodeURIComponent(subject);
+      const b = encodeURIComponent(body);
+      return `mailto:tutors@baobabonlineacademy.com?subject=${s}&body=${b}`;
+    }
+
+    wSuggest.addEventListener('click', ()=>{
+      const t = wTopic.value; const s = wSeverity.value;
+      if(!t || !s){ wResult.style.display='block'; wResult.innerHTML='<span class="muted">Select a topic and severity.</span>'; return; }
+      const related = ARTICLES.filter(a=>a.category===t).slice(0,3);
+      const tips = {
+        payments:'Confirm payout Friday window. Verify bank details and minimum threshold. See Payment Information.',
+        scheduling:'Confirm time zone and propose 2–3 slots via scheduler.',
+        teaching:'Test camera/mic and whiteboard before class. See Technology Training.',
+        account:'Update profile fields and re-save. Changes reflect within 5 minutes.',
+        policies:'Follow safeguarding and privacy norms; escalate concerns appropriately.'
+      }[t];
+      wResult.style.display='block';
+      wResult.innerHTML = `
+        <strong>Suggested steps (${s}):</strong>
+        <ul class="muted" style="margin-left:16px">
+          <li>${tips}</li>
+          <li>Document the issue briefly (time, student, screenshot if possible).</li>
+          <li>Contact support if unresolved.</li>
+        </ul>
+        <div style="margin-top:6px"><strong>Articles:</strong>
+          <ul style="margin-left:16px">${related.map(r=>`<li><a href="${r.link}">${r.title}</a></li>`).join('')}</ul>
+        </div>
+      `;
+      const subj = `[Help] ${t.toUpperCase()} — ${s.toUpperCase()} issue`;
+      const body = `Hello Support,%0D%0A%0D%0ATopic: ${t}%0D%0ASeverity: ${s}%0D%0ADescription:%0D%0A- What happened:%0D%0A- When it started:%0D%0A- Affected student(s):%0D%0A- Steps tried:%0D%0A%0D%0AThanks.`;
+      wContact.href = buildMailto(subj, body);
+    });
+
+    // Smooth scroll on-page
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', (e)=>{
+        const id = a.getAttribute('href');
+        if(id.length>1){
+          const target = document.querySelector(id);
+          if(target){
+            e.preventDefault();
+            target.scrollIntoView({behavior:'smooth', block:'start'});
+            closeMenu();
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
