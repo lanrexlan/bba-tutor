@@ -2079,7 +2079,7 @@
 
             document.getElementById('loadingOverlay').style.display = 'flex';
 
-            const form = e.currentTarget;
+            const form = e.currentTarget; // capture form once and reuse later
             const formData = new FormData(form);
 
             const subjects = Array.from(document.querySelectorAll('input[name="subjects"]:checked')).map(cb => cb.value);
@@ -2139,7 +2139,14 @@
             // Success UI
             document.getElementById('loadingOverlay').style.display = 'none';
             document.getElementById('successModal').style.display = 'flex';
-            e.currentTarget.reset();
+
+            // FIX: use captured form reference; don't rely on event.currentTarget after awaits
+            try {
+                form.reset();
+            } catch (resetErr) {
+                console.warn('Form reset warning:', resetErr);
+            }
+
             currentStep = 1;
             showStep(1);
             removeFile();
