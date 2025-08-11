@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" sizes="32x32" href="/Images/logo.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tutor Dashboard - Baobab Online Academy</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root{
+      --tutor-teal:#00695C; --canopy-green:#2E7D32; --sunset-gold:#F57C00; --deep-charcoal:#263238; --border:#E2E8F0; --white:#fff;
+      --shadow:0 6px 16px rgba(0,0,0,.08);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Open Sans',sans-serif;color:var(--deep-charcoal);background:#F7FAFC;min-height:100vh}
+    .appbar{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);box-shadow:var(--shadow)}
+    .appbar-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:10px 16px}
+    .brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .badge{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--tutor-teal),var(--canopy-green));color:#fff;display:grid;place-items:center}
+    .title{font-family:'Merriweather',serif;font-weight:900}
+    .actions{display:flex;align-items:center;gap:8px}
+    .btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--border);background:#fff;border-radius:10px;padding:8px 12px;cursor:pointer}
+    .btn-primary{background:linear-gradient(135deg,var(--tutor-teal),var(--canopy-green));color:#fff;border:none}
+    .container{max-width:1200px;margin:0 auto;padding:18px 16px;display:grid;grid-template-columns:260px 1fr;gap:16px}
+    .sidebar{background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px;position:sticky;top:72px;height:max-content}
+    .nav{list-style:none;display:flex;flex-direction:column}
+    .nav a{padding:10px 12px;border-radius:10px;color:#334155;text-decoration:none;font-weight:700}
+    .nav a.active,.nav a:hover{background:#F1F5F9}
+    .panel{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px;box-shadow:var(--shadow)}
+    .section{display:none}
+    .section.active{display:block}
+    .panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+    .table-wrap{overflow:auto;border:1px solid var(--border);border-radius:10px}
+    table{width:100%;border-collapse:separate;border-spacing:0;background:#fff}
+    thead th{position:sticky;top:0;background:#F8FAFE;border-bottom:1px solid var(--border);text-align:left;padding:10px;font-size:12px;color:#64748B}
+    tbody td{border-bottom:1px solid var(--border);padding:12px}
+    .muted{color:#64748B}
+    @media (max-width: 992px){.container{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header class="appbar">
+    <div class="appbar-inner">
+      <a class="brand" href="#">
+        <div class="badge"><i class="fas fa-chalkboard-teacher"></i></div>
+        <div class="title">Tutor Dashboard</div>
+      </a>
+      <div class="actions">
+        <div class="muted" id="tutorName">Loading...</div>
+        <button class="btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <aside class="sidebar">
+      <nav class="nav">
+        <a href="#" data-section="overview" class="active">Overview</a>
+        <a href="#" data-section="lessons">Upcoming Lessons</a>
+        <a href="#" data-section="assignments">Assignments</a>
+        <a href="#" data-section="profile">My Profile</a>
+      </nav>
+    </aside>
+
+    <main>
+      <section id="overview" class="section active">
+        <div class="panel">
+          <div class="panel-head">
+            <h3>Welcome back, <span id="firstName">Tutor</span> 👋</h3>
+          </div>
+          <p class="muted">Here’s a quick look at your upcoming schedule and recent activity.</p>
+        </div>
+      </section>
+
+      <section id="lessons" class="section">
+        <div class="panel">
+          <div class="panel-head"><h3>Upcoming Lessons</h3></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Date</th><th>Time</th><th>Child</th><th>Subject</th><th>Status</th></tr></thead>
+              <tbody id="lessonsTbody">
+                <tr><td colspan="5" class="muted" style="padding:14px">Loading...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="assignments" class="section">
+        <div class="panel">
+          <div class="panel-head"><h3>Assignments</h3></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Title</th><th>Child</th><th>Subject</th><th>Due</th><th>Status</th></tr></thead>
+              <tbody id="assignmentsTbody">
+                <tr><td colspan="5" class="muted" style="padding:14px">Loading...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="profile" class="section">
+        <div class="panel">
+          <div class="panel-head"><h3>My Profile</h3></div>
+          <div>
+            <p><strong>Name:</strong> <span id="profileName">—</span></p>
+            <p><strong>Email:</strong> <span id="profileEmail">—</span></p>
+            <p><strong>Phone:</strong> <span id="profilePhone">—</span></p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const SUPABASE_URL = 'https://vcxdkacxbjsgaoxbhsip.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZjeGRrYWN4YmpzZ2FveGJoc2lwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI5MDQ5ODMsImV4cCI6MjA2ODQ4MDk4M30.T9KhHWzHZWyaZvyeFXtBu8tPLY9JOn6_wCHcH8B46FU';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    let currentUser = null;
+
+    function setActive(sectionId){
+      document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+      document.getElementById(sectionId).classList.add('active');
+      document.querySelectorAll('.nav a').forEach(a=>a.classList.toggle('active', a.dataset.section===sectionId));
+      if(sectionId==='lessons') loadLessons();
+      if(sectionId==='assignments') loadAssignments();
+    }
+
+    document.querySelectorAll('.nav a').forEach(a=>{
+      a.addEventListener('click', (e)=>{ e.preventDefault(); setActive(a.dataset.section); });
+    });
+
+    async function ensureAuth(){
+      const { data: { session } } = await supabase.auth.getSession();
+      if(!session){ location.href = '/index-20.html'; return null; }
+      if(!session.user.email_confirmed_at){
+        alert('Please verify your email to access the dashboard.');
+        await supabase.auth.signOut();
+        location.href = '/index-20.html';
+        return null;
+      }
+      currentUser = session.user;
+      return currentUser;
+    }
+
+    async function loadTutorProfile(){
+      let { data: tutor, error } = await supabase.from('tutors').select('*').eq('id', currentUser.id).maybeSingle();
+      if (!tutor) {
+        // Auto-create a tutor row on first login (RLS must allow insert when id = auth.uid())
+        const full_name = currentUser.user_metadata?.full_name || currentUser.email.split('@')[0];
+        const phone = currentUser.user_metadata?.phone || null;
+        const { data: created, error: upErr } = await supabase
+          .from('tutors')
+          .insert([{ id: currentUser.id, full_name, email: currentUser.email, phone }])
+          .select()
+          .maybeSingle();
+        if (!upErr) tutor = created;
+      }
+      const fullName = (tutor?.full_name || currentUser.user_metadata?.full_name || currentUser.email.split('@')[0] || 'Tutor').trim();
+      const phone = tutor?.phone || currentUser.user_metadata?.phone || '—';
+      const firstName = fullName.split(' ')[0];
+
+      document.getElementById('tutorName').textContent = fullName;
+      document.getElementById('firstName').textContent = firstName;
+      document.getElementById('profileName').textContent = fullName;
+      document.getElementById('profileEmail').textContent = currentUser.email;
+      document.getElementById('profilePhone').textContent = phone;
+    }
+
+    async function loadLessons(){
+      const tbody = document.getElementById('lessonsTbody');
+      tbody.innerHTML = `<tr><td colspan="5" class="muted" style="padding:14px">Loading...</td></tr>`;
+      try{
+        const now = new Date().toISOString();
+        const { data, error } = await supabase
+          .from('lessons')
+          .select('scheduled_at,status, children:child_id(name), subjects:subject_id(name)')
+          .eq('tutor_id', currentUser.id)
+          .gte('scheduled_at', now)
+          .order('scheduled_at', { ascending: true });
+        if(error) throw error;
+        if(!data || !data.length){
+          tbody.innerHTML = `<tr><td colspan="5" class="muted" style="padding:14px">No upcoming lessons.</td></tr>`;
+          return;
+        }
+        tbody.innerHTML = data.map(l=>{
+          const dt = new Date(l.scheduled_at);
+          const date = dt.toLocaleDateString();
+          const time = dt.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+          return `<tr>
+            <td>${date}</td>
+            <td>${time}</td>
+            <td>${l.children?.name || '—'}</td>
+            <td>${l.subjects?.name || '—'}</td>
+            <td>${l.status || 'scheduled'}</td>
+          </tr>`;
+        }).join('');
+      }catch(err){
+        console.error(err);
+        tbody.innerHTML = `<tr><td colspan="5" class="muted" style="padding:14px">Failed to load lessons.</td></tr>`;
+      }
+    }
+
+    async function loadAssignments(){
+      const tbody = document.getElementById('assignmentsTbody');
+      tbody.innerHTML = `<tr><td colspan="5" class="muted" style="padding:14px">Loading...</td></tr>`;
+      try{
+        const { data, error } = await supabase
+          .from('assignments')
+          .select('title,due_date,status, children:child_id(name), subjects:subject_id(name)')
+          .eq('tutor_id', currentUser.id)
+          .order('due_date', { ascending: true, nullsFirst: false });
+        if(error) throw error;
+        if(!data || !data.length){
+          tbody.innerHTML = `<tr><td colspan="5" class="muted" style="padding:14px">No assignments yet.</td></tr>`;
+          return;
+        }
+        tbody.innerHTML = data.map(a=>{
+          const due = a.due_date ? new Date(a.due_date).toLocaleDateString() : '—';
+          return `<tr>
+            <td>${a.title || '—'}</td>
+            <td>${a.children?.name || '—'}</td>
+            <td>${a.subjects?.name || '—'}</td>
+            <td>${due}</td>
+            <td>${a.status || 'assigned'}</td>
+          </tr>`;
+        }).join('');
+      }catch(err){
+        console.error(err);
+        tbody.innerHTML = `<tr><td colspan="5" class="muted" style="padding:14px">Failed to load assignments.</td></tr>`;
+      }
+    }
+
+    document.getElementById('logoutBtn').addEventListener('click', async ()=>{
+      await supabase.auth.signOut();
+      location.href = '/index-20.html';
+    });
+
+    supabase.auth.onAuthStateChange((event, session) => {
+      if(event === 'SIGNED_OUT' || !session) location.href = '/index-20.html';
+    });
+
+    (async function init(){
+      const user = await ensureAuth(); if(!user) return;
+      await loadTutorProfile();
+      await loadLessons();
+      await loadAssignments();
+    })();
+  </script>
+</body>
+</html>
