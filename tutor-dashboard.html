@@ -148,17 +148,16 @@
     }
 
     async function loadTutorProfile(){
-      let { data: tutor, error } = await supabase.from('tutors').select('*').eq('id', currentUser.id).maybeSingle();
+      let { data: tutor } = await supabase.from('tutors').select('*').eq('id', currentUser.id).maybeSingle();
       if (!tutor) {
-        // Auto-create a tutor row on first login (RLS must allow insert when id = auth.uid())
         const full_name = currentUser.user_metadata?.full_name || currentUser.email.split('@')[0];
         const phone = currentUser.user_metadata?.phone || null;
-        const { data: created, error: upErr } = await supabase
+        const { data: created } = await supabase
           .from('tutors')
           .insert([{ id: currentUser.id, full_name, email: currentUser.email, phone }])
           .select()
           .maybeSingle();
-        if (!upErr) tutor = created;
+        tutor = created || { full_name, phone };
       }
       const fullName = (tutor?.full_name || currentUser.user_metadata?.full_name || currentUser.email.split('@')[0] || 'Tutor').trim();
       const phone = tutor?.phone || currentUser.user_metadata?.phone || '—';
@@ -176,13 +175,12 @@
       tbody.innerHTML = `<tr><td colspan="5" class="muted" style="padding:14px">Loading...</td></tr>`;
       try{
         const now = new Date().toISOString();
-        const { data, error } = await supabase
+        const { data } = await supabase
           .from('lessons')
           .select('scheduled_at,status, children:child_id(name), subjects:subject_id(name)')
           .eq('tutor_id', currentUser.id)
           .gte('scheduled_at', now)
           .order('scheduled_at', { ascending: true });
-        if(error) throw error;
         if(!data || !data.length){
           tbody.innerHTML = `<tr><td colspan="5" class="muted" style="padding:14px">No upcoming lessons.</td></tr>`;
           return;
@@ -209,12 +207,11 @@
       const tbody = document.getElementById('assignmentsTbody');
       tbody.innerHTML = `<tr><td colspan="5" class="muted" style="padding:14px">Loading...</td></tr>`;
       try{
-        const { data, error } = await supabase
+        const { data } = await supabase
           .from('assignments')
           .select('title,due_date,status, children:child_id(name), subjects:subject_id(name)')
           .eq('tutor_id', currentUser.id)
-          .order('due_date', { ascending: true, nullsFirst: false });
-        if(error) throw error;
+          .order('due_date', { ascending: true });
         if(!data || !data.length){
           tbody.innerHTML = `<tr><td colspan="5" class="muted" style="padding:14px">No assignments yet.</td></tr>`;
           return;
