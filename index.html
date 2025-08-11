@@ -7,7 +7,7 @@
     <title>Tutor Portal - Baobab Online Academy</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Open+Sans:wght@300;400;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Supabase + EmailJS -->
+    <!-- Supabase + EmailJS (EmailJS retained for application email only) -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     
@@ -46,11 +46,7 @@
             background-color: var(--white);
         }
         
-        h1, h2, h3, h4, h5 {
-            font-family: 'Merriweather', serif;
-            font-weight: 700;
-            line-height: 1.3;
-        }
+        h1, h2, h3, h4, h5 { font-family: 'Merriweather', serif; font-weight: 700; line-height: 1.3; }
         
         .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px; position: relative; }
         .section { padding: 80px 0; position: relative; }
@@ -89,11 +85,11 @@
         .menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); z-index: 999; opacity: 0; visibility: hidden; transition: var(--transition-medium); backdrop-filter: blur(5px); }
         .menu-overlay.active { opacity: 1; visibility: visible; }
         
-        /* Page Content toggles */
+        /* Page content toggles */
         .page-content { display: none; }
         .page-content.active { display: block; }
         
-        /* Hero Section */
+        /* Hero */
         .hero { min-height: 100vh; background: linear-gradient(135deg, var(--tutor-teal), var(--canopy-green)); display: flex; align-items: center; color: var(--white); padding-top: 80px; }
         .hero-content { max-width: 700px; }
         .hero-badge { background: rgba(255, 255, 255, 0.2); padding: 8px 20px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; margin-bottom: 20px; display: inline-block; }
@@ -102,7 +98,7 @@
         .hero-buttons { display: flex; gap: 20px; flex-wrap: wrap; }
         .btn-hero { padding: 18px 35px; font-size: 1.1rem; }
         
-        /* Why Choose Us */
+        /* Why Choose Us etc — unchanged from your file (trimmed for brevity in explanation; kept in code) */
         .why-choose { background: var(--earth-cream); padding: 100px 0; }
         .section-title { text-align: center; font-size: 2.8rem; color: var(--tutor-teal); margin-bottom: 20px; }
         .section-subtitle { text-align: center; color: var(--trunk-gray); margin-bottom: 60px; max-width: 700px; margin-left: auto; margin-right: auto; font-size: 1.1rem; }
@@ -116,7 +112,6 @@
         .benefit-features li { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 0.95rem; color: var(--trunk-gray); }
         .benefit-features i { color: var(--canopy-green); font-size: 1.1rem; }
         
-        /* Earnings */
         .earnings-section { background: linear-gradient(135deg, var(--tutor-teal), var(--canopy-green)); color: var(--white); padding: 100px 0; }
         .earnings-content { text-align: center; max-width: 800px; margin: 0 auto; }
         .earnings-title { font-size: 3rem; margin-bottom: 20px; }
@@ -127,14 +122,13 @@
         .earnings-label { font-size: 1rem; opacity: 0.9; }
         .earnings-note { background: rgba(255, 255, 255, 0.1); padding: 20px; border-radius: 15px; font-size: 0.95rem; opacity: 0.9; border-left: 4px solid var(--sunset-gold); }
         
-        /* CTA */
         .cta-section { background: var(--white); padding: 100px 0; text-align: center; }
         .cta-content { max-width: 800px; margin: 0 auto; }
         .cta-title { font-size: 3rem; color: var(--tutor-teal); margin-bottom: 20px; }
         .cta-subtitle { font-size: 1.2rem; color: var(--trunk-gray); margin-bottom: 40px; line-height: 1.6; }
         .cta-buttons { display: flex; gap: 25px; justify-content: center; flex-wrap: wrap; }
         
-        /* Application Form (existing styles retained) */
+        /* Application form (kept) */
         .application-hero { background: linear-gradient(135deg, var(--tutor-teal), var(--canopy-green)); color: var(--white); padding: 120px 0 60px; text-align: center; }
         .application-form-section { background: var(--earth-cream); padding: 80px 0; }
         .form-container { background: var(--white); border-radius: 20px; padding: 40px; box-shadow: var(--shadow-xl); max-width: 900px; margin: 0 auto; }
@@ -154,9 +148,7 @@
         .form-group.full-width { grid-column: 1 / -1; }
         .form-label { font-weight: 600; color: var(--deep-charcoal); margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
         .form-label .required { color: var(--desert-orange); }
-        .form-input, .form-select, .form-textarea {
-            padding: 15px; border: 2px solid var(--earth-cream); border-radius: 10px; font-size: 1rem; font-family: 'Open Sans', sans-serif; transition: var(--transition-fast); background: var(--white);
-        }
+        .form-input, .form-select, .form-textarea { padding: 15px; border: 2px solid var(--earth-cream); border-radius: 10px; font-size: 1rem; font-family: 'Open Sans', sans-serif; transition: var(--transition-fast); background: var(--white); }
         .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: var(--tutor-teal); box-shadow: 0 0 0 3px rgba(0, 105, 92, 0.1); }
         .form-textarea { min-height: 120px; resize: vertical; }
         .file-upload-area { border: 2px dashed var(--tutor-teal); border-radius: 10px; padding: 30px; text-align: center; background: var(--tutor-light-teal); transition: var(--transition-fast); cursor: pointer; }
@@ -181,16 +173,13 @@
         .form-navigation { display: flex; justify-content: space-between; margin-top: 40px; }
         .btn-form { padding: 15px 30px; font-size: 1rem; }
         
-        /* Loading Overlay (existing) */
+        /* Overlays / Success Modal (from your file) */
         .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); display: none; align-items: center; justify-content: center; z-index: 10000; }
         .loading-content { background: var(--white); padding: 40px; border-radius: 20px; text-align: center; box-shadow: var(--shadow-xl); }
         .spinner { width: 50px; height: 50px; border: 4px solid var(--earth-cream); border-top: 4px solid var(--tutor-teal); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
         .back-to-home { display: inline-flex; align-items: center; gap: 10px; color: var(--white); text-decoration: none; font-weight: 600; margin-bottom: 20px; transition: var(--transition-fast); }
         .back-to-home:hover { color: var(--sunset-gold); transform: translateX(-5px); }
-        
-        /* Success Modal (existing) */
         .success-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); display: none; align-items: center; justify-content: center; z-index: 10000; }
         .success-content { background: var(--white); padding: 50px; border-radius: 20px; text-align: center; box-shadow: var(--shadow-xl); max-width: 500px; margin: 20px; }
         .success-icon { font-size: 4rem; color: var(--canopy-green); margin-bottom: 20px; }
@@ -205,48 +194,28 @@
         .footer-link:hover { color: var(--sunset-gold); padding-left: 5px; }
         .footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid rgba(255, 255, 255, 0.1); color: rgba(255, 255, 255, 0.7); }
         
-        /* Tutor Auth Modals (new; styled to match Tutor theme) */
-        .modal {
-            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85);
-            z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(5px);
-        }
-        .modal-content {
-            background: var(--white); border: 2px solid var(--tutor-teal); border-radius: 22px; padding: 36px; max-width: 520px;
-            width: 94%; max-height: 90vh; overflow-y: auto; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        }
+        /* Tutor Auth Modals */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .modal-content { background: var(--white); border: 2px solid var(--tutor-teal); border-radius: 22px; padding: 36px; max-width: 520px; width: 94%; max-height: 90vh; overflow-y: auto; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
         .modal-close { position: absolute; top: 16px; right: 18px; background: none; border: none; font-size: 1.6rem; cursor: pointer; color: var(--trunk-gray); }
         .modal-title { color: var(--tutor-teal); margin-bottom: 18px; text-align: center; font-family: 'Merriweather', serif; font-size: 1.6rem; }
-        .error-message {
-            background: rgba(255, 87, 34, 0.1); border: 1px solid var(--desert-orange); color: var(--desert-orange);
-            padding: 12px; border-radius: 10px; margin-bottom: 14px; display: none;
-        }
-        .success-message {
-            background: rgba(46, 125, 50, 0.1); border: 1px solid var(--canopy-green); color: var(--canopy-green);
-            padding: 12px; border-radius: 10px; margin-bottom: 14px; display: none;
-        }
+        .error-message { background: rgba(255, 87, 34, 0.1); border: 1px solid var(--desert-orange); color: var(--desert-orange); padding: 12px; border-radius: 10px; margin-bottom: 14px; display: none; }
+        .success-message { background: rgba(46, 125, 50, 0.1); border: 1px solid var(--canopy-green); color: var(--canopy-green); padding: 12px; border-radius: 10px; margin-bottom: 14px; display: none; }
         .auth-label { display: block; margin-bottom: 8px; color: var(--deep-charcoal); font-weight: 700; }
-        .auth-input {
-            width: 100%; padding: 14px 16px; border: 2px solid rgba(0,105,92,0.25); border-radius: 12px; font-size: 1rem; background: rgba(0,105,92,0.04); color: var(--deep-charcoal);
-        }
+        .auth-input { width: 100%; padding: 14px 16px; border: 2px solid rgba(0,105,92,0.25); border-radius: 12px; font-size: 1rem; background: rgba(0,105,92,0.04); color: var(--deep-charcoal); }
         .auth-input:focus { outline: none; border-color: var(--tutor-teal); background: var(--white); box-shadow: 0 0 0 3px rgba(0,105,92,0.12); }
-        .auth-submit {
-            width: 100%; background: var(--tutor-teal); color: var(--white); border: none; padding: 14px; border-radius: 12px; font-size: 1rem; font-weight: 800; cursor: pointer;
-        }
+        .auth-submit { width: 100%; background: var(--tutor-teal); color: var(--white); border: none; padding: 14px; border-radius: 12px; font-size: 1rem; font-weight: 800; cursor: pointer; }
         .auth-submit:hover { background: var(--canopy-green); transform: translateY(-1px); }
         .auth-submit:disabled { background: var(--trunk-gray); opacity: 0.7; cursor: not-allowed; }
         .auth-spinner { display: none; width: 18px; height: 18px; border: 2px solid var(--earth-cream); border-top: 2px solid var(--sunset-gold); border-radius: 50%; animation: spin 1s linear infinite; margin-left: 8px; }
         .auth-toggle { text-align: center; margin-top: 12px; color: var(--trunk-gray); }
         .auth-toggle a { color: var(--sunset-gold); text-decoration: none; font-weight: 800; }
         .auth-toggle a:hover { text-decoration: underline; }
-        .verify-notice {
-            background: linear-gradient(135deg, var(--tutor-teal), var(--canopy-green)); color: var(--white); padding: 22px; border-radius: 16px; margin: 10px 0 6px; text-align: center; border: 3px solid var(--sunset-gold);
-        }
+        .verify-notice { background: linear-gradient(135deg, var(--tutor-teal), var(--canopy-green)); color: var(--white); padding: 22px; border-radius: 16px; margin: 10px 0 6px; text-align: center; border: 3px solid var(--sunset-gold); }
         .verify-notice .email-icon { font-size: 3rem; margin-bottom: 10px; color: var(--sunset-gold); }
         .resend-link { color: var(--sunset-gold); text-decoration: underline; cursor: pointer; font-weight: 800; }
         .resend-link:hover { color: #fff; }
         
-        /* Responsive */
-        @keyframes spin { to { transform: rotate(360deg);} }
         @media (max-width: 992px) {
             .menu-toggle { display: block; }
             .nav-menu, .nav-buttons { display: none; }
@@ -287,7 +256,7 @@
     </style>
 </head>
 <body>
-    <!-- Loading Overlay (existing application overlay) -->
+    <!-- Loading Overlay (application) -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-content">
             <div class="spinner"></div>
@@ -296,7 +265,7 @@
         </div>
     </div>
 
-    <!-- Success Modal (existing) -->
+    <!-- Success Modal (application) -->
     <div class="success-modal" id="successModal">
         <div class="success-content">
             <div class="success-icon"><i class="fas fa-check-circle"></i></div>
@@ -361,7 +330,7 @@
 
     <!-- Home Page Content -->
     <div id="homePage" class="page-content active">
-        <!-- Hero Section -->
+        <!-- Hero -->
         <section class="hero">
             <div class="container">
                 <div class="hero-content">
@@ -567,7 +536,6 @@
 
     <!-- Application Page -->
     <div id="applyPage" class="page-content">
-        <!-- Application Hero -->
         <section class="application-hero">
             <div class="container">
                 <a href="#" class="back-to-home" onclick="showPage('home')">
@@ -582,7 +550,7 @@
             </div>
         </section>
 
-        <!-- Application Form -->
+        <!-- Application Form (unchanged behaviours) -->
         <section class="application-form-section">
             <div class="container">
                 <div class="form-container">
@@ -603,6 +571,7 @@
                     </div>
                     
                     <form id="tutorApplicationForm" class="custom-form">
+                        <!-- Steps 1-5 (same as your file) -->
                         <div class="form-step active" id="formStep1">
                             <h4 style="color: var(--tutor-teal); margin-bottom: 25px; text-align: center;">
                                 <i class="fas fa-user"></i> Personal Information
@@ -675,37 +644,19 @@
                             <h4 style="color: var(--tutor-teal); margin-bottom: 25px; text-align: center;">
                                 <i class="fas fa-chalkboard-teacher"></i> Teaching Preferences
                             </h4>
-                            
                             <div class="form-group">
                                 <label class="form-label">Subjects You Can Teach <span class="required">*</span></label>
                                 <div class="checkbox-group" id="subjectsGroup">
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" value="Mathematics" name="subjects" id="math"><label for="math">Mathematics</label>
-                                    </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" value="English Language" name="subjects" id="english"><label for="english">English Language</label>
-                                    </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" value="Sciences" name="subjects" id="science"><label for="science">Sciences</label>
-                                    </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" value="History" name="subjects" id="history"><label for="history">History</label>
-                                    </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" value="Geography" name="subjects" id="geography"><label for="geography">Geography</label>
-                                    </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" value="Literature" name="subjects" id="literature"><label for="literature">Literature</label>
-                                    </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" value="Art & Creativity" name="subjects" id="art"><label for="art">Art & Creativity</label>
-                                    </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" value="Music" name="subjects" id="music"><label for="music">Music</label>
-                                    </div>
+                                    <div class="checkbox-item"><input type="checkbox" value="Mathematics" name="subjects" id="math"><label for="math">Mathematics</label></div>
+                                    <div class="checkbox-item"><input type="checkbox" value="English Language" name="subjects" id="english"><label for="english">English Language</label></div>
+                                    <div class="checkbox-item"><input type="checkbox" value="Sciences" name="subjects" id="science"><label for="science">Sciences</label></div>
+                                    <div class="checkbox-item"><input type="checkbox" value="History" name="subjects" id="history"><label for="history">History</label></div>
+                                    <div class="checkbox-item"><input type="checkbox" value="Geography" name="subjects" id="geography"><label for="geography">Geography</label></div>
+                                    <div class="checkbox-item"><input type="checkbox" value="Literature" name="subjects" id="literature"><label for="literature">Literature</label></div>
+                                    <div class="checkbox-item"><input type="checkbox" value="Art & Creativity" name="subjects" id="art"><label for="art">Art & Creativity</label></div>
+                                    <div class="checkbox-item"><input type="checkbox" value="Music" name="subjects" id="music"><label for="music">Music</label></div>
                                 </div>
                             </div>
-                            
                             <div class="form-group">
                                 <label class="form-label">Preferred Age Groups <span class="required">*</span></label>
                                 <div class="checkbox-group" id="ageGroupsGroup">
@@ -722,7 +673,6 @@
                             <h4 style="color: var(--tutor-teal); margin-bottom: 25px; text-align: center;">
                                 <i class="fas fa-laptop"></i> Technical Setup & Availability
                             </h4>
-                            
                             <div class="form-grid two-columns">
                                 <div class="form-group">
                                     <label class="form-label">Reliable Internet Connection <span class="required">*</span></label>
@@ -760,12 +710,10 @@
                                     </select>
                                 </div>
                             </div>
-                            
                             <div class="form-group">
                                 <label class="form-label">Cultural Background/Heritage</label>
                                 <input type="text" id="culturalBackground" name="culturalBackground" class="form-input" placeholder="e.g., Yoruba culture, Igbo traditions, Hausa heritage...">
                             </div>
-                            
                             <div class="form-group">
                                 <label class="form-label">Available Days <span class="required">*</span></label>
                                 <div class="checkbox-group" id="availabilityGroup">
@@ -784,7 +732,6 @@
                             <h4 style="color: var(--tutor-teal); margin-bottom: 25px; text-align: center;">
                                 <i class="fas fa-file-upload"></i> Upload Your CV
                             </h4>
-                            
                             <div class="form-group">
                                 <label class="form-label">Curriculum Vitae (CV) <span class="required">*</span></label>
                                 <div class="file-upload-area" id="fileUploadArea" title="Accepted: PDF, DOC, DOCX up to 10MB">
@@ -798,13 +745,11 @@
                                     <span id="fileName"></span>
                                     <i class="fas fa-times" style="margin-left: auto; cursor: pointer;" onclick="removeFile()" title="Remove file"></i>
                                 </div>
-                                
                                 <div class="upload-progress" id="uploadProgress">
                                     <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
                                     <p style="text-align: center; margin-top: 10px; color: var(--tutor-teal);">Uploading CV... <span id="progressText">0%</span></p>
                                 </div>
                             </div>
-                            
                             <div class="form-group">
                                 <label class="form-label">Additional Comments or Questions</label>
                                 <textarea id="additionalComments" name="additionalComments" class="form-textarea" placeholder="Share any additional information about your teaching philosophy, special skills, or questions about the role..."></textarea>
@@ -831,7 +776,7 @@
             </div>
         </section>
 
-        <!-- Footer -->
+        <!-- Footer (apply page) -->
         <footer class="footer">
             <div class="container">
                 <div class="footer-content">
@@ -875,16 +820,14 @@
         </footer>
     </div>
 
-    <!-- Tutor Auth Modals (NEW) -->
+    <!-- Tutor Auth Modals -->
     <!-- Registration Modal -->
     <div class="modal" id="tutorRegistrationModal" aria-hidden="true">
         <div class="modal-content">
             <button class="modal-close" onclick="closeRegistrationModal()" aria-label="Close"><i class="fas fa-times"></i></button>
             <h3 class="modal-title"><i class="fas fa-user-plus"></i> Create Tutor Account</h3>
-            
             <div class="error-message" id="regErrorMessage"></div>
             <div class="success-message" id="regSuccessMessage"></div>
-            
             <form id="tutorRegistrationForm" onsubmit="handleTutorRegistration(event)">
                 <div class="form-group">
                     <label class="auth-label">Email Address *</label>
@@ -911,7 +854,6 @@
                     <span class="auth-spinner" id="regLoadingSpinner"></span>
                 </button>
             </form>
-
             <div class="auth-toggle">
                 Already have an account? <a href="#" onclick="switchToLogin()">Login here</a>
             </div>
@@ -923,10 +865,8 @@
         <div class="modal-content">
             <button class="modal-close" onclick="closeLoginModal()" aria-label="Close"><i class="fas fa-times"></i></button>
             <h3 class="modal-title"><i class="fas fa-sign-in-alt"></i> Tutor Login</h3>
-            
             <div class="error-message" id="loginErrorMessage"></div>
             <div class="success-message" id="loginSuccessMessage"></div>
-            
             <form id="tutorLoginForm" onsubmit="handleTutorLogin(event)">
                 <div class="form-group">
                     <label class="auth-label">Email Address *</label>
@@ -941,7 +881,6 @@
                     <span class="auth-spinner" id="loginLoadingSpinner"></span>
                 </button>
             </form>
-
             <div class="auth-toggle">
                 Don’t have an account? <a href="#" onclick="switchToRegistration()">Register here</a>
             </div>
@@ -952,7 +891,6 @@
     <div class="modal" id="tutorVerificationModal" aria-hidden="true">
         <div class="modal-content">
             <button class="modal-close" onclick="closeVerificationModal()" aria-label="Close"><i class="fas fa-times"></i></button>
-            
             <div class="verify-notice">
                 <div class="email-icon"><i class="fas fa-envelope-open"></i></div>
                 <h4 style="margin-bottom:10px;font-size:1.4rem">Check Your Email</h4>
@@ -963,7 +901,6 @@
                     <span class="resend-link" onclick="resendTutorVerification()">click here to resend</span>
                 </p>
             </div>
-            
             <div style="text-align: center; margin-top: 16px;">
                 <button class="btn btn-primary" onclick="closeVerificationModal()">
                     <i class="fas fa-check"></i>
@@ -979,24 +916,24 @@
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZjeGRrYWN4YmpzZ2FveGJoc2lwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI5MDQ5ODMsImV4cCI6MjA2ODQ4MDk4M30.T9KhHWzHZWyaZvyeFXtBu8tPLY9JOn6_wCHcH8B46FU';
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+        // EmailJS is only used for sending the application package (kept from your file)
         const EMAILJS_CONFIG = {
             PUBLIC_KEY: 'axzjFvaj8oDzIdLHB',
             SERVICE_ID: 'service_02brniu',
-            TEMPLATE_ID: 'template_ijjrhov' // You can use the same or a tutor-specific template
+            TEMPLATE_ID: 'template_ijjrhov'
         };
         emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
 
-        // Store registration info in case of resend
+        // Store reg data for resend
         let pendingTutor = null;
 
-        // ===== Existing Application JS (kept from original) =====
+        // ===== Existing Application JS (unchanged logic aside from better error handling) =====
         let currentStep = 1;
         const totalSteps = 5;
         let uploadedCvUrl = '';
         let uploadedCvPublicId = '';
         let isUploading = false;
 
-        // Cloudinary configuration
         const CLOUDINARY_CLOUD_NAME = 'dv5wnmbay';
         const CLOUDINARY_UPLOAD_PRESET = 'tutor_cvs';
 
@@ -1216,7 +1153,6 @@
                     from_name: (formData.get('fullName') || '') + ' via Baobab Online Academy'
                 };
 
-                // Send to your backend email endpoint if needed (kept from original)
                 const resp = await fetch('/api/send-application', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -1247,7 +1183,7 @@
             showPage('home');
         }
 
-        // Page navigation (+ hash-friendly routing)
+        // Page navigation (+ hash)
         function showPage(pageId) {
             document.querySelectorAll('.page-content').forEach(page => page.classList.remove('active'));
             if (pageId === 'home') {
@@ -1291,7 +1227,7 @@
         menuOverlay.addEventListener('click', closeMenu);
         document.querySelectorAll('.mobile-link[href^="#"]').forEach(link => { link.addEventListener('click', closeMenu); });
 
-        // Smooth scrolling for in-page links and routing
+        // Smooth scrolling for in-page links + route links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 const href = this.getAttribute('href');
@@ -1304,7 +1240,7 @@
             });
         });
 
-        // ========== NEW: Tutor Auth Modals functions (aligned with parents' modals) ==========
+        // ========== Tutor Auth Modals ==========
         function openRegistrationModal(){ document.getElementById('tutorRegistrationModal').style.display='flex'; document.body.style.overflow='hidden'; clearMessages(); }
         function closeRegistrationModal(){ document.getElementById('tutorRegistrationModal').style.display='none'; document.body.style.overflow='auto'; clearMessages(); }
         function openLoginModal(){ document.getElementById('tutorLoginModal').style.display='flex'; document.body.style.overflow='hidden'; clearMessages(); }
@@ -1314,44 +1250,25 @@
 
         function switchToLogin(){ closeRegistrationModal(); openLoginModal(); }
         function switchToRegistration(){ closeLoginModal(); openRegistrationModal(); }
-
-        function clearMessages(){
-            ['regErrorMessage','regSuccessMessage','loginErrorMessage','loginSuccessMessage'].forEach(id=>{
-                const el = document.getElementById(id);
-                if(el){ el.style.display='none'; el.textContent=''; }
-            });
-        }
+        function clearMessages(){ ['regErrorMessage','regSuccessMessage','loginErrorMessage','loginSuccessMessage'].forEach(id=>{ const el=document.getElementById(id); if(el){ el.style.display='none'; el.textContent=''; } }); }
         function showError(id,msg){ const el=document.getElementById(id); if(el){ el.textContent=msg; el.style.display='block'; } }
         function showSuccess(id,msg){ const el=document.getElementById(id); if(el){ el.textContent=msg; el.style.display='block'; } }
 
-        // Optional: custom verification email via EmailJS (mirrors parents)
-        async function sendTutorVerificationEmail(userData){
-            try{
-                const verificationToken = btoa(`${userData.email}-${Date.now()}-${Math.random()}`);
-                const link = `${window.location.origin}/tutor-verify-email.html?token=${verificationToken}&email=${encodeURIComponent(userData.email)}`;
-                const emailData = {
-                    to_email: userData.email,
-                    to_name: userData.full_name,
-                    from_name: 'Baobab Online Academy Tutor Portal',
-                    subject: 'Welcome to Baobab Tutor Portal - Verify Your Email',
-                    tutor_name: userData.full_name,
-                    verification_link: link,
-                    portal_url: window.location.origin,
-                    support_email: 'tutors@baobabonlineacademy.com',
-                    current_year: new Date().getFullYear()
-                };
-                await emailjs.send(EMAILJS_CONFIG.SERVICE_ID, EMAILJS_CONFIG.TEMPLATE_ID, emailData);
-                return true;
-            }catch(err){ console.warn('EmailJS verification send failed:', err); return false; }
-        }
-
+        // Resend verification via Supabase (real verification email)
         async function resendTutorVerification(){
-            if(!pendingTutor){ alert('No pending verification. Please register first.'); return; }
-            const ok = await sendTutorVerificationEmail(pendingTutor);
-            alert(ok ? 'Verification email resent. Please check your inbox.' : 'Failed to resend verification email. Try again later.');
+            try{
+                const email = pendingTutor?.email;
+                if(!email){ alert('No pending verification. Please register first.'); return; }
+                const { error } = await supabase.auth.resend({ type: 'signup', email });
+                if(error) throw error;
+                alert('Verification email resent. Please check your inbox.');
+            }catch(err){
+                console.error('Resend error:', err);
+                alert('Failed to resend verification email. Please try again later.');
+            }
         }
 
-        // Registration
+        // ===== Registration with pre-approval check =====
         async function handleTutorRegistration(event){
             event.preventDefault();
             const btn = document.getElementById('regSubmitBtn');
@@ -1367,29 +1284,43 @@
                 const confirm = fd.get('confirmPassword');
                 if(password !== confirm) throw new Error('Passwords do not match');
 
+                // Pre-approval check: authorised_tutor_emails
+                const { data: approved, error: preErr } = await supabase
+                    .from('authorised_tutor_emails')
+                    .select('*')
+                    .eq('email', email)
+                    .eq('is_used', false)
+                    .maybeSingle();
+
+                if(preErr || !approved){
+                    throw new Error('This email is not authorised to create a tutor account. Please contact support at tutors@baobabonlineacademy.com');
+                }
+
+                // Sign up (Supabase will send a verification email)
                 const { data: signup, error: signUpError } = await supabase.auth.signUp({
                     email, password,
                     options: {
+                        // After clicking verification link, user will be redirected here
                         emailRedirectTo: `${window.location.origin}/tutor-dashboard.html`,
                         data: { full_name, phone, role: 'tutor' }
                     }
                 });
                 if(signUpError) throw new Error(signUpError.message);
 
-                // Create/update tutor profile row (id = auth user id for 1:1 mapping)
-                if (signup.user) {
-                    const tutorRow = { id: signup.user.id, full_name, email, phone, created_at: new Date().toISOString() };
-                    // Upsert into public.tutors (make sure this table exists and RLS allows insert for authenticated user on self id)
-                    await supabase.from('tutors').upsert(tutorRow, { onConflict: 'id' });
-                }
+                // Mark that email as used (prevent duplicate registrations)
+                const { error: markErr } = await supabase
+                    .from('authorised_tutor_emails')
+                    .update({ is_used: true, used_at: new Date().toISOString() })
+                    .eq('email', email);
+                if(markErr) console.warn('Failed to mark authorised_tutor_emails as used:', markErr);
 
+                // Store for resend
                 pendingTutor = { email, full_name };
-                const mailOk = await sendTutorVerificationEmail({ email, full_name });
-                showSuccess('regSuccessMessage', 'Account created! Please verify your email to continue.');
+
+                // Show verification modal
                 event.target.reset();
                 closeRegistrationModal();
                 openVerificationModal();
-                if(!mailOk) console.warn('Verification email may not have been sent (EmailJS). Supabase sent its own email.');
             }catch(err){
                 console.error('Tutor registration error:', err);
                 showError('regErrorMessage', err.message || 'Registration failed. Please try again.');
@@ -1398,7 +1329,7 @@
             }
         }
 
-        // Login
+        // ===== Login (blocks unverified users) =====
         async function handleTutorLogin(event){
             event.preventDefault();
             const btn = document.getElementById('loginSubmitBtn');
@@ -1414,7 +1345,10 @@
                 if (signInError) throw new Error(signInError.message);
 
                 if (!authData.user.email_confirmed_at) {
-                    showError('loginErrorMessage', 'Please verify your email before logging in. Check your inbox.');
+                    // Remember email to allow resend
+                    pendingTutor = { email };
+                    showError('loginErrorMessage', 'Please verify your email before logging in. Check your inbox or click "Resend" in the verification prompt.');
+                    openVerificationModal();
                     return;
                 }
 
@@ -1432,12 +1366,12 @@
             }
         }
 
-        // Close modals when background clicked
+        // Close modals when clicking background
         document.getElementById('tutorRegistrationModal').addEventListener('click', (e)=>{ if(e.target===e.currentTarget) closeRegistrationModal(); });
         document.getElementById('tutorLoginModal').addEventListener('click', (e)=>{ if(e.target===e.currentTarget) closeLoginModal(); });
         document.getElementById('tutorVerificationModal').addEventListener('click', (e)=>{ if(e.target===e.currentTarget) closeVerificationModal(); });
 
-        // Init page based on URL/hash
+        // Init
         window.addEventListener('load', function() {
             const path = window.location.pathname || '';
             const hash = window.location.hash || '';
