@@ -2204,7 +2204,7 @@
                 const verificationToken = btoa(`${userData.email}-${Date.now()}-${Math.random()}`);
                 
                 // Create verification link
-                const verificationLink = `${window.location.origin}/verify-email.html?token=${verificationToken}&email=${encodeURIComponent(userData.email)}`;
+                const verificationLink = `${window.location.origin}/tutor-verify-email.html?token=${verificationToken}&email=${encodeURIComponent(userData.email)}`;
                 
                 // Prepare email data
                 const emailData = {
