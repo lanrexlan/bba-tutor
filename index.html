@@ -7,7 +7,10 @@
     <title>Tutor Portal - Baobab Online Academy</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Open+Sans:wght@300;400;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
-    
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- EmailJS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     
     <style>
         :root {
@@ -503,6 +506,197 @@
             flex-wrap: wrap;
         }
         
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: var(--white);
+            border: 2px solid var(--tutor-teal);
+            border-radius: 25px;
+            padding: 45px;
+            max-width: 500px;
+            width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--trunk-gray);
+        }
+
+        .modal-title {
+            color: var(--tutor-teal);
+            margin-bottom: 25px;
+            text-align: center;
+            font-family: 'Merriweather', serif;
+            font-size: 1.8rem;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--deep-charcoal);
+            font-weight: 600;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px 18px;
+            border: 2px solid rgba(0, 105, 92, 0.3);
+            border-radius: 12px;
+            font-size: 1rem;
+            background: rgba(0, 105, 92, 0.05);
+            color: var(--deep-charcoal);
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--tutor-teal);
+            background: var(--white);
+        }
+
+        .form-submit {
+            width: 100%;
+            background: var(--tutor-teal);
+            color: var(--white);
+            border: none;
+            padding: 18px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .form-submit:hover {
+            background: var(--canopy-green);
+            transform: translateY(-2px);
+        }
+
+        .form-submit:disabled {
+            background: var(--trunk-gray);
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .error-message {
+            background: rgba(255, 87, 34, 0.1);
+            border: 1px solid var(--desert-orange);
+            color: var(--desert-orange);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .success-message {
+            background: rgba(46, 125, 50, 0.1);
+            border: 1px solid var(--canopy-green);
+            color: var(--canopy-green);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--earth-cream);
+            border-top: 2px solid var(--tutor-teal);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .form-toggle {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--trunk-gray);
+        }
+
+        .form-toggle a {
+            color: var(--tutor-teal);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .form-toggle a:hover {
+            text-decoration: underline;
+        }
+
+        /* Email Verification Notice */
+        .verification-notice {
+            background: linear-gradient(135deg, var(--tutor-teal), var(--canopy-green));
+            color: var(--white);
+            padding: 30px;
+            border-radius: 20px;
+            margin: 20px 0;
+            text-align: center;
+            border: 3px solid var(--sunset-gold);
+        }
+
+        .verification-notice h4 {
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .verification-notice p {
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .verification-notice .email-icon {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: var(--sunset-gold);
+        }
+
+        .resend-link {
+            color: var(--sunset-gold);
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .resend-link:hover {
+            color: var(--white);
+        }
+        
         /* Application Form Styles */
         .application-hero {
             background: linear-gradient(135deg, var(--tutor-teal), var(--canopy-green));
@@ -802,11 +996,6 @@
             margin: 0 auto 20px;
         }
         
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
         .back-to-home {
             display: inline-flex;
             align-items: center;
@@ -987,6 +1176,25 @@
                 height: 35px;
                 font-size: 0.9rem;
             }
+
+            .modal-content {
+                padding: 30px;
+                margin: 10px;
+            }
+
+            .verification-notice {
+                padding: 25px;
+                margin: 15px 0;
+            }
+
+            .verification-notice .email-icon {
+                font-size: 3rem;
+                margin-bottom: 15px;
+            }
+
+            .verification-notice h4 {
+                font-size: 1.3rem;
+            }
         }
         
         @media (max-width: 576px) {
@@ -1045,197 +1253,40 @@
             .logo-text {
                 font-size: 18px;
             }
-        }
-
-        /* Tutor Auth Modals (added) */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(5px);
-        }
-        .modal-content {
-            background: var(--white);
-            border: 2px solid var(--tutor-teal);
-            border-radius: 22px;
-            padding: 36px;
-            max-width: 520px;
-            width: 94%;
-            max-height: 90vh;
-            overflow-y: auto;
-            position: relative;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-        }
-        .modal-close {
-            position: absolute;
-            top: 16px;
-            right: 18px;
-            background: none;
-            border: none;
-            font-size: 1.6rem;
-            cursor: pointer;
-            color: var(--trunk-gray);
-        }
-        .modal-title {
-            color: var(--tutor-teal);
-            margin-bottom: 18px;
-            text-align: center;
-            font-family: 'Merriweather', serif;
-            font-size: 1.6rem;
-        }
-        .error-message {
-            background: rgba(255, 87, 34, 0.1);
-            border: 1px solid var(--desert-orange);
-            color: var(--desert-orange);
-            padding: 12px;
-            border-radius: 10px;
-            margin-bottom: 14px;
-            display: none;
-        }
-        .success-message {
-            background: rgba(46, 125, 50, 0.1);
-            border: 1px solid var(--canopy-green);
-            color: var(--canopy-green);
-            padding: 12px;
-            border-radius: 10px;
-            margin-bottom: 14px;
-            display: none;
-        }
-        .auth-label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--deep-charcoal);
-            font-weight: 700;
-        }
-        .auth-input {
-            width: 100%;
-            padding: 14px 16px;
-            border: 2px solid rgba(0,105,92,0.25);
-            border-radius: 12px;
-            font-size: 1rem;
-            background: rgba(0,105,92,0.04);
-            color: var(--deep-charcoal);
-        }
-        .auth-input:focus {
-            outline: none;
-            border-color: var(--tutor-teal);
-            background: var(--white);
-            box-shadow: 0 0 0 3px rgba(0,105,92,0.12);
-        }
-        .auth-submit {
-            width: 100%;
-            background: var(--tutor-teal);
-            color: var(--white);
-            border: none;
-            padding: 14px;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 800;
-            cursor: pointer;
-        }
-        .auth-submit:hover {
-            background: var(--canopy-green);
-            transform: translateY(-1px);
-        }
-        .auth-submit:disabled {
-            background: var(--trunk-gray);
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
-        .auth-spinner {
-            display: none;
-            width: 18px;
-            height: 18px;
-            border: 2px solid var(--earth-cream);
-            border-top: 2px solid var(--sunset-gold);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-left: 8px;
-        }
-        .auth-toggle {
-            text-align: center;
-            margin-top: 12px;
-            color: var(--trunk-gray);
-        }
-        .auth-toggle a {
-            color: var(--sunset-gold);
-            text-decoration: none;
-            font-weight: 800;
-        }
-        .auth-toggle a:hover {
-            text-decoration: underline;
-        }
-        .verify-notice {
-            background: linear-gradient(135deg, var(--tutor-teal), var(--canopy-green));
-            color: var(--white);
-            padding: 22px;
-            border-radius: 16px;
-            margin: 10px 0 6px;
-            text-align: center;
-            border: 3px solid var(--sunset-gold);
-        }
-        .verify-notice .email-icon {
-            font-size: 3rem;
-            margin-bottom: 10px;
-            color: var(--sunset-gold);
-        }
-        .resend-link {
-            color: var(--sunset-gold);
-            text-decoration: underline;
-            cursor: pointer;
-            font-weight: 800;
-        }
-        .resend-link:hover { color: #fff; }
-
-        /* Debugging styles */
-        .debug-info {
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            background: rgba(0, 0, 0, 0.9);
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            font-family: monospace;
-            font-size: 12px;
-            max-width: 300px;
-            z-index: 9999;
-            display: none;
-        }
-        .debug-info.show {
-            display: block;
-        }
-        .debug-toggle {
-            position: fixed;
-            top: 70px;
-            right: 20px;
-            background: var(--tutor-teal);
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            z-index: 9999;
+            
+            .application-hero {
+                padding: 100px 0 40px;
+            }
+            
+            .form-intro h3 {
+                font-size: 1.6rem;
+            }
+            
+            .form-intro p {
+                font-size: 1rem;
+            }
+            
+            .form-navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .success-content {
+                padding: 30px;
+                margin: 10px;
+            }
+            
+            .success-icon {
+                font-size: 3rem;
+            }
+            
+            .success-title {
+                font-size: 1.6rem;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Debug Toggle Button -->
-    <button class="debug-toggle" onclick="toggleDebug()">Debug</button>
-    
-    <!-- Debug Info Panel -->
-    <div class="debug-info" id="debugInfo">
-        <div><strong>Debug Information:</strong></div>
-        <div id="debugContent"></div>
-    </div>
-
     <!-- Loading Overlay -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-content">
@@ -1286,8 +1337,8 @@
                 </ul>
                 
                 <div class="nav-buttons">
-                    <a href="#" class="btn btn-outlined" onclick="openLoginModal()">Login</a>
-                    <a href="#/apply" class="btn btn-primary" onclick="showPage('apply')">Apply Now</a>
+                    <a href="#" class="btn btn-outlined" onclick="openTutorLoginModal()">Login</a>
+                    <a href="#" class="btn btn-primary" onclick="openTutorRegistrationModal()">Register</a>
                 </div>
             </div>
         </div>
@@ -1303,12 +1354,147 @@
             <li><a href="https://baobabonlineacademy.com" class="mobile-link">Main Site</a></li>
         </ul>
         <div class="mobile-buttons">
-            <a href="#" class="btn btn-outlined" onclick="openLoginModal()">Login</a>
-            <a href="#/apply" class="btn btn-primary" onclick="showPage('apply'); closeMenu();">Apply</a>
+            <a href="#" class="btn btn-outlined" onclick="openTutorLoginModal(); closeMenu();">Login</a>
+            <a href="#" class="btn btn-primary" onclick="openTutorRegistrationModal(); closeMenu();">Register</a>
         </div>
     </div>
     
     <div class="menu-overlay" id="menuOverlay"></div>
+
+    <!-- Tutor Registration Modal -->
+    <div class="modal" id="tutorRegistrationModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeTutorRegistrationModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <h3 class="modal-title">
+                <i class="fas fa-user-plus"></i>
+                Create Tutor Account
+            </h3>
+            
+            <div class="error-message" id="tutorRegErrorMessage"></div>
+            <div class="success-message" id="tutorRegSuccessMessage"></div>
+            
+            <form id="tutorRegistrationForm" onsubmit="handleTutorRegistration(event)">
+                <div class="form-group">
+                    <label class="form-label">Email Address *</label>
+                    <input type="email" name="email" required class="form-input" placeholder="Enter your email address">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Full Name *</label>
+                    <input type="text" name="full_name" required class="form-input" placeholder="Enter your full name">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Phone Number *</label>
+                    <input type="tel" name="phone" required class="form-input" placeholder="Enter your phone number">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Teaching Experience *</label>
+                    <select name="teaching_experience" required class="form-input">
+                        <option value="">Select your experience level</option>
+                        <option value="No formal teaching experience">No formal teaching experience</option>
+                        <option value="Less than 1 year">Less than 1 year</option>
+                        <option value="1-2 years">1-2 years</option>
+                        <option value="3-5 years">3-5 years</option>
+                        <option value="6-10 years">6-10 years</option>
+                        <option value="More than 10 years">More than 10 years</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Password *</label>
+                    <input type="password" name="password" required class="form-input" placeholder="Create a strong password" minlength="6">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Confirm Password *</label>
+                    <input type="password" name="confirmPassword" required class="form-input" placeholder="Confirm your password" minlength="6">
+                </div>
+                
+                <button type="submit" class="form-submit" id="tutorRegSubmitBtn">
+                    <span id="tutorRegSubmitText">Create Account</span>
+                    <div class="loading-spinner" id="tutorRegLoadingSpinner"></div>
+                </button>
+            </form>
+            
+            <div class="form-toggle">
+                Already have an account? <a href="#" onclick="switchToTutorLogin()">Login here</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tutor Login Modal -->
+    <div class="modal" id="tutorLoginModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeTutorLoginModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <h3 class="modal-title">
+                <i class="fas fa-sign-in-alt"></i>
+                Tutor Login
+            </h3>
+            
+            <div class="error-message" id="tutorLoginErrorMessage"></div>
+            <div class="success-message" id="tutorLoginSuccessMessage"></div>
+            
+            <form id="tutorLoginForm" onsubmit="handleTutorLogin(event)">
+                <div class="form-group">
+                    <label class="form-label">Email Address *</label>
+                    <input type="email" name="email" required class="form-input" placeholder="Enter your email address">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Password *</label>
+                    <input type="password" name="password" required class="form-input" placeholder="Enter your password">
+                </div>
+                
+                <button type="submit" class="form-submit" id="tutorLoginSubmitBtn">
+                    <span id="tutorLoginSubmitText">Login</span>
+                    <div class="loading-spinner" id="tutorLoginLoadingSpinner"></div>
+                </button>
+            </form>
+            
+            <div class="form-toggle">
+                Don't have an account? <a href="#" onclick="switchToTutorRegistration()">Register here</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Email Verification Modal -->
+    <div class="modal" id="tutorVerificationModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeTutorVerificationModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="verification-notice">
+                <div class="email-icon">
+                    <i class="fas fa-envelope-open"></i>
+                </div>
+                <h4>📧 Check Your Email!</h4>
+                <p><strong>We've sent a verification link to your email address.</strong></p>
+                <p>Please check your inbox and click the verification link to activate your tutor account.</p>
+                <p style="font-size: 0.95rem; opacity: 0.9; margin-top: 20px;">
+                    Don't see the email? Check your spam folder or 
+                    <span class="resend-link" onclick="resendTutorVerificationEmail()">
+                        click here to resend
+                    </span>
+                </p>
+            </div>
+            
+            <div style="text-align: center; margin-top: 25px;">
+                <button class="btn btn-primary" onclick="closeTutorVerificationModal()">
+                    <i class="fas fa-check"></i>
+                    I'll Check My Email
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- Home Page Content -->
     <div id="homePage" class="page-content active">
@@ -1326,21 +1512,13 @@
                         Join our community of passionate Nigerian educators earning 75% of lesson fees while the academy handles operations and support.
                     </p>
                     <div class="hero-buttons">
-                        <a href="#/apply" class="btn btn-secondary btn-hero" onclick="showPage('apply')">
+                        <a href="#" class="btn btn-secondary btn-hero" onclick="openTutorRegistrationModal()">
                             <i class="fas fa-user-plus"></i>
-                            Apply to Teach
+                            Register as Tutor
                         </a>
                         <a href="#earnings" class="btn btn-outlined btn-hero">
                             <i class="fas fa-chart-line"></i>
                             See Earnings Structure
-                        </a>
-                        <a href="#" class="btn btn-primary btn-hero" onclick="openLoginModal()">
-                            <i class="fas fa-sign-in-alt"></i>
-                            Tutor Login
-                        </a>
-                        <a href="#" class="btn btn-outlined btn-hero" onclick="openRegistrationModal()">
-                            <i class="fas fa-user-plus"></i>
-                            Create Tutor Account
                         </a>
                     </div>
                 </div>
@@ -1459,11 +1637,11 @@
                         while proudly sharing their cultural heritage. Your expertise and passion can shape young minds worldwide.
                     </p>
                     <div class="cta-buttons">
-                        <a href="#/apply" class="btn btn-primary btn-hero" onclick="showPage('apply')">
-                            <i class="fas fa-paper-plane"></i>
-                            Start Your Application
+                        <a href="#" class="btn btn-primary btn-hero" onclick="openTutorRegistrationModal()">
+                            <i class="fas fa-user-plus"></i>
+                            Create Tutor Account
                         </a>
-                        <a href="#" class="btn btn-outlined btn-hero" onclick="openLoginModal()">
+                        <a href="#" class="btn btn-outlined btn-hero" onclick="openTutorLoginModal()">
                             <i class="fas fa-sign-in-alt"></i>
                             Existing Tutor Login
                         </a>
@@ -1629,9 +1807,9 @@
                                         <option value="">Select your experience level</option>
                                         <option value="No formal teaching experience">No formal teaching experience</option>
                                         <option value="Less than 1 year">Less than 1 year</option>
-                                        <option value="1--2 years">1--2 years</option>
-                                        <option value="3--5 years">3--5 years</option>
-                                        <option value="6--10 years">6--10 years</option>
+                                        <option value="1-2 years">1-2 years</option>
+                                        <option value="3-5 years">3-5 years</option>
+                                        <option value="6-10 years">6-10 years</option>
                                         <option value="More than 10 years">More than 10 years</option>
                                     </select>
                                 </div>
@@ -1696,20 +1874,20 @@
                                 </label>
                                 <div class="checkbox-group" id="ageGroupsGroup">
                                     <div class="checkbox-item">
-                                        <input type="checkbox" value="Ages 5--7" name="ageGroups" id="age5-7">
-                                        <label for="age5-7">Ages 5--7</label>
+                                        <input type="checkbox" value="Ages 5-7" name="ageGroups" id="age5-7">
+                                        <label for="age5-7">Ages 5-7</label>
                                     </div>
                                     <div class="checkbox-item">
-                                        <input type="checkbox" value="Ages 8--10" name="ageGroups" id="age8-10">
-                                        <label for="age8-10">Ages 8--10</label>
+                                        <input type="checkbox" value="Ages 8-10" name="ageGroups" id="age8-10">
+                                        <label for="age8-10">Ages 8-10</label>
                                     </div>
                                     <div class="checkbox-item">
-                                        <input type="checkbox" value="Ages 11--13" name="ageGroups" id="age11-13">
-                                        <label for="age11-13">Ages 11--13</label>
+                                        <input type="checkbox" value="Ages 11-13" name="ageGroups" id="age11-13">
+                                        <label for="age11-13">Ages 11-13</label>
                                     </div>
                                     <div class="checkbox-item">
-                                        <input type="checkbox" value="Ages 14--16" name="ageGroups" id="age14-16">
-                                        <label for="age14-16">Ages 14--16</label>
+                                        <input type="checkbox" value="Ages 14-16" name="ageGroups" id="age14-16">
+                                        <label for="age14-16">Ages 14-16</label>
                                     </div>
                                     <div class="checkbox-item">
                                         <input type="checkbox" value="Ages 17+" name="ageGroups" id="age17plus">
@@ -1914,7 +2092,7 @@
                         </p>
                         <p style="color: rgba(255, 255, 255, 0.7);">
                             <i class="fas fa-clock"></i>
-                            Mon-Fri: 9AM-5PM WAT
+                            Mon-Fri: 9AM-6PM WAT
                         </p>
                     </div>
                 </div>
@@ -1926,183 +2104,377 @@
         </footer>
     </div>
 
-    <!-- Tutor Auth Modals (NEW) -->
-    <!-- Registration Modal -->
-    <div class="modal" id="tutorRegistrationModal" aria-hidden="true">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeRegistrationModal()" aria-label="Close"><i class="fas fa-times"></i></button>
-            <h3 class="modal-title"><i class="fas fa-user-plus"></i> Create Tutor Account</h3>
-            
-            <div class="error-message" id="regErrorMessage"></div>
-            <div class="success-message" id="regSuccessMessage"></div>
-            
-            <form id="tutorRegistrationForm" onsubmit="handleTutorRegistration(event)">
-                <div class="form-group">
-                    <label class="auth-label">Email Address *</label>
-                    <input type="email" name="email" class="auth-input" required placeholder="Enter your email address">
-                </div>
-                <div class="form-group">
-                    <label class="auth-label">Full Name *</label>
-                    <input type="text" name="full_name" class="auth-input" required placeholder="Enter your full name">
-                </div>
-                <div class="form-group">
-                    <label class="auth-label">Phone Number *</label>
-                    <input type="tel" name="phone" class="auth-input" required placeholder="Enter your phone number">
-                </div>
-                <div class="form-group">
-                    <label class="auth-label">Password *</label>
-                    <input type="password" name="password" class="auth-input" required minlength="6" placeholder="Create a strong password">
-                </div>
-                <div class="form-group">
-                    <label class="auth-label">Confirm Password *</label>
-                    <input type="password" name="confirmPassword" class="auth-input" required minlength="6" placeholder="Confirm your password">
-                </div>
-                <button type="submit" class="auth-submit" id="regSubmitBtn">
-                    <span id="regSubmitText">Create Account</span>
-                    <span class="auth-spinner" id="regLoadingSpinner"></span>
-                </button>
-            </form>
-
-            <div class="auth-toggle">
-                Already have an account? <a href="#" onclick="switchToLogin()">Login here</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Login Modal -->
-    <div class="modal" id="tutorLoginModal" aria-hidden="true">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeLoginModal()" aria-label="Close"><i class="fas fa-times"></i></button>
-            <h3 class="modal-title"><i class="fas fa-sign-in-alt"></i> Tutor Login</h3>
-            
-            <div class="error-message" id="loginErrorMessage"></div>
-            <div class="success-message" id="loginSuccessMessage"></div>
-            
-            <form id="tutorLoginForm" onsubmit="handleTutorLogin(event)">
-                <div class="form-group">
-                    <label class="auth-label">Email Address *</label>
-                    <input type="email" name="email" class="auth-input" required placeholder="Enter your email address">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Password *</label>
-                    <input type="password" name="password" class="auth-input" required placeholder="Enter your password">
-                </div>
-                <button type="submit" class="auth-submit" id="loginSubmitBtn">
-                    <span id="loginSubmitText">Login</span>
-                    <span class="auth-spinner" id="loginLoadingSpinner"></span>
-                </button>
-            </form>
-
-            <div class="auth-toggle">
-                Don't have an account? <a href="#" onclick="switchToRegistration()">Register here</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Email Verification Modal -->
-    <div class="modal" id="tutorVerificationModal" aria-hidden="true">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeVerificationModal()" aria-label="Close"><i class="fas fa-times"></i></button>
-            
-            <div class="verify-notice">
-                <div class="email-icon"><i class="fas fa-envelope-open"></i></div>
-                <h4 style="margin-bottom:10px;font-size:1.4rem">Check Your Email</h4>
-                <p><strong>We've sent a verification link to your email address.</strong></p>
-                <p>Please click the verification link to activate your tutor account.</p>
-                <p style="font-size: 0.95rem; opacity: 0.9; margin-top: 14px;">
-                    Don't see the email? Check your spam folder or 
-                    <span class="resend-link" onclick="resendTutorVerification()">click here to resend</span>
-                </p>
-            </div>
-            
-            <div style="text-align: center; margin-top: 16px;">
-                <button class="btn btn-primary" onclick="closeVerificationModal()">
-                    <i class="fas fa-check"></i>
-                    I'll Check My Email
-                </button>
-            </div>
-        </div>
-    </div>
-    
     <script>
-        // Cloudinary configuration
-        const CLOUDINARY_CLOUD_NAME = 'dv5wnmbay';
-        const CLOUDINARY_UPLOAD_PRESET = 'tutor_cvs';
-
-        // Supabase
+        // ===== CONFIGURATION SECTION =====
+        // Replace these with your actual credentials
         const SUPABASE_URL = 'https://vcxdkacxbjsgaoxbhsip.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZjeGRrYWN4YmpzZ2FveGJoc2lwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI5MDQ5ODMsImV4cCI6MjA2ODQ4MDk4M30.T9KhHWzHZWyaZvyeFXtBu8tPLY9JOn6_wCHcH8B46FU';
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-        // EmailJS (kept only for application email endpoint in your codebase)
+        
         const EMAILJS_CONFIG = {
-            PUBLIC_KEY: 'axzjFvaj8oDzIdLHB',
-            SERVICE_ID: 'service_02brniu',
-            TEMPLATE_ID: 'template_ijjrhov'
+            PUBLIC_KEY: 'axzjFvaj8oDzIdLHB',     // Replace with your EmailJS public key
+            SERVICE_ID: 'service_02brniu',     // Replace with your EmailJS service ID
+            TEMPLATE_ID: 'template_jf7otvd'    // Replace with your EmailJS template ID for tutor verification emails
         };
+        
+        // Initialize services
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
 
-        // State
+        // Store user data for verification email
+        let pendingTutorData = null;
+
+        // ===== TUTOR AUTHENTICATION FUNCTIONS =====
+        
+        // Modal functions for tutors
+        function openTutorRegistrationModal() {
+            document.getElementById('tutorRegistrationModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            clearTutorMessages();
+        }
+
+        function closeTutorRegistrationModal() {
+            document.getElementById('tutorRegistrationModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            clearTutorMessages();
+        }
+
+        function openTutorLoginModal() {
+            document.getElementById('tutorLoginModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            clearTutorMessages();
+        }
+
+        function closeTutorLoginModal() {
+            document.getElementById('tutorLoginModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            clearTutorMessages();
+        }
+
+        function openTutorVerificationModal() {
+            document.getElementById('tutorVerificationModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeTutorVerificationModal() {
+            document.getElementById('tutorVerificationModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function switchToTutorLogin() {
+            closeTutorRegistrationModal();
+            openTutorLoginModal();
+        }
+
+        function switchToTutorRegistration() {
+            closeTutorLoginModal();
+            openTutorRegistrationModal();
+        }
+
+        function clearTutorMessages() {
+            const errorMessages = document.querySelectorAll('#tutorRegErrorMessage, #tutorLoginErrorMessage');
+            const successMessages = document.querySelectorAll('#tutorRegSuccessMessage, #tutorLoginSuccessMessage');
+            
+            errorMessages.forEach(msg => {
+                msg.style.display = 'none';
+                msg.textContent = '';
+            });
+            
+            successMessages.forEach(msg => {
+                msg.style.display = 'none';
+                msg.textContent = '';
+            });
+        }
+
+        function showTutorError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+
+        function showTutorSuccess(elementId, message) {
+            const successElement = document.getElementById(elementId);
+            successElement.textContent = message;
+            successElement.style.display = 'block';
+        }
+
+        // ===== EMAIL VERIFICATION FOR TUTORS =====
+        async function sendTutorVerificationEmail(userData) {
+            try {
+                // Generate verification token
+                const verificationToken = btoa(`${userData.email}-${Date.now()}-${Math.random()}`);
+                
+                // Create verification link
+                const verificationLink = `${window.location.origin}/tutor-verify-email.html?token=${verificationToken}&email=${encodeURIComponent(userData.email)}`;
+                
+                // Prepare email data
+                const emailData = {
+                    to_email: userData.email,
+                    to_name: userData.fullName,
+                    from_name: 'Baobab Online Academy Tutor Portal',
+                    subject: 'Welcome to Baobab Tutor Portal - Please Verify Your Email',
+                    tutor_name: userData.fullName,
+                    verification_link: verificationLink,
+                    portal_url: window.location.origin,
+                    support_email: 'tutors@baobabacademy.com',
+                    current_year: new Date().getFullYear()
+                };
+
+                // Send email via EmailJS
+                const response = await emailjs.send(
+                    EMAILJS_CONFIG.SERVICE_ID,
+                    EMAILJS_CONFIG.TEMPLATE_ID,
+                    emailData
+                );
+
+                console.log('Tutor verification email sent successfully!', response);
+                return true;
+            } catch (error) {
+                console.error('Failed to send tutor verification email:', error);
+                return false;
+            }
+        }
+
+        async function resendTutorVerificationEmail() {
+            if (!pendingTutorData) {
+                alert('No pending verification found. Please try registering again.');
+                return;
+            }
+
+            try {
+                const emailSent = await sendTutorVerificationEmail(pendingTutorData);
+                if (emailSent) {
+                    alert('Verification email resent successfully! Please check your inbox.');
+                } else {
+                    alert('Failed to resend verification email. Please try again.');
+                }
+            } catch (error) {
+                alert('Failed to resend verification email. Please try again.');
+            }
+        }
+
+        // ===== TUTOR REGISTRATION FUNCTION =====
+        async function handleTutorRegistration(event) {
+            event.preventDefault();
+            
+            const submitBtn = document.getElementById('tutorRegSubmitBtn');
+            const submitText = document.getElementById('tutorRegSubmitText');
+            const loadingSpinner = document.getElementById('tutorRegLoadingSpinner');
+            
+            // Show loading state
+            submitText.style.display = 'none';
+            loadingSpinner.style.display = 'inline-block';
+            submitBtn.disabled = true;
+            clearTutorMessages();
+            
+            try {
+                const formData = new FormData(event.target);
+                const email = formData.get('email').toLowerCase().trim();
+                const fullName = formData.get('full_name').trim();
+                const phone = formData.get('phone').trim();
+                const teachingExperience = formData.get('teaching_experience');
+                const password = formData.get('password');
+                const confirmPassword = formData.get('confirmPassword');
+                
+                // Validate passwords match
+                if (password !== confirmPassword) {
+                    throw new Error('Passwords do not match');
+                }
+                
+                // Check if email is authorized for tutors
+                const { data: authorizedEmail, error: authCheckError } = await supabase
+                    .from('authorised_tutor_emails')
+                    .select('*')
+                    .eq('email', email)
+                    .eq('is_used', false)
+                    .single();
+                
+                if (authCheckError || !authorizedEmail) {
+                    throw new Error('This email is not authorized to create a tutor account. Please contact support at tutors@baobabacademy.com');
+                }
+                
+                // Create user account
+                const { data: authData, error: signUpError } = await supabase.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        emailRedirectTo: `${window.location.origin}/tutor-dashboard.html`,
+                        data: {
+                            full_name: fullName,
+                            phone: phone,
+                            teaching_experience: teachingExperience,
+                            user_type: 'tutor'
+                        }
+                    }
+                });
+                
+                if (signUpError) {
+                    throw new Error(signUpError.message);
+                }
+                
+                // Store user data for potential resend
+                pendingTutorData = {
+                    email: email,
+                    fullName: fullName,
+                    phone: phone,
+                    teachingExperience: teachingExperience,
+                    userId: authData.user?.id
+                };
+                
+                // Create tutor profile
+                if (authData.user) {
+                    const { error: profileError } = await supabase
+                        .from('tutor_profiles')
+                        .insert([
+                            {
+                                user_id: authData.user.id,
+                                full_name: fullName,
+                                phone: phone,
+                                email: email,
+                                teaching_experience: teachingExperience,
+                                status: 'pending_verification'
+                            }
+                        ]);
+                    
+                    if (profileError) {
+                        console.error('Tutor profile creation error:', profileError);
+                    }
+                }
+                
+                // Mark email as used
+                const { error: updateError } = await supabase
+                    .from('authorised_tutor_emails')
+                    .update({
+                        is_used: true,
+                        used_at: new Date().toISOString()
+                    })
+                    .eq('email', email);
+                
+                if (updateError) {
+                    console.error('Failed to mark tutor email as used:', updateError);
+                }
+                
+                // Send verification email via EmailJS
+                const emailSent = await sendTutorVerificationEmail(pendingTutorData);
+                
+                // Reset form and show verification modal
+                event.target.reset();
+                closeTutorRegistrationModal();
+                openTutorVerificationModal();
+                
+                if (!emailSent) {
+                    console.warn('Verification email failed to send, but account was created');
+                }
+                
+            } catch (error) {
+                console.error('Tutor registration error:', error);
+                showTutorError('tutorRegErrorMessage', error.message);
+            } finally {
+                // Reset button state
+                submitText.style.display = 'inline';
+                loadingSpinner.style.display = 'none';
+                submitBtn.disabled = false;
+            }
+        }
+
+        // ===== TUTOR LOGIN FUNCTION =====
+        async function handleTutorLogin(event) {
+            event.preventDefault();
+            
+            const submitBtn = document.getElementById('tutorLoginSubmitBtn');
+            const submitText = document.getElementById('tutorLoginSubmitText');
+            const loadingSpinner = document.getElementById('tutorLoginLoadingSpinner');
+            
+            // Show loading state
+            submitText.style.display = 'none';
+            loadingSpinner.style.display = 'inline-block';
+            submitBtn.disabled = true;
+            clearTutorMessages();
+            
+            try {
+                const formData = new FormData(event.target);
+                const email = formData.get('email').toLowerCase().trim();
+                const password = formData.get('password');
+                
+                // Sign in user
+                const { data: authData, error: signInError } = await supabase.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+                
+                if (signInError) {
+                    throw new Error(signInError.message);
+                }
+                
+                // Check if email is verified
+                if (!authData.user.email_confirmed_at) {
+                    showTutorError('tutorLoginErrorMessage', 'Please verify your email address before logging in. Check your inbox for the verification link.');
+                    return;
+                }
+                
+                showTutorSuccess('tutorLoginSuccessMessage', 'Login successful! Redirecting to your tutor dashboard...');
+                event.target.reset();
+                
+                // Redirect to tutor dashboard
+                setTimeout(() => {
+                    closeTutorLoginModal();
+                    window.location.href = '/tutor-dashboard.html';
+                }, 2000);
+                
+            } catch (error) {
+                console.error('Tutor login error:', error);
+                showTutorError('tutorLoginErrorMessage', error.message);
+            } finally {
+                // Reset button state
+                submitText.style.display = 'inline';
+                loadingSpinner.style.display = 'none';
+                submitBtn.disabled = false;
+            }
+        }
+
+        // ===== EXISTING APPLICATION FORM LOGIC =====
         let currentStep = 1;
         const totalSteps = 5;
         let uploadedCvUrl = '';
         let uploadedCvPublicId = '';
         let isUploading = false;
-        let isSubmitting = false;
 
-        // Store reg data for resend
-        let pendingTutor = null;
-
-        // Debug functionality
-        let debugVisible = false;
-        function toggleDebug() {
-            debugVisible = !debugVisible;
-            const debugPanel = document.getElementById('debugInfo');
-            if (debugVisible) {
-                debugPanel.classList.add('show');
-                updateDebugInfo();
-            } else {
-                debugPanel.classList.remove('show');
-            }
-        }
-
-        function updateDebugInfo(additionalInfo = '') {
-            const debugContent = document.getElementById('debugContent');
-            if (debugContent) {
-                debugContent.innerHTML = `
-                    <div>Supabase URL: ${SUPABASE_URL}</div>
-                    <div>Table: authorised_tutor_emails</div>
-                    <div>Test Email: lanreylan@gmail.com</div>
-                    <div>Email Type: citext</div>
-                    <div>Status: ${additionalInfo || 'Ready'}</div>
-                `;
-            }
-        }
+        // Cloudinary configuration
+        const CLOUDINARY_CLOUD_NAME = 'dv5wnmbay';
+        const CLOUDINARY_UPLOAD_PRESET = 'tutor_cvs';
 
         // Step navigation functions (improved logic)
         function changeStep(direction) {
+            // Prevent moving forward without validation
             if (direction === 1 && !validateCurrentStep()) return;
+
+            // Prevent leaving step 5 while file is uploading
             if (currentStep === 5 && isUploading) {
                 alert('Please wait for the CV upload to complete before leaving this step.');
                 return;
             }
+
             const targetStep = currentStep + direction;
             if (targetStep < 1 || targetStep > totalSteps) return;
+
             currentStep = targetStep;
             showStep(currentStep);
         }
 
         function showStep(stepNumber) {
+            // Hide all and reset step states
             for (let i = 1; i <= totalSteps; i++) {
                 document.getElementById(`formStep${i}`).classList.remove('active');
                 const stepEl = document.getElementById(`step${i}`);
                 stepEl.classList.remove('active', 'completed');
             }
+            // Mark completed steps
             for (let i = 1; i < stepNumber; i++) {
                 document.getElementById(`step${i}`).classList.add('completed');
             }
+            // Activate current step
             document.getElementById(`formStep${stepNumber}`).classList.add('active');
             document.getElementById(`step${stepNumber}`).classList.add('active');
+
             updateNavigationButtons();
         }
 
@@ -2121,6 +2493,7 @@
                 submitBtn.style.display = 'none';
             }
 
+            // Disable next/submit if uploading on step 5
             const disableOnUpload = (currentStep === 5 && isUploading);
             nextBtn.disabled = disableOnUpload;
             submitBtn.disabled = disableOnUpload;
@@ -2143,6 +2516,7 @@
                 }
             }
             
+            // Special validation for checkboxes
             if (currentStep === 3) {
                 const subjects = document.querySelectorAll('input[name="subjects"]:checked');
                 const ageGroups = document.querySelectorAll('input[name="ageGroups"]:checked');
@@ -2167,6 +2541,7 @@
                 }
             }
             
+            // For final step, ensure CV is uploaded
             if (currentStep === 5 && !uploadedCvUrl) {
                 if (isUploading) {
                     alert('Please wait for CV upload to complete.');
@@ -2348,8 +2723,8 @@
             });
         });
         
-        
-        // Application submit (kept)
+        let isSubmitting = false;
+
         document.getElementById('tutorApplicationForm').addEventListener('submit', onTutorFormSubmit);
 
         async function onTutorFormSubmit(e) {
@@ -2362,105 +2737,102 @@
             submitBtn.disabled = true;
 
             try {
-            if (isUploading) {
-                throw new Error('Please wait for the CV upload to complete.');
-            }
-            if (!validateCurrentStep()) return;
-            if (!uploadedCvUrl) {
-                throw new Error('Please upload your CV before submitting.');
-            }
+                if (isUploading) {
+                    throw new Error('Please wait for the CV upload to complete.');
+                }
+                if (!validateCurrentStep()) return;
+                if (!uploadedCvUrl) {
+                    throw new Error('Please upload your CV before submitting.');
+                }
 
-            document.getElementById('loadingOverlay').style.display = 'flex';
+                document.getElementById('loadingOverlay').style.display = 'flex';
 
-            const form = e.currentTarget; // capture form once and reuse later
-            const formData = new FormData(form);
+                const form = e.currentTarget;
+                const formData = new FormData(form);
 
-            const subjects = Array.from(document.querySelectorAll('input[name="subjects"]:checked')).map(cb => cb.value);
-            const ageGroups = Array.from(document.querySelectorAll('input[name="ageGroups"]:checked')).map(cb => cb.value);
-            const availability = Array.from(document.querySelectorAll('input[name="availability"]:checked')).map(cb => cb.value);
+                const subjects = Array.from(document.querySelectorAll('input[name="subjects"]:checked')).map(cb => cb.value);
+                const ageGroups = Array.from(document.querySelectorAll('input[name="ageGroups"]:checked')).map(cb => cb.value);
+                const availability = Array.from(document.querySelectorAll('input[name="availability"]:checked')).map(cb => cb.value);
 
-            const templateParams = {
-                fullName: formData.get('fullName') || '',
-                email: formData.get('email') || '',
-                phone: formData.get('phone') || '',
-                location: formData.get('location') || '',
-                educationLevel: formData.get('educationLevel') || '',
-                fieldOfStudy: formData.get('fieldOfStudy') || '',
-                qualification: formData.get('qualification') || '',
-                teachingExperience: formData.get('teachingExperience') || '',
-                teachingDetails: formData.get('teachingDetails') || '',
-                subjects: subjects.join(', '),
-                ageGroups: ageGroups.join(', '),
-                internet: formData.get('internet') || '',
-                device: formData.get('device') || '',
-                quietEnvironment: formData.get('quietEnvironment') || '',
-                timeZone: formData.get('timeZone') || '',
-                culturalBackground: formData.get('culturalBackground') || '',
-                availability: availability.join(', '),
-                additionalComments: formData.get('additionalComments') || '',
-                submissionDate: new Date().toLocaleString('en-GB', {
-                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
-                hour: '2-digit', minute: '2-digit', timeZone: 'Africa/Lagos'
-                }),
-                cvFileName: fileInput.files[0] ? fileInput.files[0].name : 'CV uploaded via form',
-                cvDownloadUrl: uploadedCvUrl,
-                cvStatus: uploadedCvUrl ? 'CV Successfully Uploaded and Available' : 'No CV Provided',
+                const templateParams = {
+                    fullName: formData.get('fullName') || '',
+                    email: formData.get('email') || '',
+                    phone: formData.get('phone') || '',
+                    location: formData.get('location') || '',
+                    educationLevel: formData.get('educationLevel') || '',
+                    fieldOfStudy: formData.get('fieldOfStudy') || '',
+                    qualification: formData.get('qualification') || '',
+                    teachingExperience: formData.get('teachingExperience') || '',
+                    teachingDetails: formData.get('teachingDetails') || '',
+                    subjects: subjects.join(', '),
+                    ageGroups: ageGroups.join(', '),
+                    internet: formData.get('internet') || '',
+                    device: formData.get('device') || '',
+                    quietEnvironment: formData.get('quietEnvironment') || '',
+                    timeZone: formData.get('timeZone') || '',
+                    culturalBackground: formData.get('culturalBackground') || '',
+                    availability: availability.join(', '),
+                    additionalComments: formData.get('additionalComments') || '',
+                    submissionDate: new Date().toLocaleString('en-GB', {
+                        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+                        hour: '2-digit', minute: '2-digit', timeZone: 'Africa/Lagos'
+                    }),
+                    cvFileName: fileInput.files[0] ? fileInput.files[0].name : 'CV uploaded via form',
+                    cvDownloadUrl: uploadedCvUrl,
+                    cvStatus: uploadedCvUrl ? 'CV Successfully Uploaded and Available' : 'No CV Provided',
+                    reply_to: formData.get('email') || '',
+                    from_name: (formData.get('fullName') || '') + ' via Baobab Online Academy'
+                };
 
-                // Helpful for EmailJS header mapping:
-                reply_to: formData.get('email') || '',
-                from_name: (formData.get('fullName') || '') + ' via Baobab Online Academy'
-            };
+                console.log('[Submit] Sending to /api/send-application', templateParams);
 
-            console.log('[Submit] Sending to /api/send-application', templateParams);
+                const resp = await fetch('/api/send-application', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(templateParams)
+                });
 
-            const resp = await fetch('/api/send-application', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(templateParams)
-            });
+                const payload = await resp.json().catch(() => ({}));
+                console.log('[Submit] API response', resp.status, payload);
 
-            const payload = await resp.json().catch(() => ({}));
-            console.log('[Submit] API response', resp.status, payload);
+                if (!resp.ok) {
+                    throw new Error(
+                        (payload && (payload.details?.error || payload.details || payload.error)) ||
+                        `Server responded with ${resp.status}`
+                    );
+                }
 
-            if (!resp.ok) {
-                throw new Error(
-                (payload && (payload.details?.error || payload.details || payload.error)) ||
-                `Server responded with ${resp.status}`
-                );
-            }
+                // Success UI
+                document.getElementById('loadingOverlay').style.display = 'none';
+                document.getElementById('successModal').style.display = 'flex';
 
-            // Success UI
-            document.getElementById('loadingOverlay').style.display = 'none';
-            document.getElementById('successModal').style.display = 'flex';
+                try {
+                    form.reset();
+                } catch (resetErr) {
+                    console.warn('Form reset warning:', resetErr);
+                }
 
-            try {
-                form.reset();
-            } catch (resetErr) {
-                console.warn('Form reset warning:', resetErr);
-            }
-
-            currentStep = 1;
-            showStep(1);
-            removeFile();
-            document.querySelectorAll('.checkbox-item').forEach(item => item.classList.remove('checked'));
+                currentStep = 1;
+                showStep(1);
+                removeFile();
+                document.querySelectorAll('.checkbox-item').forEach(item => item.classList.remove('checked'));
 
             } catch (err) {
-            console.error('Error submitting form:', err);
-            document.getElementById('loadingOverlay').style.display = 'none';
-            alert(`There was an error submitting your application.\n\nDetails: ${err?.message || err}`);
+                console.error('Error submitting form:', err);
+                document.getElementById('loadingOverlay').style.display = 'none';
+                alert(`There was an error submitting your application.\n\nDetails: ${err?.message || err}`);
             } finally {
-            isSubmitting = false;
-            submitBtn.disabled = false;
+                isSubmitting = false;
+                submitBtn.disabled = false;
             }
         }
-
 
         function closeSuccessModal() {
             document.getElementById('successModal').style.display = 'none';
             showPage('home');
         }
 
-        // Page navigation functionality (+ hash-friendly routing)
+        // Page navigation functionality
         function showPage(pageId) {
             document.querySelectorAll('.page-content').forEach(page => {
                 page.classList.remove('active');
@@ -2486,7 +2858,7 @@
             }
         });
 
-        // Hash-based routing support (works without server rewrites)
+        // Hash-based routing support
         window.addEventListener('hashchange', function() {
             const activeIsApply = document.getElementById('applyPage').classList.contains('active');
             if (location.hash === '#/apply' && !activeIsApply) {
@@ -2527,7 +2899,7 @@
             link.addEventListener('click', closeMenu);
         });
 
-        // Smooth scrolling for in-page nav links (home page only) + route links handling
+        // Smooth scrolling for in-page nav links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 const href = this.getAttribute('href');
@@ -2555,354 +2927,33 @@
             });
         });
 
-        // Login modal
-        function openLoginModal() {
-            document.getElementById('tutorLoginModal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-            clearMessages();
-        }
-
-        function closeLoginModal() {
-            document.getElementById('tutorLoginModal').style.display = 'none';
-            document.body.style.overflow = 'auto';
-            clearMessages();
-        }
-
-        // Registration modal
-        function openRegistrationModal() {
-            document.getElementById('tutorRegistrationModal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-            clearMessages();
-        }
-
-        function closeRegistrationModal() {
-            document.getElementById('tutorRegistrationModal').style.display = 'none';
-            document.body.style.overflow = 'auto';
-            clearMessages();
-        }
-
-        // Verification modal
-        function openVerificationModal() {
-            document.getElementById('tutorVerificationModal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
-        function closeVerificationModal() {
-            document.getElementById('tutorVerificationModal').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
-        function switchToLogin() { closeRegistrationModal(); openLoginModal(); }
-        function switchToRegistration() { closeLoginModal(); openRegistrationModal(); }
-
-        function clearMessages() {
-            ['regErrorMessage', 'regSuccessMessage', 'loginErrorMessage', 'loginSuccessMessage'].forEach(id => {
-                const el = document.getElementById(id);
-                if (el) {
-                    el.style.display = 'none';
-                    el.textContent = '';
-                }
+        // Add interactive effects
+        document.querySelectorAll('.benefit-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-15px) scale(1.02)';
             });
-        }
-        function showError(id, msg) {
-            const el = document.getElementById(id);
-            if (el) {
-                el.textContent = msg;
-                el.style.display = 'block';
-            }
-        }
-        function showSuccess(id, msg) {
-            const el = document.getElementById(id);
-            if (el) {
-                el.textContent = msg;
-                el.style.display = 'block';
-            }
-        }
-
-        // Enhanced pre-approval check with comprehensive debugging
-        async function getAuthorisedTutorRecord(email) {
-            const normalizedEmail = email.trim().toLowerCase();
-            updateDebugInfo(`Checking email: ${normalizedEmail}`);
             
-            console.log(`[DEBUG] Checking authorization for email: ${normalizedEmail}`);
-            
-            try {
-                // First, let's see what's in the table
-                console.log('[DEBUG] Fetching all records to check table contents...');
-                const { data: allRecords, error: allError } = await supabase
-                    .from('authorised_tutor_emails')
-                    .select('*');
-                
-                if (allError) {
-                    console.error('[DEBUG] Error fetching all records:', allError);
-                    updateDebugInfo(`Error fetching records: ${allError.message}`);
-                } else {
-                    console.log('[DEBUG] All records in table:', allRecords);
-                    updateDebugInfo(`Found ${allRecords?.length || 0} total records in table`);
-                    
-                    // Log each email for comparison
-                    allRecords?.forEach((record, index) => {
-                        console.log(`[DEBUG] Record ${index + 1}:`, {
-                            email: record.email,
-                            is_used: record.is_used,
-                            created_at: record.created_at
-                        });
-                    });
-                }
-
-                // Try multiple query approaches
-                const queryApproaches = [
-                    // Approach 1: Exact case-sensitive match
-                    async () => {
-                        console.log('[DEBUG] Approach 1: Exact match');
-                        return await supabase
-                            .from('authorised_tutor_emails')
-                            .select('*')
-                            .eq('email', normalizedEmail)
-                            .eq('is_used', false)
-                            .maybeSingle();
-                    },
-                    
-                    // Approach 2: Case-insensitive with ilike
-                    async () => {
-                        console.log('[DEBUG] Approach 2: Case-insensitive ilike');
-                        return await supabase
-                            .from('authorised_tutor_emails')
-                            .select('*')
-                            .ilike('email', normalizedEmail)
-                            .eq('is_used', false)
-                            .maybeSingle();
-                    },
-                    
-                    // Approach 3: Case-insensitive with wildcard
-                    async () => {
-                        console.log('[DEBUG] Approach 3: Case-insensitive with wildcard');
-                        return await supabase
-                            .from('authorised_tutor_emails')
-                            .select('*')
-                            .ilike('email', `%${normalizedEmail}%`)
-                            .eq('is_used', false)
-                            .maybeSingle();
-                    },
-                    
-                    // Approach 4: Get all unused and filter client-side
-                    async () => {
-                        console.log('[DEBUG] Approach 4: Client-side filtering');
-                        const { data, error } = await supabase
-                            .from('authorised_tutor_emails')
-                            .select('*')
-                            .eq('is_used', false);
-                        
-                        if (error) return { data: null, error };
-                        
-                        const match = data?.find(record => 
-                            record.email.toLowerCase().trim() === normalizedEmail
-                        );
-                        
-                        return { data: match || null, error: null };
-                    }
-                ];
-
-                for (let i = 0; i < queryApproaches.length; i++) {
-                    try {
-                        console.log(`[DEBUG] Trying approach ${i + 1}...`);
-                        const { data, error } = await queryApproaches[i]();
-                        
-                        if (error) {
-                            console.error(`[DEBUG] Approach ${i + 1} error:`, error);
-                            updateDebugInfo(`Approach ${i + 1} failed: ${error.message}`);
-                            continue;
-                        }
-                        
-                        console.log(`[DEBUG] Approach ${i + 1} result:`, data);
-                        
-                        if (data) {
-                            console.log(`[DEBUG] ✅ Found authorized record with approach ${i + 1}:`, data);
-                            updateDebugInfo(`✅ Found record with approach ${i + 1}`);
-                            return { table: 'authorised_tutor_emails', row: data };
-                        } else {
-                            console.log(`[DEBUG] ❌ No match with approach ${i + 1}`);
-                        }
-                    } catch (err) {
-                        console.error(`[DEBUG] Approach ${i + 1} exception:`, err);
-                        updateDebugInfo(`Approach ${i + 1} exception: ${err.message}`);
-                    }
-                }
-
-                console.log('[DEBUG] ❌ No authorized record found with any approach');
-                updateDebugInfo('❌ No authorized record found');
-                return null;
-
-            } catch (err) {
-                console.error('[DEBUG] General error in getAuthorisedTutorRecord:', err);
-                updateDebugInfo(`General error: ${err.message}`);
-                return null;
-            }
-        }
-
-        // Resend verification via Supabase (real verification email)
-        async function resendTutorVerification() {
-            try{
-                const email = pendingTutor?.email;
-                if(!email){
-                    alert('No pending verification. Please register first.');
-                    return;
-                }
-                const { error } = await supabase.auth.resend({ type: 'signup', email });
-                if(error) throw error;
-                alert('Verification email resent. Please check your inbox.');
-            }catch(err){
-                console.error('Resend error:', err);
-                alert('Failed to resend verification email. Please try again later.');
-            }
-        }
-
-        // Tutor Registration with enhanced pre-approval enforcement
-        async function handleTutorRegistration(event) {
-            event.preventDefault();
-            const btn = document.getElementById('regSubmitBtn');
-            const text = document.getElementById('regSubmitText');
-            const spinner = document.getElementById('regLoadingSpinner');
-            text.style.display='none'; spinner.style.display='inline-block'; btn.disabled=true; clearMessages();
-            
-            try{
-                const fd = new FormData(event.target);
-                const email = (fd.get('email')||'').trim().toLowerCase();
-                const full_name = (fd.get('full_name')||'').trim();
-                const phone = (fd.get('phone')||'').trim();
-                const password = fd.get('password');
-                const confirm = fd.get('confirmPassword');
-                
-                if(password !== confirm) throw new Error('Passwords do not match');
-
-                console.log('[Registration] Starting registration process for:', email);
-                updateDebugInfo(`Starting registration for: ${email}`);
-
-                // Enhanced pre-approval check
-                const approvedRecord = await getAuthorisedTutorRecord(email);
-                if(!approvedRecord){
-                    const errorMsg = `This email (${email}) is not authorized to create a tutor account. Please ensure:\n\n1. Your email is exactly as provided to the academy\n2. You haven't already registered\n3. Contact support at tutors@baobabonlineacademy.com if you believe this is an error`;
-                    console.error('[Registration] Authorization failed:', errorMsg);
-                    updateDebugInfo('❌ Authorization failed');
-                    throw new Error(errorMsg);
-                }
-
-                console.log('[Registration] ✅ Email authorized, proceeding with Supabase signup');
-                updateDebugInfo('✅ Email authorized, creating account...');
-
-                // Sign up (Supabase sends verification email)
-                const { data: signup, error: signUpError } = await supabase.auth.signUp({
-                    email, password,
-                    options: {
-                        emailRedirectTo: `${window.location.origin}/tutor-dashboard.html`,
-                        data: { full_name, phone, role: 'tutor' }
-                    }
-                });
-                
-                if(signUpError) {
-                    console.error('[Registration] Supabase signup error:', signUpError);
-                    updateDebugInfo(`Signup error: ${signUpError.message}`);
-                    throw new Error(signUpError.message);
-                }
-
-                console.log('[Registration] ✅ Supabase account created successfully');
-                updateDebugInfo('✅ Account created, marking email as used...');
-
-                // Mark the authorized email as used
-                try {
-                    const tableName = approvedRecord.table;
-                    const rowEmail = approvedRecord.row.email;
-                    console.log('[Registration] Marking email as used:', rowEmail);
-                    
-                    const { error: markErr } = await supabase
-                        .from(tableName)
-                        .update({ is_used: true, used_at: new Date().toISOString() })
-                        .eq('email', rowEmail);
-                    
-                    if (markErr) {
-                        console.warn('[Registration] Failed to mark email as used:', markErr);
-                        updateDebugInfo(`Warning: Failed to mark as used: ${markErr.message}`);
-                    } else {
-                        console.log('[Registration] ✅ Email marked as used successfully');
-                        updateDebugInfo('✅ Email marked as used');
-                    }
-                } catch (uErr) {
-                    console.warn('[Registration] Mark-as-used update warning:', uErr);
-                    updateDebugInfo(`Update warning: ${uErr.message}`);
-                }
-
-                // Keep email for resending verification
-                pendingTutor = { email, full_name };
-
-                // Success UI
-                console.log('[Registration] ✅ Registration process completed successfully');
-                updateDebugInfo('✅ Registration completed successfully');
-                showSuccess('regSuccessMessage', 'Account created! Please verify your email to continue.');
-                event.target.reset();
-                closeRegistrationModal();
-                openVerificationModal();
-
-            } catch(err) {
-                console.error('[Registration] Registration error:', err);
-                updateDebugInfo(`Registration failed: ${err.message}`);
-                showError('regErrorMessage', err.message || 'Registration failed. Please try again.');
-            } finally {
-                text.style.display='inline'; spinner.style.display='none'; btn.disabled=false;
-            }
-        }
-
-        // Tutor Login (blocks unverified & shows verification modal with resend)
-        async function handleTutorLogin(event) {
-            event.preventDefault();
-            const btn = document.getElementById('loginSubmitBtn');
-            const text = document.getElementById('loginSubmitText');
-            const spinner = document.getElementById('loginLoadingSpinner');
-            text.style.display='none'; spinner.style.display='inline-block'; btn.disabled=true; clearMessages();
-            try{
-                const fd = new FormData(event.target);
-                const email = (fd.get('email')||'').trim().toLowerCase();
-                const password = fd.get('password');
-
-                const { data: authData, error: signInError } = await supabase.auth.signInWithPassword({ email, password });
-                if (signInError) throw new Error(signInError.message);
-
-                if (!authData.user.email_confirmed_at) {
-                    // Remember email to allow resend
-                    pendingTutor = { email };
-                    showError('loginErrorMessage', 'Please verify your email before logging in. Check your inbox or click "Resend" in the verification prompt.');
-                    openVerificationModal();
-                    return;
-                }
-
-                showSuccess('loginSuccessMessage', 'Login successful! Redirecting...');
-                event.target.reset();
-                setTimeout(() => {
-                    closeLoginModal();
-                    window.location.href = '/tutor-dashboard.html';
-                }, 900);
-            }catch(err){
-                console.error('Tutor login error:', err);
-                showError('loginErrorMessage', err.message || 'Login failed. Please try again.');
-            }finally{
-                text.style.display='inline'; spinner.style.display='none'; btn.disabled=false;
-            }
-        }
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
 
         // Close modals on outside click
         document.getElementById('tutorRegistrationModal').addEventListener('click', (e) => {
             if (e.target === e.currentTarget) {
-                closeRegistrationModal();
+                closeTutorRegistrationModal();
             }
         });
 
         document.getElementById('tutorLoginModal').addEventListener('click', (e) => {
             if (e.target === e.currentTarget) {
-                closeLoginModal();
+                closeTutorLoginModal();
             }
         });
 
         document.getElementById('tutorVerificationModal').addEventListener('click', (e) => {
             if (e.target === e.currentTarget) {
-                closeVerificationModal();
+                closeTutorVerificationModal();
             }
         });
 
@@ -2915,6 +2966,20 @@
             } else {
                 showPage('home');
             }
+        });
+
+        // ===== CHECK AUTHENTICATION STATUS =====
+        async function checkTutorAuthStatus() {
+            const { data: { user } } = await supabase.auth.getUser();
+            
+            if (user && user.email_confirmed_at) {
+                console.log('Tutor is logged in and verified:', user);
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            checkTutorAuthStatus();
         });
     </script>
 </body>

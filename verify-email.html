@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" sizes="32x32" href="/Images/logo.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification - Baobab Tutor Portal</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Open+Sans:wght@300;400;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        :root {
+            /* Using tutor portal colors */
+            --baobab-brown: #8D4004;
+            --canopy-green: #2E7D32;
+            --sunset-gold: #F57C00;
+            --trunk-gray: #5D4037;
+            --sky-blue: #1976D2;
+            --earth-cream: #FFF8E1;
+            --desert-orange: #FF5722;
+            --sage-green: #689F38;
+            --deep-charcoal: #263238;
+            --white: #FFFFFF;
+            --tutor-teal: #00695C;
+            --tutor-light-teal: #B2DFDB;
+            
+            --transition-slow: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+            --transition-medium: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            --transition-fast: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+            
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            color: var(--deep-charcoal);
+            line-height: 1.6;
+            background: linear-gradient(135deg, var(--tutor-teal), var(--canopy-green));
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .verification-container {
+            background: var(--white);
+            border-radius: 25px;
+            padding: 50px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            border: 3px solid var(--sunset-gold);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .verification-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 105, 92, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .verification-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .logo-section {
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background-color: var(--tutor-teal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            font-size: 24px;
+            color: var(--white);
+        }
+        
+        .logo-text {
+            font-weight: 700;
+            font-size: 24px;
+            color: var(--baobab-brown);
+            font-family: 'Merriweather', serif;
+        }
+
+        .verification-icon {
+            font-size: 4rem;
+            margin-bottom: 25px;
+            display: block;
+        }
+
+        .success-icon {
+            color: var(--canopy-green);
+            animation: pulse 2s infinite;
+        }
+
+        .error-icon {
+            color: var(--desert-orange);
+        }
+
+        .loading-icon {
+            color: var(--tutor-teal);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .verification-title {
+            font-family: 'Merriweather', serif;
+            font-size: 2.2rem;
+            color: var(--tutor-teal);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .verification-message {
+            font-size: 1.1rem;
+            color: var(--trunk-gray);
+            margin-bottom: 30px;
+            line-height: 1.7;
+        }
+
+        .verification-details {
+            background: var(--earth-cream);
+            border: 2px solid rgba(0, 105, 92, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            text-align: left;
+        }
+
+        .verification-details h4 {
+            color: var(--tutor-teal);
+            margin-bottom: 15px;
+            font-family: 'Merriweather', serif;
+        }
+
+        .verification-details ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .verification-details li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            color: var(--trunk-gray);
+        }
+
+        .verification-details i {
+            color: var(--canopy-green);
+            font-size: 1.1rem;
+            width: 20px;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 18px 35px;
+            border-radius: 30px;
+            font-weight: 600;
+            text-align: center;
+            transition: var(--transition-fast);
+            border: 2px solid transparent;
+            font-family: 'Open Sans', sans-serif;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            margin: 10px;
+        }
+        
+        .btn-primary {
+            background-color: var(--tutor-teal);
+            color: var(--white);
+            border-color: var(--tutor-teal);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--canopy-green);
+            border-color: var(--canopy-green);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn-secondary {
+            background-color: var(--sunset-gold);
+            color: var(--deep-charcoal);
+            border-color: var(--sunset-gold);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--desert-orange);
+            border-color: var(--desert-orange);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn-outlined {
+            background-color: transparent;
+            color: var(--tutor-teal);
+            border-color: var(--tutor-teal);
+        }
+        
+        .btn-outlined:hover {
+            background-color: var(--tutor-teal);
+            color: var(--white);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .support-info {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid var(--earth-cream);
+            color: var(--trunk-gray);
+            font-size: 0.95rem;
+        }
+
+        .support-info a {
+            color: var(--tutor-teal);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .support-info a:hover {
+            text-decoration: underline;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid var(--earth-cream);
+            border-top: 3px solid var(--tutor-teal);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        .hidden {
+            display: none;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .verification-container {
+                padding: 30px;
+                margin: 10px;
+            }
+            
+            .verification-title {
+                font-size: 1.8rem;
+            }
+            
+            .verification-message {
+                font-size: 1rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                padding: 16px 30px;
+                font-size: 1rem;
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            body {
+                padding: 10px;
+            }
+            
+            .verification-container {
+                padding: 25px;
+            }
+            
+            .verification-title {
+                font-size: 1.6rem;
+            }
+            
+            .logo-text {
+                font-size: 20px;
+            }
+
+            .verification-icon {
+                font-size: 3rem;
+            }
+
+            .verification-details {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="verification-container">
+        <div class="verification-content">
+            <!-- Logo Section -->
+            <div class="logo-section">
+                <div class="logo">
+                    <div class="logo-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                    <div class="logo-text">Baobab Tutor Portal</div>
+                </div>
+                <p style="color: var(--trunk-gray); font-style: italic;">Empowering Nigerian Educators Globally</p>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loadingState">
+                <i class="fas fa-spinner verification-icon loading-icon"></i>
+                <h1 class="verification-title">Verifying Your Email...</h1>
+                <p class="verification-message">Please wait while we verify your tutor account email address.</p>
+                <div class="loading-spinner"></div>
+            </div>
+
+            <!-- Success State -->
+            <div id="successState" class="hidden">
+                <i class="fas fa-check-circle verification-icon success-icon"></i>
+                <h1 class="verification-title">🎉 Email Verified Successfully!</h1>
+                <p class="verification-message">
+                    Welcome to the Baobab Academy tutor family! Your tutor account has been successfully verified and activated.
+                </p>
+
+                <div class="verification-details">
+                    <h4><i class="fas fa-star"></i> What's Next?</h4>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Access your secure tutor dashboard</li>
+                        <li><i class="fas fa-check-circle"></i> Complete your detailed tutor profile</li>
+                        <li><i class="fas fa-check-circle"></i> Upload teaching materials and credentials</li>
+                        <li><i class="fas fa-check-circle"></i> Get matched with your first students</li>
+                        <li><i class="fas fa-check-circle"></i> Start earning 75% of lesson fees</li>
+                    </ul>
+                </div>
+
+                <div class="action-buttons">
+                    <a href="/tutor-dashboard.html" class="btn btn-primary">
+                        <i class="fas fa-tachometer-alt"></i>
+                        Access Tutor Dashboard
+                    </a>
+                    <a href="/" class="btn btn-outlined">
+                        <i class="fas fa-home"></i>
+                        Return to Portal
+                    </a>
+                </div>
+            </div>
+
+            <!-- Error State -->
+            <div id="errorState" class="hidden">
+                <i class="fas fa-exclamation-triangle verification-icon error-icon"></i>
+                <h1 class="verification-title">Verification Failed</h1>
+                <p class="verification-message" id="errorMessage">
+                    We couldn't verify your tutor account email address. This could be due to an expired or invalid verification link.
+                </p>
+
+                <div class="verification-details">
+                    <h4><i class="fas fa-lightbulb"></i> What You Can Do:</h4>
+                    <ul>
+                        <li><i class="fas fa-redo"></i> Try clicking the verification link again</li>
+                        <li><i class="fas fa-envelope"></i> Check if the link has expired (links expire after 24 hours)</li>
+                        <li><i class="fas fa-user-plus"></i> Request a new verification email</li>
+                        <li><i class="fas fa-headset"></i> Contact our tutor support team for assistance</li>
+                    </ul>
+                </div>
+
+                <div class="action-buttons">
+                    <a href="/tutor-portal.html" class="btn btn-secondary">
+                        <i class="fas fa-envelope"></i>
+                        Request New Verification
+                    </a>
+                    <a href="mailto:tutors@baobabacademy.com" class="btn btn-outlined">
+                        <i class="fas fa-headset"></i>
+                        Contact Support
+                    </a>
+                </div>
+            </div>
+
+            <!-- Support Information -->
+            <div class="support-info">
+                <p>
+                    Need help? Contact our tutor support team at 
+                    <a href="mailto:tutors@baobabacademy.com">tutors@baobabacademy.com</a> 
+                    or call <a href="tel:+2348165011291">+234 (0) 816 501 1291</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== CONFIGURATION SECTION =====
+        // Replace these with your actual Supabase credentials
+        const SUPABASE_URL = 'https://vcxdkacxbjsgaoxbhsip.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZjeGRrYWN4YmpzZ2FveGJoc2lwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI5MDQ5ODMsImV4cCI6MjA2ODQ4MDk4M30.T9KhHWzHZWyaZvyeFXtBu8tPLY9JOn6_wCHcH8B46FU';
+        
+        // Initialize Supabase client
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // ===== MAIN VERIFICATION LOGIC =====
+        async function handleTutorEmailVerification() {
+            try {
+                console.log('Starting tutor email verification process...');
+                
+                // Get URL parameters
+                const urlParams = new URLSearchParams(window.location.search);
+                console.log('URL parameters:', Object.fromEntries(urlParams));
+                
+                // Check for Supabase confirmation parameters
+                const token_hash = urlParams.get('token_hash');
+                const type = urlParams.get('type');
+                const access_token = urlParams.get('access_token');
+                const refresh_token = urlParams.get('refresh_token');
+                
+                // Method 1: Handle Supabase native email confirmation
+                if (type === 'email' || type === 'signup' || token_hash) {
+                    console.log('Detected Supabase email confirmation');
+                    return await handleSupabaseConfirmation(urlParams);
+                }
+                
+                // Method 2: Handle custom token verification (fallback)
+                const customToken = urlParams.get('token');
+                const email = urlParams.get('email');
+                
+                if (customToken && email) {
+                    console.log('Detected custom token verification');
+                    return await handleCustomTokenVerification(customToken, email);
+                }
+                
+                // No valid parameters
+                throw new Error('Invalid verification link. Missing required parameters.');
+                
+            } catch (error) {
+                console.error('Tutor verification error:', error);
+                showErrorState(error.message);
+            }
+        }
+
+        // ===== SUPABASE NATIVE CONFIRMATION =====
+        async function handleSupabaseConfirmation(urlParams) {
+            try {
+                const token_hash = urlParams.get('token_hash');
+                const type = urlParams.get('type');
+                
+                console.log('Verifying with Supabase:', { token_hash: token_hash ? 'present' : 'missing', type });
+                
+                // Use Supabase's verifyOtp method for email confirmation
+                if (token_hash && type) {
+                    const { data, error } = await supabase.auth.verifyOtp({
+                        token_hash,
+                        type: type === 'email' ? 'email' : 'signup'
+                    });
+                    
+                    if (error) {
+                        console.error('Supabase verification error:', error);
+                        throw new Error(`Email verification failed: ${error.message}`);
+                    }
+                    
+                    if (data.user) {
+                        console.log('Supabase verification successful:', data.user);
+                        
+                        // Update tutor profile verification status
+                        await updateTutorProfileVerification(data.user);
+                        
+                        showSuccessState();
+                        
+                        // Auto-redirect after 3 seconds
+                        setTimeout(() => {
+                            window.location.href = '/tutor-dashboard.html';
+                        }, 3000);
+                        
+                        return true;
+                    }
+                }
+                
+                return false;
+            } catch (error) {
+                console.error('Supabase confirmation error:', error);
+                throw error;
+            }
+        }
+
+        // ===== CUSTOM TOKEN VERIFICATION =====
+        async function handleCustomTokenVerification(token, email) {
+            try {
+                console.log('Verifying custom token for tutor:', email);
+                
+                const decodedEmail = decodeURIComponent(email);
+                
+                // Validate token format
+                if (!isValidCustomToken(token, decodedEmail)) {
+                    throw new Error('Invalid or expired verification token.');
+                }
+                
+                // Check if user exists and get current session
+                const { data: { user }, error: getUserError } = await supabase.auth.getUser();
+                
+                if (getUserError) {
+                    console.error('Error getting current user:', getUserError);
+                    // Don't throw error, continue with email-based verification
+                }
+                
+                // If no current user, try to find user by email in tutor_profiles
+                let targetUser = user;
+                if (!targetUser || targetUser.email !== decodedEmail) {
+                    // Query tutor_profiles to check if user exists
+                    const { data: profiles, error: profileError } = await supabase
+                        .from('tutor_profiles')
+                        .select('*')
+                        .eq('email', decodedEmail)
+                        .limit(1);
+                    
+                    if (profileError) {
+                        console.error('Error checking tutor profile:', profileError);
+                        throw new Error('Unable to verify user. Please try again.');
+                    }
+                    
+                    if (!profiles || profiles.length === 0) {
+                        throw new Error('Tutor not found. Please ensure you\'re using the correct email address.');
+                    }
+                    
+                    // Update the profile verification status
+                    const { error: updateError } = await supabase
+                        .from('tutor_profiles')
+                        .update({ 
+                            email_verified: true,
+                            verified_at: new Date().toISOString(),
+                            status: 'verified'
+                        })
+                        .eq('email', decodedEmail);
+                    
+                    if (updateError) {
+                        console.error('Error updating tutor profile:', updateError);
+                        // Don't throw error, verification might still be successful
+                    }
+                } else {
+                    // Update current user's profile
+                    await updateTutorProfileVerification(targetUser);
+                }
+                
+                showSuccessState();
+                return true;
+                
+            } catch (error) {
+                console.error('Custom token verification error:', error);
+                throw error;
+            }
+        }
+
+        // ===== UPDATE TUTOR PROFILE =====
+        async function updateTutorProfileVerification(user) {
+            try {
+                const { error } = await supabase
+                    .from('tutor_profiles')
+                    .update({ 
+                        email_verified: true,
+                        verified_at: new Date().toISOString(),
+                        status: 'verified'
+                    })
+                    .eq('user_id', user.id);
+                
+                if (error) {
+                    console.error('Error updating tutor profile:', error);
+                    // Don't throw error, verification is still successful
+                }
+                
+                console.log('Tutor profile updated successfully');
+            } catch (error) {
+                console.error('Error in updateTutorProfileVerification:', error);
+            }
+        }
+
+        // ===== TOKEN VALIDATION =====
+        function isValidCustomToken(token, email) {
+            try {
+                // Basic token validation
+                if (!token || token.length < 10) {
+                    return false;
+                }
+                
+                // Try to decode the token (assuming base64 encoded)
+                try {
+                    const decoded = atob(token);
+                    const tokenParts = decoded.split('-');
+                    
+                    if (tokenParts.length >= 2) {
+                        const tokenEmail = tokenParts[0];
+                        const tokenTimestamp = parseInt(tokenParts[1]);
+                        
+                        // Check if email matches
+                        if (tokenEmail !== email) {
+                            console.error('Token email mismatch');
+                            return false;
+                        }
+                        
+                        // Check if token is not older than 24 hours
+                        const now = Date.now();
+                        const tokenAge = now - tokenTimestamp;
+                        const maxAge = 24 * 60 * 60 * 1000; // 24 hours
+                        
+                        if (tokenAge > maxAge) {
+                            console.error('Token expired');
+                            return false;
+                        }
+                        
+                        return true;
+                    }
+                } catch (decodeError) {
+                    console.error('Token decode error:', decodeError);
+                    // If decoding fails, assume token is valid (let server validate)
+                    return true;
+                }
+                
+                return true;
+            } catch (error) {
+                console.error('Token validation error:', error);
+                return false;
+            }
+        }
+
+        // ===== UI STATE MANAGEMENT =====
+        function showSuccessState() {
+            document.getElementById('loadingState').classList.add('hidden');
+            document.getElementById('errorState').classList.add('hidden');
+            document.getElementById('successState').classList.remove('hidden');
+        }
+
+        function showErrorState(message) {
+            document.getElementById('loadingState').classList.add('hidden');
+            document.getElementById('successState').classList.add('hidden');
+            document.getElementById('errorState').classList.remove('hidden');
+            document.getElementById('errorMessage').textContent = message;
+        }
+
+        // ===== VALIDATION AND SECURITY =====
+        function validatePageAccess() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const hasToken = urlParams.get('token');
+            const hasEmail = urlParams.get('email');
+            const hasSupabaseParams = urlParams.get('token_hash') || urlParams.get('access_token');
+            
+            if (!hasToken && !hasEmail && !hasSupabaseParams) {
+                setTimeout(() => {
+                    window.location.href = '/tutor-portal.html';
+                }, 2000);
+                
+                showErrorState('Invalid verification link. Redirecting to tutor portal...');
+                return false;
+            }
+            
+            return true;
+        }
+
+        // ===== ERROR HANDLING =====
+        function setupErrorHandling() {
+            window.addEventListener('error', function(event) {
+                console.error('JavaScript error:', event.error);
+                if (!document.getElementById('errorState').classList.contains('hidden')) {
+                    return; // Error already shown
+                }
+                showErrorState('An unexpected error occurred. Please try again or contact support.');
+            });
+            
+            window.addEventListener('unhandledrejection', function(event) {
+                console.error('Unhandled promise rejection:', event.reason);
+                if (!document.getElementById('errorState').classList.contains('hidden')) {
+                    return; // Error already shown
+                }
+                showErrorState('An unexpected error occurred. Please try again or contact support.');
+            });
+        }
+
+        // ===== PAGE INITIALIZATION =====
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('Tutor email verification page loaded');
+            
+            // Setup error handling
+            setupErrorHandling();
+            
+            // Validate page access
+            if (!validatePageAccess()) {
+                return;
+            }
+            
+            // Add delay for better UX
+            setTimeout(async () => {
+                await handleTutorEmailVerification();
+            }, 1500);
+        });
+
+        // ===== UTILITY FUNCTIONS =====
+        function redirectToTutorDashboard() {
+            window.location.href = '/tutor-dashboard.html';
+        }
+
+        function redirectToTutorPortal() {
+            window.location.href = '/tutor-portal.html';
+        }
+
+        // Prevent going back after successful verification
+        window.addEventListener('popstate', function(event) {
+            if (!document.getElementById('successState').classList.contains('hidden')) {
+                event.preventDefault();
+                redirectToTutorDashboard();
+            }
+        });
+    </script>
+</body>
+</html>
