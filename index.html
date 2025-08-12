@@ -1193,9 +1193,49 @@
             font-weight: 800;
         }
         .resend-link:hover { color: #fff; }
+
+        /* Debugging styles */
+        .debug-info {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 12px;
+            max-width: 300px;
+            z-index: 9999;
+            display: none;
+        }
+        .debug-info.show {
+            display: block;
+        }
+        .debug-toggle {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            background: var(--tutor-teal);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 9999;
+        }
     </style>
 </head>
 <body>
+    <!-- Debug Toggle Button -->
+    <button class="debug-toggle" onclick="toggleDebug()">Debug</button>
+    
+    <!-- Debug Info Panel -->
+    <div class="debug-info" id="debugInfo">
+        <div><strong>Debug Information:</strong></div>
+        <div id="debugContent"></div>
+    </div>
+
     <!-- Loading Overlay -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-content">
@@ -1944,7 +1984,7 @@
                     <input type="email" name="email" class="auth-input" required placeholder="Enter your email address">
                 </div>
                 <div class="form-group">
-                    <label class="auth-label">Password *</label>
+                    <label class="form-label">Password *</label>
                     <input type="password" name="password" class="auth-input" required placeholder="Enter your password">
                 </div>
                 <button type="submit" class="auth-submit" id="loginSubmitBtn">
@@ -1954,7 +1994,7 @@
             </form>
 
             <div class="auth-toggle">
-                Don’t have an account? <a href="#" onclick="switchToRegistration()">Register here</a>
+                Don't have an account? <a href="#" onclick="switchToRegistration()">Register here</a>
             </div>
         </div>
     </div>
@@ -1967,10 +2007,10 @@
             <div class="verify-notice">
                 <div class="email-icon"><i class="fas fa-envelope-open"></i></div>
                 <h4 style="margin-bottom:10px;font-size:1.4rem">Check Your Email</h4>
-                <p><strong>We’ve sent a verification link to your email address.</strong></p>
+                <p><strong>We've sent a verification link to your email address.</strong></p>
                 <p>Please click the verification link to activate your tutor account.</p>
                 <p style="font-size: 0.95rem; opacity: 0.9; margin-top: 14px;">
-                    Don’t see the email? Check your spam folder or 
+                    Don't see the email? Check your spam folder or 
                     <span class="resend-link" onclick="resendTutorVerification()">click here to resend</span>
                 </p>
             </div>
@@ -1978,7 +2018,7 @@
             <div style="text-align: center; margin-top: 16px;">
                 <button class="btn btn-primary" onclick="closeVerificationModal()">
                     <i class="fas fa-check"></i>
-                    I’ll Check My Email
+                    I'll Check My Email
                 </button>
             </div>
         </div>
@@ -2012,6 +2052,32 @@
 
         // Store reg data for resend
         let pendingTutor = null;
+
+        // Debug functionality
+        let debugVisible = false;
+        function toggleDebug() {
+            debugVisible = !debugVisible;
+            const debugPanel = document.getElementById('debugInfo');
+            if (debugVisible) {
+                debugPanel.classList.add('show');
+                updateDebugInfo();
+            } else {
+                debugPanel.classList.remove('show');
+            }
+        }
+
+        function updateDebugInfo(additionalInfo = '') {
+            const debugContent = document.getElementById('debugContent');
+            if (debugContent) {
+                debugContent.innerHTML = `
+                    <div>Supabase URL: ${SUPABASE_URL}</div>
+                    <div>Table: authorised_tutor_emails</div>
+                    <div>Test Email: lanreylan@gmail.com</div>
+                    <div>Email Type: citext</div>
+                    <div>Status: ${additionalInfo || 'Ready'}</div>
+                `;
+            }
+        }
 
         // Step navigation functions (improved logic)
         function changeStep(direction) {
@@ -2552,33 +2618,125 @@
             }
         }
 
-        // Robust pre-approval check: tries multiple table names and matches email case-insensitively
-        async function getAuthorisedTutorRecord(emailLower) {
-            const candidateTables = [
-                'authorised_tutor_emails',   // recommended
-                'authorised_tutors_emails',  // possible variant
-                'authorised_tutors_email'    // possible variant
-            ];
-            for (const table of candidateTables) {
-                try {
-                    const { data, error } = await supabase
-                        .from(table)
-                        .select('*')
-                        .ilike('email', emailLower)  // case-insensitive exact match
-                        .eq('is_used', false)
-                        .maybeSingle();
-                    if (error) {
-                        console.warn(`[pre-approval] Table ${table} query error:`, error);
-                        continue;
-                    }
-                    if (data) {
-                        return { table, row: data };
-                    }
-                } catch (err) {
-                    console.warn(`[pre-approval] Table ${table} unexpected error:`, err);
+        // Enhanced pre-approval check with comprehensive debugging
+        async function getAuthorisedTutorRecord(email) {
+            const normalizedEmail = email.trim().toLowerCase();
+            updateDebugInfo(`Checking email: ${normalizedEmail}`);
+            
+            console.log(`[DEBUG] Checking authorization for email: ${normalizedEmail}`);
+            
+            try {
+                // First, let's see what's in the table
+                console.log('[DEBUG] Fetching all records to check table contents...');
+                const { data: allRecords, error: allError } = await supabase
+                    .from('authorised_tutor_emails')
+                    .select('*');
+                
+                if (allError) {
+                    console.error('[DEBUG] Error fetching all records:', allError);
+                    updateDebugInfo(`Error fetching records: ${allError.message}`);
+                } else {
+                    console.log('[DEBUG] All records in table:', allRecords);
+                    updateDebugInfo(`Found ${allRecords?.length || 0} total records in table`);
+                    
+                    // Log each email for comparison
+                    allRecords?.forEach((record, index) => {
+                        console.log(`[DEBUG] Record ${index + 1}:`, {
+                            email: record.email,
+                            is_used: record.is_used,
+                            created_at: record.created_at
+                        });
+                    });
                 }
+
+                // Try multiple query approaches
+                const queryApproaches = [
+                    // Approach 1: Exact case-sensitive match
+                    async () => {
+                        console.log('[DEBUG] Approach 1: Exact match');
+                        return await supabase
+                            .from('authorised_tutor_emails')
+                            .select('*')
+                            .eq('email', normalizedEmail)
+                            .eq('is_used', false)
+                            .maybeSingle();
+                    },
+                    
+                    // Approach 2: Case-insensitive with ilike
+                    async () => {
+                        console.log('[DEBUG] Approach 2: Case-insensitive ilike');
+                        return await supabase
+                            .from('authorised_tutor_emails')
+                            .select('*')
+                            .ilike('email', normalizedEmail)
+                            .eq('is_used', false)
+                            .maybeSingle();
+                    },
+                    
+                    // Approach 3: Case-insensitive with wildcard
+                    async () => {
+                        console.log('[DEBUG] Approach 3: Case-insensitive with wildcard');
+                        return await supabase
+                            .from('authorised_tutor_emails')
+                            .select('*')
+                            .ilike('email', `%${normalizedEmail}%`)
+                            .eq('is_used', false)
+                            .maybeSingle();
+                    },
+                    
+                    // Approach 4: Get all unused and filter client-side
+                    async () => {
+                        console.log('[DEBUG] Approach 4: Client-side filtering');
+                        const { data, error } = await supabase
+                            .from('authorised_tutor_emails')
+                            .select('*')
+                            .eq('is_used', false);
+                        
+                        if (error) return { data: null, error };
+                        
+                        const match = data?.find(record => 
+                            record.email.toLowerCase().trim() === normalizedEmail
+                        );
+                        
+                        return { data: match || null, error: null };
+                    }
+                ];
+
+                for (let i = 0; i < queryApproaches.length; i++) {
+                    try {
+                        console.log(`[DEBUG] Trying approach ${i + 1}...`);
+                        const { data, error } = await queryApproaches[i]();
+                        
+                        if (error) {
+                            console.error(`[DEBUG] Approach ${i + 1} error:`, error);
+                            updateDebugInfo(`Approach ${i + 1} failed: ${error.message}`);
+                            continue;
+                        }
+                        
+                        console.log(`[DEBUG] Approach ${i + 1} result:`, data);
+                        
+                        if (data) {
+                            console.log(`[DEBUG] ✅ Found authorized record with approach ${i + 1}:`, data);
+                            updateDebugInfo(`✅ Found record with approach ${i + 1}`);
+                            return { table: 'authorised_tutor_emails', row: data };
+                        } else {
+                            console.log(`[DEBUG] ❌ No match with approach ${i + 1}`);
+                        }
+                    } catch (err) {
+                        console.error(`[DEBUG] Approach ${i + 1} exception:`, err);
+                        updateDebugInfo(`Approach ${i + 1} exception: ${err.message}`);
+                    }
+                }
+
+                console.log('[DEBUG] ❌ No authorized record found with any approach');
+                updateDebugInfo('❌ No authorized record found');
+                return null;
+
+            } catch (err) {
+                console.error('[DEBUG] General error in getAuthorisedTutorRecord:', err);
+                updateDebugInfo(`General error: ${err.message}`);
+                return null;
             }
-            return null;
         }
 
         // Resend verification via Supabase (real verification email)
@@ -2598,13 +2756,14 @@
             }
         }
 
-        // Tutor Registration with pre-approval enforcement
+        // Tutor Registration with enhanced pre-approval enforcement
         async function handleTutorRegistration(event) {
             event.preventDefault();
             const btn = document.getElementById('regSubmitBtn');
             const text = document.getElementById('regSubmitText');
             const spinner = document.getElementById('regLoadingSpinner');
             text.style.display='none'; spinner.style.display='inline-block'; btn.disabled=true; clearMessages();
+            
             try{
                 const fd = new FormData(event.target);
                 const email = (fd.get('email')||'').trim().toLowerCase();
@@ -2612,13 +2771,23 @@
                 const phone = (fd.get('phone')||'').trim();
                 const password = fd.get('password');
                 const confirm = fd.get('confirmPassword');
+                
                 if(password !== confirm) throw new Error('Passwords do not match');
 
-                // Pre-approval check (robust)
+                console.log('[Registration] Starting registration process for:', email);
+                updateDebugInfo(`Starting registration for: ${email}`);
+
+                // Enhanced pre-approval check
                 const approvedRecord = await getAuthorisedTutorRecord(email);
                 if(!approvedRecord){
-                    throw new Error('This email is not authorised to create a tutor account. Please contact support at tutors@baobabonlineacademy.com');
+                    const errorMsg = `This email (${email}) is not authorized to create a tutor account. Please ensure:\n\n1. Your email is exactly as provided to the academy\n2. You haven't already registered\n3. Contact support at tutors@baobabonlineacademy.com if you believe this is an error`;
+                    console.error('[Registration] Authorization failed:', errorMsg);
+                    updateDebugInfo('❌ Authorization failed');
+                    throw new Error(errorMsg);
                 }
+
+                console.log('[Registration] ✅ Email authorized, proceeding with Supabase signup');
+                updateDebugInfo('✅ Email authorized, creating account...');
 
                 // Sign up (Supabase sends verification email)
                 const { data: signup, error: signUpError } = await supabase.auth.signUp({
@@ -2628,32 +2797,53 @@
                         data: { full_name, phone, role: 'tutor' }
                     }
                 });
-                if(signUpError) throw new Error(signUpError.message);
+                
+                if(signUpError) {
+                    console.error('[Registration] Supabase signup error:', signUpError);
+                    updateDebugInfo(`Signup error: ${signUpError.message}`);
+                    throw new Error(signUpError.message);
+                }
 
-                // Mark the authorised email as used (use the exact email value from row to avoid case issues)
+                console.log('[Registration] ✅ Supabase account created successfully');
+                updateDebugInfo('✅ Account created, marking email as used...');
+
+                // Mark the authorized email as used
                 try {
                     const tableName = approvedRecord.table;
                     const rowEmail = approvedRecord.row.email;
+                    console.log('[Registration] Marking email as used:', rowEmail);
+                    
                     const { error: markErr } = await supabase
                         .from(tableName)
                         .update({ is_used: true, used_at: new Date().toISOString() })
                         .eq('email', rowEmail);
-                    if (markErr) console.warn('Failed to mark authorised tutor email as used:', markErr);
+                    
+                    if (markErr) {
+                        console.warn('[Registration] Failed to mark email as used:', markErr);
+                        updateDebugInfo(`Warning: Failed to mark as used: ${markErr.message}`);
+                    } else {
+                        console.log('[Registration] ✅ Email marked as used successfully');
+                        updateDebugInfo('✅ Email marked as used');
+                    }
                 } catch (uErr) {
-                    console.warn('Mark-as-used update warning:', uErr);
+                    console.warn('[Registration] Mark-as-used update warning:', uErr);
+                    updateDebugInfo(`Update warning: ${uErr.message}`);
                 }
 
                 // Keep email for resending verification
                 pendingTutor = { email, full_name };
 
                 // Success UI
+                console.log('[Registration] ✅ Registration process completed successfully');
+                updateDebugInfo('✅ Registration completed successfully');
                 showSuccess('regSuccessMessage', 'Account created! Please verify your email to continue.');
                 event.target.reset();
                 closeRegistrationModal();
                 openVerificationModal();
 
             } catch(err) {
-                console.error('Tutor registration error:', err);
+                console.error('[Registration] Registration error:', err);
+                updateDebugInfo(`Registration failed: ${err.message}`);
                 showError('regErrorMessage', err.message || 'Registration failed. Please try again.');
             } finally {
                 text.style.display='inline'; spinner.style.display='none'; btn.disabled=false;
