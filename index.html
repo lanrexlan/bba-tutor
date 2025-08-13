@@ -2342,12 +2342,16 @@
                 
                 // Mark email as used
                 const { error: updateError } = await supabase
-                    .from('authorised_tutor_emails')
-                    .update({
-                        is_used: true,
-                        used_at: new Date().toISOString()
-                    })
-                    .eq('email', email);
+                .from('authorised_tutor_emails')
+                .update({
+                    is_used: true,
+                    used_at: new Date().toISOString(),
+                    full_name: fullName,
+                    phone: phone,
+                    teaching_experience: teachingExperience
+                })
+                .eq('email', email);
+
                 
                 if (updateError) {
                     console.error('Failed to mark tutor email as used:', updateError);
