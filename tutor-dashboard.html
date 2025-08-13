@@ -136,11 +136,11 @@
 
     async function ensureAuth(){
       const { data: { session } } = await supabase.auth.getSession();
-      if(!session){ location.href = '/index-20.html'; return null; }
+      if(!session){ location.href = '/index.html'; return null; }
       if(!session.user.email_confirmed_at){
         alert('Please verify your email to access the dashboard.');
         await supabase.auth.signOut();
-        location.href = '/index-20.html';
+        location.href = '/index.html';
         return null;
       }
       currentUser = session.user;
@@ -234,11 +234,11 @@
 
     document.getElementById('logoutBtn').addEventListener('click', async ()=>{
       await supabase.auth.signOut();
-      location.href = '/index-20.html';
+      location.href = '/index.html';
     });
 
     supabase.auth.onAuthStateChange((event, session) => {
-      if(event === 'SIGNED_OUT' || !session) location.href = '/index-20.html';
+      if(event === 'SIGNED_OUT' || !session) location.href = '/index.html';
     });
 
     (async function init(){
