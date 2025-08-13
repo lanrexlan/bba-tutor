@@ -513,7 +513,17 @@
                         console.log('Supabase verification successful:', data.user);
                         
                         // Update tutor profile verification status
-                        await updateTutorProfileVerification(data.user);
+                        await supabase.from('tutor_profiles').insert([{
+    user_id: user.id,
+    full_name: pendingFullName, // you'd have to pass or fetch this
+    phone: pendingPhone,
+    email: user.email,
+    teaching_experience: pendingExperience,
+    email_verified: true,
+    verified_at: new Date().toISOString(),
+    status: 'verified'
+}]);
+
                         
                         showSuccessState();
                         
