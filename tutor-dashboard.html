@@ -1,149 +1,346 @@
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
-  <meta charset="UTF-8">
-  <link rel="icon" type="image/png" sizes="32x32" href="/Images/logo.jpg">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tutor Dashboard - Baobab Online Academy</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/Images/logo.jpg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tutor Dashboard — Baobab Online Academy</title>
+  <meta name="theme-color" content="#0f766e" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-    :root {
-      --tutor-teal: #00695C;
-      --canopy-green: #2E7D32;
-      --sunset-gold: #F57C00;
-      --deep-charcoal: #263238;
-      --border: #E2E8F0;
-      --white: #fff;
-      --shadow: 0 6px 16px rgba(0,0,0,.08);
+    :root{
+      --tutor-teal:#0F766E;
+      --canopy-green:#16A34A;
+      --sky:#0284C7;
+      --sunset-gold:#F59E0B;
+      --baobab-purple:#7C3AED;
+      --rose:#E11D48;
+      --deep-charcoal:#0F172A;
+      --slate:#334155;
+      --muted:#64748B;
+      --soft:#F1F5F9;
+      --border:#E2E8F0;
+      --white:#fff;
+      --bg:#F7FAFC;
+
+      --shadow-sm:0 2px 8px rgba(0,0,0,.06);
+      --shadow:0 6px 18px rgba(0,0,0,.08);
+      --shadow-lg:0 12px 32px rgba(2, 8, 23, 0.12);
+      --radius:14px;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Open Sans', sans-serif; color: var(--deep-charcoal); background: #F7FAFC; min-height: 100vh; }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:'Open Sans',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      color:var(--deep-charcoal);
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(2,132,199,.08), transparent 50%),
+        radial-gradient(800px 400px at 110% 10%, rgba(124,58,237,.06), transparent 50%),
+        var(--bg);
+    }
+
     /* App Bar */
-    .appbar {
-      position: sticky; top: 0; z-index: 10;
-      background: linear-gradient(135deg, var(--tutor-teal), var(--canopy-green));
-      color: var(--white);
-      padding: 12px 0;
-      box-shadow: var(--shadow);
+    .appbar{
+      position:sticky;top:0;z-index:50;
+      background:rgba(255,255,255,.9);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--border);
+      box-shadow:var(--shadow-sm);
     }
-    .appbar-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 16px;
+    .appbar-inner{
+      max-width:1200px;margin:0 auto;
+      display:flex;align-items:center;gap:12px;
+      padding:10px 16px;
     }
-    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--white); }
-    .badge { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,.2); display: grid; place-items: center; }
-    .title { font-family: 'Merriweather', serif; font-weight: 900; font-size: 1.2rem; }
-    .actions { display: flex; align-items: center; gap: 12px; }
-    .btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 8px 14px; border-radius: 8px; border: none;
-      background: var(--sunset-gold); color: #fff; cursor: pointer; font-weight: 600;
-      transition: background 0.2s;
+    .brand{display:flex;align-items:center;gap:12px;color:inherit;text-decoration:none}
+    .badge{
+      width:40px;height:40px;border-radius:12px;
+      background:conic-gradient(from 190deg at 50% 50%, var(--tutor-teal), var(--canopy-green), var(--sky));
+      color:#fff;display:grid;place-items:center;
+      box-shadow:var(--shadow);
     }
-    .btn:hover { background: #e56c00; }
+    .title{font-family:'Merriweather',serif;font-weight:900;letter-spacing:.2px}
+    .grow{flex:1}
+    .searchbar{
+      display:flex;align-items:center;gap:8px;
+      background:#fff;border:1px solid var(--border);
+      padding:8px 12px;border-radius:12px;min-width:180px;max-width:420px;width:100%;
+    }
+    .searchbar input{border:none;outline:none;flex:1;font-size:14px}
+    .actions{display:flex;align-items:center;gap:8px}
+    .btn{
+      display:inline-flex;align-items:center;gap:8px;
+      border:1px solid var(--border);background:#fff;
+      border-radius:10px;padding:8px 12px;cursor:pointer;
+      color:var(--slate);
+    }
+    .btn:hover{box-shadow:var(--shadow-sm)}
+    .btn-primary{
+      background:linear-gradient(135deg, var(--tutor-teal), var(--canopy-green));
+      color:#fff;border:none;
+    }
+    .btn-ghost{background:transparent;border-color:transparent;color:var(--slate)}
+    .btn-danger{background:linear-gradient(135deg, #ef4444, #f97316);color:#fff;border:none}
+
+    /* Verify & Offline banners */
+    .bar{
+      display:none; /* toggled via JS */
+      background:linear-gradient(90deg, rgba(245,158,11,.1), rgba(3,105,161,.08));
+      border-bottom:1px solid var(--border);
+      padding:10px 16px;
+    }
+    .bar-inner{max-width:1200px;margin:0 auto;display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .bar p{margin:0;color:var(--slate)}
+    .bar strong{color:var(--deep-charcoal)}
+    .bar .btn{padding:6px 10px}
+
+    .bar.offline{
+      background:linear-gradient(90deg, rgba(225,29,72,.12), rgba(15,118,110,.08));
+    }
+
     /* Layout */
-    .container {
-      max-width: 1200px;
-      margin: 20px auto;
-      padding: 0 16px;
-      display: grid; grid-template-columns: 260px 1fr; gap: 20px;
+    .container{
+      max-width:1200px;margin:0 auto;
+      padding:18px 16px;
+      display:grid;grid-template-columns:270px 1fr;gap:16px;
     }
-    .sidebar {
-      background: #fff; border-radius: 12px; border: 1px solid var(--border);
-      padding: 16px;
-      height: max-content;
+    .sidebar{
+      background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px;height:max-content;position:sticky;top:88px;
+      box-shadow:var(--shadow-sm)
     }
-    .nav { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-    .nav a {
-      padding: 10px 12px; border-radius: 8px;
-      color: var(--deep-charcoal); font-weight: 600;
-      text-decoration: none; transition: background 0.2s;
+    .nav{list-style:none;display:flex;flex-direction:column;gap:4px}
+    .nav a{
+      display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;color:#334155;text-decoration:none;font-weight:700
     }
-    .nav a.active, .nav a:hover {
-      background: var(--tutor-teal); color: #fff;
+    .nav a .count{margin-left:auto;background:var(--soft);padding:2px 8px;border-radius:20px;font-size:12px;color:var(--muted);border:1px solid var(--border)}
+    .nav a.active,.nav a:hover{background:#F8FAFF}
+
+    /* Panels & sections */
+    .panel{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px;box-shadow:var(--shadow)}
+    .panel-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+    .section{display:none}
+    .section.active{display:block}
+
+    /* Overview hero + stats */
+    .hero{
+      border-radius:16px;
+      background:
+        radial-gradient(700px 320px at -10% -20%, rgba(20,184,166,.25), transparent 55%),
+        linear-gradient(135deg, rgba(2,132,199,.14), rgba(124,58,237,.12));
+      padding:18px;border:1px solid var(--border);
     }
-    /* Panels */
-    .panel {
-      background: #fff; border-radius: 12px; border: 1px solid var(--border);
-      padding: 16px; box-shadow: var(--shadow); margin-bottom: 20px;
+    .hero h3{font-family:'Merriweather',serif;font-weight:900}
+    .muted{color:var(--muted)}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:12px}
+    .stat{
+      background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px;box-shadow:var(--shadow-sm);display:flex;gap:12px;align-items:center;
     }
-    .panel-head {
-      display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;
+    .stat .icon{
+      width:40px;height:40px;border-radius:12px;display:grid;place-items:center;color:#fff;box-shadow:var(--shadow-sm)
     }
-    .panel h3 { margin-bottom: 4px; }
-    .muted { color: #64748B; }
-    /* Table */
-    .table-wrap { overflow: auto; border: 1px solid var(--border); border-radius: 8px; }
-    table { width: 100%; border-collapse: collapse; }
-    thead th {
-      background: #F1F5F9; padding: 10px; text-align: left;
-      font-size: 12px; color: #64748B; border-bottom: 1px solid var(--border);
+    .i-teal{background:linear-gradient(135deg,#0ea5e9,#14b8a6)}
+    .i-gold{background:linear-gradient(135deg,#f59e0b,#f97316)}
+    .i-green{background:linear-gradient(135deg,#22c55e,#16a34a)}
+    .i-purple{background:linear-gradient(135deg,#a78bfa,#7c3aed)}
+    .stat .value{font-size:20px;font-weight:800}
+    .stat .label{font-size:12px;color:var(--muted)}
+
+    /* Toolbars */
+    .toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .field{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--border);padding:8px 10px;border-radius:10px}
+    .field input,.field select{border:none;outline:none;background:transparent}
+    .chip{padding:4px 8px;border-radius:30px;background:var(--soft);border:1px solid var(--border);font-size:12px;color:var(--muted)}
+
+    /* Tables */
+    .table-wrap{overflow:auto;border:1px solid var(--border);border-radius:12px}
+    table{width:100%;border-collapse:separate;border-spacing:0;background:#fff}
+    thead th{position:sticky;top:0;background:#F8FAFE;border-bottom:1px solid var(--border);text-align:left;padding:10px;font-size:12px;color:var(--muted)}
+    tbody td{border-bottom:1px solid var(--border);padding:12px;vertical-align:middle}
+    tbody tr:hover{background:#fcfdff}
+    .status{
+      display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:700;border:1px solid;
     }
-    tbody td { padding: 10px; border-bottom: 1px solid var(--border); }
-    /* Responsive */
-    @media (max-width: 992px) { .container { grid-template-columns: 1fr; } }
+    .status.scheduled{color:#075985;border-color:#bae6fd;background:#e0f2fe}
+    .status.completed{color:#14532d;border-color:#bbf7d0;background:#dcfce7}
+    .status.cancelled,.status.canceled{color:#7f1d1d;border-color:#fecaca;background:#fee2e2}
+    .status.assigned{color:#7c2d12;border-color:#ffedd5;background:#fff7ed}
+    .status.overdue{color:#991b1b;border-color:#fecaca;background:#fee2e2}
+
+    /* Inline message rows */
+    .row-message{color:var(--muted);text-align:center}
+    .row-error{color:#b91c1c;text-align:center}
+    .row-error small{display:block;color:#7f1d1d}
+    .row-actions{display:flex;gap:8px;flex-wrap:wrap}
+
+    /* Profile */
+    .profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .form-group{display:flex;flex-direction:column;gap:8px}
+    .input{border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-size:14px}
+    .input:focus{outline:none;border-color:#93c5fd;box-shadow:0 0 0 4px rgba(59,130,246,.1)}
+
+    /* Toasts */
+    .toast{
+      position:fixed;z-index:60;right:16px;bottom:16px;display:grid;gap:8px;max-width:92vw
+    }
+    .toast-item{
+      display:flex;align-items:flex-start;gap:10px;background:#fff;border:1px solid var(--border);
+      padding:10px 12px;border-radius:12px;box-shadow:var(--shadow-lg);min-width:260px
+    }
+    .toast-item.success{border-color:#bbf7d0;background:#f0fdf4}
+    .toast-item.error{border-color:#fecaca;background:#fef2f2}
+    .toast-item .msg{flex:1}
+    .toast-item .close{background:transparent;border:none;cursor:pointer;color:var(--muted)}
+
+    /* Skeletons */
+    .skeleton{background:linear-gradient(90deg,#f3f4f6 25%,#e5e7eb 37%,#f3f4f6 63%);background-size:400% 100%;animation:pulse 1.4s ease infinite;border-radius:6px}
+    @keyframes pulse {0%{background-position:100% 50%}100%{background-position:0 50%}}
+
+    /* Mobile */
+    .menu-btn{display:none}
+    @media (max-width: 992px){
+      .container{grid-template-columns:1fr}
+      .sidebar{position:fixed;inset:64px 0 auto 0;margin:0;transform:translateY(-140%);transition:transform .3s ease;z-index:40;border-radius:0}
+      .sidebar.open{transform:translateY(0)}
+      .menu-btn{display:inline-flex}
+      .stats{grid-template-columns:1fr 1fr}
+      .profile-grid{grid-template-columns:1fr}
+    }
   </style>
 </head>
 <body>
-  <!-- HEADER -->
+  <!-- Email verification banner (fixes redirect loop by not signing out and letting user refresh session) -->
+  <div id="verifyBanner" class="bar" role="region" aria-live="polite">
+    <div class="bar-inner">
+      <p><strong>Email verification required.</strong> We've sent a verification link to <span id="verifyEmail">your email</span>. After verifying, click "I've verified" to refresh your session.</p>
+      <div>
+        <button id="resendVerificationBtn" class="btn"><i class="fa-regular fa-paper-plane"></i> Resend email</button>
+        <button id="refreshVerificationBtn" class="btn btn-primary"><i class="fa-solid fa-arrows-rotate"></i> I've verified</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Offline banner -->
+  <div id="offlineBanner" class="bar offline" role="region" aria-live="assertive">
+    <div class="bar-inner">
+      <p><strong>You're offline.</strong> We'll retry when connection is restored.</p>
+      <div><span class="chip">Network</span></div>
+    </div>
+  </div>
+
   <header class="appbar">
     <div class="appbar-inner">
+      <button class="btn btn-ghost menu-btn" id="menuToggle" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
       <a class="brand" href="#">
         <div class="badge"><i class="fas fa-chalkboard-teacher"></i></div>
         <div class="title">Tutor Dashboard</div>
       </a>
+      <div class="grow"></div>
+      <div class="searchbar" role="search">
+        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+        <input id="globalSearch" type="search" placeholder="Search lessons, assignments, children..." />
+      </div>
       <div class="actions">
-        <div id="tutorName">Loading...</div>
-        <button class="btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        <button class="btn" id="refreshAllBtn" title="Refresh">
+          <i class="fa-solid fa-rotate"></i> <span class="hide-sm">Refresh</span>
+        </button>
+        <div class="btn" id="tutorName" title="Signed in user">
+          <i class="fa-regular fa-user"></i> Loading...
+        </div>
+        <button class="btn btn-danger" id="logoutBtn" title="Logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
       </div>
     </div>
   </header>
 
-  <!-- LAYOUT -->
   <div class="container">
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
       <nav class="nav">
-        <a href="#" data-section="overview" class="active">Overview</a>
-        <a href="#" data-section="lessons">Upcoming Lessons</a>
-        <a href="#" data-section="assignments">Assignments</a>
-        <a href="#" data-section="profile">My Profile</a>
+        <a href="#" data-section="overview" class="active"><i class="fa-solid fa-gauge-high"></i> Overview</a>
+        <a href="#" data-section="lessons"><i class="fa-solid fa-calendar-days"></i> Upcoming Lessons <span id="navLessonsCount" class="count">0</span></a>
+        <a href="#" data-section="assignments"><i class="fa-solid fa-list-check"></i> Assignments <span id="navAssignmentsCount" class="count">0</span></a>
+        <a href="#" data-section="profile"><i class="fa-solid fa-id-card-clip"></i> My Profile</a>
       </nav>
     </aside>
 
-    <!-- MAIN CONTENT -->
     <main>
       <!-- Overview -->
       <section id="overview" class="section active">
-        <div class="panel">
+        <div class="panel hero">
           <div class="panel-head">
             <h3>Welcome back, <span id="firstName">Tutor</span> 👋</h3>
+            <div class="row-actions">
+              <button class="btn btn-primary" id="jumpToLessons"><i class="fa-regular fa-calendar"></i> View lessons</button>
+              <button class="btn" id="jumpToAssignments"><i class="fa-solid fa-tasks"></i> View assignments</button>
+            </div>
           </div>
-          <p class="muted">Here’s your latest activity at Baobab Online Academy.</p>
-        </div>
-        <div class="panel">
-          <h4>Quick Stats</h4>
-          <ul>
-            <li><strong id="lessonsCount">0</strong> Upcoming Lessons</li>
-            <li><strong id="assignmentsCount">0</strong> Pending Assignments</li>
-          </ul>
+          <p class="muted">Here’s a quick look at your schedule and recent activity.</p>
+          <div class="stats" aria-label="Key stats">
+            <div class="stat">
+              <div class="icon i-teal"><i class="fa-regular fa-clock"></i></div>
+              <div>
+                <div class="value" id="statUpcomingCount">--</div>
+                <div class="label">Upcoming lessons</div>
+              </div>
+            </div>
+            <div class="stat">
+              <div class="icon i-gold"><i class="fa-solid fa-hourglass-half"></i></div>
+              <div>
+                <div class="value" id="statAssignmentsPending">--</div>
+                <div class="label">Assignments pending</div>
+              </div>
+            </div>
+            <div class="stat">
+              <div class="icon i-green"><i class="fa-solid fa-user-group"></i></div>
+              <div>
+                <div class="value" id="statStudentsCount">--</div>
+                <div class="label">Active students</div>
+              </div>
+            </div>
+            <div class="stat">
+              <div class="icon i-purple"><i class="fa-regular fa-calendar-check"></i></div>
+              <div>
+                <div class="value" id="statNextLesson">--</div>
+                <div class="label">Next lesson</div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
       <!-- Lessons -->
       <section id="lessons" class="section">
         <div class="panel">
-          <div class="panel-head"><h3>Upcoming Lessons</h3></div>
+          <div class="panel-head">
+            <h3>Upcoming Lessons</h3>
+            <div class="toolbar">
+              <span class="chip"><i class="fa-regular fa-clock"></i> Next 60 days (default)</span>
+              <div class="field"><i class="fa-regular fa-calendar"></i><input id="filterFromDate" type="date" /></div>
+              <div class="field"><i class="fa-regular fa-calendar"></i><input id="filterToDate" type="date" /></div>
+              <div class="field">
+                <i class="fa-solid fa-filter"></i>
+                <select id="filterLessonStatus">
+                  <option value="all">All statuses</option>
+                  <option value="scheduled">Scheduled</option>
+                  <option value="completed">Completed</option>
+                  <option value="canceled">Canceled</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
+              </div>
+              <div class="field"><i class="fa-solid fa-magnifying-glass"></i><input id="lessonSearchInput" type="search" placeholder="Search lessons..." /></div>
+              <button class="btn" id="refreshLessonsBtn" title="Refresh lessons"><i class="fa-solid fa-rotate"></i></button>
+              <button class="btn" id="exportLessonsBtn" title="Export CSV"><i class="fa-solid fa-file-arrow-down"></i></button>
+            </div>
+          </div>
           <div class="table-wrap">
-            <table>
-              <thead><tr><th>Date</th><th>Time</th><th>Child</th><th>Subject</th><th>Status</th></tr></thead>
-              <tbody id="lessonsTbody"><tr><td colspan="5" class="muted">Loading...</td></tr></tbody>
+            <table aria-label="Upcoming lessons table">
+              <thead><tr><th>Date</th><th>Time</th><th>Child</th><th>Subject</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="lessonsTbody">
+                <tr><td colspan="6"><div class="skeleton" style="height:16px"></div></td></tr>
+                <tr><td colspan="6"><div class="skeleton" style="height:16px"></div></td></tr>
+                <tr><td colspan="6"><div class="skeleton" style="height:16px"></div></td></tr>
+              </tbody>
             </table>
           </div>
         </div>
@@ -152,11 +349,31 @@
       <!-- Assignments -->
       <section id="assignments" class="section">
         <div class="panel">
-          <div class="panel-head"><h3>Assignments</h3></div>
+          <div class="panel-head">
+            <h3>Assignments</h3>
+            <div class="toolbar">
+              <div class="field">
+                <i class="fa-solid fa-filter"></i>
+                <select id="filterAssignmentStatus">
+                  <option value="all">All statuses</option>
+                  <option value="assigned">Assigned</option>
+                  <option value="completed">Completed</option>
+                  <option value="overdue">Overdue</option>
+                </select>
+              </div>
+              <div class="field"><i class="fa-solid fa-magnifying-glass"></i><input id="assignmentSearchInput" type="search" placeholder="Search assignments..." /></div>
+              <button class="btn" id="refreshAssignmentsBtn" title="Refresh assignments"><i class="fa-solid fa-rotate"></i></button>
+              <button class="btn" id="exportAssignmentsBtn" title="Export CSV"><i class="fa-solid fa-file-arrow-down"></i></button>
+            </div>
+          </div>
           <div class="table-wrap">
-            <table>
-              <thead><tr><th>Title</th><th>Child</th><th>Subject</th><th>Due</th><th>Status</th></tr></thead>
-              <tbody id="assignmentsTbody"><tr><td colspan="5" class="muted">Loading...</td></tr></tbody>
+            <table aria-label="Assignments table">
+              <thead><tr><th>Title</th><th>Child</th><th>Subject</th><th>Due</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="assignmentsTbody">
+                <tr><td colspan="6"><div class="skeleton" style="height:16px"></div></td></tr>
+                <tr><td colspan="6"><div class="skeleton" style="height:16px"></div></td></tr>
+                <tr><td colspan="6"><div class="skeleton" style="height:16px"></div></td></tr>
+              </tbody>
             </table>
           </div>
         </div>
@@ -165,136 +382,604 @@
       <!-- Profile -->
       <section id="profile" class="section">
         <div class="panel">
-          <div class="panel-head"><h3>My Profile</h3></div>
-          <p><strong>Name:</strong> <span id="profileName">—</span></p>
-          <p><strong>Email:</strong> <span id="profileEmail">—</span></p>
-          <p><strong>Phone:</strong> <span id="profilePhone">—</span></p>
-          <p><strong>Status:</strong> <span id="profileStatus">—</span></p>
+          <div class="panel-head"><h3>My Profile</h3>
+            <div class="row-actions">
+              <button class="btn" id="passwordResetBtn"><i class="fa-solid fa-key"></i> Send password reset email</button>
+              <button class="btn" id="refreshProfileBtn" title="Reload profile"><i class="fa-solid fa-rotate"></i></button>
+            </div>
+          </div>
+          <div class="profile-grid">
+            <div class="form-group">
+              <label for="profileName"><strong>Full Name</strong></label>
+              <input id="profileName" class="input" type="text" placeholder="Your name" />
+            </div>
+            <div class="form-group">
+              <label for="profileEmail"><strong>Email</strong></label>
+              <input id="profileEmail" class="input" type="email" placeholder="you@example.com" disabled />
+            </div>
+            <div class="form-group">
+              <label for="profilePhone"><strong>Phone</strong></label>
+              <input id="profilePhone" class="input" type="tel" placeholder="+44 0000 000000" />
+            </div>
+            <div class="form-group">
+              <label><strong>Actions</strong></label>
+              <div class="row-actions">
+                <button class="btn btn-primary" id="saveProfileBtn"><i class="fa-regular fa-floppy-disk"></i> Save changes</button>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </main>
   </div>
 
+  <div class="toast" id="toast" aria-live="polite" aria-atomic="true"></div>
+
   <script>
+    // Supabase init
     const SUPABASE_URL = 'https://vcxdkacxbjsgaoxbhsip.supabase.co';
-    const SUPABASE_ANON_KEY = 'YOUR-ANON-KEY';
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    let currentUser = null;
-
-    // Section switcher
-    function setActive(sectionId) {
-      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-      document.getElementById(sectionId).classList.add('active');
-      document.querySelectorAll('.nav a').forEach(a => a.classList.toggle('active', a.dataset.section === sectionId));
-      if (sectionId === 'lessons') loadLessons();
-      if (sectionId === 'assignments') loadAssignments();
-    }
-    document.querySelectorAll('.nav a').forEach(a => {
-      a.addEventListener('click', e => { e.preventDefault(); setActive(a.dataset.section); });
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZjeGRrYWN4YmpzZ2FveGJoc2lwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI5MDQ5ODMsImV4cCI6MjA2ODQ4MDk4M30.T9KhHWzHZWyaZvyeFXtBu8tPLY9JOn6_wCHcH8B46FU';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
     });
 
-    // Ensure Authenticated User
-    async function ensureAuth() {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
+    // Global state
+    let currentUser = null;
+    let lessonsCache = [];
+    let assignmentsCache = [];
+    let realtimeChannel = null;
+
+    // DOM helpers
+    const $ = (sel) => document.querySelector(sel);
+    const $$ = (sel) => document.querySelectorAll(sel);
+
+    // Toasts
+    function toast(message, type='default', timeout=4500){
+      const wrap = $('#toast');
+      const el = document.createElement('div');
+      el.className = `toast-item ${type !== 'default' ? type : ''}`;
+      el.innerHTML = `
+        <div class="icon" aria-hidden="true" style="color:${type==='error'?'#b91c1c': type==='success'?'#15803d':'#334155'}">
+          <i class="fa-${type==='error'?'solid fa-circle-xmark': type==='success'?'regular fa-circle-check':'regular fa-bell'}"></i>
+        </div>
+        <div class="msg">${message}</div>
+        <button class="close" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+      `;
+      el.querySelector('.close').addEventListener('click', ()=> el.remove());
+      wrap.appendChild(el);
+      setTimeout(()=> el.remove(), timeout);
+    }
+
+    // Utility: formatting
+    const fmtDate = (iso) => {
+      try{ return new Date(iso).toLocaleDateString(); }catch{ return '--'; }
+    };
+    const fmtTime = (iso) => {
+      try{ return new Date(iso).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}); }catch{ return '--'; }
+    };
+    const isOverdue = (dueIso) => dueIso && new Date(dueIso).getTime() < Date.now();
+
+    // Section switching
+    function setActive(sectionId){
+      $$('.section').forEach(s=>s.classList.remove('active'));
+      $(`#${sectionId}`).classList.add('active');
+      $$('.nav a').forEach(a=>a.classList.toggle('active', a.dataset.section===sectionId));
+      if(sectionId==='lessons') loadLessons();
+      if(sectionId==='assignments') loadAssignments();
+      if(sectionId==='profile') loadTutorProfile();
+      if(sectionId==='overview') refreshStats();
+      // Close mobile sidebar when navigating
+      $('#sidebar').classList.remove('open');
+    }
+    $$('.nav a').forEach(a=> a.addEventListener('click', (e)=>{ e.preventDefault(); setActive(a.dataset.section); }));
+
+    // Mobile menu
+    $('#menuToggle').addEventListener('click', ()=> $('#sidebar').classList.toggle('open'));
+
+    // Global search hooks (client-side filter on caches)
+    $('#globalSearch').addEventListener('input', ()=>{
+      renderLessons();
+      renderAssignments();
+    });
+
+    // Online/offline banner
+    function updateOfflineBanner(){
+      $('#offlineBanner').style.display = navigator.onLine ? 'none' : 'block';
+    }
+    window.addEventListener('online', ()=>{ updateOfflineBanner(); toast('Back online. Refreshing data...', 'success'); refreshAll(); });
+    window.addEventListener('offline', updateOfflineBanner);
+
+    // Auth handling with verification loop fix
+    async function ensureAuth(){
+      try{
+        const { data: { session }, error: sessErr } = await supabase.auth.getSession();
+        if (sessErr) throw sessErr;
+        if (!session) { location.href = '/index.html'; return null; }
+
+        // Fetch a fresh user to avoid stale email_confirmed_at after verification
+        const { data: { user }, error: userErr } = await supabase.auth.getUser();
+        if (userErr) throw userErr;
+
+        currentUser = user;
+        // Show or hide verification banner without signing out (prevents redirect loop)
+        const verified = !!user.email_confirmed_at;
+        $('#verifyEmail').textContent = user.email || 'your email';
+        $('#verifyBanner').style.display = verified ? 'none' : 'block';
+
+        return currentUser;
+      }catch(err){
+        console.error('[ensureAuth]', err);
+        toast('Authentication error. Please sign in again.', 'error');
         location.href = '/index.html';
         return null;
       }
-      currentUser = session.user;
-      return currentUser;
     }
 
-    // Load Tutor Profile from tutor_profiles
-    async function loadTutorProfile() {
-      let { data: tutor, error } = await supabase
-        .from('tutor_profiles')
-        .select('*')
-        .eq('email', currentUser.email)
-        .maybeSingle();
-      if (error) {
-        console.error('Error fetching tutor profile:', error);
-        return;
+    // Refresh user after they verify via email link
+    async function refreshUserVerificationStatus(){
+      try{
+        // Try refreshing access token first
+        await supabase.auth.refreshSession();
+        const { data: { user }, error } = await supabase.auth.getUser();
+        if (error) throw error;
+        currentUser = user;
+        if (user.email_confirmed_at){
+          $('#verifyBanner').style.display = 'none';
+          toast('Email verified. Welcome!', 'success');
+          await afterAuthReady();
+        } else {
+          toast('Not verified yet. Please click the link in your email.', 'error');
+        }
+      }catch(err){
+        console.error('[refreshUserVerificationStatus]', err);
+        toast('Failed to refresh verification status: ' + (err?.message || 'Unknown error'), 'error');
       }
-      if (!tutor) {
-        console.warn('Tutor profile not found.');
-        return;
+    }
+
+    async function resendVerificationEmail(){
+      try{
+        if(!currentUser?.email){ toast('Missing email on profile.', 'error'); return; }
+        const { error } = await supabase.auth.resend({ type: 'signup', email: currentUser.email });
+        if (error) throw error;
+        toast('Verification email resent. Please check your inbox.', 'success');
+      }catch(err){
+        console.error('[resendVerificationEmail]', err);
+        toast('Could not resend verification email: ' + (err?.message || 'Unknown error'), 'error');
       }
-      const firstName = tutor.full_name?.split(' ')[0] || 'Tutor';
-      document.getElementById('tutorName').textContent = tutor.full_name || 'Tutor';
-      document.getElementById('firstName').textContent = firstName;
-      document.getElementById('profileName').textContent = tutor.full_name;
-      document.getElementById('profileEmail').textContent = tutor.email;
-      document.getElementById('profilePhone').textContent = tutor.phone || '—';
-      document.getElementById('profileStatus').textContent = tutor.status || '—';
+    }
+
+    // Load and upsert tutor profile using the correct table: tutor_profiles
+    async function loadTutorProfile(){
+      try{
+        // Fetch existing profile
+        let { data: tutor, error } = await supabase
+          .from('tutor_profiles')
+          .select('*')
+          .eq('id', currentUser.id)
+          .maybeSingle();
+
+        if (error) throw error;
+
+        if (!tutor){
+          // Create a profile record if it does not exist
+          const full_name = (currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0] || 'Tutor').trim();
+          const phone = currentUser.user_metadata?.phone || null;
+          const { data: created, error: insErr } = await supabase
+            .from('tutor_profiles')
+            .insert([{ id: currentUser.id, full_name, email: currentUser.email, phone }])
+            .select()
+            .maybeSingle();
+          if (insErr) throw insErr;
+          tutor = created || { full_name, email: currentUser.email, phone };
+        }
+
+        const fullName = (tutor?.full_name || currentUser.user_metadata?.full_name || currentUser.email.split('@')[0] || 'Tutor').trim();
+        const phone = tutor?.phone || currentUser.user_metadata?.phone || '';
+        const firstName = fullName.split(' ')[0];
+
+        $('#tutorName').innerHTML = `<i class="fa-regular fa-user"></i> ${fullName}`;
+        $('#firstName').textContent = firstName;
+        $('#profileName').value = fullName;
+        $('#profileEmail').value = currentUser.email;
+        $('#profilePhone').value = phone;
+
+      }catch(err){
+        console.error('[loadTutorProfile]', err);
+        toast('Failed to load profile: ' + (err?.message || 'Unknown error'), 'error');
+      }
+    }
+
+    async function saveTutorProfile(){
+      const full_name = $('#profileName').value?.trim();
+      const phone = $('#profilePhone').value?.trim() || null;
+      try{
+        if (!full_name) { toast('Name cannot be empty.', 'error'); return; }
+        const { error } = await supabase
+          .from('tutor_profiles')
+          .upsert([{ id: currentUser.id, full_name, email: currentUser.email, phone }], { onConflict: 'id' });
+        if (error) throw error;
+        toast('Profile updated.', 'success');
+        await loadTutorProfile();
+      }catch(err){
+        console.error('[saveTutorProfile]', err);
+        toast('Could not save profile: ' + (err?.message || 'Unknown error'), 'error');
+      }
     }
 
     // Lessons
-    async function loadLessons() {
-      const tbody = document.getElementById('lessonsTbody');
-      tbody.innerHTML = `<tr><td colspan="5" class="muted">Loading...</td></tr>`;
-      const { data, error } = await supabase
-        .from('lessons')
-        .select('scheduled_at,status, children:child_id(name), subjects:subject_id(name)')
-        .eq('tutor_id', currentUser.id)
-        .gte('scheduled_at', new Date().toISOString())
-        .order('scheduled_at', { ascending: true });
-      if (error || !data?.length) {
-        tbody.innerHTML = `<tr><td colspan="5" class="muted">No upcoming lessons.</td></tr>`;
-        return;
+    async function loadLessons(){
+      const tbody = $('#lessonsTbody');
+      setTableLoading(tbody, 6);
+      try{
+        const fromDateStr = $('#filterFromDate').value;
+        const toDateStr = $('#filterToDate').value;
+        const nowIso = new Date().toISOString();
+        const fromIso = fromDateStr ? new Date(fromDateStr + 'T00:00:00').toISOString() : nowIso;
+        const toIso = toDateStr ? new Date(toDateStr + 'T23:59:59').toISOString() : new Date(Date.now() + 1000*60*60*24*60).toISOString();
+
+        let query = supabase
+          .from('lessons')
+          .select('id, scheduled_at, status, child_id, subject_id, children:child_id(name), subjects:subject_id(name)')
+          .eq('tutor_id', currentUser.id)
+          .gte('scheduled_at', fromIso)
+          .lte('scheduled_at', toIso)
+          .order('scheduled_at', { ascending: true });
+
+        const { data, error } = await query;
+        if (error) throw error;
+
+        lessonsCache = data || [];
+        renderLessons();
+        refreshStats();
+      }catch(err){
+        console.error('[loadLessons]', err);
+        setTableError($('#lessonsTbody'), 6, 'Failed to load lessons.', err, loadLessons);
+        toast('Failed to load lessons: ' + (err?.message || 'Unknown error'), 'error');
       }
-      document.getElementById('lessonsCount').textContent = data.length;
-      tbody.innerHTML = data.map(l => {
-        const dt = new Date(l.scheduled_at);
+    }
+
+    function renderLessons(){
+      const tbody = $('#lessonsTbody');
+      const searchTerm = ($('#lessonSearchInput').value || $('#globalSearch').value || '').toLowerCase().trim();
+      const statusFilter = $('#filterLessonStatus').value || 'all';
+
+      const rows = (lessonsCache || []).filter(l=>{
+        const matchesStatus = statusFilter==='all' ? true : (l.status||'').toLowerCase() === statusFilter.toLowerCase();
+        const hay = [l.children?.name, l.subjects?.name, l.status].join(' ').toLowerCase();
+        const matchesSearch = searchTerm ? hay.includes(searchTerm) : true;
+        return matchesStatus && matchesSearch;
+      }).map(l=>{
+        const dt = l.scheduled_at;
+        const date = fmtDate(dt);
+        const time = fmtTime(dt);
+        const statusCls = (l.status || 'scheduled').toLowerCase();
         return `<tr>
-          <td>${dt.toLocaleDateString()}</td>
-          <td>${dt.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</td>
-          <td>${l.children?.name || '—'}</td>
-          <td>${l.subjects?.name || '—'}</td>
-          <td>${l.status || 'scheduled'}</td>
+          <td>${date}</td>
+          <td>${time}</td>
+          <td>${escapeHtml(l.children?.name || '--')}</td>
+          <td>${escapeHtml(l.subjects?.name || '--')}</td>
+          <td><span class="status ${statusCls}">${escapeHtml(l.status || 'scheduled')}</span></td>
+          <td>
+            <div class="row-actions">
+              <button class="btn btn-primary btn-sm" data-action="lesson-complete" data-id="${l.id}"><i class="fa-regular fa-square-check"></i> Mark done</button>
+              <button class="btn btn-sm" data-action="lesson-cancel" data-id="${l.id}"><i class="fa-regular fa-circle-xmark"></i> Cancel</button>
+            </div>
+          </td>
         </tr>`;
-      }).join('');
+      });
+
+      if (!rows.length){
+        tbody.innerHTML = `<tr><td colspan="6" class="row-message">No lessons found for the selected filters.</td></tr>`;
+      }else{
+        tbody.innerHTML = rows.join('');
+      }
+      $('#navLessonsCount').textContent = String(lessonsCache.length || 0);
     }
 
     // Assignments
-    async function loadAssignments() {
-      const tbody = document.getElementById('assignmentsTbody');
-      tbody.innerHTML = `<tr><td colspan="5" class="muted">Loading...</td></tr>`;
-      const { data, error } = await supabase
-        .from('assignments')
-        .select('title,due_date,status, children:child_id(name), subjects:subject_id(name)')
-        .eq('tutor_id', currentUser.id)
-        .order('due_date', { ascending: true });
-      if (error || !data?.length) {
-        tbody.innerHTML = `<tr><td colspan="5" class="muted">No assignments.</td></tr>`;
-        return;
+    async function loadAssignments(){
+      const tbody = $('#assignmentsTbody');
+      setTableLoading(tbody, 6);
+      try{
+        const { data, error } = await supabase
+          .from('assignments')
+          .select('id, title, due_date, status, child_id, subject_id, children:child_id(name), subjects:subject_id(name)')
+          .eq('tutor_id', currentUser.id)
+          .order('due_date', { ascending: true });
+
+        if (error) throw error;
+
+        assignmentsCache = data || [];
+        renderAssignments();
+        refreshStats();
+      }catch(err){
+        console.error('[loadAssignments]', err);
+        setTableError($('#assignmentsTbody'), 6, 'Failed to load assignments.', err, loadAssignments);
+        toast('Failed to load assignments: ' + (err?.message || 'Unknown error'), 'error');
       }
-      document.getElementById('assignmentsCount').textContent = data.length;
-      tbody.innerHTML = data.map(a => {
-        const due = a.due_date ? new Date(a.due_date).toLocaleDateString() : '—';
-        return `<tr>
-          <td>${a.title || '—'}</td>
-          <td>${a.children?.name || '—'}</td>
-          <td>${a.subjects?.name || '—'}</td>
-          <td>${due}</td>
-          <td>${a.status || 'assigned'}</td>
-        </tr>`;
-      }).join('');
     }
 
-    // Logout
-    document.getElementById('logoutBtn').addEventListener('click', async () => {
-      await supabase.auth.signOut();
-      location.href = '/index.html';
+    function renderAssignments(){
+      const tbody = $('#assignmentsTbody');
+      const searchTerm = ($('#assignmentSearchInput').value || $('#globalSearch').value || '').toLowerCase().trim();
+      const statusFilter = $('#filterAssignmentStatus').value || 'all';
+
+      const rows = (assignmentsCache || []).filter(a=>{
+        const rawStatus = (a.status || 'assigned').toLowerCase();
+        const derivedStatus = isOverdue(a.due_date) && rawStatus !== 'completed' ? 'overdue' : rawStatus;
+        const matchesStatus = statusFilter==='all' ? true : derivedStatus === statusFilter;
+        const hay = [a.title, a.children?.name, a.subjects?.name, derivedStatus].join(' ').toLowerCase();
+        const matchesSearch = searchTerm ? hay.includes(searchTerm) : true;
+        return matchesStatus && matchesSearch;
+      }).map(a=>{
+        const due = a.due_date ? fmtDate(a.due_date) : '--';
+        const rawStatus = (a.status || 'assigned').toLowerCase();
+        const derivedStatus = isOverdue(a.due_date) && rawStatus !== 'completed' ? 'overdue' : rawStatus;
+        return `<tr>
+          <td>${escapeHtml(a.title || '--')}</td>
+          <td>${escapeHtml(a.children?.name || '--')}</td>
+          <td>${escapeHtml(a.subjects?.name || '--')}</td>
+          <td>${due}</td>
+          <td><span class="status ${derivedStatus}">${escapeHtml(derivedStatus)}</span></td>
+          <td>
+            <div class="row-actions">
+              ${rawStatus !== 'completed' ? `<button class="btn btn-primary btn-sm" data-action="assignment-complete" data-id="${a.id}"><i class="fa-regular fa-square-check"></i> Mark complete</button>` : `<button class="btn btn-sm" data-action="assignment-reopen" data-id="${a.id}"><i class="fa-regular fa-square"></i> Reopen</button>`}
+            </div>
+          </td>
+        </tr>`;
+      });
+
+      if (!rows.length){
+        tbody.innerHTML = `<tr><td colspan="6" class="row-message">No assignments match your filters.</td></tr>`;
+      }else{
+        tbody.innerHTML = rows.join('');
+      }
+      $('#navAssignmentsCount').textContent = String(assignmentsCache.length || 0);
+    }
+
+    // Actions on table rows
+    $('#lessonsTbody').addEventListener('click', async (e)=>{
+      const btn = e.target.closest('button[data-action]');
+      if (!btn) return;
+      const id = btn.dataset.id;
+      if (btn.dataset.action === 'lesson-complete'){
+        try{
+          const { error } = await supabase.from('lessons').update({ status: 'completed' }).eq('id', id).eq('tutor_id', currentUser.id);
+          if (error) throw error;
+          toast('Lesson marked as completed.', 'success');
+          // Update cache
+          const it = lessonsCache.find(x=>String(x.id)===String(id)); if (it) it.status = 'completed';
+          renderLessons(); refreshStats();
+        }catch(err){
+          console.error('[lesson-complete]', err);
+          toast('Could not update lesson: ' + (err?.message || 'Unknown error'), 'error');
+        }
+      }
+      if (btn.dataset.action === 'lesson-cancel'){
+        try{
+          const { error } = await supabase.from('lessons').update({ status: 'canceled' }).eq('id', id).eq('tutor_id', currentUser.id);
+          if (error) throw error;
+          toast('Lesson canceled.', 'success');
+          const it = lessonsCache.find(x=>String(x.id)===String(id)); if (it) it.status = 'canceled';
+          renderLessons(); refreshStats();
+        }catch(err){
+          console.error('[lesson-cancel]', err);
+          toast('Could not cancel lesson: ' + (err?.message || 'Unknown error'), 'error');
+        }
+      }
     });
 
-    // Init
-    (async function init() {
-      const user = await ensureAuth();
-      if (!user) return;
+    $('#assignmentsTbody').addEventListener('click', async (e)=>{
+      const btn = e.target.closest('button[data-action]');
+      if (!btn) return;
+      const id = btn.dataset.id;
+      if (btn.dataset.action === 'assignment-complete'){
+        try{
+          const { error } = await supabase.from('assignments').update({ status: 'completed' }).eq('id', id).eq('tutor_id', currentUser.id);
+          if (error) throw error;
+          toast('Assignment marked as completed.', 'success');
+          const it = assignmentsCache.find(x=>String(x.id)===String(id)); if (it) it.status = 'completed';
+          renderAssignments(); refreshStats();
+        }catch(err){
+          console.error('[assignment-complete]', err);
+          toast('Could not update assignment: ' + (err?.message || 'Unknown error'), 'error');
+        }
+      }
+      if (btn.dataset.action === 'assignment-reopen'){
+        try{
+          const { error } = await supabase.from('assignments').update({ status: 'assigned' }).eq('id', id).eq('tutor_id', currentUser.id);
+          if (error) throw error;
+          toast('Assignment reopened.', 'success');
+          const it = assignmentsCache.find(x=>String(x.id)===String(id)); if (it) it.status = 'assigned';
+          renderAssignments(); refreshStats();
+        }catch(err){
+          console.error('[assignment-reopen]', err);
+          toast('Could not reopen assignment: ' + (err?.message || 'Unknown error'), 'error');
+        }
+      }
+    });
+
+    // Filters & exports
+    $('#lessonSearchInput').addEventListener('input', renderLessons);
+    $('#assignmentSearchInput').addEventListener('input', renderAssignments);
+    $('#filterLessonStatus').addEventListener('change', renderLessons);
+    $('#filterAssignmentStatus').addEventListener('change', renderAssignments);
+    $('#filterFromDate').addEventListener('change', loadLessons);
+    $('#filterToDate').addEventListener('change', loadLessons);
+    $('#refreshLessonsBtn').addEventListener('click', loadLessons);
+    $('#refreshAssignmentsBtn').addEventListener('click', loadAssignments);
+    $('#exportLessonsBtn').addEventListener('click', ()=> exportCsv(prepareLessonsCsv(), 'lessons.csv'));
+    $('#exportAssignmentsBtn').addEventListener('click', ()=> exportCsv(prepareAssignmentsCsv(), 'assignments.csv'));
+    $('#refreshAllBtn').addEventListener('click', refreshAll);
+
+    // Profile actions
+    $('#saveProfileBtn').addEventListener('click', saveTutorProfile);
+    $('#passwordResetBtn').addEventListener('click', async ()=>{
+      try{
+        const redirectTo = location.origin + '/index.html';
+        const { error } = await supabase.auth.resetPasswordForEmail(currentUser.email, { redirectTo });
+        if (error) throw error;
+        toast('Password reset email sent.', 'success');
+      }catch(err){
+        console.error('[resetPassword]', err);
+        toast('Could not send reset email: ' + (err?.message || 'Unknown error'), 'error');
+      }
+    });
+    $('#refreshProfileBtn').addEventListener('click', loadTutorProfile);
+
+    // Verification buttons
+    $('#refreshVerificationBtn').addEventListener('click', refreshUserVerificationStatus);
+    $('#resendVerificationBtn').addEventListener('click', resendVerificationEmail);
+
+    // Quick navigation from overview
+    $('#jumpToLessons').addEventListener('click', ()=> setActive('lessons'));
+    $('#jumpToAssignments').addEventListener('click', ()=> setActive('assignments'));
+
+    // Logout
+    $('#logoutBtn').addEventListener('click', async ()=>{
+      try{ await supabase.auth.signOut(); } finally { location.href = '/index.html'; }
+    });
+
+    // Realtime subscriptions
+    function subscribeRealtime(){
+      if (realtimeChannel) { supabase.removeChannel(realtimeChannel); realtimeChannel = null; }
+      realtimeChannel = supabase.channel('tutor-realtime')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'lessons', filter: `tutor_id=eq.${currentUser.id}` }, payload => {
+          // Small patch: reload only lessons section data
+          loadLessons();
+        })
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'assignments', filter: `tutor_id=eq.${currentUser.id}` }, payload => {
+          loadAssignments();
+        })
+        .subscribe((status) => {
+          if (status === 'SUBSCRIBED') console.log('Realtime subscribed');
+        });
+    }
+
+    // Stats
+    function refreshStats(){
+      const upcomingCount = (lessonsCache || []).filter(l => new Date(l.scheduled_at).getTime() >= Date.now()).length;
+      const pendingAssignments = (assignmentsCache || []).filter(a => (a.status||'').toLowerCase() !== 'completed').length;
+      const studentIds = new Set();
+      (lessonsCache || []).forEach(l=> l.child_id && studentIds.add(l.child_id));
+      (assignmentsCache || []).forEach(a=> a.child_id && studentIds.add(a.child_id));
+      const studentsCount = studentIds.size;
+
+      let nextLesson = '--';
+      if (lessonsCache && lessonsCache.length){
+        const next = [...lessonsCache].sort((a,b)=> new Date(a.scheduled_at)-new Date(b.scheduled_at)).find(x=> new Date(x.scheduled_at)>=new Date());
+        if (next){
+          nextLesson = `${fmtDate(next.scheduled_at)} ${fmtTime(next.scheduled_at)}`;
+        }
+      }
+      $('#statUpcomingCount').textContent = String(upcomingCount);
+      $('#statAssignmentsPending').textContent = String(pendingAssignments);
+      $('#statStudentsCount').textContent = String(studentsCount);
+      $('#statNextLesson').textContent = nextLesson;
+
+      // Update nav counters too
+      $('#navLessonsCount').textContent = String(lessonsCache?.length || 0);
+      $('#navAssignmentsCount').textContent = String(assignmentsCache?.length || 0);
+    }
+
+    // Export helpers
+    function prepareLessonsCsv(){
+      const header = ['Date','Time','Child','Subject','Status'];
+      const rows = (lessonsCache||[]).map(l=>[
+        fmtDate(l.scheduled_at),
+        fmtTime(l.scheduled_at),
+        (l.children?.name || '').replaceAll(',', ' '),
+        (l.subjects?.name || '').replaceAll(',', ' '),
+        l.status || 'scheduled'
+      ]);
+      return [header, ...rows];
+    }
+    function prepareAssignmentsCsv(){
+      const header = ['Title','Child','Subject','Due','Status'];
+      const rows = (assignmentsCache||[]).map(a=>{
+        const rawStatus = (a.status || 'assigned').toLowerCase();
+        const derivedStatus = isOverdue(a.due_date) && rawStatus!=='completed' ? 'overdue' : rawStatus;
+        return [
+          (a.title || '').replaceAll(',', ' '),
+          (a.children?.name || '').replaceAll(',', ' '),
+          (a.subjects?.name || '').replaceAll(',', ' '),
+          a.due_date ? fmtDate(a.due_date) : '',
+          derivedStatus
+        ];
+      });
+      return [header, ...rows];
+    }
+    function exportCsv(rows, filename){
+      try{
+        const csv = rows.map(r=> r.map(cell => /[",\n]/.test(cell) ? `"${String(cell).replace(/"/g,'""')}"` : cell).join(',')).join('\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = filename;
+        document.body.appendChild(a); a.click();
+        a.remove(); URL.revokeObjectURL(url);
+        toast('Exported ' + filename, 'success');
+      }catch(err){
+        console.error('[exportCsv]', err);
+        toast('Export failed: ' + (err?.message || 'Unknown error'), 'error');
+      }
+    }
+
+    // Inline table state helpers
+    function setTableLoading(tbody, colSpan){
+      tbody.innerHTML = Array.from({length:3}).map(()=>`<tr><td colspan="${colSpan}"><div class="skeleton" style="height:16px"></div></td></tr>`).join('');
+    }
+    function setTableError(tbody, colSpan, friendly, err, retryFn){
+      const detail = err?.message ? `<small>${escapeHtml(err.message)}</small>` : '';
+      tbody.innerHTML = `<tr><td colspan="${colSpan}" class="row-error">${friendly}${detail ? '<br>'+detail : ''}<div class="row-actions" style="justify-content:center;margin-top:6px"><button class="btn" id="retry-${tbody.id}"><i class="fa-solid fa-rotate"></i> Try again</button></div></td></tr>`;
+      const retryBtn = document.getElementById(`retry-${tbody.id}`);
+      if (retryBtn) retryBtn.addEventListener('click', retryFn);
+    }
+    function escapeHtml(str){
+      return String(str||'').replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[s]));
+    }
+
+    // Init and lifecycle
+    async function afterAuthReady(){
       await loadTutorProfile();
-      await loadLessons();
-      await loadAssignments();
+      await Promise.all([loadLessons(), loadAssignments()]);
+      subscribeRealtime();
+      updateGreeting();
+    }
+    function updateGreeting(){
+      const hours = new Date().getHours();
+      const p = hours<12 ? 'morning' : hours<18 ? 'afternoon' : 'evening';
+      // Only flavor text in hero; first name is already set
+      // This function reserved for future dynamic greetings if needed
+    }
+    async function refreshAll(){
+      await Promise.all([loadTutorProfile(), loadLessons(), loadAssignments()]);
+    }
+
+    // React to auth changes but do NOT redirect on transient null session (prevents loop)
+    supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'SIGNED_OUT'){ location.href = '/index.html'; return; }
+      if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'USER_UPDATED'){
+        // Fetch fresh user to reflect verification
+        const { data: { user } } = await supabase.auth.getUser();
+        currentUser = user || session?.user || currentUser;
+        $('#verifyBanner').style.display = user?.email_confirmed_at ? 'none' : 'block';
+        await afterAuthReady();
+      }
+    });
+
+    // Regain focus after clicking email verification link in another tab
+    window.addEventListener('focus', async ()=>{
+      if ($('#verifyBanner').style.display === 'block'){
+        await refreshUserVerificationStatus();
+      }
+    });
+
+    // Initial bootstrap
+    (async function init(){
+      updateOfflineBanner();
+      const user = await ensureAuth(); if(!user) return;
+      await afterAuthReady();
     })();
   </script>
 </body>
