@@ -7,9 +7,11 @@
     <title>Email Verification - Baobab Tutor Portal</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Open+Sans:wght@300;400;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root {
+            /* Using tutor portal colors */
             --baobab-brown: #8D4004;
             --canopy-green: #2E7D32;
             --sunset-gold: #F57C00;
@@ -292,6 +294,7 @@
             display: none;
         }
         
+        /* Responsive */
         @media (max-width: 768px) {
             .verification-container {
                 padding: 30px;
@@ -349,6 +352,7 @@
 <body>
     <div class="verification-container">
         <div class="verification-content">
+            <!-- Logo Section -->
             <div class="logo-section">
                 <div class="logo">
                     <div class="logo-icon"><i class="fas fa-chalkboard-teacher"></i></div>
@@ -357,6 +361,7 @@
                 <p style="color: var(--trunk-gray); font-style: italic;">Empowering Nigerian Educators Globally</p>
             </div>
 
+            <!-- Loading State -->
             <div id="loadingState">
                 <i class="fas fa-spinner verification-icon loading-icon"></i>
                 <h1 class="verification-title">Verifying Your Email...</h1>
@@ -364,6 +369,7 @@
                 <div class="loading-spinner"></div>
             </div>
 
+            <!-- Success State -->
             <div id="successState" class="hidden">
                 <i class="fas fa-check-circle verification-icon success-icon"></i>
                 <h1 class="verification-title">🎉 Email Verified Successfully!</h1>
@@ -378,7 +384,7 @@
                         <li><i class="fas fa-check-circle"></i> Complete your detailed tutor profile</li>
                         <li><i class="fas fa-check-circle"></i> Upload teaching materials and credentials</li>
                         <li><i class="fas fa-check-circle"></i> Get matched with your first students</li>
-                        <li><i class="fas fa-check-circle"></i> Start earning 75% of lesson fees</li>
+                        <li><i class="fas fa-check-circle"></i> Start earning 70% of lesson fees</li>
                     </ul>
                 </div>
 
@@ -387,13 +393,14 @@
                         <i class="fas fa-tachometer-alt"></i>
                         Access Tutor Dashboard
                     </a>
-                    <a href="/index.html" class="btn btn-outlined">
+                    <a href="/" class="btn btn-outlined">
                         <i class="fas fa-home"></i>
                         Return to Portal
                     </a>
                 </div>
             </div>
 
+            <!-- Error State -->
             <div id="errorState" class="hidden">
                 <i class="fas fa-exclamation-triangle verification-icon error-icon"></i>
                 <h1 class="verification-title">Verification Failed</h1>
@@ -412,7 +419,7 @@
                 </div>
 
                 <div class="action-buttons">
-                    <a href="/index.html" class="btn btn-secondary">
+                    <a href="/tutor-portal.html" class="btn btn-secondary">
                         <i class="fas fa-envelope"></i>
                         Request New Verification
                     </a>
@@ -423,6 +430,7 @@
                 </div>
             </div>
 
+            <!-- Support Information -->
             <div class="support-info">
                 <p>
                     Need help? Contact our tutor support team at 
@@ -434,128 +442,178 @@
     </div>
 
     <script>
-        const SUPABASE_URL = 'https://vcxdkacxbjsgaoxbhsip.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZjeGRrYWN4YmpzZ2FveGJoc2lwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI5MDQ5ODMsImV4cCI6MjA2ODQ4MDk4M30.T9KhHWzHZWyaZvyeFXtBu8tPLY9JOn6_wCHcH8B46FU';
+const SUPABASE_URL = 'https://vcxdkacxbjsgaoxbhsip.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZjeGRrYWN4YmpzZ2FveGJoc2lwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI5MDQ5ODMsImV4cCI6MjA2ODQ4MDk4M30.T9KhHWzHZWyaZvyeFXtBu8tPLY9JOn6_wCHcH8B46FU';
 
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        async function handleTutorEmailVerification() {
-            try {
-                const urlParams = new URLSearchParams(window.location.search);
-                console.log("URL parameters:", Object.fromEntries(urlParams));
+async function handleTutorEmailVerification() {
+    try {
+        const urlParams = new URLSearchParams(window.location.search);
+        console.log("URL params:", Object.fromEntries(urlParams));
 
-                const token_hash = urlParams.get('token_hash');
-                const type = urlParams.get('type');
-                
-                if (!token_hash || !type) {
-                    throw new Error('Invalid verification link. Missing required parameters.');
-                }
+        const token_hash = urlParams.get('token_hash');
+        const type = urlParams.get('type');
+        const access_token = urlParams.get('access_token');
+        const refresh_token = urlParams.get('refresh_token');
+        const customToken = urlParams.get('token');
+        const emailParam = urlParams.get('email');
 
-                console.log('Attempting to verify OTP with:', { token_hash, type });
-
-                const { data, error } = await supabase.auth.verifyOtp({
-                    token_hash,
-                    type: type
-                });
-
-                if (error) {
-                    console.error('Verification error:', error);
-                    throw new Error(error.message || 'Email verification failed');
-                }
-
-                if (!data.user) {
-                    throw new Error('No user data returned after verification');
-                }
-
-                console.log('Verification successful:', data.user);
-
-                // Update tutor profile
-                await updateTutorProfile(data.user);
-
-                showSuccessState();
-
-            } catch (error) {
-                console.error('Verification failed:', error);
-                showErrorState(error.message);
-            }
+        if (token_hash || type || access_token) {
+            console.log("Supabase native verification detected");
+            return await handleSupabaseVerification({ token_hash, type, access_token, refresh_token });
         }
 
-        async function updateTutorProfile(user) {
-            try {
-                // Check if tutor profile exists
-                let { data: existingProfile, error: checkError } = await supabase
-                    .from('tutor_profiles')
-                    .select('*')
-                    .eq('email', user.email)
-                    .maybeSingle();
-
-                if (checkError && checkError.code !== 'PGRST116') {
-                    console.error('Error checking profile:', checkError);
-                    return;
-                }
-
-                if (existingProfile) {
-                    // Update existing profile
-                    const { error: updateError } = await supabase
-                        .from('tutor_profiles')
-                        .update({
-                            user_id: user.id,
-                            email_verified: true,
-                            verified_at: new Date().toISOString(),
-                            status: 'verified'
-                        })
-                        .eq('email', user.email);
-
-                    if (updateError) {
-                        console.error('Error updating profile:', updateError);
-                    } else {
-                        console.log('Tutor profile updated successfully');
-                    }
-                } else {
-                    // Create new profile
-                    const { error: insertError } = await supabase
-                        .from('tutor_profiles')
-                        .insert([{
-                            user_id: user.id,
-                            full_name: user.user_metadata?.full_name || user.email.split('@')[0],
-                            phone: user.user_metadata?.phone || '',
-                            email: user.email,
-                            teaching_experience: user.user_metadata?.teaching_experience || '',
-                            email_verified: true,
-                            verified_at: new Date().toISOString(),
-                            status: 'verified'
-                        }]);
-
-                    if (insertError) {
-                        console.error('Error creating profile:', insertError);
-                    } else {
-                        console.log('Tutor profile created successfully');
-                    }
-                }
-            } catch (error) {
-                console.error('Error updating tutor profile:', error);
-            }
+        if (customToken && emailParam) {
+            console.log("Custom token verification detected");
+            return await handleCustomTokenVerification(customToken, decodeURIComponent(emailParam));
         }
 
-        function showSuccessState() {
-            document.getElementById('loadingState').classList.add('hidden');
-            document.getElementById('errorState').classList.add('hidden');
-            document.getElementById('successState').classList.remove('hidden');
+        throw new Error("Invalid verification link. Missing required parameters.");
+    } catch (err) {
+        console.error("Verification error:", err);
+        showErrorState(err.message);
+    }
+}
+
+async function handleSupabaseVerification({ token_hash, type, access_token, refresh_token }) {
+    let verifiedUser = null;
+
+    try {
+        if (access_token) {
+            console.log("Using setSession with access_token");
+            const { data, error } = await supabase.auth.setSession({ access_token, refresh_token });
+            if (error) throw error;
+            verifiedUser = data.user;
+        } else if (token_hash && type) {
+            console.log("Using verifyOtp with token_hash");
+            const { data, error } = await supabase.auth.verifyOtp({
+                token_hash,
+                type: type === 'email' ? 'email' : 'signup'
+            });
+            if (error) throw error;
+            verifiedUser = data.user;
         }
 
-        function showErrorState(message) {
-            document.getElementById('loadingState').classList.add('hidden');
-            document.getElementById('successState').classList.add('hidden');
-            document.getElementById('errorState').classList.remove('hidden');
-            document.getElementById('errorMessage').textContent = message;
+        if (!verifiedUser) throw new Error("No user returned after verification.");
+
+        await insertOrUpdateTutorProfile(verifiedUser.email, verifiedUser.id);
+        showSuccessState();
+        setTimeout(() => window.location.href = '/tutor-dashboard.html', 3000);
+
+    } catch (err) {
+        console.error("Supabase verification error:", err);
+        throw err;
+    }
+}
+
+async function handleCustomTokenVerification(token, email) {
+    try {
+        if (!isValidCustomToken(token, email)) {
+            throw new Error("Invalid or expired verification token.");
         }
 
-        // Start verification process
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Tutor verification page loaded');
-            // Small delay to ensure everything is loaded
-            setTimeout(handleTutorEmailVerification, 500);
-        });
-    </script>
+        await insertOrUpdateTutorProfile(email);
+        showSuccessState();
+    } catch (err) {
+        console.error("Custom token verification error:", err);
+        throw err;
+    }
+}
+
+async function insertOrUpdateTutorProfile(email, userId = null) {
+    console.log("Ensuring tutor profile exists for", email);
+
+    // 1. Check if profile exists
+    let { data: profiles, error: profileError } = await supabase
+        .from('tutor_profiles')
+        .select('*')
+        .ilike('email', email)
+        .limit(1);
+
+    if (profileError) throw new Error("Database error checking tutor profile.");
+
+    if (!profiles || profiles.length === 0) {
+        console.log("Profile not found. Pulling details from authorised_tutor_emails...");
+
+        const { data: authEmailData, error: authEmailError } = await supabase
+            .from('authorised_tutor_emails')
+            .select('*')
+            .ilike('email', email)
+            .limit(1);
+
+        if (authEmailError) throw new Error("Error fetching authorised tutor email.");
+        if (!authEmailData || authEmailData.length === 0) {
+            throw new Error("Tutor not found in authorised_tutor_emails.");
+        }
+
+        const tutorData = authEmailData[0];
+
+        // Insert new profile as verified
+        const { error: insertError } = await supabase
+            .from('tutor_profiles')
+            .insert([{
+                user_id: userId || null,
+                full_name: tutorData.full_name || '',
+                phone: tutorData.phone || '',
+                email: tutorData.email,
+                teaching_experience: tutorData.teaching_experience || '',
+                email_verified: true,
+                verified_at: new Date().toISOString(),
+                status: 'verified'
+            }]);
+
+        if (insertError) throw new Error("Error inserting tutor profile.");
+        console.log("New tutor profile created.");
+    } else {
+        // Update existing profile to verified
+        const { error: updateError } = await supabase
+            .from('tutor_profiles')
+            .update({
+                email_verified: true,
+                verified_at: new Date().toISOString(),
+                status: 'verified'
+            })
+            .ilike('email', email);
+
+        if (updateError) throw new Error("Error updating tutor profile.");
+        console.log("Tutor profile updated to verified.");
+    }
+}
+
+function isValidCustomToken(token, email) {
+    try {
+        const decoded = atob(token);
+        const [tokenEmail, tokenTimestamp] = decoded.split('-');
+        if (tokenEmail !== email) return false;
+
+        const maxAge = 24 * 60 * 60 * 1000;
+        if (Date.now() - parseInt(tokenTimestamp) > maxAge) return false;
+
+        return true;
+    } catch {
+        return false;
+    }
+}
+
+function showSuccessState() {
+    document.getElementById('loadingState').classList.add('hidden');
+    document.getElementById('errorState').classList.add('hidden');
+    document.getElementById('successState').classList.remove('hidden');
+}
+
+function showErrorState(message) {
+    document.getElementById('loadingState').classList.add('hidden');
+    document.getElementById('successState').classList.add('hidden');
+    document.getElementById('errorState').classList.remove('hidden');
+    document.getElementById('errorMessage').textContent = message;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("Tutor verification page loaded");
+    setTimeout(handleTutorEmailVerification, 1000);
+});
+</script>
+
 </body>
 </html>
