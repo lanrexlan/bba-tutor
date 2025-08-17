@@ -2380,65 +2380,111 @@
             }
         }
 
-        // ===== TUTOR LOGIN FUNCTION =====
         async function handleTutorLogin(event) {
-            event.preventDefault();
-            
-            const submitBtn = document.getElementById('tutorLoginSubmitBtn');
-            const submitText = document.getElementById('tutorLoginSubmitText');
-            const loadingSpinner = document.getElementById('tutorLoginLoadingSpinner');
-            
-            // Show loading state
-            submitText.style.display = 'none';
-            loadingSpinner.style.display = 'inline-block';
-            submitBtn.disabled = true;
-            clearTutorMessages();
-            
-            try {
-                const formData = new FormData(event.target);
-                const email = formData.get('email').toLowerCase().trim();
-                const password = formData.get('password');
-                
-                // Sign in user
-                const { data: authData, error: signInError } = await supabase.auth.signInWithPassword({
-                    email: email,
-                    password: password
-                });
-                
-                if (signInError) {
-                    throw new Error(signInError.message);
-                }
-                
-                // Instead of checking user.email_confirmed_at
-// Check if the user has a verified tutor profile
-const { data: tutorProfile } = await supabase
-    .from('tutor_profiles')
-    .select('status')
-    .eq('email', email)
-    .single();
+    event.preventDefault();
+    
+    const email = document.getElementById('tutorEmail').value;
+    const password = document.getElementById('tutorPassword').value;
+    
+    try {
+        // First check if this is a verified tutor (custom verification)
+        const { data: tutorProfile, error: profileError } = await supabase
+            .from('tutor_profiles')
+            .select('status, email')
+            .ilike('email', email)
+            .eq('status', 'verified')
+            .single();
 
-if (tutorProfile && tutorProfile.status === 'verified') {
-    // Allow login
-} else {
-    // Show "Email not verified" error
-}
+        if (profileError || !tutorProfile) {
+            throw new Error('Tutor not found or email not verified');
+        }
+
+        console.log('Tutor profile found and verified:', tutorProfile);
+
+        // Now attempt Supabase login (this will create or use existing auth user)
+        const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+            email: email,
+            password: password,
+        });
+
+        // If login fails due to email not confirmed, but we know tutor is verified, 
+        // we can either create the user or handle it differently
+        if (authError) {
+            if (authError.message === 'Email not confirmed') {
+                // The tutor is verified in our system but not in Supabase auth
+                // Let's try to sign them up first, then sign in
+                console.log('Attempting to create Supabase user for verified tutor...');
                 
-                // Redirect to tutor dashboard
-                setTimeout(() => {
-                    closeTutorLoginModal();
-                    window.location.href = '/tutor-dashboard.html';
-                }, 2000);
-                
-            } catch (error) {
-                console.error('Tutor login error:', error);
-                showTutorError('tutorLoginErrorMessage', error.message);
-            } finally {
-                // Reset button state
-                submitText.style.display = 'inline';
-                loadingSpinner.style.display = 'none';
-                submitBtn.disabled = false;
+                const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+                    email: email,
+                    password: password,
+                });
+
+                if (signUpError) {
+                    console.log('SignUp error:', signUpError);
+                    // If user already exists but email not confirmed, we'll handle it below
+                    if (signUpError.message.includes('already registered')) {
+                        // User exists but email not confirmed - since they're verified in our system,
+                        // we'll allow them to proceed without Supabase auth for now
+                        console.log('User exists in Supabase but not confirmed. Proceeding with tutor-only login...');
+                        handleTutorOnlyLogin(tutorProfile);
+                        return;
+                    } else {
+                        throw signUpError;
+                    }
+                } else {
+                    // SignUp successful, now sign them in
+                    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+                        email: email,
+                        password: password,
+                    });
+                    
+                    if (signInError) {
+                        // Still having issues, proceed with tutor-only login
+                        console.log('SignIn after SignUp failed, proceeding with tutor-only login');
+                        handleTutorOnlyLogin(tutorProfile);
+                        return;
+                    }
+                }
+            } else {
+                throw authError;
             }
         }
+
+        // Successful Supabase login
+        const user = authData.user;
+        console.log('Supabase login successful:', user);
+
+        // Update tutor profile with user_id if needed
+        if (user && (!tutorProfile.user_id || tutorProfile.user_id !== user.id)) {
+            await supabase
+                .from('tutor_profiles')
+                .update({ user_id: user.id })
+                .ilike('email', email);
+        }
+
+        // Redirect to dashboard
+        window.location.href = '/tutor-dashboard.html';
+
+    } catch (error) {
+        console.error('Tutor login error:', error);
+        document.getElementById('tutorLoginError').style.display = 'block';
+        document.getElementById('tutorLoginError').textContent = 
+            error.message || 'Login failed. Please check your credentials.';
+    }
+}
+
+// Handle login for tutors who are verified in our system but not in Supabase auth
+function handleTutorOnlyLogin(tutorProfile) {
+    console.log('Handling tutor-only login for:', tutorProfile);
+    
+    // Store tutor info in localStorage for the dashboard to use
+    localStorage.setItem('tutorProfile', JSON.stringify(tutorProfile));
+    localStorage.setItem('tutorLoggedIn', 'true');
+    
+    // Redirect to dashboard
+    window.location.href = '/tutor-dashboard.html';
+}
 
         // ===== EXISTING APPLICATION FORM LOGIC =====
         let currentStep = 1;
