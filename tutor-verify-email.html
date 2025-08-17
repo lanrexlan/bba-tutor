@@ -459,7 +459,7 @@
 
     <script>
 const SUPABASE_URL = 'https://vcxdkacxbjsgaoxbhsip.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZjeGRrYWN4YmpzZ2FveGJoc2lwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI5MDQ5ODMsImV4cCI6MjA2ODQ4MDk4M30.T9KhHWzHZWyaZvyeFXtBu8tPLY9JOn6_wCHcH8B46FU';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZjeGRrYWN4YmpzZ2FveGJoc2lwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI5MDQ5ODMsImV4cCI6MjA2ODQ4MDk4M0.T9KhHWzHZWyaZvyeFXtBu8tPLY9JOn6_wCHcH8B46FU';
 
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -529,7 +529,6 @@ async function handleCustomTokenVerification(token, email) {
             throw new Error("Invalid or expired verification token.");
         }
 
-        // For custom token verification, we need to create a placeholder user first
         await insertOrUpdateTutorProfile(email);
         showSuccessState();
     } catch (err) {
@@ -550,7 +549,6 @@ async function insertOrUpdateTutorProfile(email, userId = null) {
             .limit(1);
 
         console.log("Authorised email data:", authEmailData);
-        console.log("Authorised email error:", authEmailError);
 
         if (authEmailError) {
             console.error("Error fetching authorised tutor email:", authEmailError);
@@ -571,7 +569,6 @@ async function insertOrUpdateTutorProfile(email, userId = null) {
             .limit(1);
 
         console.log("Existing profiles:", profiles);
-        console.log("Profile check error:", profileError);
 
         if (profileError) {
             console.error("Database error checking tutor profile:", profileError);
@@ -581,15 +578,12 @@ async function insertOrUpdateTutorProfile(email, userId = null) {
         if (!profiles || profiles.length === 0) {
             console.log("Profile not found. Creating new profile...");
 
-            // Prepare profile data with all required fields
+            // Prepare profile data with only the columns that exist in tutor_profiles table
             let profileData = {
                 full_name: tutorData.full_name || 'Pending Name',
-                phone: tutorData.phone || '',
                 email: tutorData.email,
-                teaching_experience: tutorData.teaching_experience || '',
-                status: 'verified',
-                created_at: new Date().toISOString(),
-                updated_at: new Date().toISOString()
+                phone: tutorData.phone || null,
+                status: 'verified'
             };
 
             // Handle user_id - use provided userId or generate placeholder
@@ -613,12 +607,6 @@ async function insertOrUpdateTutorProfile(email, userId = null) {
 
             if (insertError) {
                 console.error("Error inserting tutor profile:", insertError);
-                console.error("Insert error details:", {
-                    message: insertError.message,
-                    details: insertError.details,
-                    hint: insertError.hint,
-                    code: insertError.code
-                });
                 throw new Error(`Error inserting tutor profile: ${insertError.message} (Code: ${insertError.code})`);
             }
             console.log("New tutor profile created:", insertedProfile);
@@ -627,8 +615,7 @@ async function insertOrUpdateTutorProfile(email, userId = null) {
             
             // Update existing profile
             let updateData = {
-                status: 'verified',
-                updated_at: new Date().toISOString()
+                status: 'verified'
             };
 
             // If we have a real userId from auth, update it
@@ -645,12 +632,6 @@ async function insertOrUpdateTutorProfile(email, userId = null) {
 
             if (updateError) {
                 console.error("Error updating tutor profile:", updateError);
-                console.error("Update error details:", {
-                    message: updateError.message,
-                    details: updateError.details,
-                    hint: updateError.hint,
-                    code: updateError.code
-                });
                 throw new Error(`Error updating tutor profile: ${updateError.message} (Code: ${updateError.code})`);
             }
             console.log("Tutor profile updated:", updatedProfile);
