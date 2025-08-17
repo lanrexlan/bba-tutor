@@ -514,6 +514,7 @@ async function handleSupabaseVerification({ token_hash, type, access_token, refr
         if (!verifiedUser) throw new Error("No user returned after verification.");
 
         await insertOrUpdateTutorProfile(verifiedUser.email, verifiedUser.id);
+        await markEmailAsUsed(verifiedUser.email);
         showSuccessState();
         setTimeout(() => window.location.href = '/tutor-dashboard.html', 3000);
 
@@ -530,10 +531,36 @@ async function handleCustomTokenVerification(token, email) {
         }
 
         await insertSimpleTutorProfile(email);
+        await markEmailAsUsed(email);
         showSuccessState();
     } catch (err) {
         console.error("Custom token verification error:", err);
         throw err;
+    }
+}
+
+async function markEmailAsUsed(email) {
+    console.log("Marking email as used:", email);
+    
+    try {
+        const { data, error } = await supabase
+            .from('authorised_tutor_emails')
+            .update({ 
+                is_used: true, 
+                used_at: new Date().toISOString() 
+            })
+            .ilike('email', email)
+            .select();
+
+        if (error) {
+            console.error("Error marking email as used:", error);
+            // Don't throw here - this shouldn't stop the verification process
+        } else {
+            console.log("Email marked as used successfully:", data);
+        }
+    } catch (error) {
+        console.error("Error in markEmailAsUsed:", error);
+        // Don't throw here - this shouldn't stop the verification process
     }
 }
 
@@ -560,7 +587,7 @@ async function insertSimpleTutorProfile(email) {
 
             // Create a simple profile with NULL user_id
             let profileData = {
-                user_id: null, // This will work if we make user_id nullable
+                user_id: null,
                 full_name: 'Tutor ' + email.split('@')[0],
                 email: email,
                 phone: null,
@@ -640,7 +667,7 @@ async function insertOrUpdateTutorProfile(email, userId = null) {
         if (!profiles || profiles.length === 0) {
             // Create new profile
             let profileData = {
-                user_id: userId, // This should be the actual Supabase user ID
+                user_id: userId,
                 full_name: (tutorData && tutorData.full_name) || 'Tutor ' + email.split('@')[0],
                 email: email,
                 phone: (tutorData && tutorData.phone) || null,
