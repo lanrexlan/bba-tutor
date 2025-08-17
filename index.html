@@ -2380,73 +2380,150 @@
             }
         }
 
+// Complete Tutor Login System - Option 1
+// Replace your existing handleTutorLogin function with this
+
 async function handleTutorLogin(event) {
     event.preventDefault();
     
-    const email = document.getElementById('tutorEmail').value;
+    const email = document.getElementById('tutorEmail').value.trim();
     const password = document.getElementById('tutorPassword').value;
     
+    // Clear previous errors
+    const errorElement = document.getElementById('tutorLoginError');
+    if (errorElement) {
+        errorElement.style.display = 'none';
+    }
+    
+    // Show loading state
+    const submitButton = event.target.querySelector('button[type="submit"]');
+    const originalButtonText = submitButton.textContent;
+    submitButton.textContent = 'Logging in...';
+    submitButton.disabled = true;
+    
     try {
+        console.log('Attempting tutor login for:', email);
+        
         // First check if this is a verified tutor (custom verification)
         const { data: tutorProfile, error: profileError } = await supabase
             .from('tutor_profiles')
-            .select('status, email')
+            .select('*')
             .ilike('email', email)
             .eq('status', 'verified')
             .single();
 
         if (profileError || !tutorProfile) {
-            throw new Error('Tutor not found or email not verified');
+            console.log('Tutor profile error:', profileError);
+            throw new Error('Tutor not found or email not verified. Please verify your email first.');
         }
 
         console.log('Tutor profile found and verified:', tutorProfile);
 
-        // Now attempt Supabase login (this will create or use existing auth user)
+        // Check if email is marked as used in authorised_tutor_emails
+        const { data: authEmail, error: authEmailError } = await supabase
+            .from('authorised_tutor_emails')
+            .select('*')
+            .ilike('email', email)
+            .eq('is_used', true)
+            .single();
+
+        if (authEmailError || !authEmail) {
+            console.log('Authorised email check failed:', authEmailError);
+            throw new Error('Email verification not completed. Please verify your email first.');
+        }
+
+        console.log('Email verification confirmed in authorised_tutor_emails');
+
+        // Now attempt Supabase login
         const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
             email: email,
             password: password,
         });
 
-        // If login fails due to email not confirmed, but we know tutor is verified, 
-        // we can either create the user or handle it differently
         if (authError) {
-            if (authError.message === 'Email not confirmed') {
+            console.log('Supabase auth error:', authError);
+            
+            if (authError.message === 'Email not confirmed' || authError.message.includes('not confirmed')) {
                 // The tutor is verified in our system but not in Supabase auth
-                // Let's try to sign them up first, then sign in
-                console.log('Attempting to create Supabase user for verified tutor...');
+                console.log('Tutor verified in our system but not in Supabase. Attempting to create/confirm user...');
                 
+                // Try to sign them up (this will either create the user or tell us they exist)
                 const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
                     email: email,
                     password: password,
+                    options: {
+                        emailRedirectTo: `${window.location.origin}/tutor-verify-email.html`
+                    }
                 });
 
                 if (signUpError) {
                     console.log('SignUp error:', signUpError);
-                    // If user already exists but email not confirmed, we'll handle it below
-                    if (signUpError.message.includes('already registered')) {
-                        // User exists but email not confirmed - since they're verified in our system,
-                        // we'll allow them to proceed without Supabase auth for now
-                        console.log('User exists in Supabase but not confirmed. Proceeding with tutor-only login...');
-                        handleTutorOnlyLogin(tutorProfile);
+                    
+                    if (signUpError.message.includes('already registered') || 
+                        signUpError.message.includes('already exists') ||
+                        signUpError.message.includes('User already registered')) {
+                        // User exists but email not confirmed in Supabase
+                        // Since they're verified in our system, proceed with tutor-only login
+                        console.log('User exists in Supabase but not confirmed. Using tutor-only login...');
+                        await handleTutorOnlyLogin(tutorProfile, email);
                         return;
                     } else {
-                        throw signUpError;
+                        throw new Error('Unable to create user account: ' + signUpError.message);
                     }
                 } else {
-                    // SignUp successful, now sign them in
-                    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-                        email: email,
-                        password: password,
-                    });
+                    console.log('User created in Supabase:', signUpData);
                     
-                    if (signInError) {
-                        // Still having issues, proceed with tutor-only login
-                        console.log('SignIn after SignUp failed, proceeding with tutor-only login');
-                        handleTutorOnlyLogin(tutorProfile);
-                        return;
+                    // Update tutor profile with new user_id
+                    if (signUpData.user && signUpData.user.id) {
+                        await supabase
+                            .from('tutor_profiles')
+                            .update({ user_id: signUpData.user.id })
+                            .ilike('email', email);
                     }
+                    
+                    // Since they just signed up, use tutor-only login for now
+                    await handleTutorOnlyLogin(tutorProfile, email);
+                    return;
+                }
+            } else if (authError.message === 'Invalid login credentials' || 
+                      authError.message.includes('Invalid') ||
+                      authError.message.includes('credentials')) {
+                // Wrong password or user doesn't exist in Supabase
+                // Since tutor is verified in our system, try to create them
+                console.log('Invalid credentials in Supabase, attempting to create user...');
+                
+                const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        emailRedirectTo: `${window.location.origin}/tutor-verify-email.html`
+                    }
+                });
+
+                if (signUpError) {
+                    if (signUpError.message.includes('already registered')) {
+                        // User exists but wrong password
+                        throw new Error('Invalid password. Please check your password and try again.');
+                    } else {
+                        throw new Error('Unable to create user account: ' + signUpError.message);
+                    }
+                } else {
+                    // User created successfully
+                    console.log('New user created in Supabase:', signUpData);
+                    
+                    // Update tutor profile with new user_id
+                    if (signUpData.user && signUpData.user.id) {
+                        await supabase
+                            .from('tutor_profiles')
+                            .update({ user_id: signUpData.user.id })
+                            .ilike('email', email);
+                    }
+                    
+                    await handleTutorOnlyLogin(tutorProfile, email);
+                    return;
                 }
             } else {
+                // Other Supabase auth errors
                 throw authError;
             }
         }
@@ -2463,45 +2540,248 @@ async function handleTutorLogin(event) {
                 .ilike('email', email);
         }
 
+        // Store login info
+        localStorage.setItem('tutorProfile', JSON.stringify(tutorProfile));
+        localStorage.setItem('tutorLoggedIn', 'true');
+        localStorage.setItem('authType', 'supabase');
+
         // Redirect to dashboard
+        console.log('Redirecting to dashboard...');
         window.location.href = '/tutor-dashboard.html';
 
     } catch (error) {
         console.error('Tutor login error:', error);
-        document.getElementById('tutorLoginError').style.display = 'block';
-        document.getElementById('tutorLoginError').textContent = 
-            error.message || 'Login failed. Please check your credentials.';
+        
+        if (errorElement) {
+            errorElement.style.display = 'block';
+            errorElement.textContent = error.message || 'Login failed. Please check your credentials and try again.';
+        }
+    } finally {
+        // Reset button state
+        submitButton.textContent = originalButtonText;
+        submitButton.disabled = false;
     }
 }
 
 // Handle login for tutors who are verified in our system but not in Supabase auth
-function handleTutorOnlyLogin(tutorProfile) {
+async function handleTutorOnlyLogin(tutorProfile, email) {
     console.log('Handling tutor-only login for:', tutorProfile);
     
-    // Store tutor info in localStorage for the dashboard to use
-    localStorage.setItem('tutorProfile', JSON.stringify(tutorProfile));
-    localStorage.setItem('tutorLoggedIn', 'true');
-    
-    // Redirect to dashboard
-    window.location.href = '/tutor-dashboard.html';
+    try {
+        // Store tutor info in localStorage for the dashboard to use
+        localStorage.setItem('tutorProfile', JSON.stringify(tutorProfile));
+        localStorage.setItem('tutorLoggedIn', 'true');
+        localStorage.setItem('authType', 'tutor-only');
+        localStorage.setItem('tutorEmail', email);
+        
+        console.log('Tutor-only login successful, redirecting to dashboard...');
+        
+        // Redirect to dashboard
+        window.location.href = '/tutor-dashboard.html';
+        
+    } catch (error) {
+        console.error('Error in tutor-only login:', error);
+        throw new Error('Login successful but unable to access dashboard. Please try again.');
+    }
 }
+
+// Enhanced auth check for dashboard (add this to your tutor-dashboard.html)
+async function checkTutorAuth() {
+    try {
+        console.log('Checking tutor authentication...');
+        
+        // First check if user is authenticated via Supabase
+        const { data: { user }, error } = await supabase.auth.getUser();
+        
+        if (user && user.email_confirmed_at) {
+            console.log('User authenticated via Supabase:', user.email);
+            
+            // Get tutor profile by user_id first, then by email
+            let { data: profile, error: profileError } = await supabase
+                .from('tutor_profiles')
+                .select('*')
+                .eq('user_id', user.id)
+                .eq('status', 'verified')
+                .single();
                 
-                // Redirect to tutor dashboard
-                setTimeout(() => {
-                    closeTutorLoginModal();
-                    window.location.href = '/tutor-dashboard.html';
-                }, 2000);
+            if (profileError || !profile) {
+                // Try to find by email if user_id lookup failed
+                const { data: profileByEmail } = await supabase
+                    .from('tutor_profiles')
+                    .select('*')
+                    .ilike('email', user.email)
+                    .eq('status', 'verified')
+                    .single();
+                    
+                profile = profileByEmail;
+            }
                 
-            } catch (error) {
-                console.error('Tutor login error:', error);
-                showTutorError('tutorLoginErrorMessage', error.message);
-            } finally {
-                // Reset button state
-                submitText.style.display = 'inline';
-                loadingSpinner.style.display = 'none';
-                submitBtn.disabled = false;
+            if (profile) {
+                return { 
+                    user, 
+                    profile, 
+                    authType: 'supabase',
+                    email: user.email 
+                };
             }
         }
+        
+        // Check if user is authenticated via tutor-only login
+        const tutorLoggedIn = localStorage.getItem('tutorLoggedIn');
+        const tutorProfile = localStorage.getItem('tutorProfile');
+        const authType = localStorage.getItem('authType');
+        const tutorEmail = localStorage.getItem('tutorEmail');
+        
+        if (tutorLoggedIn === 'true' && tutorProfile) {
+            const profile = JSON.parse(tutorProfile);
+            console.log('User authenticated via tutor-only login:', profile.email);
+            
+            // Verify the profile is still valid in the database
+            const { data: currentProfile, error: verifyError } = await supabase
+                .from('tutor_profiles')
+                .select('*')
+                .ilike('email', profile.email)
+                .eq('status', 'verified')
+                .single();
+                
+            if (verifyError || !currentProfile) {
+                console.log('Stored tutor profile no longer valid');
+                clearTutorAuth();
+                return null;
+            }
+            
+            return { 
+                user: null, 
+                profile: currentProfile, 
+                authType: authType || 'tutor-only',
+                email: tutorEmail || profile.email 
+            };
+        }
+        
+        // Not authenticated
+        console.log('No valid authentication found');
+        return null;
+        
+    } catch (error) {
+        console.error('Auth check error:', error);
+        clearTutorAuth();
+        return null;
+    }
+}
+
+// Clear authentication data
+function clearTutorAuth() {
+    localStorage.removeItem('tutorProfile');
+    localStorage.removeItem('tutorLoggedIn');
+    localStorage.removeItem('authType');
+    localStorage.removeItem('tutorEmail');
+}
+
+// Logout function (add this to your dashboard)
+async function handleTutorLogout() {
+    try {
+        // Clear localStorage
+        clearTutorAuth();
+        
+        // Sign out from Supabase if logged in
+        const { error } = await supabase.auth.signOut();
+        if (error) {
+            console.log('Supabase signout error:', error);
+        }
+        
+        console.log('Tutor logged out successfully');
+        
+        // Redirect to home page
+        window.location.href = '/';
+        
+    } catch (error) {
+        console.error('Logout error:', error);
+        // Force redirect even if there's an error
+        window.location.href = '/';
+    }
+}
+
+// Add this to your tutor-dashboard.html page initialization
+document.addEventListener('DOMContentLoaded', async () => {
+    console.log('Dashboard loading...');
+    
+    const authResult = await checkTutorAuth();
+    
+    if (!authResult) {
+        console.log('No authentication found, redirecting to home...');
+        alert('Please log in to access the tutor dashboard.');
+        window.location.href = '/';
+        return;
+    }
+    
+    const { user, profile, authType, email } = authResult;
+    console.log('Dashboard loaded for:', email, 'Auth type:', authType);
+    
+    // Initialize dashboard with profile data
+    try {
+        await initializeDashboard(profile, authType);
+        console.log('Dashboard initialized successfully');
+    } catch (error) {
+        console.error('Dashboard initialization error:', error);
+        alert('Error loading dashboard. Please try logging in again.');
+        await handleTutorLogout();
+    }
+});
+
+// Example dashboard initialization function (customize this for your needs)
+async function initializeDashboard(profile, authType) {
+    // Update UI with tutor information
+    const tutorNameElement = document.getElementById('tutorName');
+    if (tutorNameElement) {
+        tutorNameElement.textContent = profile.full_name || 'Tutor';
+    }
+    
+    const tutorEmailElement = document.getElementById('tutorEmail');
+    if (tutorEmailElement) {
+        tutorEmailElement.textContent = profile.email;
+    }
+    
+    // Show auth type for debugging (remove in production)
+    const authTypeElement = document.getElementById('authType');
+    if (authTypeElement) {
+        authTypeElement.textContent = `Auth: ${authType}`;
+    }
+    
+    // Load tutor-specific data
+    await loadTutorData(profile);
+    
+    // Set up logout handler
+    const logoutButton = document.getElementById('logoutButton');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', handleTutorLogout);
+    }
+}
+
+// Example function to load tutor-specific data
+async function loadTutorData(profile) {
+    try {
+        // Load tutor's lessons, students, etc.
+        console.log('Loading data for tutor:', profile.email);
+        
+        // Example: Load tutor's lessons
+        const { data: lessons, error: lessonsError } = await supabase
+            .from('lessons')
+            .select('*')
+            .eq('tutor_id', profile.id || profile.user_id);
+            
+        if (lessonsError) {
+            console.log('Error loading lessons:', lessonsError);
+        } else {
+            console.log('Loaded lessons:', lessons);
+            // Update UI with lessons data
+        }
+        
+        // Add more data loading as needed
+        
+    } catch (error) {
+        console.error('Error loading tutor data:', error);
+    }
+}
 
         // ===== EXISTING APPLICATION FORM LOGIC =====
         let currentStep = 1;
