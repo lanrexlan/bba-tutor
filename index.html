@@ -2380,7 +2380,7 @@
             }
         }
 
-        async function handleTutorLogin(event) {
+async function handleTutorLogin(event) {
     event.preventDefault();
     
     const email = document.getElementById('tutorEmail').value;
@@ -2485,6 +2485,23 @@ function handleTutorOnlyLogin(tutorProfile) {
     // Redirect to dashboard
     window.location.href = '/tutor-dashboard.html';
 }
+                
+                // Redirect to tutor dashboard
+                setTimeout(() => {
+                    closeTutorLoginModal();
+                    window.location.href = '/tutor-dashboard.html';
+                }, 2000);
+                
+            } catch (error) {
+                console.error('Tutor login error:', error);
+                showTutorError('tutorLoginErrorMessage', error.message);
+            } finally {
+                // Reset button state
+                submitText.style.display = 'inline';
+                loadingSpinner.style.display = 'none';
+                submitBtn.disabled = false;
+            }
+        }
 
         // ===== EXISTING APPLICATION FORM LOGIC =====
         let currentStep = 1;
