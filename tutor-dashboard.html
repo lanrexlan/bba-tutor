@@ -674,6 +674,7 @@
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     let currentUser = null;
+    let currentTutorProfile = null;
     let lessonsData = [];
     let assignmentsData = [];
 
@@ -730,84 +731,172 @@
       });
     });
 
+    // Updated authentication function that matches index.html logic
     async function ensureAuth() {
       try {
+        console.log('Checking authentication...');
+        
+        // Check Supabase auth first
         const { data: { session }, error } = await supabase.auth.getSession();
         
-        if (error) {
-          console.error('Auth error:', error);
-          return null;
+        if (session && session.user && session.user.email_confirmed_at) {
+          console.log('Supabase authenticated user found:', session.user.email);
+          currentUser = session.user;
+          
+          // Try to get tutor profile by user_id
+          let { data: profile, error: profileError } = await supabase
+            .from('tutor_profiles')
+            .select('*')
+            .eq('user_id', session.user.id)
+            .eq('status', 'verified')
+            .single();
+            
+          if (profileError || !profile) {
+            // Try to find by email if user_id lookup failed
+            const { data: profileByEmail } = await supabase
+              .from('tutor_profiles')
+              .select('*')
+              .ilike('email', session.user.email)
+              .eq('status', 'verified')
+              .single();
+              
+            profile = profileByEmail;
+          }
+          
+          if (profile) {
+            console.log('Verified tutor profile found');
+            currentTutorProfile = profile;
+            return currentUser;
+          } else {
+            console.log('No verified tutor profile found for Supabase user');
+          }
         }
         
-        if (!session || !session.user) {
-          console.log('No session found, redirecting to login');
-          location.href = '/index.html';
-          return null;
+        // Check tutor-only authentication (from localStorage)
+        const tutorLoggedIn = localStorage.getItem('tutorLoggedIn');
+        const tutorProfileData = localStorage.getItem('tutorProfile');
+        
+        if (tutorLoggedIn === 'true' && tutorProfileData) {
+          console.log('Tutor-only authentication found');
+          
+          try {
+            currentTutorProfile = JSON.parse(tutorProfileData);
+            
+            // Verify the profile is still valid in the database
+            const { data: verifyProfile, error: verifyError } = await supabase
+              .from('tutor_profiles')
+              .select('*')
+              .ilike('email', currentTutorProfile.email)
+              .eq('status', 'verified')
+              .single();
+              
+            if (verifyError || !verifyProfile) {
+              console.log('Stored tutor profile no longer valid');
+              clearTutorAuth();
+              return null;
+            }
+            
+            // Create a mock user object for compatibility
+            currentUser = {
+              id: verifyProfile.user_id || currentTutorProfile.user_id,
+              email: verifyProfile.email,
+              user_metadata: {
+                full_name: verifyProfile.full_name,
+                phone: verifyProfile.phone
+              }
+            };
+            
+            currentTutorProfile = verifyProfile;
+            console.log('Tutor-only authentication validated');
+            return currentUser;
+            
+          } catch (parseError) {
+            console.error('Error parsing stored tutor profile:', parseError);
+            clearTutorAuth();
+          }
         }
-
-        currentUser = session.user;
-        return currentUser;
+        
+        console.log('No valid authentication found, redirecting to login');
+        return null;
+        
       } catch (error) {
         console.error('Authentication check failed:', error);
-        location.href = '/index.html';
         return null;
       }
     }
 
+    function clearTutorAuth() {
+      localStorage.removeItem('tutorProfile');
+      localStorage.removeItem('tutorLoggedIn');
+      localStorage.removeItem('authType');
+      localStorage.removeItem('tutorEmail');
+    }
+
     async function loadTutorProfile() {
       try {
-        let { data: tutor, error } = await supabase
-          .from('tutor_profiles')
-          .select('*')
-          .eq('id', currentUser.id)
-          .maybeSingle();
-
-        if (error && error.code !== 'PGRST116') {
-          console.error('Error loading tutor profile:', error);
-        }
-
-        if (!tutor) {
-          const full_name = currentUser.user_metadata?.full_name || 
-                           currentUser.user_metadata?.name || 
-                           currentUser.email.split('@')[0];
-          const phone = currentUser.user_metadata?.phone || null;
-          
-          const { data: created, error: createError } = await supabase
+        let tutorProfile = currentTutorProfile;
+        
+        // If we don't have a profile yet, try to load it
+        if (!tutorProfile && currentUser) {
+          // Try by user_id first
+          let { data: profile, error } = await supabase
             .from('tutor_profiles')
-            .insert([{ 
-              id: currentUser.id, 
-              full_name, 
-              email: currentUser.email, 
-              phone 
-            }])
-            .select()
-            .maybeSingle();
+            .select('*')
+            .eq('user_id', currentUser.id)
+            .single();
 
-          if (createError) {
-            console.error('Error creating tutor profile:', createError);
+          if (error && error.code !== 'PGRST116') {
+            console.error('Error loading tutor profile by user_id:', error);
           }
-          
-          tutor = created || { full_name, phone, email: currentUser.email };
+
+          // If not found by user_id, try by email
+          if (!profile) {
+            const { data: profileByEmail } = await supabase
+              .from('tutor_profiles')
+              .select('*')
+              .ilike('email', currentUser.email)
+              .single();
+            profile = profileByEmail;
+          }
+
+          tutorProfile = profile;
         }
 
-        const fullName = (tutor?.full_name || 
-                         currentUser.user_metadata?.full_name || 
-                         currentUser.user_metadata?.name || 
-                         currentUser.email.split('@')[0] || 
-                         'Tutor').trim();
-        const phone = tutor?.phone || currentUser.user_metadata?.phone || '—';
+        // Extract profile information
+        const fullName = tutorProfile?.full_name || 
+                         currentUser?.user_metadata?.full_name || 
+                         currentUser?.user_metadata?.name || 
+                         currentUser?.email?.split('@')[0] || 
+                         'Tutor';
+        
+        const phone = tutorProfile?.phone || 
+                     currentUser?.user_metadata?.phone || 
+                     '—';
+        
+        const email = tutorProfile?.email || 
+                     currentUser?.email || 
+                     '—';
+        
         const firstName = fullName.split(' ')[0];
 
+        // Update UI elements
         document.getElementById('tutorName').textContent = fullName;
         document.getElementById('firstName').textContent = firstName;
         document.getElementById('profileName').textContent = fullName;
-        document.getElementById('profileEmail').textContent = currentUser.email;
+        document.getElementById('profileEmail').textContent = email;
         document.getElementById('profilePhone').textContent = phone;
+
+        console.log('Tutor profile loaded successfully');
 
       } catch (error) {
         console.error('Failed to load tutor profile:', error);
-        document.getElementById('tutorName').textContent = 'Tutor';
-        document.getElementById('firstName').textContent = 'Tutor';
+        // Fallback to basic info
+        const fallbackName = currentUser?.email?.split('@')[0] || 'Tutor';
+        document.getElementById('tutorName').textContent = fallbackName;
+        document.getElementById('firstName').textContent = fallbackName;
+        document.getElementById('profileName').textContent = fallbackName;
+        document.getElementById('profileEmail').textContent = currentUser?.email || '—';
+        document.getElementById('profilePhone').textContent = '—';
       }
     }
 
@@ -827,6 +916,11 @@
       `;
 
       try {
+        if (!currentUser || !currentUser.id) {
+          showEmptyState('Unable to load lessons. User not authenticated.', 'lessonsTbody', 'fas fa-exclamation-triangle');
+          return;
+        }
+
         const now = new Date().toISOString();
         const { data, error } = await supabase
           .from('lessons')
@@ -889,6 +983,11 @@
       `;
 
       try {
+        if (!currentUser || !currentUser.id) {
+          showEmptyState('Unable to load assignments. User not authenticated.', 'assignmentsTbody', 'fas fa-exclamation-triangle');
+          return;
+        }
+
         const { data, error } = await supabase
           .from('assignments')
           .select('title, due_date, status, children:child_id(name), subjects:subject_id(name)')
@@ -945,29 +1044,55 @@
 
     document.getElementById('logoutBtn').addEventListener('click', async () => {
       try {
+        // Clear localStorage auth
+        clearTutorAuth();
+        
+        // Try to sign out from Supabase (won't error if not signed in)
         await supabase.auth.signOut();
+        
+        console.log('Logout successful, redirecting...');
         location.href = '/index.html';
       } catch (error) {
         console.error('Logout error:', error);
+        // Still redirect even if logout fails
         location.href = '/index.html';
       }
     });
 
+    // Auth state change listener
     supabase.auth.onAuthStateChange((event, session) => {
+      console.log('Auth state changed:', event);
       if (event === 'SIGNED_OUT' || !session) {
-        location.href = '/index.html';
+        // Only redirect if we don't have tutor-only auth
+        const tutorLoggedIn = localStorage.getItem('tutorLoggedIn');
+        if (tutorLoggedIn !== 'true') {
+          console.log('Supabase signed out and no tutor-only auth, redirecting...');
+          location.href = '/index.html';
+        }
       }
     });
 
+    // Main initialization function
     (async function init() {
       try {
+        console.log('Initializing dashboard...');
+        
         const user = await ensureAuth();
-        if (!user) return;
+        if (!user) {
+          console.log('Authentication failed, redirecting...');
+          location.href = '/index.html';
+          return;
+        }
 
+        console.log('Authentication successful, loading profile...');
         await loadTutorProfile();
+        
+        console.log('Loading lessons and assignments...');
         await Promise.all([loadLessons(), loadAssignments()]);
         
+        console.log('Dashboard initialization complete');
         hideLoading();
+        
       } catch (error) {
         console.error('Initialization error:', error);
         hideLoading();
