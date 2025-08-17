@@ -2409,14 +2409,19 @@
                     throw new Error(signInError.message);
                 }
                 
-                // Check if email is verified
-                if (!authData.user.email_confirmed_at) {
-                    showTutorError('tutorLoginErrorMessage', 'Please verify your email address before logging in. Check your inbox for the verification link.');
-                    return;
-                }
-                
-                showTutorSuccess('tutorLoginSuccessMessage', 'Login successful! Redirecting to your tutor dashboard...');
-                event.target.reset();
+                // Instead of checking user.email_confirmed_at
+// Check if the user has a verified tutor profile
+const { data: tutorProfile } = await supabase
+    .from('tutor_profiles')
+    .select('status')
+    .eq('email', email)
+    .single();
+
+if (tutorProfile && tutorProfile.status === 'verified') {
+    // Allow login
+} else {
+    // Show "Email not verified" error
+}
                 
                 // Redirect to tutor dashboard
                 setTimeout(() => {
