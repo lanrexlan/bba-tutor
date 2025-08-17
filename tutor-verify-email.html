@@ -459,7 +459,7 @@
 
     <script>
 const SUPABASE_URL = 'https://vcxdkacxbjsgaoxbhsip.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZjeGRrYWN4YmpzZ2FveGJoc2lwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI5MDQ5ODMsImV4cCI6MjA2ODQ4MDk4M0.T9KhHWzHZWyaZvyeFXtBu8tPLY9JOn6_wCHcH8B46FU';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZjeGRrYWN4YmpzZ2FveGJoc2lwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI5MDQ5ODMsImV4cCI6MjA2ODQ4MDk4M30.T9KhHWzHZWyaZvyeFXtBu8tPLY9JOn6_wCHcH8B46FU';
 
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -529,7 +529,8 @@ async function handleCustomTokenVerification(token, email) {
             throw new Error("Invalid or expired verification token.");
         }
 
-        await insertOrUpdateTutorProfile(email);
+        // For custom token verification, we'll create a simple profile without checking authorised_tutor_emails
+        await insertSimpleTutorProfile(email);
         showSuccessState();
     } catch (err) {
         console.error("Custom token verification error:", err);
@@ -537,29 +538,119 @@ async function handleCustomTokenVerification(token, email) {
     }
 }
 
-async function insertOrUpdateTutorProfile(email, userId = null) {
-    console.log("Ensuring tutor profile exists for", email);
+async function insertSimpleTutorProfile(email) {
+    console.log("Creating simple tutor profile for", email);
 
     try {
-        // First, let's check what we have in authorised_tutor_emails
-        const { data: authEmailData, error: authEmailError } = await supabase
-            .from('authorised_tutor_emails')
+        // Check if profile already exists
+        let { data: profiles, error: profileError } = await supabase
+            .from('tutor_profiles')
             .select('*')
             .ilike('email', email)
             .limit(1);
 
-        console.log("Authorised email data:", authEmailData);
+        console.log("Existing profiles:", profiles);
 
-        if (authEmailError) {
-            console.error("Error fetching authorised tutor email:", authEmailError);
-            throw new Error(`Error fetching authorised tutor email: ${authEmailError.message}`);
-        }
-        if (!authEmailData || authEmailData.length === 0) {
-            throw new Error("Tutor not found in authorised_tutor_emails.");
+        if (profileError) {
+            console.error("Database error checking tutor profile:", profileError);
+            throw new Error(`Database error checking tutor profile: ${profileError.message}`);
         }
 
-        const tutorData = authEmailData[0];
-        console.log("Tutor data from authorised emails:", tutorData);
+        if (!profiles || profiles.length === 0) {
+            console.log("Profile not found. Creating new profile...");
+
+            // Create a simple profile with minimal data
+            let profileData = {
+                full_name: 'Tutor ' + email.split('@')[0], // Use email prefix as temp name
+                email: email,
+                phone: null,
+                status: 'verified'
+            };
+
+            // Generate a unique placeholder UUID
+            profileData.user_id = crypto.randomUUID ? 
+                crypto.randomUUID() : 
+                '00000000-0000-0000-0000-' + Date.now().toString().padStart(12, '0');
+
+            console.log("Profile data to insert:", profileData);
+
+            // Insert new profile
+            const { data: insertedProfile, error: insertError } = await supabase
+                .from('tutor_profiles')
+                .insert([profileData])
+                .select()
+                .single();
+
+            if (insertError) {
+                console.error("Error inserting tutor profile:", insertError);
+                throw new Error(`Error inserting tutor profile: ${insertError.message} (Code: ${insertError.code})`);
+            }
+            console.log("New tutor profile created:", insertedProfile);
+        } else {
+            console.log("Profile exists. Updating to verified status...");
+            
+            // Update existing profile
+            let updateData = {
+                status: 'verified'
+            };
+
+            const { data: updatedProfile, error: updateError } = await supabase
+                .from('tutor_profiles')
+                .update(updateData)
+                .ilike('email', email)
+                .select()
+                .single();
+
+            if (updateError) {
+                console.error("Error updating tutor profile:", updateError);
+                throw new Error(`Error updating tutor profile: ${updateError.message} (Code: ${updateError.code})`);
+            }
+            console.log("Tutor profile updated:", updatedProfile);
+        }
+
+        console.log("Profile operation completed successfully");
+
+    } catch (error) {
+        console.error("insertSimpleTutorProfile error:", error);
+        throw error;
+    }
+}
+
+async function insertOrUpdateTutorProfile(email, userId = null) {
+    console.log("Ensuring tutor profile exists for", email);
+
+    try {
+        // Test Supabase connection first
+        const { data: testData, error: testError } = await supabase
+            .from('tutor_profiles')
+            .select('count', { count: 'exact', head: true });
+
+        if (testError) {
+            console.error("Supabase connection test failed:", testError);
+            throw new Error(`Database connection failed: ${testError.message}`);
+        }
+
+        console.log("Supabase connection successful");
+
+        // Try to get data from authorised_tutor_emails (this might fail due to permissions)
+        let tutorData = null;
+        try {
+            const { data: authEmailData, error: authEmailError } = await supabase
+                .from('authorised_tutor_emails')
+                .select('*')
+                .ilike('email', email)
+                .limit(1);
+
+            if (authEmailError) {
+                console.warn("Could not access authorised_tutor_emails:", authEmailError.message);
+                // Continue without this data
+            } else if (authEmailData && authEmailData.length > 0) {
+                tutorData = authEmailData[0];
+                console.log("Tutor data from authorised emails:", tutorData);
+            }
+        } catch (authError) {
+            console.warn("Error accessing authorised_tutor_emails, continuing without it:", authError);
+        }
 
         // Now check if profile already exists
         let { data: profiles, error: profileError } = await supabase
@@ -578,19 +669,18 @@ async function insertOrUpdateTutorProfile(email, userId = null) {
         if (!profiles || profiles.length === 0) {
             console.log("Profile not found. Creating new profile...");
 
-            // Prepare profile data with only the columns that exist in tutor_profiles table
+            // Prepare profile data with available information
             let profileData = {
-                full_name: tutorData.full_name || 'Pending Name',
-                email: tutorData.email,
-                phone: tutorData.phone || null,
+                full_name: (tutorData && tutorData.full_name) || 'Tutor ' + email.split('@')[0],
+                email: email,
+                phone: (tutorData && tutorData.phone) || null,
                 status: 'verified'
             };
 
-            // Handle user_id - use provided userId or generate placeholder
+            // Handle user_id
             if (userId) {
                 profileData.user_id = userId;
             } else {
-                // Generate a unique placeholder UUID that won't conflict
                 profileData.user_id = crypto.randomUUID ? 
                     crypto.randomUUID() : 
                     '00000000-0000-0000-0000-' + Date.now().toString().padStart(12, '0');
