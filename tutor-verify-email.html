@@ -384,7 +384,7 @@
                         <li><i class="fas fa-check-circle"></i> Complete your detailed tutor profile</li>
                         <li><i class="fas fa-check-circle"></i> Upload teaching materials and credentials</li>
                         <li><i class="fas fa-check-circle"></i> Get matched with your first students</li>
-                        <li><i class="fas fa-check-circle"></i> Start earning 70% of lesson fees</li>
+                        <li><i class="fas fa-check-circle"></i> Start earning 75% of lesson fees</li>
                     </ul>
                 </div>
 
@@ -419,7 +419,7 @@
                 </div>
 
                 <div class="action-buttons">
-                    <a href="/tutor-portal.html" class="btn btn-secondary">
+                    <a href="/" class="btn btn-secondary">
                         <i class="fas fa-envelope"></i>
                         Request New Verification
                     </a>
@@ -513,6 +513,7 @@ async function handleCustomTokenVerification(token, email) {
             throw new Error("Invalid or expired verification token.");
         }
 
+        // For custom token verification, we need to create a placeholder user first
         await insertOrUpdateTutorProfile(email);
         showSuccessState();
     } catch (err) {
@@ -524,36 +525,40 @@ async function handleCustomTokenVerification(token, email) {
 async function insertOrUpdateTutorProfile(email, userId = null) {
     console.log("Ensuring tutor profile exists for", email);
 
-    // 1. Check if profile exists
-    let { data: profiles, error: profileError } = await supabase
-        .from('tutor_profiles')
-        .select('*')
-        .ilike('email', email)
-        .limit(1);
-
-    if (profileError) throw new Error("Database error checking tutor profile.");
-
-    if (!profiles || profiles.length === 0) {
-        console.log("Profile not found. Pulling details from authorised_tutor_emails...");
-
-        const { data: authEmailData, error: authEmailError } = await supabase
-            .from('authorised_tutor_emails')
+    try {
+        // 1. Check if profile exists
+        let { data: profiles, error: profileError } = await supabase
+            .from('tutor_profiles')
             .select('*')
             .ilike('email', email)
             .limit(1);
 
-        if (authEmailError) throw new Error("Error fetching authorised tutor email.");
-        if (!authEmailData || authEmailData.length === 0) {
-            throw new Error("Tutor not found in authorised_tutor_emails.");
+        if (profileError) {
+            console.error("Database error checking tutor profile:", profileError);
+            throw new Error("Database error checking tutor profile.");
         }
 
-        const tutorData = authEmailData[0];
+        if (!profiles || profiles.length === 0) {
+            console.log("Profile not found. Pulling details from authorised_tutor_emails...");
 
-        // Insert new profile as verified
-        const { error: insertError } = await supabase
-            .from('tutor_profiles')
-            .insert([{
-                user_id: userId || null,
+            const { data: authEmailData, error: authEmailError } = await supabase
+                .from('authorised_tutor_emails')
+                .select('*')
+                .ilike('email', email)
+                .limit(1);
+
+            if (authEmailError) {
+                console.error("Error fetching authorised tutor email:", authEmailError);
+                throw new Error("Error fetching authorised tutor email.");
+            }
+            if (!authEmailData || authEmailData.length === 0) {
+                throw new Error("Tutor not found in authorised_tutor_emails.");
+            }
+
+            const tutorData = authEmailData[0];
+
+            // For custom token verification, we need to handle the case where userId is null
+            let profileData = {
                 full_name: tutorData.full_name || '',
                 phone: tutorData.phone || '',
                 email: tutorData.email,
@@ -561,23 +566,54 @@ async function insertOrUpdateTutorProfile(email, userId = null) {
                 email_verified: true,
                 verified_at: new Date().toISOString(),
                 status: 'verified'
-            }]);
+            };
 
-        if (insertError) throw new Error("Error inserting tutor profile.");
-        console.log("New tutor profile created.");
-    } else {
-        // Update existing profile to verified
-        const { error: updateError } = await supabase
-            .from('tutor_profiles')
-            .update({
+            // Only add user_id if it's provided (from Supabase auth)
+            if (userId) {
+                profileData.user_id = userId;
+            } else {
+                // Create a temporary placeholder UUID for custom verification
+                // This should be updated later when the user actually logs in
+                profileData.user_id = '00000000-0000-0000-0000-000000000000'; // Placeholder UUID
+            }
+
+            // Insert new profile as verified
+            const { error: insertError } = await supabase
+                .from('tutor_profiles')
+                .insert([profileData]);
+
+            if (insertError) {
+                console.error("Error inserting tutor profile:", insertError);
+                throw new Error("Error inserting tutor profile.");
+            }
+            console.log("New tutor profile created.");
+        } else {
+            // Update existing profile to verified
+            let updateData = {
                 email_verified: true,
                 verified_at: new Date().toISOString(),
                 status: 'verified'
-            })
-            .ilike('email', email);
+            };
 
-        if (updateError) throw new Error("Error updating tutor profile.");
-        console.log("Tutor profile updated to verified.");
+            // If we have a userId from auth, update it
+            if (userId) {
+                updateData.user_id = userId;
+            }
+
+            const { error: updateError } = await supabase
+                .from('tutor_profiles')
+                .update(updateData)
+                .ilike('email', email);
+
+            if (updateError) {
+                console.error("Error updating tutor profile:", updateError);
+                throw new Error("Error updating tutor profile.");
+            }
+            console.log("Tutor profile updated to verified.");
+        }
+    } catch (error) {
+        console.error("insertOrUpdateTutorProfile error:", error);
+        throw error;
     }
 }
 
@@ -587,7 +623,7 @@ function isValidCustomToken(token, email) {
         const [tokenEmail, tokenTimestamp] = decoded.split('-');
         if (tokenEmail !== email) return false;
 
-        const maxAge = 24 * 60 * 60 * 1000;
+        const maxAge = 24 * 60 * 60 * 1000; // 24 hours
         if (Date.now() - parseInt(tokenTimestamp) > maxAge) return false;
 
         return true;
