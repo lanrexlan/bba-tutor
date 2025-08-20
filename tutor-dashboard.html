@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tutor Dashboard - Baobab Online Academy</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
@@ -156,76 +156,6 @@
       display: flex;
       align-items: center;
       gap: 12px;
-    }
-
-    .search-box {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-
-    .search-input {
-      width: 250px;
-      padding: 8px 12px 8px 36px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: var(--surface-2);
-      font-size: 14px;
-      transition: all 0.3s ease;
-    }
-
-    .search-input:focus {
-      outline: none;
-      border-color: var(--primary);
-      background: var(--surface);
-      box-shadow: 0 0 0 3px rgba(0, 105, 92, 0.1);
-    }
-
-    .search-icon {
-      position: absolute;
-      left: 12px;
-      color: var(--text-light);
-      pointer-events: none;
-    }
-
-    .notifications {
-      position: relative;
-      cursor: pointer;
-    }
-
-    .notification-btn {
-      width: 40px;
-      height: 40px;
-      border: none;
-      background: var(--surface-2);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-secondary);
-      transition: all 0.3s ease;
-      position: relative;
-    }
-
-    .notification-btn:hover {
-      background: var(--primary);
-      color: white;
-    }
-
-    .notification-badge {
-      position: absolute;
-      top: -2px;
-      right: -2px;
-      width: 18px;
-      height: 18px;
-      background: var(--error);
-      border-radius: 50%;
-      font-size: 10px;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 600;
     }
 
     .user-menu {
@@ -430,10 +360,6 @@
       margin-top: 2px;
     }
 
-    .card-action {
-      margin-left: auto;
-    }
-
     .card-body {
       padding: 1.25rem;
     }
@@ -510,22 +436,6 @@
       color: var(--text);
     }
 
-    .stat-trend {
-      display: flex;
-      align-items: center;
-      gap: 3px;
-      font-size: 11px;
-      font-weight: 600;
-    }
-
-    .stat-trend.up {
-      color: var(--success);
-    }
-
-    .stat-trend.down {
-      color: var(--error);
-    }
-
     .stat-number {
       font-size: 28px;
       font-weight: 800;
@@ -537,19 +447,6 @@
       font-size: 12px;
       color: var(--text-secondary);
       font-weight: 500;
-    }
-
-    /* Dashboard Grid */
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 1.5rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .chart-container {
-      position: relative;
-      height: 250px;
     }
 
     /* Tables */
@@ -714,69 +611,6 @@
       color: var(--text-secondary);
     }
 
-    /* Calendar Widget */
-    .calendar-widget {
-      background: var(--surface);
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      overflow: hidden;
-    }
-
-    .calendar-header {
-      background: var(--gradient-primary);
-      color: white;
-      padding: 1rem;
-      text-align: center;
-    }
-
-    .calendar-body {
-      padding: 1rem;
-    }
-
-    .calendar-day {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 8px 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .calendar-day:last-child {
-      border-bottom: none;
-    }
-
-    .day-number {
-      width: 28px;
-      height: 28px;
-      background: var(--surface-2);
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 600;
-      font-size: 12px;
-    }
-
-    .day-number.today {
-      background: var(--primary);
-      color: white;
-    }
-
-    .day-events {
-      flex: 1;
-    }
-
-    .event-item {
-      font-size: 11px;
-      color: var(--text-secondary);
-      margin-bottom: 2px;
-    }
-
-    .event-item.important {
-      color: var(--primary);
-      font-weight: 600;
-    }
-
     /* Empty States */
     .empty-state {
       text-align: center;
@@ -800,20 +634,23 @@
       font-size: 12px;
     }
 
-    /* Progress Bars */
-    .progress {
-      width: 100%;
-      height: 6px;
-      background: var(--surface-2);
-      border-radius: 3px;
-      overflow: hidden;
+    /* Loading states */
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      padding: 1.5rem;
+      color: var(--text-secondary);
     }
 
-    .progress-bar {
-      height: 100%;
-      background: var(--gradient-primary);
-      border-radius: 3px;
-      transition: width 0.6s ease;
+    .spinner {
+      width: 24px;
+      height: 24px;
+      border: 2px solid var(--border);
+      border-top: 2px solid var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
     }
 
     /* Modal */
@@ -940,10 +777,6 @@
         padding: 1rem;
       }
       
-      .dashboard-grid {
-        grid-template-columns: 1fr;
-      }
-      
       .stats-grid {
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       }
@@ -956,10 +789,6 @@
     @media (max-width: 768px) {
       .header-content {
         padding: 0 1rem;
-      }
-      
-      .search-input {
-        width: 180px;
       }
       
       .page-title {
@@ -1013,10 +842,6 @@
         display: none;
       }
       
-      .search-box {
-        display: none;
-      }
-      
       .sidebar {
         padding: 1rem;
       }
@@ -1034,32 +859,6 @@
 
       .card-body {
         padding: 1rem;
-      }
-
-      .chart-container {
-        height: 200px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .header-content {
-        padding: 0 0.75rem;
-      }
-
-      .main-content {
-        padding: 0.75rem;
-      }
-
-      .page-title {
-        font-size: 18px;
-      }
-
-      .stat-card {
-        padding: 1rem;
-      }
-
-      .stat-number {
-        font-size: 24px;
       }
     }
   </style>
@@ -1085,24 +884,12 @@
           </div>
           <div class="brand-text">
             <h1>Baobab Tutor</h1>
-            <p>Teaching Portal</p>
+            <p>Google Classroom</p>
           </div>
         </a>
       </div>
 
       <div class="header-actions">
-        <div class="search-box">
-          <i class="fas fa-search search-icon"></i>
-          <input type="text" class="search-input" placeholder="Search students, lessons..." id="globalSearch">
-        </div>
-
-        <div class="notifications">
-          <button class="notification-btn" id="notificationBtn">
-            <i class="fas fa-bell"></i>
-            <span class="notification-badge" id="notificationCount" style="display: none;">0</span>
-          </button>
-        </div>
-
         <div class="user-menu" onclick="showUserMenu()">
           <div class="user-avatar" id="userAvatar">TU</div>
           <div class="user-info">
@@ -1129,47 +916,41 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link" data-section="schedule">
-              <i class="fas fa-calendar-alt nav-icon"></i>
-              Schedule
-              <span class="nav-badge" id="upcomingLessonsNav">0</span>
-            </a>
-          </li>
-          <li class="nav-item">
             <a href="#" class="nav-link" data-section="students">
               <i class="fas fa-users nav-icon"></i>
-              Students
+              My Students
+              <span class="nav-badge" id="studentsCount">0</span>
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link" data-section="assignments">
-              <i class="fas fa-tasks nav-icon"></i>
-              Assignments
-              <span class="nav-badge" id="pendingAssignmentsNav">0</span>
+            <a href="#" class="nav-link" data-section="classrooms">
+              <i class="fab fa-google nav-icon"></i>
+              Google Classrooms
+              <span class="nav-badge" id="classroomsCount">0</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link" data-section="progress">
+              <i class="fas fa-chart-line nav-icon"></i>
+              Progress Tracking
             </a>
           </li>
         </ul>
       </div>
 
       <div class="sidebar-section">
-        <div class="sidebar-title">Teaching</div>
+        <div class="sidebar-title">Academic</div>
         <ul class="nav-menu">
           <li class="nav-item">
-            <a href="#" class="nav-link" data-section="lessons">
-              <i class="fas fa-video nav-icon"></i>
-              Live Lessons
+            <a href="#" class="nav-link" data-section="assessments">
+              <i class="fas fa-clipboard-check nav-icon"></i>
+              Assessments
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link" data-section="materials">
-              <i class="fas fa-book nav-icon"></i>
-              Materials
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link" data-section="progress">
-              <i class="fas fa-chart-line nav-icon"></i>
-              Progress Reports
+            <a href="#" class="nav-link" data-section="schedule">
+              <i class="fas fa-calendar-alt nav-icon"></i>
+              Schedule
             </a>
           </li>
         </ul>
@@ -1179,21 +960,9 @@
         <div class="sidebar-title">Account</div>
         <ul class="nav-menu">
           <li class="nav-item">
-            <a href="#" class="nav-link" data-section="earnings">
-              <i class="fas fa-wallet nav-icon"></i>
-              Earnings
-            </a>
-          </li>
-          <li class="nav-item">
             <a href="#" class="nav-link" data-section="profile">
               <i class="fas fa-user nav-icon"></i>
               Profile
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link" data-section="settings">
-              <i class="fas fa-cog nav-icon"></i>
-              Settings
             </a>
           </li>
         </ul>
@@ -1211,7 +980,7 @@
             <span>Dashboard</span>
           </div>
           <h1 class="page-title">Welcome back, <span id="firstNameDash">Tutor</span>! 🎓</h1>
-          <p class="page-subtitle">Here's what's happening with your classes today</p>
+          <p class="page-subtitle">Here's an overview of your Google Classroom activities</p>
         </div>
 
         <!-- Stats Grid -->
@@ -1219,53 +988,37 @@
           <div class="stat-card">
             <div class="stat-header">
               <div class="stat-icon primary">
-                <i class="fas fa-calendar-check"></i>
-              </div>
-              <div class="stat-trend up">
-                <i class="fas fa-arrow-up"></i>
-                Today
+                <i class="fas fa-users"></i>
               </div>
             </div>
-            <div class="stat-number" id="todayLessons">0</div>
-            <div class="stat-label">Today's Lessons</div>
+            <div class="stat-number" id="totalStudentsStat">0</div>
+            <div class="stat-label">Total Students</div>
           </div>
 
           <div class="stat-card secondary">
             <div class="stat-header">
               <div class="stat-icon secondary">
-                <i class="fas fa-users"></i>
-              </div>
-              <div class="stat-trend up">
-                <i class="fas fa-arrow-up"></i>
-                Active
+                <i class="fab fa-google"></i>
               </div>
             </div>
-            <div class="stat-number" id="totalStudents">0</div>
-            <div class="stat-label">My Students</div>
+            <div class="stat-number" id="totalClassroomsStat">0</div>
+            <div class="stat-label">Google Classrooms</div>
           </div>
 
           <div class="stat-card warning">
             <div class="stat-header">
               <div class="stat-icon warning">
-                <i class="fas fa-clock"></i>
-              </div>
-              <div class="stat-trend down">
-                <i class="fas fa-arrow-down"></i>
-                Pending
+                <i class="fas fa-clipboard-check"></i>
               </div>
             </div>
-            <div class="stat-number" id="pendingReviews">0</div>
-            <div class="stat-label">To Review</div>
+            <div class="stat-number" id="totalAssessmentsStat">0</div>
+            <div class="stat-label">Assessments</div>
           </div>
 
           <div class="stat-card">
             <div class="stat-header">
               <div class="stat-icon primary">
                 <i class="fas fa-star"></i>
-              </div>
-              <div class="stat-trend up">
-                <i class="fas fa-arrow-up"></i>
-                Rating
               </div>
             </div>
             <div class="stat-number">4.9</div>
@@ -1275,71 +1028,36 @@
 
         <!-- Quick Actions -->
         <div class="quick-actions">
-          <div class="action-card" onclick="setActiveSection('schedule')">
-            <div class="action-icon">
-              <i class="fas fa-plus"></i>
-            </div>
-            <div class="action-title">Schedule Lesson</div>
-            <div class="action-desc">Create a new lesson</div>
-          </div>
-
-          <div class="action-card" onclick="setActiveSection('assignments')">
-            <div class="action-icon">
-              <i class="fas fa-file-plus"></i>
-            </div>
-            <div class="action-title">Create Assignment</div>
-            <div class="action-desc">Assign homework</div>
-          </div>
-
           <div class="action-card" onclick="setActiveSection('students')">
             <div class="action-icon">
-              <i class="fas fa-user-plus"></i>
+              <i class="fas fa-users"></i>
             </div>
             <div class="action-title">View Students</div>
-            <div class="action-desc">Manage roster</div>
+            <div class="action-desc">Manage your student roster</div>
+          </div>
+
+          <div class="action-card" onclick="setActiveSection('classrooms')">
+            <div class="action-icon">
+              <i class="fab fa-google"></i>
+            </div>
+            <div class="action-title">Google Classrooms</div>
+            <div class="action-desc">Access your classrooms</div>
+          </div>
+
+          <div class="action-card" onclick="setActiveSection('assessments')">
+            <div class="action-icon">
+              <i class="fas fa-clipboard-check"></i>
+            </div>
+            <div class="action-title">Assessments</div>
+            <div class="action-desc">Track student progress</div>
           </div>
 
           <div class="action-card" onclick="setActiveSection('progress')">
             <div class="action-icon">
               <i class="fas fa-chart-bar"></i>
             </div>
-            <div class="action-title">View Reports</div>
-            <div class="action-desc">Check progress</div>
-          </div>
-        </div>
-
-        <!-- Dashboard Grid -->
-        <div class="dashboard-grid">
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <h3 class="card-title">Weekly Performance</h3>
-                <p class="card-subtitle">Your teaching statistics for this week</p>
-              </div>
-              <button class="btn btn-secondary btn-sm">
-                <i class="fas fa-download"></i>
-                Export
-              </button>
-            </div>
-            <div class="card-body">
-              <div class="chart-container">
-                <canvas id="performanceChart"></canvas>
-              </div>
-            </div>
-          </div>
-
-          <div class="calendar-widget">
-            <div class="calendar-header">
-              <h3>Today's Schedule</h3>
-              <p id="currentDate">Loading...</p>
-            </div>
-            <div class="calendar-body" id="todaySchedule">
-              <div class="empty-state">
-                <i class="fas fa-calendar-times"></i>
-                <h3>No lessons today</h3>
-                <p>Enjoy your free time!</p>
-              </div>
-            </div>
+            <div class="action-title">Progress Reports</div>
+            <div class="action-desc">View detailed analytics</div>
           </div>
         </div>
 
@@ -1348,8 +1066,12 @@
           <div class="card-header">
             <div>
               <h3 class="card-title">Recent Activity</h3>
-              <p class="card-subtitle">Latest updates from your classes</p>
+              <p class="card-subtitle">Latest updates from your classrooms</p>
             </div>
+            <button class="btn btn-secondary btn-sm" onclick="refreshDashboard()">
+              <i class="fas fa-refresh"></i>
+              Refresh
+            </button>
           </div>
           <div class="card-body">
             <div class="table-container">
@@ -1359,61 +1081,21 @@
                     <th>Activity</th>
                     <th>Student</th>
                     <th>Subject</th>
-                    <th>Time</th>
+                    <th>Date</th>
                     <th>Status</th>
                   </tr>
                 </thead>
                 <tbody id="recentActivity">
-                  <!-- Dynamic content will be loaded here -->
+                  <tr>
+                    <td colspan="5">
+                      <div class="loading">
+                        <div class="spinner"></div>
+                        Loading recent activity...
+                      </div>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Schedule Section -->
-      <div id="schedule" class="content-section">
-        <div class="page-header">
-          <div class="breadcrumb">
-            <a href="#" onclick="setActiveSection('dashboard')">Home</a>
-            <i class="fas fa-chevron-right"></i>
-            <span>Schedule</span>
-          </div>
-          <h1 class="page-title">Class Schedule</h1>
-          <p class="page-subtitle">Manage your upcoming lessons and appointments</p>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <div>
-              <h3 class="card-title">Upcoming Lessons</h3>
-              <p class="card-subtitle">Your scheduled classes for the next 7 days</p>
-            </div>
-            <button class="btn btn-primary" onclick="showCreateLessonModal()">
-              <i class="fas fa-plus"></i>
-              Schedule New Lesson
-            </button>
-          </div>
-          <div class="card-body">
-            <div id="scheduleTableContainer">
-              <div class="table-container">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th>Date & Time</th>
-                      <th>Student</th>
-                      <th>Subject</th>
-                      <th>Duration</th>
-                      <th>Status</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody id="scheduleTable">
-                    <!-- Dynamic content will be loaded here -->
-                  </tbody>
-                </table>
-              </div>
             </div>
           </div>
         </div>
@@ -1428,7 +1110,7 @@
             <span>Students</span>
           </div>
           <h1 class="page-title">My Students</h1>
-          <p class="page-subtitle">Manage your student roster and track their progress</p>
+          <p class="page-subtitle">Students assigned to your Google Classrooms</p>
         </div>
 
         <div class="card">
@@ -1437,343 +1119,153 @@
               <h3 class="card-title">Student Roster</h3>
               <p class="card-subtitle">All students currently under your guidance</p>
             </div>
-            <div class="card-action">
-              <button class="btn btn-secondary btn-sm">
-                <i class="fas fa-filter"></i>
-                Filter
-              </button>
-              <button class="btn btn-primary btn-sm">
-                <i class="fas fa-download"></i>
-                Export List
-              </button>
-            </div>
-          </div>
-          <div class="card-body">
-            <div id="studentsTableContainer">
-              <div class="table-container">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th>Student</th>
-                      <th>Grade</th>
-                      <th>Subjects</th>
-                      <th>Progress</th>
-                      <th>Last Lesson</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody id="studentsTable">
-                    <!-- Dynamic content will be loaded here -->
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Assignments Section -->
-      <div id="assignments" class="content-section">
-        <div class="page-header">
-          <div class="breadcrumb">
-            <a href="#" onclick="setActiveSection('dashboard')">Home</a>
-            <i class="fas fa-chevron-right"></i>
-            <span>Assignments</span>
-          </div>
-          <h1 class="page-title">Assignments</h1>
-          <p class="page-subtitle">Create, manage, and grade student assignments</p>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <div>
-              <h3 class="card-title">Assignment Overview</h3>
-              <p class="card-subtitle">Track all assignments and submissions</p>
-            </div>
-            <button class="btn btn-primary" onclick="showCreateAssignmentModal()">
-              <i class="fas fa-plus"></i>
-              Create Assignment
-            </button>
-          </div>
-          <div class="card-body">
-            <div id="assignmentsTableContainer">
-              <div class="table-container">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th>Assignment</th>
-                      <th>Subject</th>
-                      <th>Due Date</th>
-                      <th>Submissions</th>
-                      <th>Status</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody id="assignmentsTable">
-                    <!-- Dynamic content will be loaded here -->
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Lessons Section -->
-      <div id="lessons" class="content-section">
-        <div class="page-header">
-          <div class="breadcrumb">
-            <a href="#" onclick="setActiveSection('dashboard')">Home</a>
-            <i class="fas fa-chevron-right"></i>
-            <span>Live Lessons</span>
-          </div>
-          <h1 class="page-title">Live Lessons</h1>
-          <p class="page-subtitle">Start or join live teaching sessions</p>
-        </div>
-
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-header">
-              <div class="stat-icon primary">
-                <i class="fas fa-video"></i>
-              </div>
-            </div>
-            <div class="stat-number" id="liveLessonsToday">0</div>
-            <div class="stat-label">Live Lessons Today</div>
-          </div>
-
-          <div class="stat-card secondary">
-            <div class="stat-header">
-              <div class="stat-icon secondary">
-                <i class="fas fa-clock"></i>
-              </div>
-            </div>
-            <div class="stat-number" id="totalTeachingHours">0</div>
-            <div class="stat-label">Total Teaching Hours</div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <div>
-              <h3 class="card-title">Lesson History</h3>
-              <p class="card-subtitle">Your completed and upcoming live sessions</p>
-            </div>
-            <button class="btn btn-primary">
-              <i class="fas fa-video"></i>
-              Start New Lesson
-            </button>
-          </div>
-          <div class="card-body">
-            <div id="lessonsHistoryContainer">
-              <!-- Dynamic content will be loaded here -->
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Materials Section -->
-      <div id="materials" class="content-section">
-        <div class="page-header">
-          <div class="breadcrumb">
-            <a href="#" onclick="setActiveSection('dashboard')">Home</a>
-            <i class="fas fa-chevron-right"></i>
-            <span>Materials</span>
-          </div>
-          <h1 class="page-title">Teaching Materials</h1>
-          <p class="page-subtitle">Manage your lesson plans, resources, and educational content</p>
-        </div>
-
-        <div class="quick-actions">
-          <div class="action-card" onclick="uploadMaterial('pdf')">
-            <div class="action-icon">
-              <i class="fas fa-file-pdf"></i>
-            </div>
-            <div class="action-title">Upload PDF</div>
-            <div class="action-desc">Share documents</div>
-          </div>
-
-          <div class="action-card" onclick="uploadMaterial('video')">
-            <div class="action-icon">
-              <i class="fas fa-video"></i>
-            </div>
-            <div class="action-title">Upload Video</div>
-            <div class="action-desc">Add videos</div>
-          </div>
-
-          <div class="action-card" onclick="uploadMaterial('link')">
-            <div class="action-icon">
-              <i class="fas fa-link"></i>
-            </div>
-            <div class="action-title">Add Link</div>
-            <div class="action-desc">Share resources</div>
-          </div>
-
-          <div class="action-card" onclick="createFolder()">
-            <div class="action-icon">
-              <i class="fas fa-folder-plus"></i>
-            </div>
-            <div class="action-title">Create Folder</div>
-            <div class="action-desc">Organize materials</div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <div>
-              <h3 class="card-title">My Materials</h3>
-              <p class="card-subtitle">All your uploaded teaching resources</p>
-            </div>
-          </div>
-          <div class="card-body">
-            <div id="materialsContainer">
-              <div class="empty-state">
-                <i class="fas fa-folder-open"></i>
-                <h3>No materials uploaded</h3>
-                <p>Upload your first teaching material to get started</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Progress Section -->
-      <div id="progress" class="content-section">
-        <div class="page-header">
-          <div class="breadcrumb">
-            <a href="#" onclick="setActiveSection('dashboard')">Home</a>
-            <i class="fas fa-chevron-right"></i>
-            <span>Progress Reports</span>
-          </div>
-          <h1 class="page-title">Student Progress</h1>
-          <p class="page-subtitle">Track and analyze your students' learning progress</p>
-        </div>
-
-        <div class="dashboard-grid">
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <h3 class="card-title">Overall Progress</h3>
-                <p class="card-subtitle">Average student performance across all subjects</p>
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="chart-container">
-                <canvas id="progressChart"></canvas>
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <h3 class="card-title">Subject Performance</h3>
-                <p class="card-subtitle">Performance breakdown by subject</p>
-              </div>
-            </div>
-            <div class="card-body">
-              <div id="subjectPerformanceContainer">
-                <!-- Dynamic content will be loaded here -->
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <div>
-              <h3 class="card-title">Student Progress Records</h3>
-              <p class="card-subtitle">Detailed progress tracking for each student</p>
-            </div>
-            <button class="btn btn-primary" onclick="showCreateProgressModal()">
+            <button class="btn btn-primary" onclick="showAddProgressModal()">
               <i class="fas fa-plus"></i>
               Add Progress Record
             </button>
           </div>
           <div class="card-body">
-            <div id="progressRecordsContainer">
-              <!-- Dynamic content will be loaded here -->
+            <div id="studentsTableContainer">
+              <div class="loading">
+                <div class="spinner"></div>
+                Loading students...
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Earnings Section -->
-      <div id="earnings" class="content-section">
+      <!-- Google Classrooms Section -->
+      <div id="classrooms" class="content-section">
         <div class="page-header">
           <div class="breadcrumb">
             <a href="#" onclick="setActiveSection('dashboard')">Home</a>
             <i class="fas fa-chevron-right"></i>
-            <span>Earnings</span>
+            <span>Google Classrooms</span>
           </div>
-          <h1 class="page-title">Earnings Dashboard</h1>
-          <p class="page-subtitle">Track your teaching income and payment history</p>
-        </div>
-
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-header">
-              <div class="stat-icon primary">
-                <i class="fas fa-pound-sign"></i>
-              </div>
-              <div class="stat-trend up">
-                <i class="fas fa-arrow-up"></i>
-                15%
-              </div>
-            </div>
-            <div class="stat-number" id="thisMonthEarnings">£0</div>
-            <div class="stat-label">This Month</div>
-          </div>
-
-          <div class="stat-card secondary">
-            <div class="stat-header">
-              <div class="stat-icon secondary">
-                <i class="fas fa-calendar-week"></i>
-              </div>
-              <div class="stat-trend up">
-                <i class="fas fa-arrow-up"></i>
-                8%
-              </div>
-            </div>
-            <div class="stat-number" id="thisWeekEarnings">£0</div>
-            <div class="stat-label">This Week</div>
-          </div>
-
-          <div class="stat-card warning">
-            <div class="stat-header">
-              <div class="stat-icon warning">
-                <i class="fas fa-clock"></i>
-              </div>
-            </div>
-            <div class="stat-number" id="pendingEarnings">£0</div>
-            <div class="stat-label">Pending</div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-header">
-              <div class="stat-icon primary">
-                <i class="fas fa-chart-line"></i>
-              </div>
-            </div>
-            <div class="stat-number" id="totalEarned">£0</div>
-            <div class="stat-label">Total Earned</div>
-          </div>
+          <h1 class="page-title">Google Classrooms</h1>
+          <p class="page-subtitle">Manage your Google Classroom links and access</p>
         </div>
 
         <div class="card">
           <div class="card-header">
             <div>
-              <h3 class="card-title">Payment History</h3>
-              <p class="card-subtitle">Your recent earnings and transactions</p>
+              <h3 class="card-title">My Classrooms</h3>
+              <p class="card-subtitle">Your connected Google Classroom links</p>
             </div>
-            <button class="btn btn-secondary btn-sm">
-              <i class="fas fa-download"></i>
-              Download Statement
+            <button class="btn btn-primary" onclick="showAddClassroomModal()">
+              <i class="fas fa-plus"></i>
+              Add Classroom Link
             </button>
           </div>
           <div class="card-body">
-            <div id="earningsHistoryContainer">
-              <!-- Dynamic content will be loaded here -->
+            <div id="classroomsTableContainer">
+              <div class="loading">
+                <div class="spinner"></div>
+                Loading classrooms...
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Progress Tracking Section -->
+      <div id="progress" class="content-section">
+        <div class="page-header">
+          <div class="breadcrumb">
+            <a href="#" onclick="setActiveSection('dashboard')">Home</a>
+            <i class="fas fa-chevron-right"></i>
+            <span>Progress Tracking</span>
+          </div>
+          <h1 class="page-title">Student Progress</h1>
+          <p class="page-subtitle">Track and record student learning progress</p>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Progress Records</h3>
+              <p class="card-subtitle">Student progress tracking records</p>
+            </div>
+            <button class="btn btn-primary" onclick="showAddProgressModal()">
+              <i class="fas fa-plus"></i>
+              Add Progress Record
+            </button>
+          </div>
+          <div class="card-body">
+            <div id="progressTableContainer">
+              <div class="loading">
+                <div class="spinner"></div>
+                Loading progress records...
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Assessments Section -->
+      <div id="assessments" class="content-section">
+        <div class="page-header">
+          <div class="breadcrumb">
+            <a href="#" onclick="setActiveSection('dashboard')">Home</a>
+            <i class="fas fa-chevron-right"></i>
+            <span>Assessments</span>
+          </div>
+          <h1 class="page-title">Student Assessments</h1>
+          <p class="page-subtitle">Create and manage student assessments</p>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Assessment Records</h3>
+              <p class="card-subtitle">Track student assessments and grades</p>
+            </div>
+            <button class="btn btn-primary" onclick="showAddAssessmentModal()">
+              <i class="fas fa-plus"></i>
+              Add Assessment
+            </button>
+          </div>
+          <div class="card-body">
+            <div id="assessmentsTableContainer">
+              <div class="loading">
+                <div class="spinner"></div>
+                Loading assessments...
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Schedule Section -->
+      <div id="schedule" class="content-section">
+        <div class="page-header">
+          <div class="breadcrumb">
+            <a href="#" onclick="setActiveSection('dashboard')">Home</a>
+            <i class="fas fa-chevron-right"></i>
+            <span>Schedule</span>
+          </div>
+          <h1 class="page-title">Teaching Schedule</h1>
+          <p class="page-subtitle">Manage your teaching schedule and lessons</p>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Upcoming Lessons</h3>
+              <p class="card-subtitle">Your scheduled lessons and meetings</p>
+            </div>
+            <button class="btn btn-primary" onclick="showAddLessonModal()">
+              <i class="fas fa-plus"></i>
+              Schedule Lesson
+            </button>
+          </div>
+          <div class="card-body">
+            <div id="scheduleTableContainer">
+              <div class="loading">
+                <div class="spinner"></div>
+                Loading schedule...
+              </div>
             </div>
           </div>
         </div>
@@ -1788,201 +1280,49 @@
             <span>Profile</span>
           </div>
           <h1 class="page-title">My Profile</h1>
-          <p class="page-subtitle">Manage your personal information and teaching preferences</p>
-        </div>
-
-        <div class="dashboard-grid">
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <h3 class="card-title">Personal Information</h3>
-                <p class="card-subtitle">Your basic profile details</p>
-              </div>
-              <button class="btn btn-secondary btn-sm" onclick="showEditProfileModal()">
-                <i class="fas fa-edit"></i>
-                Edit
-              </button>
-            </div>
-            <div class="card-body">
-              <div style="display: grid; gap: 20px;">
-                <div style="display: flex; align-items: center; gap: 16px;">
-                  <div style="width: 60px; height: 60px; background: var(--gradient-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; font-weight: 600;" id="profileAvatarLarge">
-                    TU
-                  </div>
-                  <div>
-                    <h4 style="font-size: 18px; font-weight: 600; margin-bottom: 4px;" id="profileFullName">Loading...</h4>
-                    <p style="color: var(--text-secondary);" id="profileEmailAddress">Loading...</p>
-                  </div>
-                </div>
-                
-                <div style="display: grid; gap: 16px;">
-                  <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border);">
-                    <span style="color: var(--text-secondary);">Phone Number</span>
-                    <span id="profilePhoneNumber">Loading...</span>
-                  </div>
-                  <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border);">
-                    <span style="color: var(--text-secondary);">Hourly Rate</span>
-                    <span id="profileHourlyRate">Loading...</span>
-                  </div>
-                  <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border);">
-                    <span style="color: var(--text-secondary);">Member Since</span>
-                    <span id="profileMemberSince">Loading...</span>
-                  </div>
-                  <div style="display: flex; justify-content: space-between; padding: 12px 0;">
-                    <span style="color: var(--text-secondary);">Status</span>
-                    <span class="badge success" id="profileStatus">Active</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <h3 class="card-title">Teaching Statistics</h3>
-                <p class="card-subtitle">Your teaching performance overview</p>
-              </div>
-            </div>
-            <div class="card-body">
-              <div style="display: grid; gap: 20px;">
-                <div style="text-align: center; padding: 20px; background: var(--surface-2); border-radius: 12px;">
-                  <div style="font-size: 32px; font-weight: 700; color: var(--primary); margin-bottom: 8px;">4.9</div>
-                  <div style="color: var(--text-secondary); font-size: 14px;">Average Rating</div>
-                  <div style="margin-top: 8px;">
-                    <i class="fas fa-star" style="color: var(--accent);"></i>
-                    <i class="fas fa-star" style="color: var(--accent);"></i>
-                    <i class="fas fa-star" style="color: var(--accent);"></i>
-                    <i class="fas fa-star" style="color: var(--accent);"></i>
-                    <i class="fas fa-star" style="color: var(--accent);"></i>
-                  </div>
-                </div>
-
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-                  <div style="text-align: center; padding: 16px; background: var(--surface-2); border-radius: 12px;">
-                    <div style="font-size: 24px; font-weight: 700; color: var(--primary);" id="profileTotalLessons">0</div>
-                    <div style="color: var(--text-secondary); font-size: 12px;">Total Lessons</div>
-                  </div>
-                  <div style="text-align: center; padding: 16px; background: var(--surface-2); border-radius: 12px;">
-                    <div style="font-size: 24px; font-weight: 700; color: var(--primary);" id="profileTotalStudents">0</div>
-                    <div style="color: var(--text-secondary); font-size: 12px;">Total Students</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <p class="page-subtitle">Manage your profile information</p>
         </div>
 
         <div class="card">
           <div class="card-header">
             <div>
-              <h3 class="card-title">Specializations & Qualifications</h3>
-              <p class="card-subtitle">Your teaching expertise and credentials</p>
+              <h3 class="card-title">Personal Information</h3>
+              <p class="card-subtitle">Your basic profile details</p>
             </div>
-            <button class="btn btn-secondary btn-sm" onclick="showEditQualificationsModal()">
+            <button class="btn btn-secondary btn-sm" onclick="showEditProfileModal()">
               <i class="fas fa-edit"></i>
-              Edit
+              Edit Profile
             </button>
           </div>
           <div class="card-body">
-            <div style="display: grid; gap: 16px;">
-              <div>
-                <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--text);">Bio</h4>
-                <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.5;" id="profileBio">No bio available</p>
-              </div>
-              <div>
-                <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--text);">Qualifications</h4>
-                <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.5;" id="profileQualifications">No qualifications listed</p>
-              </div>
-              <div>
-                <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--text);">Specializations</h4>
-                <div id="profileSpecializations" style="display: flex; flex-wrap: wrap; gap: 8px;">
-                  <span class="badge primary">No specializations listed</span>
+            <div style="display: grid; gap: 20px;">
+              <div style="display: flex; align-items: center; gap: 16px;">
+                <div style="width: 60px; height: 60px; background: var(--gradient-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; font-weight: 600;" id="profileAvatarLarge">
+                  TU
+                </div>
+                <div>
+                  <h4 style="font-size: 18px; font-weight: 600; margin-bottom: 4px;" id="profileFullName">Loading...</h4>
+                  <p style="color: var(--text-secondary);" id="profileEmailAddress">Loading...</p>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Settings Section -->
-      <div id="settings" class="content-section">
-        <div class="page-header">
-          <div class="breadcrumb">
-            <a href="#" onclick="setActiveSection('dashboard')">Home</a>
-            <i class="fas fa-chevron-right"></i>
-            <span>Settings</span>
-          </div>
-          <h1 class="page-title">Settings</h1>
-          <p class="page-subtitle">Customize your teaching experience and preferences</p>
-        </div>
-
-        <div class="dashboard-grid">
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <h3 class="card-title">Notification Preferences</h3>
-                <p class="card-subtitle">Choose how you want to be notified</p>
-              </div>
-            </div>
-            <div class="card-body">
-              <div style="display: grid; gap: 20px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border);">
-                  <div>
-                    <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 4px;">Email Notifications</h4>
-                    <p style="font-size: 12px; color: var(--text-secondary);">Receive updates via email</p>
-                  </div>
-                  <input type="checkbox" id="emailNotifications" checked style="transform: scale(1.2);">
-                </div>
-
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border);">
-                  <div>
-                    <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 4px;">SMS Notifications</h4>
-                    <p style="font-size: 12px; color: var(--text-secondary);">Receive updates via text message</p>
-                  </div>
-                  <input type="checkbox" id="smsNotifications" style="transform: scale(1.2);">
-                </div>
-
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0;">
-                  <div>
-                    <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 4px;">Lesson Reminders</h4>
-                    <p style="font-size: 12px; color: var(--text-secondary);">Get reminded before lessons start</p>
-                  </div>
-                  <input type="checkbox" id="lessonReminders" checked style="transform: scale(1.2);">
-                </div>
-              </div>
-              <button class="btn btn-primary" style="margin-top: 20px;" onclick="saveNotificationSettings()">
-                <i class="fas fa-save"></i>
-                Save Preferences
-              </button>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <h3 class="card-title">Account Security</h3>
-                <p class="card-subtitle">Manage your account security settings</p>
-              </div>
-            </div>
-            <div class="card-body">
+              
               <div style="display: grid; gap: 16px;">
-                <button class="btn btn-secondary" style="justify-content: flex-start;" onclick="changePassword()">
-                  <i class="fas fa-key"></i>
-                  Change Password
-                </button>
-                <button class="btn btn-secondary" style="justify-content: flex-start;" onclick="setupTwoFactor()">
-                  <i class="fas fa-shield-alt"></i>
-                  Two-Factor Authentication
-                </button>
-                <button class="btn btn-secondary" style="justify-content: flex-start;" onclick="downloadData()">
-                  <i class="fas fa-download"></i>
-                  Download My Data
-                </button>
-                <button class="btn btn-secondary" style="justify-content: flex-start; color: var(--error);" onclick="confirmDeleteAccount()">
-                  <i class="fas fa-trash"></i>
-                  Delete Account
-                </button>
+                <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border);">
+                  <span style="color: var(--text-secondary);">Phone Number</span>
+                  <span id="profilePhoneNumber">Loading...</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border);">
+                  <span style="color: var(--text-secondary);">Hourly Rate</span>
+                  <span id="profileHourlyRate">Loading...</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border);">
+                  <span style="color: var(--text-secondary);">Member Since</span>
+                  <span id="profileMemberSince">Loading...</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 12px 0;">
+                  <span style="color: var(--text-secondary);">Status</span>
+                  <span class="badge success" id="profileStatus">Active</span>
+                </div>
               </div>
             </div>
           </div>
@@ -1992,17 +1332,189 @@
   </div>
 
   <!-- Modals -->
-  <!-- Create Lesson Modal -->
-  <div class="modal" id="createLessonModal">
+  <!-- Add Progress Record Modal -->
+  <div class="modal" id="addProgressModal">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 class="modal-title">Schedule New Lesson</h3>
-        <button class="modal-close" onclick="hideModal('createLessonModal')">
+        <h3 class="modal-title">Add Progress Record</h3>
+        <button class="modal-close" onclick="hideModal('addProgressModal')">
           <i class="fas fa-times"></i>
         </button>
       </div>
       <div class="modal-body">
-        <form id="createLessonForm">
+        <form id="addProgressForm">
+          <div class="form-group">
+            <label class="form-label">Student *</label>
+            <select class="form-select" name="child_id" required id="progressStudentSelect">
+              <option value="">Select a student</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Subject *</label>
+            <select class="form-select" name="subject_id" required id="progressSubjectSelect">
+              <option value="">Select a subject</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Score (0-100)</label>
+            <input type="number" class="form-input" name="score" min="0" max="100">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Strengths</label>
+            <textarea class="form-input" name="strengths" placeholder="What the student excels at..."></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Areas for Improvement</label>
+            <textarea class="form-input" name="areas_of_improvement" placeholder="Areas that need work..."></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Goals</label>
+            <textarea class="form-input" name="goals" placeholder="Learning goals for the student..."></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Notes</label>
+            <textarea class="form-input" name="notes" placeholder="Additional notes..."></textarea>
+          </div>
+          <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-save"></i>
+              Save Progress Record
+            </button>
+            <button type="button" class="btn btn-secondary" onclick="hideModal('addProgressModal')">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Classroom Link Modal -->
+  <div class="modal" id="addClassroomModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Add Google Classroom Link</h3>
+        <button class="modal-close" onclick="hideModal('addClassroomModal')">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="addClassroomForm">
+          <div class="form-group">
+            <label class="form-label">Student *</label>
+            <select class="form-select" name="child_id" required id="classroomStudentSelect">
+              <option value="">Select a student</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Subject *</label>
+            <select class="form-select" name="subject_id" required id="classroomSubjectSelect">
+              <option value="">Select a subject</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Classroom ID *</label>
+            <input type="text" class="form-input" name="classroom_id" required placeholder="Google Classroom ID">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Classroom Name *</label>
+            <input type="text" class="form-input" name="classroom_name" required placeholder="e.g., Mathematics Grade 7">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Classroom URL</label>
+            <input type="url" class="form-input" name="classroom_url" placeholder="https://classroom.google.com/...">
+          </div>
+          <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-save"></i>
+              Add Classroom Link
+            </button>
+            <button type="button" class="btn btn-secondary" onclick="hideModal('addClassroomModal')">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Assessment Modal -->
+  <div class="modal" id="addAssessmentModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Add Assessment</h3>
+        <button class="modal-close" onclick="hideModal('addAssessmentModal')">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="addAssessmentForm">
+          <div class="form-group">
+            <label class="form-label">Student *</label>
+            <select class="form-select" name="child_id" required id="assessmentStudentSelect">
+              <option value="">Select a student</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Subject *</label>
+            <select class="form-select" name="subject_id" required id="assessmentSubjectSelect">
+              <option value="">Select a subject</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Assessment Title *</label>
+            <input type="text" class="form-input" name="title" required placeholder="e.g., Chapter 5 Quiz">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Assessment Type</label>
+            <select class="form-select" name="type">
+              <option value="quiz">Quiz</option>
+              <option value="test">Test</option>
+              <option value="assignment">Assignment</option>
+              <option value="project">Project</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Grade</label>
+            <input type="number" class="form-input" name="grade" min="0" max="100">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Max Grade</label>
+            <input type="number" class="form-input" name="max_grade" value="100" min="1">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Feedback</label>
+            <textarea class="form-input" name="feedback" placeholder="Feedback for the student..."></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Description</label>
+            <textarea class="form-input" name="description" placeholder="Assessment description..."></textarea>
+          </div>
+          <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-save"></i>
+              Save Assessment
+            </button>
+            <button type="button" class="btn btn-secondary" onclick="hideModal('addAssessmentModal')">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Lesson Modal -->
+  <div class="modal" id="addLessonModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Schedule Lesson</h3>
+        <button class="modal-close" onclick="hideModal('addLessonModal')">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="addLessonForm">
           <div class="form-group">
             <label class="form-label">Student *</label>
             <select class="form-select" name="child_id" required id="lessonStudentSelect">
@@ -2028,6 +1540,10 @@
             <input type="number" class="form-input" name="duration_minutes" value="60" min="15" max="180">
           </div>
           <div class="form-group">
+            <label class="form-label">Meeting URL</label>
+            <input type="url" class="form-input" name="meeting_url" placeholder="Google Meet or Zoom URL">
+          </div>
+          <div class="form-group">
             <label class="form-label">Description</label>
             <textarea class="form-input" name="description" placeholder="Lesson objectives and topics to cover..."></textarea>
           </div>
@@ -2036,7 +1552,7 @@
               <i class="fas fa-save"></i>
               Schedule Lesson
             </button>
-            <button type="button" class="btn btn-secondary" onclick="hideModal('createLessonModal')">
+            <button type="button" class="btn btn-secondary" onclick="hideModal('addLessonModal')">
               Cancel
             </button>
           </div>
@@ -2060,10 +1576,6 @@
             <i class="fas fa-user"></i>
             View Profile
           </button>
-          <button class="btn btn-secondary" onclick="setActiveSection('settings'); hideModal('userMenuModal')">
-            <i class="fas fa-cog"></i>
-            Settings
-          </button>
           <hr style="margin: 8px 0; border: none; border-top: 1px solid var(--border);">
           <button class="btn btn-secondary" onclick="logout()" style="color: var(--error);">
             <i class="fas fa-sign-out-alt"></i>
@@ -2081,14 +1593,13 @@
 
     let currentUser = null;
     let currentTutorProfile = null;
-    let performanceChart = null;
-    let progressChart = null;
     let tutorData = {
       students: [],
       lessons: [],
-      assignments: [],
+      assessments: [],
       subjects: [],
-      progressRecords: []
+      progressRecords: [],
+      classrooms: []
     };
 
     // UI elements
@@ -2177,41 +1688,45 @@
       showModal('userMenuModal');
     }
 
-    function showCreateLessonModal() {
-      loadStudentsForSelect();
-      loadSubjectsForSelect();
-      showModal('createLessonModal');
+    function showAddProgressModal() {
+      loadStudentsForSelect('progressStudentSelect');
+      loadSubjectsForSelect('progressSubjectSelect');
+      showModal('addProgressModal');
     }
 
-    function showCreateAssignmentModal() {
-      // Implementation for assignment modal
-      alert('Create assignment functionality coming soon!');
+    function showAddClassroomModal() {
+      loadStudentsForSelect('classroomStudentSelect');
+      loadSubjectsForSelect('classroomSubjectSelect');
+      showModal('addClassroomModal');
     }
 
-    function showCreateProgressModal() {
-      // Implementation for progress modal
-      alert('Create progress record functionality coming soon!');
+    function showAddAssessmentModal() {
+      loadStudentsForSelect('assessmentStudentSelect');
+      loadSubjectsForSelect('assessmentSubjectSelect');
+      showModal('addAssessmentModal');
+    }
+
+    function showAddLessonModal() {
+      loadStudentsForSelect('lessonStudentSelect');
+      loadSubjectsForSelect('lessonSubjectSelect');
+      showModal('addLessonModal');
     }
 
     function showEditProfileModal() {
       alert('Edit profile functionality coming soon!');
     }
 
-    function showEditQualificationsModal() {
-      alert('Edit qualifications functionality coming soon!');
-    }
-
     // Load data for selects
-    async function loadStudentsForSelect() {
-      const select = document.getElementById('lessonStudentSelect');
+    async function loadStudentsForSelect(selectId) {
+      const select = document.getElementById(selectId);
       select.innerHTML = '<option value="">Select a student</option>';
       tutorData.students.forEach(student => {
         select.innerHTML += `<option value="${student.id}">${student.name}</option>`;
       });
     }
 
-    async function loadSubjectsForSelect() {
-      const select = document.getElementById('lessonSubjectSelect');
+    async function loadSubjectsForSelect(selectId) {
+      const select = document.getElementById(selectId);
       select.innerHTML = '<option value="">Select a subject</option>';
       tutorData.subjects.forEach(subject => {
         select.innerHTML += `<option value="${subject.id}">${subject.name}</option>`;
@@ -2308,20 +1823,6 @@
           }) : '—';
         document.getElementById('profileMemberSince').textContent = memberSince;
 
-        // Load bio and qualifications
-        document.getElementById('profileBio').textContent = currentTutorProfile?.bio || 'No bio available';
-        document.getElementById('profileQualifications').textContent = currentTutorProfile?.qualifications || 'No qualifications listed';
-        
-        // Load specializations
-        const specializationsContainer = document.getElementById('profileSpecializations');
-        if (currentTutorProfile?.specializations && currentTutorProfile.specializations.length > 0) {
-          specializationsContainer.innerHTML = currentTutorProfile.specializations
-            .map(spec => `<span class="badge primary">${spec}</span>`)
-            .join('');
-        } else {
-          specializationsContainer.innerHTML = '<span class="badge primary">No specializations listed</span>';
-        }
-
       } catch (error) {
         console.error('Failed to load tutor profile:', error);
       }
@@ -2341,7 +1842,7 @@
 
         tutorData.students = assignments?.map(a => a.children).filter(Boolean) || [];
 
-        // Load lessons
+        // Load lessons for this tutor
         const { data: lessons } = await supabase
           .from('lessons')
           .select('*, children(name), subjects(name)')
@@ -2350,7 +1851,7 @@
 
         tutorData.lessons = lessons || [];
 
-        // Load subjects (tutor can teach)
+        // Load all active subjects
         const { data: subjects } = await supabase
           .from('subjects')
           .select('*')
@@ -2358,13 +1859,32 @@
 
         tutorData.subjects = subjects || [];
 
-        // Load progress records
+        // Load progress records recorded by this tutor
         const { data: progressRecords } = await supabase
           .from('progress_records')
           .select('*, children(name), subjects(name)')
-          .eq('recorded_by', currentTutorProfile.id);
+          .eq('recorded_by', currentTutorProfile.id)
+          .order('recorded_at', { ascending: false });
 
         tutorData.progressRecords = progressRecords || [];
+
+        // Load assessments for this tutor
+        const { data: assessments } = await supabase
+          .from('assessments')
+          .select('*, children(name), subjects(name)')
+          .eq('tutor_id', currentTutorProfile.id)
+          .order('conducted_at', { ascending: false });
+
+        tutorData.assessments = assessments || [];
+
+        // Load Google Classroom links
+        const { data: classrooms } = await supabase
+          .from('google_classroom_links')
+          .select('*, children(name), subjects(name)')
+          .eq('tutor_id', currentTutorProfile.id)
+          .order('created_at', { ascending: false });
+
+        tutorData.classrooms = classrooms || [];
 
         updateDashboardCounts();
 
@@ -2375,26 +1895,13 @@
 
     function updateDashboardCounts() {
       // Update navigation badges
-      const today = new Date().toISOString().split('T')[0];
-      const upcomingLessons = tutorData.lessons.filter(l => 
-        l.scheduled_at >= today && l.status === 'scheduled'
-      ).length;
-      
-      document.getElementById('upcomingLessonsNav').textContent = upcomingLessons;
-      document.getElementById('pendingAssignmentsNav').textContent = '0'; // Placeholder
+      document.getElementById('studentsCount').textContent = tutorData.students.length;
+      document.getElementById('classroomsCount').textContent = tutorData.classrooms.length;
 
       // Update dashboard stats
-      const todayLessons = tutorData.lessons.filter(l => 
-        l.scheduled_at.startsWith(today)
-      ).length;
-      
-      document.getElementById('todayLessons').textContent = todayLessons;
-      document.getElementById('totalStudents').textContent = tutorData.students.length;
-      document.getElementById('pendingReviews').textContent = '0'; // Placeholder
-      
-      // Update profile stats
-      document.getElementById('profileTotalLessons').textContent = tutorData.lessons.length;
-      document.getElementById('profileTotalStudents').textContent = tutorData.students.length;
+      document.getElementById('totalStudentsStat').textContent = tutorData.students.length;
+      document.getElementById('totalClassroomsStat').textContent = tutorData.classrooms.length;
+      document.getElementById('totalAssessmentsStat').textContent = tutorData.assessments.length;
     }
 
     // Load data for specific sections
@@ -2403,114 +1910,61 @@
         case 'dashboard':
           loadDashboardData();
           break;
-        case 'schedule':
-          loadScheduleData();
-          break;
         case 'students':
           loadStudentsData();
           break;
-        case 'assignments':
-          loadAssignmentsData();
-          break;
-        case 'lessons':
-          loadLessonsData();
+        case 'classrooms':
+          loadClassroomsData();
           break;
         case 'progress':
           loadProgressData();
           break;
-        case 'earnings':
-          loadEarningsData();
+        case 'assessments':
+          loadAssessmentsData();
+          break;
+        case 'schedule':
+          loadScheduleData();
           break;
       }
     }
 
     // Load dashboard data
     function loadDashboardData() {
-      const now = new Date();
-      document.getElementById('currentDate').textContent = now.toLocaleDateString('en-GB', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      });
-
-      createPerformanceChart();
-      loadTodaySchedule();
       loadRecentActivity();
-    }
-
-    // Create performance chart
-    function createPerformanceChart() {
-      const ctx = document.getElementById('performanceChart');
-      if (!ctx) return;
-
-      if (performanceChart) {
-        performanceChart.destroy();
-      }
-
-      performanceChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-          datasets: [{
-            label: 'Lessons Completed',
-            data: [3, 2, 4, 3, 5, 2, 1],
-            borderColor: '#00695C',
-            backgroundColor: 'rgba(0, 105, 92, 0.1)',
-            tension: 0.4,
-            fill: true
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false }
-          },
-          scales: {
-            y: { beginAtZero: true }
-          }
-        }
-      });
-    }
-
-    // Load today's schedule
-    function loadTodaySchedule() {
-      const container = document.getElementById('todaySchedule');
-      const today = new Date().toISOString().split('T')[0];
-      const todayLessons = tutorData.lessons.filter(l => l.scheduled_at.startsWith(today));
-
-      if (todayLessons.length === 0) {
-        container.innerHTML = `
-          <div class="empty-state">
-            <i class="fas fa-calendar-times"></i>
-            <h3>No lessons today</h3>
-            <p>Enjoy your free time!</p>
-          </div>
-        `;
-      } else {
-        container.innerHTML = todayLessons.map(lesson => {
-          const time = new Date(lesson.scheduled_at).toLocaleTimeString('en-GB', {
-            hour: '2-digit',
-            minute: '2-digit'
-          });
-          return `
-            <div class="calendar-day">
-              <div class="day-number today">${new Date().getDate()}</div>
-              <div class="day-events">
-                <div class="event-item important">${lesson.subjects?.name || 'Lesson'} - ${lesson.children?.name || 'Student'} (${time})</div>
-              </div>
-            </div>
-          `;
-        }).join('');
-      }
     }
 
     // Load recent activity
     function loadRecentActivity() {
       const tbody = document.getElementById('recentActivity');
       
-      if (tutorData.lessons.length === 0) {
+      // Combine recent activities
+      const activities = [];
+      
+      // Recent assessments
+      tutorData.assessments.slice(0, 3).forEach(assessment => {
+        activities.push({
+          activity: 'Assessment completed',
+          student: assessment.children?.name || 'Unknown Student',
+          subject: assessment.subjects?.name || 'Unknown Subject',
+          date: formatDateTime(assessment.conducted_at),
+          status: 'completed'
+        });
+      });
+
+      // Recent progress records
+      tutorData.progressRecords.slice(0, 2).forEach(record => {
+        activities.push({
+          activity: 'Progress recorded',
+          student: record.children?.name || 'Unknown Student',
+          subject: record.subjects?.name || 'Unknown Subject',
+          date: formatDateTime(record.recorded_at),
+          status: 'recorded'
+        });
+      });
+
+      activities.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      if (activities.length === 0) {
         tbody.innerHTML = `
           <tr>
             <td colspan="5" class="empty-state">
@@ -2521,51 +1975,13 @@
           </tr>
         `;
       } else {
-        tbody.innerHTML = tutorData.lessons.slice(0, 5).map(lesson => `
+        tbody.innerHTML = activities.slice(0, 5).map(activity => `
           <tr>
-            <td>Lesson completed</td>
-            <td>${lesson.children?.name || 'Unknown Student'}</td>
-            <td>${lesson.subjects?.name || 'Unknown Subject'}</td>
-            <td>${formatDateTime(lesson.scheduled_at)}</td>
-            <td><span class="badge ${lesson.status === 'completed' ? 'success' : 'primary'}">${lesson.status}</span></td>
-          </tr>
-        `).join('');
-      }
-    }
-
-    // Load schedule data
-    function loadScheduleData() {
-      const tbody = document.getElementById('scheduleTable');
-      const upcomingLessons = tutorData.lessons.filter(l => 
-        new Date(l.scheduled_at) > new Date()
-      ).sort((a, b) => new Date(a.scheduled_at) - new Date(b.scheduled_at));
-
-      if (upcomingLessons.length === 0) {
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="6" class="empty-state">
-              <i class="fas fa-calendar-plus"></i>
-              <h3>No lessons scheduled</h3>
-              <p>Schedule your first lesson to get started</p>
-            </td>
-          </tr>
-        `;
-      } else {
-        tbody.innerHTML = upcomingLessons.map(lesson => `
-          <tr>
-            <td><strong>${formatDateTime(lesson.scheduled_at)}</strong></td>
-            <td>${lesson.children?.name || 'Unknown Student'}</td>
-            <td>${lesson.subjects?.name || 'Unknown Subject'}</td>
-            <td>${lesson.duration_minutes || 60} min</td>
-            <td><span class="badge primary">${lesson.status}</span></td>
-            <td>
-              <button class="btn btn-secondary btn-sm" onclick="editLesson('${lesson.id}')">
-                <i class="fas fa-edit"></i>
-              </button>
-              <button class="btn btn-secondary btn-sm" onclick="deleteLesson('${lesson.id}')">
-                <i class="fas fa-trash"></i>
-              </button>
-            </td>
+            <td>${activity.activity}</td>
+            <td>${activity.student}</td>
+            <td>${activity.subject}</td>
+            <td>${activity.date}</td>
+            <td><span class="badge success">${activity.status}</span></td>
           </tr>
         `).join('');
       }
@@ -2573,113 +1989,359 @@
 
     // Load students data
     function loadStudentsData() {
-      const tbody = document.getElementById('studentsTable');
+      const container = document.getElementById('studentsTableContainer');
       
       if (tutorData.students.length === 0) {
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="6" class="empty-state">
-              <i class="fas fa-user-graduate"></i>
-              <h3>No students assigned</h3>
-              <p>Students will appear here once they're assigned to your classes</p>
-            </td>
-          </tr>
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-user-graduate"></i>
+            <h3>No students assigned</h3>
+            <p>Students will appear here once they're assigned to your classes</p>
+          </div>
         `;
       } else {
-        tbody.innerHTML = tutorData.students.map(student => {
-          const initials = getInitials(student.name);
-          const lastLesson = tutorData.lessons
-            .filter(l => l.child_id === student.id)
-            .sort((a, b) => new Date(b.scheduled_at) - new Date(a.scheduled_at))[0];
-          
-          return `
-            <tr>
-              <td>
-                <div style="display: flex; align-items: center; gap: 12px;">
-                  <div style="width: 36px; height: 36px; background: var(--gradient-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 12px;">${initials}</div>
-                  <div>
-                    <strong>${student.name}</strong><br>
-                    <small style="color: var(--text-secondary);">${student.grade_level || 'N/A'}</small>
-                  </div>
-                </div>
-              </td>
-              <td>${student.grade_level || 'N/A'}</td>
-              <td>Multiple subjects</td>
-              <td>
-                <div class="progress" style="margin-bottom: 4px;">
-                  <div class="progress-bar" style="width: 75%"></div>
-                </div>
-                <small>75% Complete</small>
-              </td>
-              <td>${lastLesson ? formatDate(lastLesson.scheduled_at) : 'Never'}</td>
-              <td>
-                <button class="btn btn-secondary btn-sm" onclick="viewStudent('${student.id}')">
-                  <i class="fas fa-eye"></i>
-                </button>
-              </td>
-            </tr>
-          `;
-        }).join('');
+        container.innerHTML = `
+          <div class="table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Student</th>
+                  <th>Grade Level</th>
+                  <th>School</th>
+                  <th>Enrollment Date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${tutorData.students.map(student => {
+                  const initials = getInitials(student.name);
+                  return `
+                    <tr>
+                      <td>
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                          <div style="width: 36px; height: 36px; background: var(--gradient-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 12px;">${initials}</div>
+                          <div>
+                            <strong>${student.name}</strong>
+                          </div>
+                        </div>
+                      </td>
+                      <td>${student.grade_level || 'N/A'}</td>
+                      <td>${student.school || 'N/A'}</td>
+                      <td>${student.enrollment_date ? formatDate(student.enrollment_date) : 'N/A'}</td>
+                      <td><span class="badge success">${student.status || 'active'}</span></td>
+                      <td>
+                        <button class="btn btn-secondary btn-sm" onclick="viewStudentProgress('${student.id}')">
+                          <i class="fas fa-chart-line"></i>
+                          View Progress
+                        </button>
+                      </td>
+                    </tr>
+                  `;
+                }).join('')}
+              </tbody>
+            </table>
+          </div>
+        `;
       }
     }
 
-    // Load assignments data
-    function loadAssignmentsData() {
-      const tbody = document.getElementById('assignmentsTable');
+    // Load classrooms data
+    function loadClassroomsData() {
+      const container = document.getElementById('classroomsTableContainer');
       
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="6" class="empty-state">
-            <i class="fas fa-clipboard-list"></i>
-            <h3>No assignments created</h3>
-            <p>Create your first assignment to get started</p>
-          </td>
-        </tr>
-      `;
-    }
-
-    // Load lessons data
-    function loadLessonsData() {
-      document.getElementById('liveLessonsToday').textContent = '0';
-      document.getElementById('totalTeachingHours').textContent = tutorData.lessons.length * 1; // Rough estimate
+      if (tutorData.classrooms.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="fab fa-google"></i>
+            <h3>No classroom links</h3>
+            <p>Add Google Classroom links to get started</p>
+          </div>
+        `;
+      } else {
+        container.innerHTML = `
+          <div class="table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Classroom Name</th>
+                  <th>Student</th>
+                  <th>Subject</th>
+                  <th>Classroom ID</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${tutorData.classrooms.map(classroom => `
+                  <tr>
+                    <td><strong>${classroom.classroom_name}</strong></td>
+                    <td>${classroom.children?.name || 'N/A'}</td>
+                    <td>${classroom.subjects?.name || 'N/A'}</td>
+                    <td><code>${classroom.classroom_id}</code></td>
+                    <td><span class="badge success">${classroom.status}</span></td>
+                    <td>
+                      ${classroom.classroom_url ? `
+                        <a href="${classroom.classroom_url}" target="_blank" class="btn btn-primary btn-sm">
+                          <i class="fab fa-google"></i>
+                          Open
+                        </a>
+                      ` : ''}
+                      <button class="btn btn-secondary btn-sm" onclick="deleteClassroom('${classroom.id}')">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
     }
 
     // Load progress data
     function loadProgressData() {
-      // Create progress chart
-      const ctx = document.getElementById('progressChart');
-      if (ctx && !progressChart) {
-        progressChart = new Chart(ctx, {
-          type: 'doughnut',
-          data: {
-            labels: ['Excellent', 'Good', 'Average', 'Needs Improvement'],
-            datasets: [{
-              data: [30, 40, 20, 10],
-              backgroundColor: ['#00C853', '#00695C', '#FF9800', '#F44336']
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: { position: 'bottom' }
-            }
-          }
-        });
+      const container = document.getElementById('progressTableContainer');
+      
+      if (tutorData.progressRecords.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-chart-line"></i>
+            <h3>No progress records</h3>
+            <p>Add progress records to track student development</p>
+          </div>
+        `;
+      } else {
+        container.innerHTML = `
+          <div class="table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Student</th>
+                  <th>Subject</th>
+                  <th>Score</th>
+                  <th>Strengths</th>
+                  <th>Areas for Improvement</th>
+                  <th>Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${tutorData.progressRecords.map(record => `
+                  <tr>
+                    <td>${record.children?.name || 'N/A'}</td>
+                    <td>${record.subjects?.name || 'N/A'}</td>
+                    <td>${record.score !== null ? `${record.score}%` : 'N/A'}</td>
+                    <td>${record.strengths || 'N/A'}</td>
+                    <td>${record.areas_of_improvement || 'N/A'}</td>
+                    <td>${formatDate(record.recorded_at)}</td>
+                    <td>
+                      <button class="btn btn-secondary btn-sm" onclick="editProgress('${record.id}')">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="btn btn-secondary btn-sm" onclick="deleteProgress('${record.id}')">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        `;
       }
     }
 
-    // Load earnings data
-    function loadEarningsData() {
-      // Mock earnings data
-      document.getElementById('thisMonthEarnings').textContent = '£0';
-      document.getElementById('thisWeekEarnings').textContent = '£0';
-      document.getElementById('pendingEarnings').textContent = '£0';
-      document.getElementById('totalEarned').textContent = '£0';
+    // Load assessments data
+    function loadAssessmentsData() {
+      const container = document.getElementById('assessmentsTableContainer');
+      
+      if (tutorData.assessments.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-clipboard-check"></i>
+            <h3>No assessments</h3>
+            <p>Create assessments to track student performance</p>
+          </div>
+        `;
+      } else {
+        container.innerHTML = `
+          <div class="table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Student</th>
+                  <th>Subject</th>
+                  <th>Type</th>
+                  <th>Grade</th>
+                  <th>Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${tutorData.assessments.map(assessment => `
+                  <tr>
+                    <td><strong>${assessment.title}</strong></td>
+                    <td>${assessment.children?.name || 'N/A'}</td>
+                    <td>${assessment.subjects?.name || 'N/A'}</td>
+                    <td><span class="badge primary">${assessment.type}</span></td>
+                    <td>
+                      ${assessment.grade !== null ? 
+                        `<span class="badge success">${assessment.grade}/${assessment.max_grade || 100}</span>` : 
+                        '<span class="badge warning">Not graded</span>'
+                      }
+                    </td>
+                    <td>${formatDate(assessment.conducted_at)}</td>
+                    <td>
+                      <button class="btn btn-secondary btn-sm" onclick="editAssessment('${assessment.id}')">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="btn btn-secondary btn-sm" onclick="deleteAssessment('${assessment.id}')">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+    }
+
+    // Load schedule data
+    function loadScheduleData() {
+      const container = document.getElementById('scheduleTableContainer');
+      const upcomingLessons = tutorData.lessons.filter(l => 
+        new Date(l.scheduled_at) > new Date()
+      ).sort((a, b) => new Date(a.scheduled_at) - new Date(b.scheduled_at));
+
+      if (upcomingLessons.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-calendar-plus"></i>
+            <h3>No lessons scheduled</h3>
+            <p>Schedule your first lesson to get started</p>
+          </div>
+        `;
+      } else {
+        container.innerHTML = `
+          <div class="table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Date & Time</th>
+                  <th>Student</th>
+                  <th>Subject</th>
+                  <th>Duration</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${upcomingLessons.map(lesson => `
+                  <tr>
+                    <td><strong>${formatDateTime(lesson.scheduled_at)}</strong></td>
+                    <td>${lesson.children?.name || 'Unknown Student'}</td>
+                    <td>${lesson.subjects?.name || 'Unknown Subject'}</td>
+                    <td>${lesson.duration_minutes || 60} min</td>
+                    <td><span class="badge primary">${lesson.status}</span></td>
+                    <td>
+                      ${lesson.meeting_url ? `
+                        <a href="${lesson.meeting_url}" target="_blank" class="btn btn-primary btn-sm">
+                          <i class="fas fa-video"></i>
+                          Join
+                        </a>
+                      ` : ''}
+                      <button class="btn btn-secondary btn-sm" onclick="editLesson('${lesson.id}')">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="btn btn-secondary btn-sm" onclick="deleteLesson('${lesson.id}')">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
     }
 
     // Form submissions
-    document.getElementById('createLessonForm')?.addEventListener('submit', async (e) => {
+    document.getElementById('addProgressForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData);
+      data.recorded_by = currentTutorProfile.id;
+      
+      try {
+        const { error } = await supabase
+          .from('progress_records')
+          .insert([data]);
+        
+        if (error) throw error;
+        
+        showSuccess('Progress record added successfully!');
+        hideModal('addProgressModal');
+        e.target.reset();
+        await loadAllTutorData();
+        loadProgressData();
+      } catch (error) {
+        showError(error.message);
+      }
+    });
+
+    document.getElementById('addClassroomForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData);
+      data.tutor_id = currentTutorProfile.id;
+      
+      try {
+        const { error } = await supabase
+          .from('google_classroom_links')
+          .insert([data]);
+        
+        if (error) throw error;
+        
+        showSuccess('Classroom link added successfully!');
+        hideModal('addClassroomModal');
+        e.target.reset();
+        await loadAllTutorData();
+        loadClassroomsData();
+      } catch (error) {
+        showError(error.message);
+      }
+    });
+
+    document.getElementById('addAssessmentForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData);
+      data.tutor_id = currentTutorProfile.id;
+      
+      try {
+        const { error } = await supabase
+          .from('assessments')
+          .insert([data]);
+        
+        if (error) throw error;
+        
+        showSuccess('Assessment added successfully!');
+        hideModal('addAssessmentModal');
+        e.target.reset();
+        await loadAllTutorData();
+        loadAssessmentsData();
+      } catch (error) {
+        showError(error.message);
+      }
+    });
+
+    document.getElementById('addLessonForm')?.addEventListener('submit', async (e) => {
       e.preventDefault();
       const formData = new FormData(e.target);
       const data = Object.fromEntries(formData);
@@ -2693,7 +2355,7 @@
         if (error) throw error;
         
         showSuccess('Lesson scheduled successfully!');
-        hideModal('createLessonModal');
+        hideModal('addLessonModal');
         e.target.reset();
         await loadAllTutorData();
         loadScheduleData();
@@ -2702,20 +2364,94 @@
       }
     });
 
-    // Placeholder functions
-    function editLesson(id) { alert('Edit lesson functionality coming soon!'); }
-    function deleteLesson(id) { alert('Delete lesson functionality coming soon!'); }
-    function viewStudent(id) { alert('View student functionality coming soon!'); }
-    function uploadMaterial(type) { alert(`Upload ${type} functionality coming soon!`); }
-    function createFolder() { alert('Create folder functionality coming soon!'); }
-    function saveNotificationSettings() { showSuccess('Notification settings saved!'); }
-    function changePassword() { alert('Change password functionality coming soon!'); }
-    function setupTwoFactor() { alert('Two-factor authentication setup coming soon!'); }
-    function downloadData() { alert('Download data functionality coming soon!'); }
-    function confirmDeleteAccount() { 
-      if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
-        alert('Account deletion functionality coming soon!');
+    // Delete functions
+    async function deleteProgress(id) {
+      if (!confirm('Are you sure you want to delete this progress record?')) return;
+      
+      try {
+        const { error } = await supabase
+          .from('progress_records')
+          .delete()
+          .eq('id', id);
+        
+        if (error) throw error;
+        
+        showSuccess('Progress record deleted successfully!');
+        await loadAllTutorData();
+        loadProgressData();
+      } catch (error) {
+        showError(error.message);
       }
+    }
+
+    async function deleteClassroom(id) {
+      if (!confirm('Are you sure you want to delete this classroom link?')) return;
+      
+      try {
+        const { error } = await supabase
+          .from('google_classroom_links')
+          .delete()
+          .eq('id', id);
+        
+        if (error) throw error;
+        
+        showSuccess('Classroom link deleted successfully!');
+        await loadAllTutorData();
+        loadClassroomsData();
+      } catch (error) {
+        showError(error.message);
+      }
+    }
+
+    async function deleteAssessment(id) {
+      if (!confirm('Are you sure you want to delete this assessment?')) return;
+      
+      try {
+        const { error } = await supabase
+          .from('assessments')
+          .delete()
+          .eq('id', id);
+        
+        if (error) throw error;
+        
+        showSuccess('Assessment deleted successfully!');
+        await loadAllTutorData();
+        loadAssessmentsData();
+      } catch (error) {
+        showError(error.message);
+      }
+    }
+
+    async function deleteLesson(id) {
+      if (!confirm('Are you sure you want to delete this lesson?')) return;
+      
+      try {
+        const { error } = await supabase
+          .from('lessons')
+          .delete()
+          .eq('id', id);
+        
+        if (error) throw error;
+        
+        showSuccess('Lesson deleted successfully!');
+        await loadAllTutorData();
+        loadScheduleData();
+      } catch (error) {
+        showError(error.message);
+      }
+    }
+
+    // Placeholder functions for edit operations
+    function editProgress(id) { alert('Edit progress functionality coming soon!'); }
+    function editAssessment(id) { alert('Edit assessment functionality coming soon!'); }
+    function editLesson(id) { alert('Edit lesson functionality coming soon!'); }
+    function viewStudentProgress(id) { alert('View student progress functionality coming soon!'); }
+
+    // Refresh dashboard
+    async function refreshDashboard() {
+      await loadAllTutorData();
+      loadDashboardData();
+      showSuccess('Dashboard refreshed!');
     }
 
     // Navigation event listeners
@@ -2725,17 +2461,6 @@
         const section = link.getAttribute('data-section');
         setActiveSection(section);
       });
-    });
-
-    // Search functionality
-    document.getElementById('globalSearch')?.addEventListener('input', (e) => {
-      const query = e.target.value.toLowerCase();
-      console.log('Searching for:', query);
-    });
-
-    // Notification button
-    document.getElementById('notificationBtn')?.addEventListener('click', () => {
-      alert('Notifications functionality coming soon!');
     });
 
     // Logout function
