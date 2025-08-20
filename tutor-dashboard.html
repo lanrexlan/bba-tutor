@@ -90,11 +90,34 @@
     .header-content {
       max-width: 1400px;
       margin: 0 auto;
-      padding: 0 24px;
+      padding: 0 1rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 70px;
+      height: 64px;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .menu-toggle {
+      display: none;
+      width: 40px;
+      height: 40px;
+      border: none;
+      background: var(--surface-2);
+      border-radius: 8px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .menu-toggle:hover {
+      background: var(--primary);
+      color: white;
     }
 
     .brand {
@@ -106,19 +129,19 @@
     }
 
     .brand-icon {
-      width: 44px;
-      height: 44px;
+      width: 36px;
+      height: 36px;
       background: var(--gradient-primary);
-      border-radius: 12px;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
-      font-size: 20px;
+      font-size: 16px;
     }
 
     .brand-text h1 {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 700;
       color: var(--primary);
     }
@@ -132,7 +155,7 @@
     .header-actions {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 12px;
     }
 
     .search-box {
@@ -142,10 +165,10 @@
     }
 
     .search-input {
-      width: 300px;
-      padding: 12px 16px 12px 44px;
+      width: 250px;
+      padding: 8px 12px 8px 36px;
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 8px;
       background: var(--surface-2);
       font-size: 14px;
       transition: all 0.3s ease;
@@ -160,7 +183,7 @@
 
     .search-icon {
       position: absolute;
-      left: 16px;
+      left: 12px;
       color: var(--text-light);
       pointer-events: none;
     }
@@ -171,11 +194,11 @@
     }
 
     .notification-btn {
-      width: 44px;
-      height: 44px;
+      width: 40px;
+      height: 40px;
       border: none;
       background: var(--surface-2);
-      border-radius: 12px;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -208,10 +231,10 @@
     .user-menu {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
       cursor: pointer;
-      padding: 8px 12px;
-      border-radius: 12px;
+      padding: 6px 8px;
+      border-radius: 8px;
       transition: all 0.3s ease;
     }
 
@@ -220,8 +243,8 @@
     }
 
     .user-avatar {
-      width: 36px;
-      height: 36px;
+      width: 32px;
+      height: 32px;
       background: var(--gradient-primary);
       border-radius: 50%;
       display: flex;
@@ -229,7 +252,7 @@
       justify-content: center;
       color: white;
       font-weight: 600;
-      font-size: 14px;
+      font-size: 12px;
     }
 
     .user-info h4 {
@@ -248,32 +271,32 @@
       display: flex;
       max-width: 1400px;
       margin: 0 auto;
-      min-height: calc(100vh - 70px);
+      min-height: calc(100vh - 64px);
     }
 
     /* Sidebar */
     .sidebar {
-      width: 280px;
+      width: 260px;
       background: var(--surface);
       border-right: 1px solid var(--border);
-      padding: 24px;
+      padding: 1rem;
       position: sticky;
-      top: 70px;
-      height: calc(100vh - 70px);
+      top: 64px;
+      height: calc(100vh - 64px);
       overflow-y: auto;
     }
 
     .sidebar-section {
-      margin-bottom: 32px;
+      margin-bottom: 1.5rem;
     }
 
     .sidebar-title {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
       color: var(--text-light);
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
     }
 
     .nav-menu {
@@ -281,18 +304,19 @@
     }
 
     .nav-item {
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
 
     .nav-link {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 12px 16px;
-      border-radius: 12px;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 8px;
       text-decoration: none;
       color: var(--text-secondary);
       font-weight: 500;
+      font-size: 14px;
       transition: all 0.3s ease;
       position: relative;
     }
@@ -308,21 +332,9 @@
       box-shadow: var(--shadow-lg);
     }
 
-    .nav-link.active::before {
-      content: '';
-      position: absolute;
-      left: -24px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 4px;
-      height: 24px;
-      background: var(--primary);
-      border-radius: 0 2px 2px 0;
-    }
-
     .nav-icon {
-      font-size: 18px;
-      width: 20px;
+      font-size: 16px;
+      width: 18px;
       text-align: center;
     }
 
@@ -338,32 +350,32 @@
     /* Main Content */
     .main-content {
       flex: 1;
-      padding: 32px;
+      padding: 1.5rem;
       background: var(--background);
     }
 
     .page-header {
-      margin-bottom: 32px;
+      margin-bottom: 1.5rem;
     }
 
     .page-title {
-      font-size: 32px;
+      font-size: 24px;
       font-weight: 700;
       color: var(--text);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .page-subtitle {
-      font-size: 16px;
+      font-size: 14px;
       color: var(--text-secondary);
     }
 
     .breadcrumb {
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 16px;
-      font-size: 14px;
+      gap: 6px;
+      margin-bottom: 12px;
+      font-size: 12px;
       color: var(--text-light);
     }
 
@@ -384,35 +396,38 @@
     /* Cards */
     .card {
       background: var(--surface);
-      border-radius: 16px;
+      border-radius: 12px;
       border: 1px solid var(--border);
       overflow: hidden;
       transition: all 0.3s ease;
+      margin-bottom: 1.5rem;
     }
 
     .card:hover {
       box-shadow: var(--shadow-lg);
-      transform: translateY(-2px);
+      transform: translateY(-1px);
     }
 
     .card-header {
-      padding: 24px;
+      padding: 1rem 1.25rem;
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
-      justify-content: between;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
     }
 
     .card-title {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 600;
       color: var(--text);
     }
 
     .card-subtitle {
-      font-size: 14px;
+      font-size: 12px;
       color: var(--text-secondary);
-      margin-top: 4px;
+      margin-top: 2px;
     }
 
     .card-action {
@@ -420,21 +435,21 @@
     }
 
     .card-body {
-      padding: 24px;
+      padding: 1.25rem;
     }
 
     /* Stats Grid */
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 24px;
-      margin-bottom: 32px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
     }
 
     .stat-card {
       background: var(--surface);
-      border-radius: 16px;
-      padding: 24px;
+      border-radius: 12px;
+      padding: 1.25rem;
       border: 1px solid var(--border);
       position: relative;
       overflow: hidden;
@@ -447,7 +462,7 @@
       top: 0;
       left: 0;
       width: 100%;
-      height: 4px;
+      height: 3px;
       background: var(--gradient-primary);
     }
 
@@ -460,7 +475,7 @@
     }
 
     .stat-card:hover {
-      transform: translateY(-4px);
+      transform: translateY(-2px);
       box-shadow: var(--shadow-lg);
     }
 
@@ -468,17 +483,17 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
     }
 
     .stat-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
+      font-size: 18px;
       color: white;
     }
 
@@ -498,8 +513,8 @@
     .stat-trend {
       display: flex;
       align-items: center;
-      gap: 4px;
-      font-size: 12px;
+      gap: 3px;
+      font-size: 11px;
       font-weight: 600;
     }
 
@@ -512,14 +527,14 @@
     }
 
     .stat-number {
-      font-size: 36px;
+      font-size: 28px;
       font-weight: 800;
       color: var(--text);
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
 
     .stat-label {
-      font-size: 14px;
+      font-size: 12px;
       color: var(--text-secondary);
       font-weight: 500;
     }
@@ -528,25 +543,26 @@
     .dashboard-grid {
       display: grid;
       grid-template-columns: 2fr 1fr;
-      gap: 32px;
-      margin-bottom: 32px;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
     }
 
     .chart-container {
       position: relative;
-      height: 300px;
+      height: 250px;
     }
 
     /* Tables */
     .table-container {
-      overflow: hidden;
-      border-radius: 12px;
+      overflow: auto;
+      border-radius: 8px;
       border: 1px solid var(--border);
     }
 
     .table {
       width: 100%;
       border-collapse: collapse;
+      min-width: 600px;
     }
 
     .table thead {
@@ -555,17 +571,18 @@
 
     .table th {
       text-align: left;
-      padding: 16px 20px;
+      padding: 12px 16px;
       font-weight: 600;
-      font-size: 14px;
+      font-size: 12px;
       color: var(--text-secondary);
       border-bottom: 1px solid var(--border);
     }
 
     .table td {
-      padding: 16px 20px;
+      padding: 12px 16px;
       border-bottom: 1px solid var(--border);
       vertical-align: middle;
+      font-size: 14px;
     }
 
     .table tbody tr:hover {
@@ -578,9 +595,9 @@
 
     /* Status Badges */
     .badge {
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 11px;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -610,12 +627,12 @@
     .btn {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 12px 20px;
+      gap: 6px;
+      padding: 8px 16px;
       border: none;
-      border-radius: 12px;
+      border-radius: 8px;
       font-weight: 600;
-      font-size: 14px;
+      font-size: 12px;
       cursor: pointer;
       transition: all 0.3s ease;
       text-decoration: none;
@@ -627,7 +644,7 @@
     }
 
     .btn-primary:hover {
-      transform: translateY(-2px);
+      transform: translateY(-1px);
       box-shadow: var(--shadow-lg);
     }
 
@@ -644,63 +661,63 @@
     }
 
     .btn-sm {
-      padding: 8px 16px;
-      font-size: 12px;
+      padding: 6px 12px;
+      font-size: 11px;
     }
 
     /* Quick Actions */
     .quick-actions {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
-      margin-bottom: 32px;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
     }
 
     .action-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px;
+      border-radius: 12px;
+      padding: 1rem;
       text-align: center;
       transition: all 0.3s ease;
       cursor: pointer;
     }
 
     .action-card:hover {
-      transform: translateY(-4px);
+      transform: translateY(-2px);
       box-shadow: var(--shadow-lg);
       border-color: var(--primary);
     }
 
     .action-icon {
-      width: 56px;
-      height: 56px;
+      width: 48px;
+      height: 48px;
       background: var(--gradient-primary);
-      border-radius: 16px;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
-      font-size: 24px;
-      margin: 0 auto 16px;
+      font-size: 20px;
+      margin: 0 auto 12px;
     }
 
     .action-title {
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 600;
       color: var(--text);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .action-desc {
-      font-size: 14px;
+      font-size: 12px;
       color: var(--text-secondary);
     }
 
     /* Calendar Widget */
     .calendar-widget {
       background: var(--surface);
-      border-radius: 16px;
+      border-radius: 12px;
       border: 1px solid var(--border);
       overflow: hidden;
     }
@@ -708,19 +725,19 @@
     .calendar-header {
       background: var(--gradient-primary);
       color: white;
-      padding: 20px;
+      padding: 1rem;
       text-align: center;
     }
 
     .calendar-body {
-      padding: 20px;
+      padding: 1rem;
     }
 
     .calendar-day {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 12px 0;
+      gap: 10px;
+      padding: 8px 0;
       border-bottom: 1px solid var(--border);
     }
 
@@ -729,15 +746,15 @@
     }
 
     .day-number {
-      width: 32px;
-      height: 32px;
+      width: 28px;
+      height: 28px;
       background: var(--surface-2);
-      border-radius: 8px;
+      border-radius: 6px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 600;
-      font-size: 14px;
+      font-size: 12px;
     }
 
     .day-number.today {
@@ -750,7 +767,7 @@
     }
 
     .event-item {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--text-secondary);
       margin-bottom: 2px;
     }
@@ -763,40 +780,149 @@
     /* Empty States */
     .empty-state {
       text-align: center;
-      padding: 60px 20px;
+      padding: 2rem 1rem;
       color: var(--text-light);
     }
 
     .empty-state i {
-      font-size: 64px;
-      margin-bottom: 16px;
+      font-size: 48px;
+      margin-bottom: 12px;
       opacity: 0.5;
     }
 
     .empty-state h3 {
-      font-size: 18px;
-      margin-bottom: 8px;
+      font-size: 16px;
+      margin-bottom: 6px;
       color: var(--text-secondary);
     }
 
     .empty-state p {
-      font-size: 14px;
+      font-size: 12px;
     }
 
     /* Progress Bars */
     .progress {
       width: 100%;
-      height: 8px;
+      height: 6px;
       background: var(--surface-2);
-      border-radius: 4px;
+      border-radius: 3px;
       overflow: hidden;
     }
 
     .progress-bar {
       height: 100%;
       background: var(--gradient-primary);
-      border-radius: 4px;
+      border-radius: 3px;
       transition: width 0.6s ease;
+    }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1500;
+      padding: 1rem;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: var(--surface);
+      border-radius: 12px;
+      box-shadow: var(--shadow-lg);
+      width: 100%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow: auto;
+      position: relative;
+    }
+
+    .modal-header {
+      padding: 1.25rem 1.5rem 1rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .modal-close {
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: var(--surface-2);
+      border-radius: 6px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-close:hover {
+      background: var(--error);
+      color: white;
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+    }
+
+    /* Form Styles */
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text);
+      font-size: 12px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      background: var(--surface);
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(0, 105, 92, 0.1);
+    }
+
+    .form-select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 14px;
+      background: var(--surface);
+      cursor: pointer;
+    }
+
+    textarea.form-input {
+      min-height: 80px;
+      resize: vertical;
     }
 
     /* Responsive Design */
@@ -811,6 +937,7 @@
         position: static;
         border-right: none;
         border-bottom: 1px solid var(--border);
+        padding: 1rem;
       }
       
       .dashboard-grid {
@@ -818,25 +945,25 @@
       }
       
       .stats-grid {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+
+      .main-content {
+        padding: 1rem;
       }
     }
 
     @media (max-width: 768px) {
       .header-content {
-        padding: 0 16px;
+        padding: 0 1rem;
       }
       
       .search-input {
-        width: 200px;
-      }
-      
-      .main-content {
-        padding: 20px 16px;
+        width: 180px;
       }
       
       .page-title {
-        font-size: 24px;
+        font-size: 20px;
       }
       
       .stats-grid {
@@ -845,6 +972,39 @@
       
       .quick-actions {
         grid-template-columns: 1fr;
+      }
+
+      .menu-toggle {
+        display: flex;
+      }
+
+      .sidebar {
+        position: fixed;
+        top: 64px;
+        left: -260px;
+        height: calc(100vh - 64px);
+        width: 240px;
+        background: var(--surface);
+        z-index: 1200;
+        transition: left 0.3s ease;
+        box-shadow: var(--shadow-lg);
+      }
+
+      .sidebar.active {
+        left: 0;
+      }
+
+      .sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+        z-index: 1100;
+        display: none;
+      }
+
+      .sidebar-overlay.active {
+        display: block;
       }
     }
 
@@ -858,11 +1018,48 @@
       }
       
       .sidebar {
-        padding: 16px;
+        padding: 1rem;
       }
       
       .nav-link {
-        padding: 10px 12px;
+        padding: 8px 10px;
+      }
+
+      .card-header {
+        padding: 1rem;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+      }
+
+      .card-body {
+        padding: 1rem;
+      }
+
+      .chart-container {
+        height: 200px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header-content {
+        padding: 0 0.75rem;
+      }
+
+      .main-content {
+        padding: 0.75rem;
+      }
+
+      .page-title {
+        font-size: 18px;
+      }
+
+      .stat-card {
+        padding: 1rem;
+      }
+
+      .stat-number {
+        font-size: 24px;
       }
     }
   </style>
@@ -872,39 +1069,47 @@
     <div class="loading-spinner"></div>
   </div>
 
+  <!-- Sidebar Overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
   <!-- Header -->
   <header class="header">
     <div class="header-content">
-      <a href="#" class="brand">
-        <div class="brand-icon">
-          <i class="fas fa-chalkboard-teacher"></i>
-        </div>
-        <div class="brand-text">
-          <h1>Baobab Tutor</h1>
-          <p>Teaching Portal</p>
-        </div>
-      </a>
+      <div class="header-left">
+        <button class="menu-toggle" id="menuToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+        <a href="#" class="brand">
+          <div class="brand-icon">
+            <i class="fas fa-chalkboard-teacher"></i>
+          </div>
+          <div class="brand-text">
+            <h1>Baobab Tutor</h1>
+            <p>Teaching Portal</p>
+          </div>
+        </a>
+      </div>
 
       <div class="header-actions">
         <div class="search-box">
           <i class="fas fa-search search-icon"></i>
-          <input type="text" class="search-input" placeholder="Search students, lessons, assignments...">
+          <input type="text" class="search-input" placeholder="Search students, lessons..." id="globalSearch">
         </div>
 
         <div class="notifications">
-          <button class="notification-btn">
+          <button class="notification-btn" id="notificationBtn">
             <i class="fas fa-bell"></i>
-            <span class="notification-badge" id="notificationCount">3</span>
+            <span class="notification-badge" id="notificationCount" style="display: none;">0</span>
           </button>
         </div>
 
-        <div class="user-menu" onclick="logout()">
+        <div class="user-menu" onclick="showUserMenu()">
           <div class="user-avatar" id="userAvatar">TU</div>
           <div class="user-info">
             <h4 id="userName">Loading...</h4>
             <p>Tutor</p>
           </div>
-          <i class="fas fa-chevron-down" style="color: var(--text-light); font-size: 12px;"></i>
+          <i class="fas fa-chevron-down" style="color: var(--text-light); font-size: 10px;"></i>
         </div>
       </div>
     </div>
@@ -913,7 +1118,7 @@
   <!-- Main Layout -->
   <div class="main-layout">
     <!-- Sidebar -->
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
       <div class="sidebar-section">
         <div class="sidebar-title">Main</div>
         <ul class="nav-menu">
@@ -1018,7 +1223,7 @@
               </div>
               <div class="stat-trend up">
                 <i class="fas fa-arrow-up"></i>
-                12%
+                Today
               </div>
             </div>
             <div class="stat-number" id="todayLessons">0</div>
@@ -1032,11 +1237,11 @@
               </div>
               <div class="stat-trend up">
                 <i class="fas fa-arrow-up"></i>
-                8%
+                Active
               </div>
             </div>
             <div class="stat-number" id="totalStudents">0</div>
-            <div class="stat-label">Active Students</div>
+            <div class="stat-label">My Students</div>
           </div>
 
           <div class="stat-card warning">
@@ -1046,11 +1251,11 @@
               </div>
               <div class="stat-trend down">
                 <i class="fas fa-arrow-down"></i>
-                3%
+                Pending
               </div>
             </div>
             <div class="stat-number" id="pendingReviews">0</div>
-            <div class="stat-label">Pending Reviews</div>
+            <div class="stat-label">To Review</div>
           </div>
 
           <div class="stat-card">
@@ -1060,7 +1265,7 @@
               </div>
               <div class="stat-trend up">
                 <i class="fas fa-arrow-up"></i>
-                2%
+                Rating
               </div>
             </div>
             <div class="stat-number">4.9</div>
@@ -1075,7 +1280,7 @@
               <i class="fas fa-plus"></i>
             </div>
             <div class="action-title">Schedule Lesson</div>
-            <div class="action-desc">Create a new lesson with your students</div>
+            <div class="action-desc">Create a new lesson</div>
           </div>
 
           <div class="action-card" onclick="setActiveSection('assignments')">
@@ -1083,7 +1288,7 @@
               <i class="fas fa-file-plus"></i>
             </div>
             <div class="action-title">Create Assignment</div>
-            <div class="action-desc">Assign homework or projects</div>
+            <div class="action-desc">Assign homework</div>
           </div>
 
           <div class="action-card" onclick="setActiveSection('students')">
@@ -1091,7 +1296,7 @@
               <i class="fas fa-user-plus"></i>
             </div>
             <div class="action-title">View Students</div>
-            <div class="action-desc">Manage your student roster</div>
+            <div class="action-desc">Manage roster</div>
           </div>
 
           <div class="action-card" onclick="setActiveSection('progress')">
@@ -1099,7 +1304,7 @@
               <i class="fas fa-chart-bar"></i>
             </div>
             <div class="action-title">View Reports</div>
-            <div class="action-desc">Check student progress analytics</div>
+            <div class="action-desc">Check progress</div>
           </div>
         </div>
 
@@ -1159,13 +1364,7 @@
                   </tr>
                 </thead>
                 <tbody id="recentActivity">
-                  <tr>
-                    <td colspan="5" class="empty-state">
-                      <i class="fas fa-history"></i>
-                      <h3>No recent activity</h3>
-                      <p>Activities will appear here as they happen</p>
-                    </td>
-                  </tr>
+                  <!-- Dynamic content will be loaded here -->
                 </tbody>
               </table>
             </div>
@@ -1191,34 +1390,30 @@
               <h3 class="card-title">Upcoming Lessons</h3>
               <p class="card-subtitle">Your scheduled classes for the next 7 days</p>
             </div>
-            <button class="btn btn-primary">
+            <button class="btn btn-primary" onclick="showCreateLessonModal()">
               <i class="fas fa-plus"></i>
               Schedule New Lesson
             </button>
           </div>
           <div class="card-body">
-            <div class="table-container">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>Date & Time</th>
-                    <th>Student</th>
-                    <th>Subject</th>
-                    <th>Duration</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="scheduleTable">
-                  <tr>
-                    <td colspan="6" class="empty-state">
-                      <i class="fas fa-calendar-plus"></i>
-                      <h3>No lessons scheduled</h3>
-                      <p>Schedule your first lesson to get started</p>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+            <div id="scheduleTableContainer">
+              <div class="table-container">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Date & Time</th>
+                      <th>Student</th>
+                      <th>Subject</th>
+                      <th>Duration</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="scheduleTable">
+                    <!-- Dynamic content will be loaded here -->
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -1254,28 +1449,24 @@
             </div>
           </div>
           <div class="card-body">
-            <div class="table-container">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>Student</th>
-                    <th>Age</th>
-                    <th>Subjects</th>
-                    <th>Progress</th>
-                    <th>Last Lesson</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="studentsTable">
-                  <tr>
-                    <td colspan="6" class="empty-state">
-                      <i class="fas fa-user-graduate"></i>
-                      <h3>No students assigned</h3>
-                      <p>Students will appear here once they're assigned to your classes</p>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+            <div id="studentsTableContainer">
+              <div class="table-container">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Student</th>
+                      <th>Grade</th>
+                      <th>Subjects</th>
+                      <th>Progress</th>
+                      <th>Last Lesson</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="studentsTable">
+                    <!-- Dynamic content will be loaded here -->
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -1299,34 +1490,30 @@
               <h3 class="card-title">Assignment Overview</h3>
               <p class="card-subtitle">Track all assignments and submissions</p>
             </div>
-            <button class="btn btn-primary">
+            <button class="btn btn-primary" onclick="showCreateAssignmentModal()">
               <i class="fas fa-plus"></i>
               Create Assignment
             </button>
           </div>
           <div class="card-body">
-            <div class="table-container">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>Assignment</th>
-                    <th>Subject</th>
-                    <th>Due Date</th>
-                    <th>Submissions</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="assignmentsTable">
-                  <tr>
-                    <td colspan="6" class="empty-state">
-                      <i class="fas fa-clipboard-list"></i>
-                      <h3>No assignments created</h3>
-                      <p>Create your first assignment to get started</p>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+            <div id="assignmentsTableContainer">
+              <div class="table-container">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Assignment</th>
+                      <th>Subject</th>
+                      <th>Due Date</th>
+                      <th>Submissions</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="assignmentsTable">
+                    <!-- Dynamic content will be loaded here -->
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -1378,10 +1565,8 @@
             </button>
           </div>
           <div class="card-body">
-            <div class="empty-state">
-              <i class="fas fa-chalkboard-teacher"></i>
-              <h3>No live lessons yet</h3>
-              <p>Start your first live lesson to connect with students</p>
+            <div id="lessonsHistoryContainer">
+              <!-- Dynamic content will be loaded here -->
             </div>
           </div>
         </div>
@@ -1400,36 +1585,36 @@
         </div>
 
         <div class="quick-actions">
-          <div class="action-card">
+          <div class="action-card" onclick="uploadMaterial('pdf')">
             <div class="action-icon">
               <i class="fas fa-file-pdf"></i>
             </div>
             <div class="action-title">Upload PDF</div>
-            <div class="action-desc">Share documents with students</div>
+            <div class="action-desc">Share documents</div>
           </div>
 
-          <div class="action-card">
+          <div class="action-card" onclick="uploadMaterial('video')">
             <div class="action-icon">
               <i class="fas fa-video"></i>
             </div>
             <div class="action-title">Upload Video</div>
-            <div class="action-desc">Add educational videos</div>
+            <div class="action-desc">Add videos</div>
           </div>
 
-          <div class="action-card">
+          <div class="action-card" onclick="uploadMaterial('link')">
             <div class="action-icon">
               <i class="fas fa-link"></i>
             </div>
             <div class="action-title">Add Link</div>
-            <div class="action-desc">Share external resources</div>
+            <div class="action-desc">Share resources</div>
           </div>
 
-          <div class="action-card">
+          <div class="action-card" onclick="createFolder()">
             <div class="action-icon">
               <i class="fas fa-folder-plus"></i>
             </div>
             <div class="action-title">Create Folder</div>
-            <div class="action-desc">Organize your materials</div>
+            <div class="action-desc">Organize materials</div>
           </div>
         </div>
 
@@ -1441,10 +1626,12 @@
             </div>
           </div>
           <div class="card-body">
-            <div class="empty-state">
-              <i class="fas fa-folder-open"></i>
-              <h3>No materials uploaded</h3>
-              <p>Upload your first teaching material to get started</p>
+            <div id="materialsContainer">
+              <div class="empty-state">
+                <i class="fas fa-folder-open"></i>
+                <h3>No materials uploaded</h3>
+                <p>Upload your first teaching material to get started</p>
+              </div>
             </div>
           </div>
         </div>
@@ -1485,11 +1672,27 @@
               </div>
             </div>
             <div class="card-body">
-              <div class="empty-state">
-                <i class="fas fa-chart-pie"></i>
-                <h3>No data available</h3>
-                <p>Data will appear as students complete assignments</p>
+              <div id="subjectPerformanceContainer">
+                <!-- Dynamic content will be loaded here -->
               </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Student Progress Records</h3>
+              <p class="card-subtitle">Detailed progress tracking for each student</p>
+            </div>
+            <button class="btn btn-primary" onclick="showCreateProgressModal()">
+              <i class="fas fa-plus"></i>
+              Add Progress Record
+            </button>
+          </div>
+          <div class="card-body">
+            <div id="progressRecordsContainer">
+              <!-- Dynamic content will be loaded here -->
             </div>
           </div>
         </div>
@@ -1518,7 +1721,7 @@
                 15%
               </div>
             </div>
-            <div class="stat-number">£0</div>
+            <div class="stat-number" id="thisMonthEarnings">£0</div>
             <div class="stat-label">This Month</div>
           </div>
 
@@ -1532,7 +1735,7 @@
                 8%
               </div>
             </div>
-            <div class="stat-number">£0</div>
+            <div class="stat-number" id="thisWeekEarnings">£0</div>
             <div class="stat-label">This Week</div>
           </div>
 
@@ -1542,7 +1745,7 @@
                 <i class="fas fa-clock"></i>
               </div>
             </div>
-            <div class="stat-number">£0</div>
+            <div class="stat-number" id="pendingEarnings">£0</div>
             <div class="stat-label">Pending</div>
           </div>
 
@@ -1552,7 +1755,7 @@
                 <i class="fas fa-chart-line"></i>
               </div>
             </div>
-            <div class="stat-number">£0</div>
+            <div class="stat-number" id="totalEarned">£0</div>
             <div class="stat-label">Total Earned</div>
           </div>
         </div>
@@ -1569,10 +1772,8 @@
             </button>
           </div>
           <div class="card-body">
-            <div class="empty-state">
-              <i class="fas fa-receipt"></i>
-              <h3>No earnings yet</h3>
-              <p>Complete your first lesson to start earning</p>
+            <div id="earningsHistoryContainer">
+              <!-- Dynamic content will be loaded here -->
             </div>
           </div>
         </div>
@@ -1597,7 +1798,7 @@
                 <h3 class="card-title">Personal Information</h3>
                 <p class="card-subtitle">Your basic profile details</p>
               </div>
-              <button class="btn btn-secondary btn-sm">
+              <button class="btn btn-secondary btn-sm" onclick="showEditProfileModal()">
                 <i class="fas fa-edit"></i>
                 Edit
               </button>
@@ -1620,8 +1821,8 @@
                     <span id="profilePhoneNumber">Loading...</span>
                   </div>
                   <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border);">
-                    <span style="color: var(--text-secondary);">Teaching Experience</span>
-                    <span id="profileExperience">Loading...</span>
+                    <span style="color: var(--text-secondary);">Hourly Rate</span>
+                    <span id="profileHourlyRate">Loading...</span>
                   </div>
                   <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border);">
                     <span style="color: var(--text-secondary);">Member Since</span>
@@ -1629,7 +1830,7 @@
                   </div>
                   <div style="display: flex; justify-content: space-between; padding: 12px 0;">
                     <span style="color: var(--text-secondary);">Status</span>
-                    <span class="badge success">Verified Tutor</span>
+                    <span class="badge success" id="profileStatus">Active</span>
                   </div>
                 </div>
               </div>
@@ -1659,13 +1860,44 @@
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
                   <div style="text-align: center; padding: 16px; background: var(--surface-2); border-radius: 12px;">
-                    <div style="font-size: 24px; font-weight: 700; color: var(--primary);">0</div>
+                    <div style="font-size: 24px; font-weight: 700; color: var(--primary);" id="profileTotalLessons">0</div>
                     <div style="color: var(--text-secondary); font-size: 12px;">Total Lessons</div>
                   </div>
                   <div style="text-align: center; padding: 16px; background: var(--surface-2); border-radius: 12px;">
-                    <div style="font-size: 24px; font-weight: 700; color: var(--primary);">0</div>
+                    <div style="font-size: 24px; font-weight: 700; color: var(--primary);" id="profileTotalStudents">0</div>
                     <div style="color: var(--text-secondary); font-size: 12px;">Total Students</div>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Specializations & Qualifications</h3>
+              <p class="card-subtitle">Your teaching expertise and credentials</p>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="showEditQualificationsModal()">
+              <i class="fas fa-edit"></i>
+              Edit
+            </button>
+          </div>
+          <div class="card-body">
+            <div style="display: grid; gap: 16px;">
+              <div>
+                <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--text);">Bio</h4>
+                <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.5;" id="profileBio">No bio available</p>
+              </div>
+              <div>
+                <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--text);">Qualifications</h4>
+                <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.5;" id="profileQualifications">No qualifications listed</p>
+              </div>
+              <div>
+                <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--text);">Specializations</h4>
+                <div id="profileSpecializations" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                  <span class="badge primary">No specializations listed</span>
                 </div>
               </div>
             </div>
@@ -1700,10 +1932,7 @@
                     <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 4px;">Email Notifications</h4>
                     <p style="font-size: 12px; color: var(--text-secondary);">Receive updates via email</p>
                   </div>
-                  <label style="position: relative; display: inline-block; width: 50px; height: 24px;">
-                    <input type="checkbox" checked style="opacity: 0; width: 0; height: 0;">
-                    <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--primary); transition: .4s; border-radius: 24px; before: position: absolute; content: ''; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%;"></span>
-                  </label>
+                  <input type="checkbox" id="emailNotifications" checked style="transform: scale(1.2);">
                 </div>
 
                 <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border);">
@@ -1711,10 +1940,7 @@
                     <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 4px;">SMS Notifications</h4>
                     <p style="font-size: 12px; color: var(--text-secondary);">Receive updates via text message</p>
                   </div>
-                  <label style="position: relative; display: inline-block; width: 50px; height: 24px;">
-                    <input type="checkbox" style="opacity: 0; width: 0; height: 0;">
-                    <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--border); transition: .4s; border-radius: 24px;"></span>
-                  </label>
+                  <input type="checkbox" id="smsNotifications" style="transform: scale(1.2);">
                 </div>
 
                 <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0;">
@@ -1722,12 +1948,13 @@
                     <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 4px;">Lesson Reminders</h4>
                     <p style="font-size: 12px; color: var(--text-secondary);">Get reminded before lessons start</p>
                   </div>
-                  <label style="position: relative; display: inline-block; width: 50px; height: 24px;">
-                    <input type="checkbox" checked style="opacity: 0; width: 0; height: 0;">
-                    <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--primary); transition: .4s; border-radius: 24px;"></span>
-                  </label>
+                  <input type="checkbox" id="lessonReminders" checked style="transform: scale(1.2);">
                 </div>
               </div>
+              <button class="btn btn-primary" style="margin-top: 20px;" onclick="saveNotificationSettings()">
+                <i class="fas fa-save"></i>
+                Save Preferences
+              </button>
             </div>
           </div>
 
@@ -1740,19 +1967,19 @@
             </div>
             <div class="card-body">
               <div style="display: grid; gap: 16px;">
-                <button class="btn btn-secondary" style="justify-content: flex-start;">
+                <button class="btn btn-secondary" style="justify-content: flex-start;" onclick="changePassword()">
                   <i class="fas fa-key"></i>
                   Change Password
                 </button>
-                <button class="btn btn-secondary" style="justify-content: flex-start;">
+                <button class="btn btn-secondary" style="justify-content: flex-start;" onclick="setupTwoFactor()">
                   <i class="fas fa-shield-alt"></i>
                   Two-Factor Authentication
                 </button>
-                <button class="btn btn-secondary" style="justify-content: flex-start;">
+                <button class="btn btn-secondary" style="justify-content: flex-start;" onclick="downloadData()">
                   <i class="fas fa-download"></i>
                   Download My Data
                 </button>
-                <button class="btn btn-secondary" style="justify-content: flex-start; color: var(--error);">
+                <button class="btn btn-secondary" style="justify-content: flex-start; color: var(--error);" onclick="confirmDeleteAccount()">
                   <i class="fas fa-trash"></i>
                   Delete Account
                 </button>
@@ -1764,6 +1991,89 @@
     </main>
   </div>
 
+  <!-- Modals -->
+  <!-- Create Lesson Modal -->
+  <div class="modal" id="createLessonModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Schedule New Lesson</h3>
+        <button class="modal-close" onclick="hideModal('createLessonModal')">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="createLessonForm">
+          <div class="form-group">
+            <label class="form-label">Student *</label>
+            <select class="form-select" name="child_id" required id="lessonStudentSelect">
+              <option value="">Select a student</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Subject *</label>
+            <select class="form-select" name="subject_id" required id="lessonSubjectSelect">
+              <option value="">Select a subject</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Lesson Title</label>
+            <input type="text" class="form-input" name="title" placeholder="e.g., Introduction to Algebra">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Date & Time *</label>
+            <input type="datetime-local" class="form-input" name="scheduled_at" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Duration (minutes)</label>
+            <input type="number" class="form-input" name="duration_minutes" value="60" min="15" max="180">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Description</label>
+            <textarea class="form-input" name="description" placeholder="Lesson objectives and topics to cover..."></textarea>
+          </div>
+          <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-save"></i>
+              Schedule Lesson
+            </button>
+            <button type="button" class="btn btn-secondary" onclick="hideModal('createLessonModal')">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- User Menu Modal -->
+  <div class="modal" id="userMenuModal">
+    <div class="modal-content" style="max-width: 300px;">
+      <div class="modal-header">
+        <h3 class="modal-title">Account Menu</h3>
+        <button class="modal-close" onclick="hideModal('userMenuModal')">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div style="display: grid; gap: 8px;">
+          <button class="btn btn-secondary" onclick="setActiveSection('profile'); hideModal('userMenuModal')">
+            <i class="fas fa-user"></i>
+            View Profile
+          </button>
+          <button class="btn btn-secondary" onclick="setActiveSection('settings'); hideModal('userMenuModal')">
+            <i class="fas fa-cog"></i>
+            Settings
+          </button>
+          <hr style="margin: 8px 0; border: none; border-top: 1px solid var(--border);">
+          <button class="btn btn-secondary" onclick="logout()" style="color: var(--error);">
+            <i class="fas fa-sign-out-alt"></i>
+            Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
     const SUPABASE_URL = 'https://vcxdkacxbjsgaoxbhsip.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZjeGRrYWN4YmpzZ2FveGJoc2lwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI5MDQ5ODMsImV4cCI6MjA2ODQ4MDk4M30.T9KhHWzHZWyaZvyeFXtBu8tPLY9JOn6_wCHcH8B46FU';
@@ -1773,6 +2083,59 @@
     let currentTutorProfile = null;
     let performanceChart = null;
     let progressChart = null;
+    let tutorData = {
+      students: [],
+      lessons: [],
+      assignments: [],
+      subjects: [],
+      progressRecords: []
+    };
+
+    // UI elements
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+    // Mobile menu functionality
+    function toggleSidebar(open) {
+      const show = open ?? !sidebar.classList.contains('active');
+      sidebar.classList.toggle('active', show);
+      sidebarOverlay.classList.toggle('active', show);
+      document.body.style.overflow = show ? 'hidden' : '';
+      menuToggle.innerHTML = show ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+    }
+
+    menuToggle?.addEventListener('click', () => toggleSidebar());
+    sidebarOverlay?.addEventListener('click', () => toggleSidebar(false));
+
+    // Helper functions
+    function formatCurrency(amount) {
+      return new Intl.NumberFormat('en-GB', {
+        style: 'currency',
+        currency: 'GBP'
+      }).format(amount);
+    }
+
+    function formatDate(date) {
+      return new Date(date).toLocaleDateString('en-GB');
+    }
+
+    function formatDateTime(date) {
+      return new Date(date).toLocaleString('en-GB');
+    }
+
+    function getInitials(name) {
+      if (!name) return 'TU';
+      return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+    }
+
+    function showError(message) {
+      alert('Error: ' + message);
+    }
+
+    function showSuccess(message) {
+      alert('Success: ' + message);
+    }
 
     // Hide loading overlay
     function hideLoading() {
@@ -1785,86 +2148,97 @@
 
     // Navigation functionality
     function setActiveSection(sectionId) {
-      // Hide all sections
       document.querySelectorAll('.content-section').forEach(section => {
         section.classList.remove('active');
       });
       
-      // Show target section
       document.getElementById(sectionId).classList.add('active');
       
-      // Update navigation
       document.querySelectorAll('.nav-link').forEach(link => {
         link.classList.remove('active');
       });
       
-      document.querySelector(`[data-section="${sectionId}"]`).classList.add('active');
+      document.querySelector(`[data-section="${sectionId}"]`)?.classList.add('active');
       
-      // Load section-specific data
       loadSectionData(sectionId);
+      toggleSidebar(false);
     }
 
-    // Load data for specific sections
-    function loadSectionData(sectionId) {
-      switch(sectionId) {
-        case 'dashboard':
-          loadDashboardData();
-          break;
-        case 'schedule':
-          loadScheduleData();
-          break;
-        case 'students':
-          loadStudentsData();
-          break;
-        case 'assignments':
-          loadAssignmentsData();
-          break;
-        case 'lessons':
-          loadLessonsData();
-          break;
-        case 'earnings':
-          loadEarningsData();
-          break;
-      }
+    // Modal functions
+    function showModal(modalId) {
+      document.getElementById(modalId).classList.add('active');
+    }
+
+    function hideModal(modalId) {
+      document.getElementById(modalId).classList.remove('active');
+    }
+
+    function showUserMenu() {
+      showModal('userMenuModal');
+    }
+
+    function showCreateLessonModal() {
+      loadStudentsForSelect();
+      loadSubjectsForSelect();
+      showModal('createLessonModal');
+    }
+
+    function showCreateAssignmentModal() {
+      // Implementation for assignment modal
+      alert('Create assignment functionality coming soon!');
+    }
+
+    function showCreateProgressModal() {
+      // Implementation for progress modal
+      alert('Create progress record functionality coming soon!');
+    }
+
+    function showEditProfileModal() {
+      alert('Edit profile functionality coming soon!');
+    }
+
+    function showEditQualificationsModal() {
+      alert('Edit qualifications functionality coming soon!');
+    }
+
+    // Load data for selects
+    async function loadStudentsForSelect() {
+      const select = document.getElementById('lessonStudentSelect');
+      select.innerHTML = '<option value="">Select a student</option>';
+      tutorData.students.forEach(student => {
+        select.innerHTML += `<option value="${student.id}">${student.name}</option>`;
+      });
+    }
+
+    async function loadSubjectsForSelect() {
+      const select = document.getElementById('lessonSubjectSelect');
+      select.innerHTML = '<option value="">Select a subject</option>';
+      tutorData.subjects.forEach(subject => {
+        select.innerHTML += `<option value="${subject.id}">${subject.name}</option>`;
+      });
     }
 
     // Authentication function
     async function ensureAuth() {
       try {
-        console.log('Checking authentication...');
+        const { data: { session } } = await supabase.auth.getSession();
         
-        // Check Supabase auth first
-        const { data: { session }, error } = await supabase.auth.getSession();
-        
-        if (session && session.user && session.user.email_confirmed_at) {
-          console.log('Supabase authenticated user found:', session.user.email);
+        if (session && session.user) {
           currentUser = session.user;
           
-          // Try to get tutor profile
-          let { data: profile, error: profileError } = await supabase
+          const { data: profile } = await supabase
             .from('tutor_profiles')
             .select('*')
             .eq('user_id', session.user.id)
-            .eq('status', 'verified')
             .single();
             
-          if (profileError || !profile) {
-            const { data: profileByEmail } = await supabase
-              .from('tutor_profiles')
-              .select('*')
-              .ilike('email', session.user.email)
-              .eq('status', 'verified')
-              .single();
-            profile = profileByEmail;
-          }
-          
           if (profile) {
             currentTutorProfile = profile;
             return currentUser;
           }
         }
         
-        // Check tutor-only authentication
+        // Check localStorage for tutor-only auth
         const tutorLoggedIn = localStorage.getItem('tutorLoggedIn');
         const tutorProfileData = localStorage.getItem('tutorProfile');
         
@@ -1872,31 +2246,25 @@
           try {
             currentTutorProfile = JSON.parse(tutorProfileData);
             
-            const { data: verifyProfile, error: verifyError } = await supabase
+            const { data: verifyProfile } = await supabase
               .from('tutor_profiles')
               .select('*')
               .ilike('email', currentTutorProfile.email)
-              .eq('status', 'verified')
               .single();
               
-            if (verifyError || !verifyProfile) {
-              clearTutorAuth();
-              return null;
+            if (verifyProfile) {
+              currentUser = {
+                id: verifyProfile.user_id || currentTutorProfile.user_id,
+                email: verifyProfile.email,
+                user_metadata: {
+                  full_name: verifyProfile.full_name
+                }
+              };
+              
+              currentTutorProfile = verifyProfile;
+              return currentUser;
             }
-            
-            currentUser = {
-              id: verifyProfile.user_id || currentTutorProfile.user_id,
-              email: verifyProfile.email,
-              user_metadata: {
-                full_name: verifyProfile.full_name,
-                phone: verifyProfile.phone
-              }
-            };
-            
-            currentTutorProfile = verifyProfile;
-            return currentUser;
-            
-          } catch (parseError) {
+          } catch (error) {
             clearTutorAuth();
           }
         }
@@ -1919,25 +2287,20 @@
     // Load tutor profile
     async function loadTutorProfile() {
       try {
-        const fullName = currentTutorProfile?.full_name || 
-                         currentUser?.user_metadata?.full_name || 
-                         currentUser?.email?.split('@')[0] || 
-                         'Tutor';
-        
+        const fullName = currentTutorProfile?.full_name || 'Tutor';
         const firstName = fullName.split(' ')[0];
-        const initials = fullName.split(' ').map(n => n[0]).join('').toUpperCase();
+        const initials = getInitials(fullName);
         
-        // Update UI elements
         document.getElementById('userName').textContent = fullName;
         document.getElementById('firstNameDash').textContent = firstName;
         document.getElementById('userAvatar').textContent = initials;
         document.getElementById('profileAvatarLarge').textContent = initials;
         document.getElementById('profileFullName').textContent = fullName;
-        document.getElementById('profileEmailAddress').textContent = currentTutorProfile?.email || currentUser?.email || '—';
+        document.getElementById('profileEmailAddress').textContent = currentTutorProfile?.email || '—';
         document.getElementById('profilePhoneNumber').textContent = currentTutorProfile?.phone || '—';
-        document.getElementById('profileExperience').textContent = currentTutorProfile?.teaching_experience || '—';
+        document.getElementById('profileHourlyRate').textContent = currentTutorProfile?.hourly_rate ? 
+          formatCurrency(currentTutorProfile.hourly_rate) : '—';
         
-        // Set member since date
         const memberSince = currentTutorProfile?.created_at ? 
           new Date(currentTutorProfile.created_at).toLocaleDateString('en-GB', { 
             month: 'long', 
@@ -1945,32 +2308,135 @@
           }) : '—';
         document.getElementById('profileMemberSince').textContent = memberSince;
 
+        // Load bio and qualifications
+        document.getElementById('profileBio').textContent = currentTutorProfile?.bio || 'No bio available';
+        document.getElementById('profileQualifications').textContent = currentTutorProfile?.qualifications || 'No qualifications listed';
+        
+        // Load specializations
+        const specializationsContainer = document.getElementById('profileSpecializations');
+        if (currentTutorProfile?.specializations && currentTutorProfile.specializations.length > 0) {
+          specializationsContainer.innerHTML = currentTutorProfile.specializations
+            .map(spec => `<span class="badge primary">${spec}</span>`)
+            .join('');
+        } else {
+          specializationsContainer.innerHTML = '<span class="badge primary">No specializations listed</span>';
+        }
+
       } catch (error) {
         console.error('Failed to load tutor profile:', error);
       }
     }
 
-    // Load dashboard data
-    async function loadDashboardData() {
+    // Load all tutor data
+    async function loadAllTutorData() {
       try {
-        // Update current date
-        const now = new Date();
-        document.getElementById('currentDate').textContent = now.toLocaleDateString('en-GB', {
-          weekday: 'long',
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
-        });
+        if (!currentTutorProfile) return;
 
-        // Create performance chart
-        createPerformanceChart();
-        
-        // Load today's schedule (mock data for now)
-        loadTodaySchedule();
-        
+        // Load assigned students through tutor_assignments
+        const { data: assignments } = await supabase
+          .from('tutor_assignments')
+          .select('*, children(*), subjects(*)')
+          .eq('tutor_id', currentTutorProfile.id)
+          .eq('status', 'active');
+
+        tutorData.students = assignments?.map(a => a.children).filter(Boolean) || [];
+
+        // Load lessons
+        const { data: lessons } = await supabase
+          .from('lessons')
+          .select('*, children(name), subjects(name)')
+          .eq('tutor_id', currentTutorProfile.id)
+          .order('scheduled_at', { ascending: false });
+
+        tutorData.lessons = lessons || [];
+
+        // Load subjects (tutor can teach)
+        const { data: subjects } = await supabase
+          .from('subjects')
+          .select('*')
+          .eq('is_active', true);
+
+        tutorData.subjects = subjects || [];
+
+        // Load progress records
+        const { data: progressRecords } = await supabase
+          .from('progress_records')
+          .select('*, children(name), subjects(name)')
+          .eq('recorded_by', currentTutorProfile.id);
+
+        tutorData.progressRecords = progressRecords || [];
+
+        updateDashboardCounts();
+
       } catch (error) {
-        console.error('Error loading dashboard data:', error);
+        console.error('Error loading tutor data:', error);
       }
+    }
+
+    function updateDashboardCounts() {
+      // Update navigation badges
+      const today = new Date().toISOString().split('T')[0];
+      const upcomingLessons = tutorData.lessons.filter(l => 
+        l.scheduled_at >= today && l.status === 'scheduled'
+      ).length;
+      
+      document.getElementById('upcomingLessonsNav').textContent = upcomingLessons;
+      document.getElementById('pendingAssignmentsNav').textContent = '0'; // Placeholder
+
+      // Update dashboard stats
+      const todayLessons = tutorData.lessons.filter(l => 
+        l.scheduled_at.startsWith(today)
+      ).length;
+      
+      document.getElementById('todayLessons').textContent = todayLessons;
+      document.getElementById('totalStudents').textContent = tutorData.students.length;
+      document.getElementById('pendingReviews').textContent = '0'; // Placeholder
+      
+      // Update profile stats
+      document.getElementById('profileTotalLessons').textContent = tutorData.lessons.length;
+      document.getElementById('profileTotalStudents').textContent = tutorData.students.length;
+    }
+
+    // Load data for specific sections
+    function loadSectionData(sectionId) {
+      switch(sectionId) {
+        case 'dashboard':
+          loadDashboardData();
+          break;
+        case 'schedule':
+          loadScheduleData();
+          break;
+        case 'students':
+          loadStudentsData();
+          break;
+        case 'assignments':
+          loadAssignmentsData();
+          break;
+        case 'lessons':
+          loadLessonsData();
+          break;
+        case 'progress':
+          loadProgressData();
+          break;
+        case 'earnings':
+          loadEarningsData();
+          break;
+      }
+    }
+
+    // Load dashboard data
+    function loadDashboardData() {
+      const now = new Date();
+      document.getElementById('currentDate').textContent = now.toLocaleDateString('en-GB', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+
+      createPerformanceChart();
+      loadTodaySchedule();
+      loadRecentActivity();
     }
 
     // Create performance chart
@@ -1999,22 +2465,10 @@
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
-            legend: {
-              display: false
-            }
+            legend: { display: false }
           },
           scales: {
-            y: {
-              beginAtZero: true,
-              grid: {
-                color: 'rgba(0,0,0,0.1)'
-              }
-            },
-            x: {
-              grid: {
-                display: false
-              }
-            }
+            y: { beginAtZero: true }
           }
         }
       });
@@ -2023,141 +2477,162 @@
     // Load today's schedule
     function loadTodaySchedule() {
       const container = document.getElementById('todaySchedule');
-      // Mock data for demonstration
-      container.innerHTML = `
-        <div class="calendar-day">
-          <div class="day-number today">18</div>
-          <div class="day-events">
-            <div class="event-item important">Math Lesson - Sarah (10:00 AM)</div>
-            <div class="event-item">English - James (2:00 PM)</div>
+      const today = new Date().toISOString().split('T')[0];
+      const todayLessons = tutorData.lessons.filter(l => l.scheduled_at.startsWith(today));
+
+      if (todayLessons.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-calendar-times"></i>
+            <h3>No lessons today</h3>
+            <p>Enjoy your free time!</p>
           </div>
-        </div>
-      `;
+        `;
+      } else {
+        container.innerHTML = todayLessons.map(lesson => {
+          const time = new Date(lesson.scheduled_at).toLocaleTimeString('en-GB', {
+            hour: '2-digit',
+            minute: '2-digit'
+          });
+          return `
+            <div class="calendar-day">
+              <div class="day-number today">${new Date().getDate()}</div>
+              <div class="day-events">
+                <div class="event-item important">${lesson.subjects?.name || 'Lesson'} - ${lesson.children?.name || 'Student'} (${time})</div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+
+    // Load recent activity
+    function loadRecentActivity() {
+      const tbody = document.getElementById('recentActivity');
+      
+      if (tutorData.lessons.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="5" class="empty-state">
+              <i class="fas fa-history"></i>
+              <h3>No recent activity</h3>
+              <p>Activities will appear here as they happen</p>
+            </td>
+          </tr>
+        `;
+      } else {
+        tbody.innerHTML = tutorData.lessons.slice(0, 5).map(lesson => `
+          <tr>
+            <td>Lesson completed</td>
+            <td>${lesson.children?.name || 'Unknown Student'}</td>
+            <td>${lesson.subjects?.name || 'Unknown Subject'}</td>
+            <td>${formatDateTime(lesson.scheduled_at)}</td>
+            <td><span class="badge ${lesson.status === 'completed' ? 'success' : 'primary'}">${lesson.status}</span></td>
+          </tr>
+        `).join('');
+      }
     }
 
     // Load schedule data
     function loadScheduleData() {
       const tbody = document.getElementById('scheduleTable');
-      // Mock data for demonstration
-      tbody.innerHTML = `
-        <tr>
-          <td><strong>Today, 10:00 AM</strong><br><small>45 minutes</small></td>
-          <td>Sarah Johnson</td>
-          <td>Mathematics</td>
-          <td>60 min</td>
-          <td><span class="badge primary">Scheduled</span></td>
-          <td>
-            <button class="btn btn-secondary btn-sm">
-              <i class="fas fa-video"></i>
-              Join
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Today, 2:00 PM</strong><br><small>2 hours from now</small></td>
-          <td>James Wilson</td>
-          <td>English Literature</td>
-          <td>45 min</td>
-          <td><span class="badge warning">Upcoming</span></td>
-          <td>
-            <button class="btn btn-secondary btn-sm">
-              <i class="fas fa-edit"></i>
-              Edit
-            </button>
-          </td>
-        </tr>
-      `;
+      const upcomingLessons = tutorData.lessons.filter(l => 
+        new Date(l.scheduled_at) > new Date()
+      ).sort((a, b) => new Date(a.scheduled_at) - new Date(b.scheduled_at));
+
+      if (upcomingLessons.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="empty-state">
+              <i class="fas fa-calendar-plus"></i>
+              <h3>No lessons scheduled</h3>
+              <p>Schedule your first lesson to get started</p>
+            </td>
+          </tr>
+        `;
+      } else {
+        tbody.innerHTML = upcomingLessons.map(lesson => `
+          <tr>
+            <td><strong>${formatDateTime(lesson.scheduled_at)}</strong></td>
+            <td>${lesson.children?.name || 'Unknown Student'}</td>
+            <td>${lesson.subjects?.name || 'Unknown Subject'}</td>
+            <td>${lesson.duration_minutes || 60} min</td>
+            <td><span class="badge primary">${lesson.status}</span></td>
+            <td>
+              <button class="btn btn-secondary btn-sm" onclick="editLesson('${lesson.id}')">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="btn btn-secondary btn-sm" onclick="deleteLesson('${lesson.id}')">
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        `).join('');
+      }
     }
 
     // Load students data
     function loadStudentsData() {
       const tbody = document.getElementById('studentsTable');
-      // Mock data for demonstration
-      tbody.innerHTML = `
-        <tr>
-          <td>
-            <div style="display: flex; align-items: center; gap: 12px;">
-              <div style="width: 40px; height: 40px; background: var(--gradient-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">SJ</div>
-              <div>
-                <strong>Sarah Johnson</strong><br>
-                <small style="color: var(--text-secondary);">sarah.johnson@email.com</small>
-              </div>
-            </div>
-          </td>
-          <td>12 years</td>
-          <td>Math, Science</td>
-          <td>
-            <div class="progress" style="margin-bottom: 4px;">
-              <div class="progress-bar" style="width: 85%"></div>
-            </div>
-            <small>85% Complete</small>
-          </td>
-          <td>Yesterday</td>
-          <td>
-            <button class="btn btn-secondary btn-sm">
-              <i class="fas fa-eye"></i>
-              View
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <div style="display: flex; align-items: center; gap: 12px;">
-              <div style="width: 40px; height: 40px; background: var(--gradient-secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">JW</div>
-              <div>
-                <strong>James Wilson</strong><br>
-                <small style="color: var(--text-secondary);">james.wilson@email.com</small>
-              </div>
-            </div>
-          </td>
-          <td>14 years</td>
-          <td>English, History</td>
-          <td>
-            <div class="progress" style="margin-bottom: 4px;">
-              <div class="progress-bar" style="width: 72%"></div>
-            </div>
-            <small>72% Complete</small>
-          </td>
-          <td>2 days ago</td>
-          <td>
-            <button class="btn btn-secondary btn-sm">
-              <i class="fas fa-eye"></i>
-              View
-            </button>
-          </td>
-        </tr>
-      `;
+      
+      if (tutorData.students.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="empty-state">
+              <i class="fas fa-user-graduate"></i>
+              <h3>No students assigned</h3>
+              <p>Students will appear here once they're assigned to your classes</p>
+            </td>
+          </tr>
+        `;
+      } else {
+        tbody.innerHTML = tutorData.students.map(student => {
+          const initials = getInitials(student.name);
+          const lastLesson = tutorData.lessons
+            .filter(l => l.child_id === student.id)
+            .sort((a, b) => new Date(b.scheduled_at) - new Date(a.scheduled_at))[0];
+          
+          return `
+            <tr>
+              <td>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <div style="width: 36px; height: 36px; background: var(--gradient-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 12px;">${initials}</div>
+                  <div>
+                    <strong>${student.name}</strong><br>
+                    <small style="color: var(--text-secondary);">${student.grade_level || 'N/A'}</small>
+                  </div>
+                </div>
+              </td>
+              <td>${student.grade_level || 'N/A'}</td>
+              <td>Multiple subjects</td>
+              <td>
+                <div class="progress" style="margin-bottom: 4px;">
+                  <div class="progress-bar" style="width: 75%"></div>
+                </div>
+                <small>75% Complete</small>
+              </td>
+              <td>${lastLesson ? formatDate(lastLesson.scheduled_at) : 'Never'}</td>
+              <td>
+                <button class="btn btn-secondary btn-sm" onclick="viewStudent('${student.id}')">
+                  <i class="fas fa-eye"></i>
+                </button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
     }
 
     // Load assignments data
     function loadAssignmentsData() {
       const tbody = document.getElementById('assignmentsTable');
-      // Mock data for demonstration
+      
       tbody.innerHTML = `
         <tr>
-          <td><strong>Algebra Basics Quiz</strong><br><small style="color: var(--text-secondary);">Multiple choice quiz on basic algebra concepts</small></td>
-          <td>Mathematics</td>
-          <td>Tomorrow</td>
-          <td>2/3 submitted</td>
-          <td><span class="badge warning">Active</span></td>
-          <td>
-            <button class="btn btn-secondary btn-sm">
-              <i class="fas fa-eye"></i>
-              Review
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>Essay: My Favorite Book</strong><br><small style="color: var(--text-secondary);">Write a 500-word essay about your favorite book</small></td>
-          <td>English</td>
-          <td>Next Week</td>
-          <td>0/2 submitted</td>
-          <td><span class="badge primary">Draft</span></td>
-          <td>
-            <button class="btn btn-secondary btn-sm">
-              <i class="fas fa-edit"></i>
-              Edit
-            </button>
+          <td colspan="6" class="empty-state">
+            <i class="fas fa-clipboard-list"></i>
+            <h3>No assignments created</h3>
+            <p>Create your first assignment to get started</p>
           </td>
         </tr>
       `;
@@ -2165,15 +2640,82 @@
 
     // Load lessons data
     function loadLessonsData() {
-      // Update stats
-      document.getElementById('liveLessonsToday').textContent = '2';
-      document.getElementById('totalTeachingHours').textContent = '24';
+      document.getElementById('liveLessonsToday').textContent = '0';
+      document.getElementById('totalTeachingHours').textContent = tutorData.lessons.length * 1; // Rough estimate
+    }
+
+    // Load progress data
+    function loadProgressData() {
+      // Create progress chart
+      const ctx = document.getElementById('progressChart');
+      if (ctx && !progressChart) {
+        progressChart = new Chart(ctx, {
+          type: 'doughnut',
+          data: {
+            labels: ['Excellent', 'Good', 'Average', 'Needs Improvement'],
+            datasets: [{
+              data: [30, 40, 20, 10],
+              backgroundColor: ['#00C853', '#00695C', '#FF9800', '#F44336']
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: 'bottom' }
+            }
+          }
+        });
+      }
     }
 
     // Load earnings data
     function loadEarningsData() {
-      // Mock earnings data would be loaded here
-      console.log('Loading earnings data...');
+      // Mock earnings data
+      document.getElementById('thisMonthEarnings').textContent = '£0';
+      document.getElementById('thisWeekEarnings').textContent = '£0';
+      document.getElementById('pendingEarnings').textContent = '£0';
+      document.getElementById('totalEarned').textContent = '£0';
+    }
+
+    // Form submissions
+    document.getElementById('createLessonForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData);
+      data.tutor_id = currentTutorProfile.id;
+      
+      try {
+        const { error } = await supabase
+          .from('lessons')
+          .insert([data]);
+        
+        if (error) throw error;
+        
+        showSuccess('Lesson scheduled successfully!');
+        hideModal('createLessonModal');
+        e.target.reset();
+        await loadAllTutorData();
+        loadScheduleData();
+      } catch (error) {
+        showError(error.message);
+      }
+    });
+
+    // Placeholder functions
+    function editLesson(id) { alert('Edit lesson functionality coming soon!'); }
+    function deleteLesson(id) { alert('Delete lesson functionality coming soon!'); }
+    function viewStudent(id) { alert('View student functionality coming soon!'); }
+    function uploadMaterial(type) { alert(`Upload ${type} functionality coming soon!`); }
+    function createFolder() { alert('Create folder functionality coming soon!'); }
+    function saveNotificationSettings() { showSuccess('Notification settings saved!'); }
+    function changePassword() { alert('Change password functionality coming soon!'); }
+    function setupTwoFactor() { alert('Two-factor authentication setup coming soon!'); }
+    function downloadData() { alert('Download data functionality coming soon!'); }
+    function confirmDeleteAccount() { 
+      if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+        alert('Account deletion functionality coming soon!');
+      }
     }
 
     // Navigation event listeners
@@ -2183,6 +2725,17 @@
         const section = link.getAttribute('data-section');
         setActiveSection(section);
       });
+    });
+
+    // Search functionality
+    document.getElementById('globalSearch')?.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase();
+      console.log('Searching for:', query);
+    });
+
+    // Notification button
+    document.getElementById('notificationBtn')?.addEventListener('click', () => {
+      alert('Notifications functionality coming soon!');
     });
 
     // Logout function
@@ -2207,7 +2760,8 @@
         }
 
         await loadTutorProfile();
-        await loadDashboardData();
+        await loadAllTutorData();
+        loadDashboardData();
         
         hideLoading();
       } catch (error) {
