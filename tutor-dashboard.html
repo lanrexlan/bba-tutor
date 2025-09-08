@@ -1587,914 +1587,821 @@
   </div>
 
   <script>
-    const SUPABASE_URL = 'https://vcxdkacxbjsgaoxbhsip.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZjeGRrYWN4YmpzZ2FveGJoc2lwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI5MDQ5ODMsImV4cCI6MjA2ODQ4MDk4M30.T9KhHWzHZWyaZvyeFXtBu8tPLY9JOn6_wCHcH8B46FU';
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  // =========================
+  // Tutors Project Supabase
+  // =========================
+  // IMPORTANT: Replace with your Tutors project credentials
+  const SUPABASE_URL = 'https://qlvijhpijwwlrzaixbrg.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsdmlqaHBpand3bHJ6YWl4YnJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI0MDg3NjksImV4cCI6MjA2Nzk4NDc2OX0.9x_IylmCpoYudGhxiy9432NIpzd0uHqnwUsPm6AvHqs';
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    let currentUser = null;
-    let currentTutorProfile = null;
-    let tutorData = {
-      students: [],
-      lessons: [],
-      assessments: [],
-      subjects: [],
-      progressRecords: [],
-      classrooms: []
-    };
+  // =========================
+  // API Bridge (Edge Function)
+  // =========================
+  // IMPORTANT: Replace YOUR_TUTORS_REF with your Tutors project ref
+  // For local dev with Supabase CLI: http://localhost:54321/functions/v1/tutor-api
+  const FN_BASE =
+    (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+      ? 'http://localhost:54321/functions/v1/tutor-api'
+      : 'https://qlvijhpijwwlrzaixbrg.functions.supabase.co/tutor-api';
 
-    // UI elements
-    const menuToggle = document.getElementById('menuToggle');
-    const sidebar = document.getElementById('sidebar');
-    const sidebarOverlay = document.getElementById('sidebarOverlay');
+  async function getAccessToken() {
+    const { data: { session } } = await supabase.auth.getSession();
+    return session?.access_token || null;
+  }
 
-    // Mobile menu functionality
-    function toggleSidebar(open) {
-      const show = open ?? !sidebar.classList.contains('active');
-      sidebar.classList.toggle('active', show);
-      sidebarOverlay.classList.toggle('active', show);
-      document.body.style.overflow = show ? 'hidden' : '';
-      menuToggle.innerHTML = show ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+  async function apiRequest(resource, { method = 'GET', data = null, params = {} } = {}) {
+    const token = await getAccessToken();
+    if (!token) throw new Error('Not authenticated');
+
+    const url = new URL(FN_BASE);
+    url.searchParams.set('resource', resource);
+    Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, String(v)));
+
+    const res = await fetch(url.toString(), {
+      method,
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        ...(data ? { 'Content-Type': 'application/json' } : {})
+      },
+      body: data ? JSON.stringify(data) : undefined
+    });
+
+    const payload = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      throw new Error(payload?.error || `API error ${res.status}`);
     }
+    return payload;
+  }
 
-    menuToggle?.addEventListener('click', () => toggleSidebar());
-    sidebarOverlay?.addEventListener('click', () => toggleSidebar(false));
+  const api = {
+    // Reads
+    bootstrap:       () => apiRequest('bootstrap'),
+    profile:         () => apiRequest('profile'),
+    students:        () => apiRequest('children'),
+    subjects:        () => apiRequest('subjects'),
+    lessons:         () => apiRequest('lessons'),
+    progress:        () => apiRequest('progress'),
+    assessments:     () => apiRequest('assessments'),
+    classrooms:      () => apiRequest('classrooms'),
+    // Writes
+    addProgress:     (body) => apiRequest('progress',   { method: 'POST', data: body }),
+    addClassroom:    (body) => apiRequest('classroom',  { method: 'POST', data: body }),
+    addAssessment:   (body) => apiRequest('assessment', { method: 'POST', data: body }),
+    addLesson:       (body) => apiRequest('lesson',     { method: 'POST', data: body }),
+    // Deletes
+    delProgress:     (id) => apiRequest('progress',   { method: 'DELETE', params: { id } }),
+    delClassroom:    (id) => apiRequest('classroom',  { method: 'DELETE', params: { id } }),
+    delAssessment:   (id) => apiRequest('assessment', { method: 'DELETE', params: { id } }),
+    delLesson:       (id) => apiRequest('lesson',     { method: 'DELETE', params: { id } })
+  };
 
-    // Helper functions
-    function formatCurrency(amount) {
-      return new Intl.NumberFormat('en-GB', {
-        style: 'currency',
-        currency: 'GBP'
-      }).format(amount);
+  // =========================
+  // State
+  // =========================
+  let currentUser = null;
+  let currentTutorProfile = null;
+  let tutorData = {
+    students: [],
+    lessons: [],
+    assessments: [],
+    subjects: [],
+    progressRecords: [],
+    classrooms: []
+  };
+
+  // =========================
+  // UI elements & Menu
+  // =========================
+  const menuToggle = document.getElementById('menuToggle');
+  const sidebar = document.getElementById('sidebar');
+  const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+  function toggleSidebar(open) {
+    const show = open ?? !sidebar.classList.contains('active');
+    sidebar.classList.toggle('active', show);
+    sidebarOverlay.classList.toggle('active', show);
+    document.body.style.overflow = show ? 'hidden' : '';
+    menuToggle.innerHTML = show ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+  }
+  menuToggle?.addEventListener('click', () => toggleSidebar());
+  sidebarOverlay?.addEventListener('click', () => toggleSidebar(false));
+
+  // =========================
+  // Helpers
+  // =========================
+  function formatCurrency(amount) {
+    return new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(amount);
+  }
+  function formatDate(date) {
+    if (!date) return 'N/A';
+    return new Date(date).toLocaleDateString('en-GB');
+  }
+  function formatDateTime(date) {
+    if (!date) return 'N/A';
+    return new Date(date).toLocaleString('en-GB');
+  }
+  function getInitials(name) {
+    if (!name) return 'TU';
+    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+  }
+  function showError(message) { alert('Error: ' + message); }
+  function showSuccess(message) { alert('Success: ' + message); }
+
+  function hideLoading() {
+    const overlay = document.getElementById('loadingOverlay');
+    if (overlay) {
+      overlay.style.opacity = '0';
+      setTimeout(() => overlay.remove(), 300);
     }
+  }
 
-    function formatDate(date) {
-      return new Date(date).toLocaleDateString('en-GB');
+  // =========================
+  // Navigation
+  // =========================
+  function setActiveSection(sectionId) {
+    document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
+    document.getElementById(sectionId).classList.add('active');
+
+    document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+    document.querySelector(`[data-section="${sectionId}"]`)?.classList.add('active');
+
+    loadSectionData(sectionId);
+    toggleSidebar(false);
+  }
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const section = link.getAttribute('data-section');
+      setActiveSection(section);
+    });
+  });
+
+  // =========================
+  // Modals
+  // =========================
+  function showModal(modalId) { document.getElementById(modalId).classList.add('active'); }
+  function hideModal(modalId) { document.getElementById(modalId).classList.remove('active'); }
+  function showUserMenu() { showModal('userMenuModal'); }
+
+  function showAddProgressModal() {
+    loadStudentsForSelect('progressStudentSelect');
+    loadSubjectsForSelect('progressSubjectSelect');
+    showModal('addProgressModal');
+  }
+  function showAddClassroomModal() {
+    loadStudentsForSelect('classroomStudentSelect');
+    loadSubjectsForSelect('classroomSubjectSelect');
+    showModal('addClassroomModal');
+  }
+  function showAddAssessmentModal() {
+    loadStudentsForSelect('assessmentStudentSelect');
+    loadSubjectsForSelect('assessmentSubjectSelect');
+    showModal('addAssessmentModal');
+  }
+  function showAddLessonModal() {
+    loadStudentsForSelect('lessonStudentSelect');
+    loadSubjectsForSelect('lessonSubjectSelect');
+    showModal('addLessonModal');
+  }
+  function showEditProfileModal() {
+    alert('Edit profile functionality coming soon!');
+  }
+
+  // =========================
+  // Select options
+  // =========================
+  async function loadStudentsForSelect(selectId) {
+    const select = document.getElementById(selectId);
+    select.innerHTML = '<option value="">Select a student</option>';
+    tutorData.students.forEach(student => {
+      select.innerHTML += `<option value="${student.id}">${student.name}</option>`;
+    });
+  }
+  async function loadSubjectsForSelect(selectId) {
+    const select = document.getElementById(selectId);
+    select.innerHTML = '<option value="">Select a subject</option>';
+    tutorData.subjects.forEach(subject => {
+      select.innerHTML += `<option value="${subject.id}">${subject.name}</option>`;
+    });
+  }
+
+  // =========================
+  // Auth
+  // =========================
+  async function ensureAuth() {
+    try {
+      const { data: { session} } = await supabase.auth.getSession();
+      if (!session?.user) return null;
+      currentUser = session.user;
+
+      // Fetch Parents tutor profile via bridge
+      const { profile } = await api.profile();
+      currentTutorProfile = profile; // { id, email, full_name, phone, status, hourly_rate, created_at }
+      return currentUser;
+    } catch (error) {
+      console.error('Authentication check failed:', error);
+      return null;
     }
+  }
 
-    function formatDateTime(date) {
-      return new Date(date).toLocaleString('en-GB');
+  function clearTutorAuth() {
+    // Legacy/stale keys cleanup (safe to keep)
+    localStorage.removeItem('tutorProfile');
+    localStorage.removeItem('tutorLoggedIn');
+    localStorage.removeItem('authType');
+    localStorage.removeItem('tutorEmail');
+  }
+
+  // =========================
+  // Profile UI
+  // =========================
+  async function loadTutorProfile() {
+    try {
+      const fullName = currentTutorProfile?.full_name || 'Tutor';
+      const firstName = fullName.split(' ')[0];
+      const initials = getInitials(fullName);
+
+      document.getElementById('userName').textContent = fullName;
+      document.getElementById('firstNameDash').textContent = firstName;
+      document.getElementById('userAvatar').textContent = initials;
+      document.getElementById('profileAvatarLarge').textContent = initials;
+      document.getElementById('profileFullName').textContent = fullName;
+      document.getElementById('profileEmailAddress').textContent = currentTutorProfile?.email || '—';
+      document.getElementById('profilePhoneNumber').textContent = currentTutorProfile?.phone || '—';
+      document.getElementById('profileHourlyRate').textContent =
+        currentTutorProfile?.hourly_rate ? formatCurrency(currentTutorProfile.hourly_rate) : '—';
+
+      const memberSince = currentTutorProfile?.created_at
+        ? new Date(currentTutorProfile.created_at).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })
+        : '—';
+      document.getElementById('profileMemberSince').textContent = memberSince;
+
+      const statusEl = document.getElementById('profileStatus');
+      const status = (currentTutorProfile?.status || 'active').toLowerCase();
+      statusEl.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+      statusEl.className = 'badge ' + (status === 'active' || status === 'verified' ? 'success' : 'warning');
+    } catch (error) {
+      console.error('Failed to load tutor profile:', error);
     }
+  }
 
-    function getInitials(name) {
-      if (!name) return 'TU';
-      return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+  // =========================
+  // Data loading (via bridge)
+  // =========================
+  async function loadAllTutorData() {
+    try {
+      if (!currentTutorProfile) return;
+
+      // Single roundtrip for all lists
+      const data = await api.bootstrap();
+
+      tutorData.students        = data.students || [];
+      tutorData.subjects        = data.subjects || [];
+      tutorData.lessons         = data.lessons || [];
+      tutorData.progressRecords = data.progress || [];
+      tutorData.assessments     = data.assessments || [];
+      tutorData.classrooms      = data.classrooms || [];
+
+      updateDashboardCounts();
+    } catch (error) {
+      console.error('Error loading tutor data:', error);
     }
+  }
 
-    function showError(message) {
-      alert('Error: ' + message);
+  function updateDashboardCounts() {
+    document.getElementById('studentsCount').textContent = tutorData.students.length;
+    document.getElementById('classroomsCount').textContent = tutorData.classrooms.length;
+
+    document.getElementById('totalStudentsStat').textContent = tutorData.students.length;
+    document.getElementById('totalClassroomsStat').textContent = tutorData.classrooms.length;
+    document.getElementById('totalAssessmentsStat').textContent = tutorData.assessments.length;
+  }
+
+  function loadSectionData(sectionId) {
+    switch (sectionId) {
+      case 'dashboard':   loadDashboardData();   break;
+      case 'students':    loadStudentsData();    break;
+      case 'classrooms':  loadClassroomsData();  break;
+      case 'progress':    loadProgressData();    break;
+      case 'assessments': loadAssessmentsData(); break;
+      case 'schedule':    loadScheduleData();    break;
     }
+  }
 
-    function showSuccess(message) {
-      alert('Success: ' + message);
-    }
+  // =========================
+  // Dashboard (Recent Activity)
+  // =========================
+  function loadDashboardData() {
+    loadRecentActivity();
+  }
 
-    // Hide loading overlay
-    function hideLoading() {
-      const overlay = document.getElementById('loadingOverlay');
-      if (overlay) {
-        overlay.style.opacity = '0';
-        setTimeout(() => overlay.remove(), 300);
-      }
-    }
+  function loadRecentActivity() {
+    const tbody = document.getElementById('recentActivity');
+    const activities = [];
 
-    // Navigation functionality
-    function setActiveSection(sectionId) {
-      document.querySelectorAll('.content-section').forEach(section => {
-        section.classList.remove('active');
+    // Assessments (latest 3)
+    tutorData.assessments.slice(0, 3).forEach(assessment => {
+      const ts = assessment.conducted_at ? new Date(assessment.conducted_at).getTime() : 0;
+      activities.push({
+        activity: 'Assessment completed',
+        student: assessment.child?.name || 'Unknown Student',
+        subject: assessment.subject?.name || 'Unknown Subject',
+        displayDate: formatDateTime(assessment.conducted_at),
+        ts,
+        status: 'completed'
       });
-      
-      document.getElementById(sectionId).classList.add('active');
-      
-      document.querySelectorAll('.nav-link').forEach(link => {
-        link.classList.remove('active');
+    });
+
+    // Progress records (latest 2)
+    tutorData.progressRecords.slice(0, 2).forEach(record => {
+      const ts = record.recorded_at ? new Date(record.recorded_at).getTime() : 0;
+      activities.push({
+        activity: 'Progress recorded',
+        student: record.child?.name || 'Unknown Student',
+        subject: record.subject?.name || 'Unknown Subject',
+        displayDate: formatDateTime(record.recorded_at),
+        ts,
+        status: 'recorded'
       });
-      
-      document.querySelector(`[data-section="${sectionId}"]`)?.classList.add('active');
-      
-      loadSectionData(sectionId);
-      toggleSidebar(false);
+    });
+
+    activities.sort((a, b) => b.ts - a.ts);
+
+    if (activities.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="5" class="empty-state">
+            <i class="fas fa-history"></i>
+            <h3>No recent activity</h3>
+            <p>Activities will appear here as they happen</p>
+          </td>
+        </tr>
+      `;
+    } else {
+      tbody.innerHTML = activities.slice(0, 5).map(activity => `
+        <tr>
+          <td>${activity.activity}</td>
+          <td>${activity.student}</td>
+          <td>${activity.subject}</td>
+          <td>${activity.displayDate}</td>
+          <td><span class="badge success">${activity.status}</span></td>
+        </tr>
+      `).join('');
     }
+  }
 
-    // Modal functions
-    function showModal(modalId) {
-      document.getElementById(modalId).classList.add('active');
-    }
+  // =========================
+  // Students
+  // =========================
+  function loadStudentsData() {
+    const container = document.getElementById('studentsTableContainer');
 
-    function hideModal(modalId) {
-      document.getElementById(modalId).classList.remove('active');
-    }
-
-    function showUserMenu() {
-      showModal('userMenuModal');
-    }
-
-    function showAddProgressModal() {
-      loadStudentsForSelect('progressStudentSelect');
-      loadSubjectsForSelect('progressSubjectSelect');
-      showModal('addProgressModal');
-    }
-
-    function showAddClassroomModal() {
-      loadStudentsForSelect('classroomStudentSelect');
-      loadSubjectsForSelect('classroomSubjectSelect');
-      showModal('addClassroomModal');
-    }
-
-    function showAddAssessmentModal() {
-      loadStudentsForSelect('assessmentStudentSelect');
-      loadSubjectsForSelect('assessmentSubjectSelect');
-      showModal('addAssessmentModal');
-    }
-
-    function showAddLessonModal() {
-      loadStudentsForSelect('lessonStudentSelect');
-      loadSubjectsForSelect('lessonSubjectSelect');
-      showModal('addLessonModal');
-    }
-
-    function showEditProfileModal() {
-      alert('Edit profile functionality coming soon!');
-    }
-
-    // Load data for selects
-    async function loadStudentsForSelect(selectId) {
-      const select = document.getElementById(selectId);
-      select.innerHTML = '<option value="">Select a student</option>';
-      tutorData.students.forEach(student => {
-        select.innerHTML += `<option value="${student.id}">${student.name}</option>`;
-      });
-    }
-
-    async function loadSubjectsForSelect(selectId) {
-      const select = document.getElementById(selectId);
-      select.innerHTML = '<option value="">Select a subject</option>';
-      tutorData.subjects.forEach(subject => {
-        select.innerHTML += `<option value="${subject.id}">${subject.name}</option>`;
-      });
-    }
-
-    // Authentication function
-    async function ensureAuth() {
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        
-        if (session && session.user) {
-          currentUser = session.user;
-          
-          const { data: profile } = await supabase
-            .from('tutor_profiles')
-            .select('*')
-            .eq('user_id', session.user.id)
-            .single();
-            
-          if (profile) {
-            currentTutorProfile = profile;
-            return currentUser;
-          }
-        }
-        
-        // Check localStorage for tutor-only auth
-        const tutorLoggedIn = localStorage.getItem('tutorLoggedIn');
-        const tutorProfileData = localStorage.getItem('tutorProfile');
-        
-        if (tutorLoggedIn === 'true' && tutorProfileData) {
-          try {
-            currentTutorProfile = JSON.parse(tutorProfileData);
-            
-            const { data: verifyProfile } = await supabase
-              .from('tutor_profiles')
-              .select('*')
-              .ilike('email', currentTutorProfile.email)
-              .single();
-              
-            if (verifyProfile) {
-              currentUser = {
-                id: verifyProfile.user_id || currentTutorProfile.user_id,
-                email: verifyProfile.email,
-                user_metadata: {
-                  full_name: verifyProfile.full_name
-                }
-              };
-              
-              currentTutorProfile = verifyProfile;
-              return currentUser;
-            }
-          } catch (error) {
-            clearTutorAuth();
-          }
-        }
-        
-        return null;
-        
-      } catch (error) {
-        console.error('Authentication check failed:', error);
-        return null;
-      }
-    }
-
-    function clearTutorAuth() {
-      localStorage.removeItem('tutorProfile');
-      localStorage.removeItem('tutorLoggedIn');
-      localStorage.removeItem('authType');
-      localStorage.removeItem('tutorEmail');
-    }
-
-    // Load tutor profile
-    async function loadTutorProfile() {
-      try {
-        const fullName = currentTutorProfile?.full_name || 'Tutor';
-        const firstName = fullName.split(' ')[0];
-        const initials = getInitials(fullName);
-        
-        document.getElementById('userName').textContent = fullName;
-        document.getElementById('firstNameDash').textContent = firstName;
-        document.getElementById('userAvatar').textContent = initials;
-        document.getElementById('profileAvatarLarge').textContent = initials;
-        document.getElementById('profileFullName').textContent = fullName;
-        document.getElementById('profileEmailAddress').textContent = currentTutorProfile?.email || '—';
-        document.getElementById('profilePhoneNumber').textContent = currentTutorProfile?.phone || '—';
-        document.getElementById('profileHourlyRate').textContent = currentTutorProfile?.hourly_rate ? 
-          formatCurrency(currentTutorProfile.hourly_rate) : '—';
-        
-        const memberSince = currentTutorProfile?.created_at ? 
-          new Date(currentTutorProfile.created_at).toLocaleDateString('en-GB', { 
-            month: 'long', 
-            year: 'numeric' 
-          }) : '—';
-        document.getElementById('profileMemberSince').textContent = memberSince;
-
-      } catch (error) {
-        console.error('Failed to load tutor profile:', error);
-      }
-    }
-
-    // Load all tutor data
-    async function loadAllTutorData() {
-      try {
-        if (!currentTutorProfile) return;
-
-        // Load assigned students through tutor_assignments
-        const { data: assignments } = await supabase
-          .from('tutor_assignments')
-          .select('*, children(*), subjects(*)')
-          .eq('tutor_id', currentTutorProfile.id)
-          .eq('status', 'active');
-
-        tutorData.students = assignments?.map(a => a.children).filter(Boolean) || [];
-
-        // Load lessons for this tutor
-        const { data: lessons } = await supabase
-          .from('lessons')
-          .select('*, children(name), subjects(name)')
-          .eq('tutor_id', currentTutorProfile.id)
-          .order('scheduled_at', { ascending: false });
-
-        tutorData.lessons = lessons || [];
-
-        // Load all active subjects
-        const { data: subjects } = await supabase
-          .from('subjects')
-          .select('*')
-          .eq('is_active', true);
-
-        tutorData.subjects = subjects || [];
-
-        // Load progress records recorded by this tutor
-        const { data: progressRecords } = await supabase
-          .from('progress_records')
-          .select('*, children(name), subjects(name)')
-          .eq('recorded_by', currentTutorProfile.id)
-          .order('recorded_at', { ascending: false });
-
-        tutorData.progressRecords = progressRecords || [];
-
-        // Load assessments for this tutor
-        const { data: assessments } = await supabase
-          .from('assessments')
-          .select('*, children(name), subjects(name)')
-          .eq('tutor_id', currentTutorProfile.id)
-          .order('conducted_at', { ascending: false });
-
-        tutorData.assessments = assessments || [];
-
-        // Load Google Classroom links
-        const { data: classrooms } = await supabase
-          .from('google_classroom_links')
-          .select('*, children(name), subjects(name)')
-          .eq('tutor_id', currentTutorProfile.id)
-          .order('created_at', { ascending: false });
-
-        tutorData.classrooms = classrooms || [];
-
-        updateDashboardCounts();
-
-      } catch (error) {
-        console.error('Error loading tutor data:', error);
-      }
-    }
-
-    function updateDashboardCounts() {
-      // Update navigation badges
-      document.getElementById('studentsCount').textContent = tutorData.students.length;
-      document.getElementById('classroomsCount').textContent = tutorData.classrooms.length;
-
-      // Update dashboard stats
-      document.getElementById('totalStudentsStat').textContent = tutorData.students.length;
-      document.getElementById('totalClassroomsStat').textContent = tutorData.classrooms.length;
-      document.getElementById('totalAssessmentsStat').textContent = tutorData.assessments.length;
-    }
-
-    // Load data for specific sections
-    function loadSectionData(sectionId) {
-      switch(sectionId) {
-        case 'dashboard':
-          loadDashboardData();
-          break;
-        case 'students':
-          loadStudentsData();
-          break;
-        case 'classrooms':
-          loadClassroomsData();
-          break;
-        case 'progress':
-          loadProgressData();
-          break;
-        case 'assessments':
-          loadAssessmentsData();
-          break;
-        case 'schedule':
-          loadScheduleData();
-          break;
-      }
-    }
-
-    // Load dashboard data
-    function loadDashboardData() {
-      loadRecentActivity();
-    }
-
-    // Load recent activity
-    function loadRecentActivity() {
-      const tbody = document.getElementById('recentActivity');
-      
-      // Combine recent activities
-      const activities = [];
-      
-      // Recent assessments
-      tutorData.assessments.slice(0, 3).forEach(assessment => {
-        activities.push({
-          activity: 'Assessment completed',
-          student: assessment.children?.name || 'Unknown Student',
-          subject: assessment.subjects?.name || 'Unknown Subject',
-          date: formatDateTime(assessment.conducted_at),
-          status: 'completed'
-        });
-      });
-
-      // Recent progress records
-      tutorData.progressRecords.slice(0, 2).forEach(record => {
-        activities.push({
-          activity: 'Progress recorded',
-          student: record.children?.name || 'Unknown Student',
-          subject: record.subjects?.name || 'Unknown Subject',
-          date: formatDateTime(record.recorded_at),
-          status: 'recorded'
-        });
-      });
-
-      activities.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-      if (activities.length === 0) {
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="5" class="empty-state">
-              <i class="fas fa-history"></i>
-              <h3>No recent activity</h3>
-              <p>Activities will appear here as they happen</p>
-            </td>
-          </tr>
-        `;
-      } else {
-        tbody.innerHTML = activities.slice(0, 5).map(activity => `
-          <tr>
-            <td>${activity.activity}</td>
-            <td>${activity.student}</td>
-            <td>${activity.subject}</td>
-            <td>${activity.date}</td>
-            <td><span class="badge success">${activity.status}</span></td>
-          </tr>
-        `).join('');
-      }
-    }
-
-    // Load students data
-    function loadStudentsData() {
-      const container = document.getElementById('studentsTableContainer');
-      
-      if (tutorData.students.length === 0) {
-        container.innerHTML = `
-          <div class="empty-state">
-            <i class="fas fa-user-graduate"></i>
-            <h3>No students assigned</h3>
-            <p>Students will appear here once they're assigned to your classes</p>
-          </div>
-        `;
-      } else {
-        container.innerHTML = `
-          <div class="table-container">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>Student</th>
-                  <th>Grade Level</th>
-                  <th>School</th>
-                  <th>Enrollment Date</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${tutorData.students.map(student => {
-                  const initials = getInitials(student.name);
-                  return `
-                    <tr>
-                      <td>
-                        <div style="display: flex; align-items: center; gap: 12px;">
-                          <div style="width: 36px; height: 36px; background: var(--gradient-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 12px;">${initials}</div>
-                          <div>
-                            <strong>${student.name}</strong>
-                          </div>
-                        </div>
-                      </td>
-                      <td>${student.grade_level || 'N/A'}</td>
-                      <td>${student.school || 'N/A'}</td>
-                      <td>${student.enrollment_date ? formatDate(student.enrollment_date) : 'N/A'}</td>
-                      <td><span class="badge success">${student.status || 'active'}</span></td>
-                      <td>
-                        <button class="btn btn-secondary btn-sm" onclick="viewStudentProgress('${student.id}')">
-                          <i class="fas fa-chart-line"></i>
-                          View Progress
-                        </button>
-                      </td>
-                    </tr>
-                  `;
-                }).join('')}
-              </tbody>
-            </table>
-          </div>
-        `;
-      }
-    }
-
-    // Load classrooms data
-    function loadClassroomsData() {
-      const container = document.getElementById('classroomsTableContainer');
-      
-      if (tutorData.classrooms.length === 0) {
-        container.innerHTML = `
-          <div class="empty-state">
-            <i class="fab fa-google"></i>
-            <h3>No classroom links</h3>
-            <p>Add Google Classroom links to get started</p>
-          </div>
-        `;
-      } else {
-        container.innerHTML = `
-          <div class="table-container">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>Classroom Name</th>
-                  <th>Student</th>
-                  <th>Subject</th>
-                  <th>Classroom ID</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${tutorData.classrooms.map(classroom => `
+    if (tutorData.students.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <i class="fas fa-user-graduate"></i>
+          <h3>No students assigned</h3>
+          <p>Students will appear here once they're assigned to your classes</p>
+        </div>
+      `;
+    } else {
+      container.innerHTML = `
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Student</th>
+                <th>Grade Level</th>
+                <th>School</th>
+                <th>Enrollment Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${tutorData.students.map(student => {
+                const initials = getInitials(student.name);
+                return `
                   <tr>
-                    <td><strong>${classroom.classroom_name}</strong></td>
-                    <td>${classroom.children?.name || 'N/A'}</td>
-                    <td>${classroom.subjects?.name || 'N/A'}</td>
-                    <td><code>${classroom.classroom_id}</code></td>
-                    <td><span class="badge success">${classroom.status}</span></td>
                     <td>
-                      ${classroom.classroom_url ? `
-                        <a href="${classroom.classroom_url}" target="_blank" class="btn btn-primary btn-sm">
-                          <i class="fab fa-google"></i>
-                          Open
-                        </a>
-                      ` : ''}
-                      <button class="btn btn-secondary btn-sm" onclick="deleteClassroom('${classroom.id}')">
-                        <i class="fas fa-trash"></i>
+                      <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="width: 36px; height: 36px; background: var(--gradient-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 12px;">${initials}</div>
+                        <div><strong>${student.name}</strong></div>
+                      </div>
+                    </td>
+                    <td>${student.grade_level || 'N/A'}</td>
+                    <td>${student.school || 'N/A'}</td>
+                    <td>${student.enrollment_date ? formatDate(student.enrollment_date) : 'N/A'}</td>
+                    <td><span class="badge success">${student.status || 'active'}</span></td>
+                    <td>
+                      <button class="btn btn-secondary btn-sm" onclick="viewStudentProgress('${student.id}')">
+                        <i class="fas fa-chart-line"></i>
+                        View Progress
                       </button>
                     </td>
                   </tr>
-                `).join('')}
-              </tbody>
-            </table>
-          </div>
-        `;
-      }
+                `;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
     }
+  }
 
-    // Load progress data
-    function loadProgressData() {
-      const container = document.getElementById('progressTableContainer');
-      
-      if (tutorData.progressRecords.length === 0) {
-        container.innerHTML = `
-          <div class="empty-state">
-            <i class="fas fa-chart-line"></i>
-            <h3>No progress records</h3>
-            <p>Add progress records to track student development</p>
-          </div>
-        `;
-      } else {
-        container.innerHTML = `
-          <div class="table-container">
-            <table class="table">
-              <thead>
+  // =========================
+  // Classrooms
+  // =========================
+  function loadClassroomsData() {
+    const container = document.getElementById('classroomsTableContainer');
+
+    if (tutorData.classrooms.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <i class="fab fa-google"></i>
+          <h3>No classroom links</h3>
+          <p>Add Google Classroom links to get started</p>
+        </div>
+      `;
+    } else {
+      container.innerHTML = `
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Classroom Name</th>
+                <th>Student</th>
+                <th>Subject</th>
+                <th>Classroom ID</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${tutorData.classrooms.map(classroom => `
                 <tr>
-                  <th>Student</th>
-                  <th>Subject</th>
-                  <th>Score</th>
-                  <th>Strengths</th>
-                  <th>Areas for Improvement</th>
-                  <th>Date</th>
-                  <th>Actions</th>
+                  <td><strong>${classroom.classroom_name}</strong></td>
+                  <td>${classroom.child?.name || 'N/A'}</td>
+                  <td>${classroom.subject?.name || 'N/A'}</td>
+                  <td><code>${classroom.classroom_id}</code></td>
+                  <td><span class="badge success">${classroom.status}</span></td>
+                  <td>
+                    ${classroom.classroom_url ? `
+                      <a href="${classroom.classroom_url}" target="_blank" class="btn btn-primary btn-sm">
+                        <i class="fab fa-google"></i>
+                        Open
+                      </a>` : ''
+                    }
+                    <button class="btn btn-secondary btn-sm" onclick="deleteClassroom('${classroom.id}')">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                ${tutorData.progressRecords.map(record => `
-                  <tr>
-                    <td>${record.children?.name || 'N/A'}</td>
-                    <td>${record.subjects?.name || 'N/A'}</td>
-                    <td>${record.score !== null ? `${record.score}%` : 'N/A'}</td>
-                    <td>${record.strengths || 'N/A'}</td>
-                    <td>${record.areas_of_improvement || 'N/A'}</td>
-                    <td>${formatDate(record.recorded_at)}</td>
-                    <td>
-                      <button class="btn btn-secondary btn-sm" onclick="editProgress('${record.id}')">
-                        <i class="fas fa-edit"></i>
-                      </button>
-                      <button class="btn btn-secondary btn-sm" onclick="deleteProgress('${record.id}')">
-                        <i class="fas fa-trash"></i>
-                      </button>
-                    </td>
-                  </tr>
-                `).join('')}
-              </tbody>
-            </table>
-          </div>
-        `;
-      }
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
     }
+  }
 
-    // Load assessments data
-    function loadAssessmentsData() {
-      const container = document.getElementById('assessmentsTableContainer');
-      
-      if (tutorData.assessments.length === 0) {
-        container.innerHTML = `
-          <div class="empty-state">
-            <i class="fas fa-clipboard-check"></i>
-            <h3>No assessments</h3>
-            <p>Create assessments to track student performance</p>
-          </div>
-        `;
-      } else {
-        container.innerHTML = `
-          <div class="table-container">
-            <table class="table">
-              <thead>
+  // =========================
+  // Progress
+  // =========================
+  function loadProgressData() {
+    const container = document.getElementById('progressTableContainer');
+
+    if (tutorData.progressRecords.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <i class="fas fa-chart-line"></i>
+          <h3>No progress records</h3>
+          <p>Add progress records to track student development</p>
+        </div>
+      `;
+    } else {
+      container.innerHTML = `
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Student</th>
+                <th>Subject</th>
+                <th>Score</th>
+                <th>Strengths</th>
+                <th>Areas for Improvement</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${tutorData.progressRecords.map(record => `
                 <tr>
-                  <th>Title</th>
-                  <th>Student</th>
-                  <th>Subject</th>
-                  <th>Type</th>
-                  <th>Grade</th>
-                  <th>Date</th>
-                  <th>Actions</th>
+                  <td>${record.child?.name || 'N/A'}</td>
+                  <td>${record.subject?.name || 'N/A'}</td>
+                  <td>${record.score !== null && record.score !== undefined ? `${record.score}%` : 'N/A'}</td>
+                  <td>${record.strengths || 'N/A'}</td>
+                  <td>${record.areas_of_improvement || 'N/A'}</td>
+                  <td>${formatDate(record.recorded_at)}</td>
+                  <td>
+                    <button class="btn btn-secondary btn-sm" onclick="editProgress('${record.id}')">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-secondary btn-sm" onclick="deleteProgress('${record.id}')">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                ${tutorData.assessments.map(assessment => `
-                  <tr>
-                    <td><strong>${assessment.title}</strong></td>
-                    <td>${assessment.children?.name || 'N/A'}</td>
-                    <td>${assessment.subjects?.name || 'N/A'}</td>
-                    <td><span class="badge primary">${assessment.type}</span></td>
-                    <td>
-                      ${assessment.grade !== null ? 
-                        `<span class="badge success">${assessment.grade}/${assessment.max_grade || 100}</span>` : 
-                        '<span class="badge warning">Not graded</span>'
-                      }
-                    </td>
-                    <td>${formatDate(assessment.conducted_at)}</td>
-                    <td>
-                      <button class="btn btn-secondary btn-sm" onclick="editAssessment('${assessment.id}')">
-                        <i class="fas fa-edit"></i>
-                      </button>
-                      <button class="btn btn-secondary btn-sm" onclick="deleteAssessment('${assessment.id}')">
-                        <i class="fas fa-trash"></i>
-                      </button>
-                    </td>
-                  </tr>
-                `).join('')}
-              </tbody>
-            </table>
-          </div>
-        `;
-      }
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
     }
+  }
 
-    // Load schedule data
-    function loadScheduleData() {
-      const container = document.getElementById('scheduleTableContainer');
-      const upcomingLessons = tutorData.lessons.filter(l => 
-        new Date(l.scheduled_at) > new Date()
-      ).sort((a, b) => new Date(a.scheduled_at) - new Date(b.scheduled_at));
+  // =========================
+  // Assessments
+  // =========================
+  function loadAssessmentsData() {
+    const container = document.getElementById('assessmentsTableContainer');
 
-      if (upcomingLessons.length === 0) {
-        container.innerHTML = `
-          <div class="empty-state">
-            <i class="fas fa-calendar-plus"></i>
-            <h3>No lessons scheduled</h3>
-            <p>Schedule your first lesson to get started</p>
-          </div>
-        `;
-      } else {
-        container.innerHTML = `
-          <div class="table-container">
-            <table class="table">
-              <thead>
+    if (tutorData.assessments.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <i class="fas fa-clipboard-check"></i>
+          <h3>No assessments</h3>
+          <p>Create assessments to track student performance</p>
+        </div>
+      `;
+    } else {
+      container.innerHTML = `
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Student</th>
+                <th>Subject</th>
+                <th>Type</th>
+                <th>Grade</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${tutorData.assessments.map(assessment => `
                 <tr>
-                  <th>Date & Time</th>
-                  <th>Student</th>
-                  <th>Subject</th>
-                  <th>Duration</th>
-                  <th>Status</th>
-                  <th>Actions</th>
+                  <td><strong>${assessment.title}</strong></td>
+                  <td>${assessment.child?.name || 'N/A'}</td>
+                  <td>${assessment.subject?.name || 'N/A'}</td>
+                  <td><span class="badge primary">${assessment.type}</span></td>
+                  <td>
+                    ${assessment.grade !== null && assessment.grade !== undefined
+                      ? `<span class="badge success">${assessment.grade}/${assessment.max_grade || 100}</span>`
+                      : '<span class="badge warning">Not graded</span>'
+                    }
+                  </td>
+                  <td>${formatDate(assessment.conducted_at)}</td>
+                  <td>
+                    <button class="btn btn-secondary btn-sm" onclick="editAssessment('${assessment.id}')">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-secondary btn-sm" onclick="deleteAssessment('${assessment.id}')">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                ${upcomingLessons.map(lesson => `
-                  <tr>
-                    <td><strong>${formatDateTime(lesson.scheduled_at)}</strong></td>
-                    <td>${lesson.children?.name || 'Unknown Student'}</td>
-                    <td>${lesson.subjects?.name || 'Unknown Subject'}</td>
-                    <td>${lesson.duration_minutes || 60} min</td>
-                    <td><span class="badge primary">${lesson.status}</span></td>
-                    <td>
-                      ${lesson.meeting_url ? `
-                        <a href="${lesson.meeting_url}" target="_blank" class="btn btn-primary btn-sm">
-                          <i class="fas fa-video"></i>
-                          Join
-                        </a>
-                      ` : ''}
-                      <button class="btn btn-secondary btn-sm" onclick="editLesson('${lesson.id}')">
-                        <i class="fas fa-edit"></i>
-                      </button>
-                      <button class="btn btn-secondary btn-sm" onclick="deleteLesson('${lesson.id}')">
-                        <i class="fas fa-trash"></i>
-                      </button>
-                    </td>
-                  </tr>
-                `).join('')}
-              </tbody>
-            </table>
-          </div>
-        `;
-      }
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
     }
+  }
 
-    // Form submissions
-    document.getElementById('addProgressForm')?.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const formData = new FormData(e.target);
-      const data = Object.fromEntries(formData);
-      data.recorded_by = currentTutorProfile.id;
-      
-      try {
-        const { error } = await supabase
-          .from('progress_records')
-          .insert([data]);
-        
-        if (error) throw error;
-        
-        showSuccess('Progress record added successfully!');
-        hideModal('addProgressModal');
-        e.target.reset();
-        await loadAllTutorData();
-        loadProgressData();
-      } catch (error) {
-        showError(error.message);
-      }
-    });
+  // =========================
+  // Schedule
+  // =========================
+  function loadScheduleData() {
+    const container = document.getElementById('scheduleTableContainer');
+    const upcomingLessons = tutorData.lessons
+      .filter(l => l.scheduled_at && new Date(l.scheduled_at) > new Date())
+      .sort((a, b) => new Date(a.scheduled_at) - new Date(b.scheduled_at));
 
-    document.getElementById('addClassroomForm')?.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const formData = new FormData(e.target);
-      const data = Object.fromEntries(formData);
-      data.tutor_id = currentTutorProfile.id;
-      
-      try {
-        const { error } = await supabase
-          .from('google_classroom_links')
-          .insert([data]);
-        
-        if (error) throw error;
-        
-        showSuccess('Classroom link added successfully!');
-        hideModal('addClassroomModal');
-        e.target.reset();
-        await loadAllTutorData();
-        loadClassroomsData();
-      } catch (error) {
-        showError(error.message);
-      }
-    });
-
-    document.getElementById('addAssessmentForm')?.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const formData = new FormData(e.target);
-      const data = Object.fromEntries(formData);
-      data.tutor_id = currentTutorProfile.id;
-      
-      try {
-        const { error } = await supabase
-          .from('assessments')
-          .insert([data]);
-        
-        if (error) throw error;
-        
-        showSuccess('Assessment added successfully!');
-        hideModal('addAssessmentModal');
-        e.target.reset();
-        await loadAllTutorData();
-        loadAssessmentsData();
-      } catch (error) {
-        showError(error.message);
-      }
-    });
-
-    document.getElementById('addLessonForm')?.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const formData = new FormData(e.target);
-      const data = Object.fromEntries(formData);
-      data.tutor_id = currentTutorProfile.id;
-      
-      try {
-        const { error } = await supabase
-          .from('lessons')
-          .insert([data]);
-        
-        if (error) throw error;
-        
-        showSuccess('Lesson scheduled successfully!');
-        hideModal('addLessonModal');
-        e.target.reset();
-        await loadAllTutorData();
-        loadScheduleData();
-      } catch (error) {
-        showError(error.message);
-      }
-    });
-
-    // Delete functions
-    async function deleteProgress(id) {
-      if (!confirm('Are you sure you want to delete this progress record?')) return;
-      
-      try {
-        const { error } = await supabase
-          .from('progress_records')
-          .delete()
-          .eq('id', id);
-        
-        if (error) throw error;
-        
-        showSuccess('Progress record deleted successfully!');
-        await loadAllTutorData();
-        loadProgressData();
-      } catch (error) {
-        showError(error.message);
-      }
+    if (upcomingLessons.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <i class="fas fa-calendar-plus"></i>
+          <h3>No lessons scheduled</h3>
+          <p>Schedule your first lesson to get started</p>
+        </div>
+      `;
+    } else {
+      container.innerHTML = `
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Date & Time</th>
+                <th>Student</th>
+                <th>Subject</th>
+                <th>Duration</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${upcomingLessons.map(lesson => `
+                <tr>
+                  <td><strong>${formatDateTime(lesson.scheduled_at)}</strong></td>
+                  <td>${lesson.child?.name || 'Unknown Student'}</td>
+                  <td>${lesson.subject?.name || 'Unknown Subject'}</td>
+                  <td>${lesson.duration_minutes || 60} min</td>
+                  <td><span class="badge primary">${lesson.status}</span></td>
+                  <td>
+                    ${lesson.meeting_url ? `
+                      <a href="${lesson.meeting_url}" target="_blank" class="btn btn-primary btn-sm">
+                        <i class="fas fa-video"></i>
+                        Join
+                      </a>` : ''
+                    }
+                    <button class="btn btn-secondary btn-sm" onclick="editLesson('${lesson.id}')">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-secondary btn-sm" onclick="deleteLesson('${lesson.id}')">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
     }
+  }
 
-    async function deleteClassroom(id) {
-      if (!confirm('Are you sure you want to delete this classroom link?')) return;
-      
-      try {
-        const { error } = await supabase
-          .from('google_classroom_links')
-          .delete()
-          .eq('id', id);
-        
-        if (error) throw error;
-        
-        showSuccess('Classroom link deleted successfully!');
-        await loadAllTutorData();
-        loadClassroomsData();
-      } catch (error) {
-        showError(error.message);
-      }
+  // =========================
+  // Forms (POST via bridge)
+  // =========================
+  document.getElementById('addProgressForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const payload = Object.fromEntries(formData);
+    // Server will set recorded_by and validate assignment
+    try {
+      await api.addProgress(payload);
+      showSuccess('Progress record added successfully!');
+      hideModal('addProgressModal');
+      e.target.reset();
+      await loadAllTutorData();
+      loadProgressData();
+    } catch (err) { showError(err.message); }
+  });
+
+  document.getElementById('addClassroomForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const payload = Object.fromEntries(formData);
+    // Server will set tutor_id and validate assignment
+    try {
+      await api.addClassroom(payload);
+      showSuccess('Classroom link added successfully!');
+      hideModal('addClassroomModal');
+      e.target.reset();
+      await loadAllTutorData();
+      loadClassroomsData();
+    } catch (err) { showError(err.message); }
+  });
+
+  document.getElementById('addAssessmentForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const payload = Object.fromEntries(formData);
+    // Server will set tutor_id and validate assignment
+    try {
+      await api.addAssessment(payload);
+      showSuccess('Assessment added successfully!');
+      hideModal('addAssessmentModal');
+      e.target.reset();
+      await loadAllTutorData();
+      loadAssessmentsData();
+    } catch (err) { showError(err.message); }
+  });
+
+  document.getElementById('addLessonForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const payload = Object.fromEntries(formData);
+    // Normalize datetime-local to ISO
+    if (payload.scheduled_at) {
+      try { payload.scheduled_at = new Date(payload.scheduled_at).toISOString(); } catch {}
     }
+    try {
+      await api.addLesson(payload);
+      showSuccess('Lesson scheduled successfully!');
+      hideModal('addLessonModal');
+      e.target.reset();
+      await loadAllTutorData();
+      loadScheduleData();
+    } catch (err) { showError(err.message); }
+  });
 
-    async function deleteAssessment(id) {
-      if (!confirm('Are you sure you want to delete this assessment?')) return;
-      
-      try {
-        const { error } = await supabase
-          .from('assessments')
-          .delete()
-          .eq('id', id);
-        
-        if (error) throw error;
-        
-        showSuccess('Assessment deleted successfully!');
-        await loadAllTutorData();
-        loadAssessmentsData();
-      } catch (error) {
-        showError(error.message);
-      }
+  // =========================
+  // Deletes (via bridge)
+  // =========================
+  async function deleteProgress(id) {
+    if (!confirm('Are you sure you want to delete this progress record?')) return;
+    try {
+      await api.delProgress(id);
+      showSuccess('Progress record deleted successfully!');
+      await loadAllTutorData();
+      loadProgressData();
+    } catch (err) { showError(err.message); }
+  }
+  async function deleteClassroom(id) {
+    if (!confirm('Are you sure you want to delete this classroom link?')) return;
+    try {
+      await api.delClassroom(id);
+      showSuccess('Classroom link deleted successfully!');
+      await loadAllTutorData();
+      loadClassroomsData();
+    } catch (err) { showError(err.message); }
+  }
+  async function deleteAssessment(id) {
+    if (!confirm('Are you sure you want to delete this assessment?')) return;
+    try {
+      await api.delAssessment(id);
+      showSuccess('Assessment deleted successfully!');
+      await loadAllTutorData();
+      loadAssessmentsData();
+    } catch (err) { showError(err.message); }
+  }
+  async function deleteLesson(id) {
+    if (!confirm('Are you sure you want to delete this lesson?')) return;
+    try {
+      await api.delLesson(id);
+      showSuccess('Lesson deleted successfully!');
+      await loadAllTutorData();
+      loadScheduleData();
+    } catch (err) { showError(err.message); }
+  }
+
+  // =========================
+  // Placeholder edit/view
+  // =========================
+  function editProgress(id)   { alert('Edit progress functionality coming soon!'); }
+  function editAssessment(id) { alert('Edit assessment functionality coming soon!'); }
+  function editLesson(id)     { alert('Edit lesson functionality coming soon!'); }
+  function viewStudentProgress(id) { alert('View student progress functionality coming soon!'); }
+
+  // =========================
+  // Refresh
+  // =========================
+  async function refreshDashboard() {
+    await loadAllTutorData();
+    loadDashboardData();
+    showSuccess('Dashboard refreshed!');
+  }
+
+  // =========================
+  // Logout
+  // =========================
+  async function logout() {
+    try {
+      clearTutorAuth();
+      await supabase.auth.signOut();
+      window.location.href = '/index.html';
+    } catch (error) {
+      console.error('Logout error:', error);
+      window.location.href = '/index.html';
     }
+  }
 
-    async function deleteLesson(id) {
-      if (!confirm('Are you sure you want to delete this lesson?')) return;
-      
-      try {
-        const { error } = await supabase
-          .from('lessons')
-          .delete()
-          .eq('id', id);
-        
-        if (error) throw error;
-        
-        showSuccess('Lesson deleted successfully!');
-        await loadAllTutorData();
-        loadScheduleData();
-      } catch (error) {
-        showError(error.message);
+  // =========================
+  // Init
+  // =========================
+  (async function init() {
+    try {
+      const user = await ensureAuth();
+      if (!user) {
+        window.location.href = '/index.html';
+        return;
       }
-    }
 
-    // Placeholder functions for edit operations
-    function editProgress(id) { alert('Edit progress functionality coming soon!'); }
-    function editAssessment(id) { alert('Edit assessment functionality coming soon!'); }
-    function editLesson(id) { alert('Edit lesson functionality coming soon!'); }
-    function viewStudentProgress(id) { alert('View student progress functionality coming soon!'); }
-
-    // Refresh dashboard
-    async function refreshDashboard() {
+      await loadTutorProfile();
       await loadAllTutorData();
       loadDashboardData();
-      showSuccess('Dashboard refreshed!');
+
+      hideLoading();
+    } catch (error) {
+      console.error('Initialization error:', error);
+      hideLoading();
+      window.location.href = '/index.html';
     }
-
-    // Navigation event listeners
-    document.querySelectorAll('.nav-link').forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const section = link.getAttribute('data-section');
-        setActiveSection(section);
-      });
-    });
-
-    // Logout function
-    async function logout() {
-      try {
-        clearTutorAuth();
-        await supabase.auth.signOut();
-        window.location.href = '/index.html';
-      } catch (error) {
-        console.error('Logout error:', error);
-        window.location.href = '/index.html';
-      }
-    }
-
-    // Initialize dashboard
-    (async function init() {
-      try {
-        const user = await ensureAuth();
-        if (!user) {
-          window.location.href = '/index.html';
-          return;
-        }
-
-        await loadTutorProfile();
-        await loadAllTutorData();
-        loadDashboardData();
-        
-        hideLoading();
-      } catch (error) {
-        console.error('Initialization error:', error);
-        hideLoading();
-        window.location.href = '/index.html';
-      }
-    })();
-  </script>
+  })();
+</script>
 </body>
 </html>
