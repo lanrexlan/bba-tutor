@@ -1,765 +1,312 @@
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
-    <meta charset="UTF-8">
-    <link rel="icon" type="image/png" sizes="32x32" href="/Images/logo.jpg">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Verification - Baobab Tutor Portal</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Open+Sans:wght@300;400;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <style>
-        :root {
-            /* Using tutor portal colors */
-            --baobab-brown: #8D4004;
-            --canopy-green: #2E7D32;
-            --sunset-gold: #F57C00;
-            --trunk-gray: #5D4037;
-            --sky-blue: #1976D2;
-            --earth-cream: #FFF8E1;
-            --desert-orange: #FF5722;
-            --sage-green: #689F38;
-            --deep-charcoal: #263238;
-            --white: #FFFFFF;
-            --tutor-teal: #00695C;
-            --tutor-light-teal: #B2DFDB;
-            
-            --transition-slow: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-            --transition-medium: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            --transition-fast: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
-            
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Open Sans', sans-serif;
-            color: var(--deep-charcoal);
-            line-height: 1.6;
-            background: linear-gradient(135deg, var(--tutor-teal), var(--canopy-green));
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        
-        .verification-container {
-            background: var(--white);
-            border-radius: 25px;
-            padding: 50px;
-            max-width: 600px;
-            width: 100%;
-            text-align: center;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-            border: 3px solid var(--sunset-gold);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .verification-container::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(0, 105, 92, 0.1), transparent);
-            animation: shimmer 3s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-        }
-
-        .verification-content {
-            position: relative;
-            z-index: 1;
-        }
-        
-        .logo-section {
-            margin-bottom: 30px;
-        }
-        
-        .logo {
-            display: inline-flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .logo-icon {
-            width: 50px;
-            height: 50px;
-            background-color: var(--tutor-teal);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
-            font-size: 24px;
-            color: var(--white);
-        }
-        
-        .logo-text {
-            font-weight: 700;
-            font-size: 24px;
-            color: var(--baobab-brown);
-            font-family: 'Merriweather', serif;
-        }
-
-        .verification-icon {
-            font-size: 4rem;
-            margin-bottom: 25px;
-            display: block;
-        }
-
-        .success-icon {
-            color: var(--canopy-green);
-            animation: pulse 2s infinite;
-        }
-
-        .error-icon {
-            color: var(--desert-orange);
-        }
-
-        .loading-icon {
-            color: var(--tutor-teal);
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.1); opacity: 0.8; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .verification-title {
-            font-family: 'Merriweather', serif;
-            font-size: 2.2rem;
-            color: var(--tutor-teal);
-            margin-bottom: 20px;
-            font-weight: 700;
-        }
-        
-        .verification-message {
-            font-size: 1.1rem;
-            color: var(--trunk-gray);
-            margin-bottom: 30px;
-            line-height: 1.7;
-        }
-
-        .verification-details {
-            background: var(--earth-cream);
-            border: 2px solid rgba(0, 105, 92, 0.3);
-            border-radius: 15px;
-            padding: 25px;
-            margin: 25px 0;
-            text-align: left;
-        }
-
-        .verification-details h4 {
-            color: var(--tutor-teal);
-            margin-bottom: 15px;
-            font-family: 'Merriweather', serif;
-        }
-
-        .verification-details ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .verification-details li {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 12px;
-            color: var(--trunk-gray);
-        }
-
-        .verification-details i {
-            color: var(--canopy-green);
-            font-size: 1.1rem;
-            width: 20px;
-        }
-        
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 18px 35px;
-            border-radius: 30px;
-            font-weight: 600;
-            text-align: center;
-            transition: var(--transition-fast);
-            border: 2px solid transparent;
-            font-family: 'Open Sans', sans-serif;
-            text-decoration: none;
-            cursor: pointer;
-            font-size: 1.1rem;
-            margin: 10px;
-        }
-        
-        .btn-primary {
-            background-color: var(--tutor-teal);
-            color: var(--white);
-            border-color: var(--tutor-teal);
-        }
-        
-        .btn-primary:hover {
-            background-color: var(--canopy-green);
-            border-color: var(--canopy-green);
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-md);
-        }
-        
-        .btn-secondary {
-            background-color: var(--sunset-gold);
-            color: var(--deep-charcoal);
-            border-color: var(--sunset-gold);
-        }
-
-        .btn-secondary:hover {
-            background-color: var(--desert-orange);
-            border-color: var(--desert-orange);
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-md);
-        }
-        
-        .btn-outlined {
-            background-color: transparent;
-            color: var(--tutor-teal);
-            border-color: var(--tutor-teal);
-        }
-        
-        .btn-outlined:hover {
-            background-color: var(--tutor-teal);
-            color: var(--white);
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 30px;
-        }
-
-        .support-info {
-            margin-top: 40px;
-            padding-top: 30px;
-            border-top: 1px solid var(--earth-cream);
-            color: var(--trunk-gray);
-            font-size: 0.95rem;
-        }
-
-        .support-info a {
-            color: var(--tutor-teal);
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .support-info a:hover {
-            text-decoration: underline;
-        }
-
-        .loading-spinner {
-            display: inline-block;
-            width: 30px;
-            height: 30px;
-            border: 3px solid var(--earth-cream);
-            border-top: 3px solid var(--tutor-teal);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .error-details {
-            background: #ffebee;
-            border: 1px solid #e57373;
-            border-radius: 8px;
-            padding: 15px;
-            margin: 15px 0;
-            font-family: monospace;
-            font-size: 0.9rem;
-            text-align: left;
-            white-space: pre-wrap;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .verification-container {
-                padding: 30px;
-                margin: 10px;
-            }
-            
-            .verification-title {
-                font-size: 1.8rem;
-            }
-            
-            .verification-message {
-                font-size: 1rem;
-            }
-
-            .action-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .btn {
-                padding: 16px 30px;
-                font-size: 1rem;
-                width: 100%;
-                max-width: 300px;
-            }
-        }
-        
-        @media (max-width: 576px) {
-            body {
-                padding: 10px;
-            }
-            
-            .verification-container {
-                padding: 25px;
-            }
-            
-            .verification-title {
-                font-size: 1.6rem;
-            }
-            
-            .logo-text {
-                font-size: 20px;
-            }
-
-            .verification-icon {
-                font-size: 3rem;
-            }
-
-            .verification-details {
-                padding: 20px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" sizes="32x32" href="/Images/logo.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email Verification - Baobab Tutor Portal</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Open+Sans:wght@300;400;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root{
+      --baobab-brown:#8D4004;--canopy-green:#2E7D32;--sunset-gold:#F57C00;--trunk-gray:#5D4037;--deep-charcoal:#263238;--white:#FFFFFF;--tutor-teal:#00695C;--tutor-light-teal:#B2DFDB;--earth-cream:#FFF8E1;--desert-orange:#FF5722;
+      --transition-slow:all .6s cubic-bezier(.165,.84,.44,1);--transition-medium:all .4s cubic-bezier(.165,.84,.44,1);--transition-fast:all .3s cubic-bezier(.165,.84,.44,1);
+      --shadow-md:0 4px 6px rgba(0,0,0,.1);--shadow-xl:0 20px 25px -5px rgba(0,0,0,.1)
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Open Sans',sans-serif;color:var(--deep-charcoal);line-height:1.6;background:linear-gradient(135deg,var(--tutor-teal),var(--canopy-green));min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+    .verification-container{background:var(--white);border-radius:25px;padding:50px;max-width:600px;width:100%;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.3);border:3px solid var(--sunset-gold);position:relative;overflow:hidden}
+    .verification-container::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(45deg,transparent,rgba(0,105,92,.1),transparent);animation:shimmer 3s infinite}
+    @keyframes shimmer{0%{transform:translateX(-100%) translateY(-100%) rotate(45deg)}100%{transform:translateX(100%) translateY(100%) rotate(45deg)}}
+    .verification-content{position:relative;z-index:1}
+    .logo{display:inline-flex;align-items:center;gap:15px;margin-bottom:10px}
+    .logo-icon{width:50px;height:50px;background-color:var(--tutor-teal);display:flex;align-items:center;justify-content:center;border-radius:12px;font-size:24px;color:var(--white)}
+    .logo-text{font-weight:700;font-size:24px;color:var(--baobab-brown);font-family:'Merriweather',serif}
+    .verification-icon{font-size:4rem;margin-bottom:25px;display:block}
+    .success-icon{color:var(--canopy-green);animation:pulse 2s infinite}
+    .error-icon{color:var(--desert-orange)}
+    .loading-icon{color:var(--tutor-teal);animation:spin 1s linear infinite}
+    @keyframes pulse{0%{transform:scale(1);opacity:1}50%{transform:scale(1.1);opacity:.8}100%{transform:scale(1);opacity:1}}
+    @keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+    .verification-title{font-family:'Merriweather',serif;font-size:2.2rem;color:var(--tutor-teal);margin-bottom:20px;font-weight:700}
+    .verification-message{font-size:1.1rem;color:var(--trunk-gray);margin-bottom:30px;line-height:1.7}
+    .verification-details{background:var(--earth-cream);border:2px solid rgba(0,105,92,.3);border-radius:15px;padding:25px;margin:25px 0;text-align:left}
+    .verification-details h4{color:var(--tutor-teal);margin-bottom:15px;font-family:'Merriweather',serif}
+    .verification-details ul{list-style:none;padding:0}
+    .verification-details li{display:flex;align-items:center;gap:12px;margin-bottom:12px;color:var(--trunk-gray)}
+    .verification-details i{color:var(--canopy-green);font-size:1.1rem;width:20px}
+    .btn{display:inline-flex;align-items:center;gap:10px;padding:18px 35px;border-radius:30px;font-weight:600;text-align:center;transition:var(--transition-fast);border:2px solid transparent;font-family:'Open Sans',sans-serif;text-decoration:none;cursor:pointer;font-size:1.1rem;margin:10px}
+    .btn-primary{background-color:var(--tutor-teal);color:var(--white);border-color:var(--tutor-teal)}
+    .btn-primary:hover{background-color:var(--canopy-green);border-color:var(--canopy-green);transform:translateY(-3px);box-shadow:var(--shadow-md)}
+    .btn-outlined{background:transparent;color:var(--tutor-teal);border-color:var(--tutor-teal)}
+    .btn-outlined:hover{background:var(--tutor-teal);color:var(--white);transform:translateY(-3px);box-shadow:var(--shadow-md)}
+    .action-buttons{display:flex;gap:15px;justify-content:center;flex-wrap:wrap;margin-top:30px}
+    .support-info{margin-top:40px;padding-top:30px;border-top:1px solid var(--earth-cream);color:var(--trunk-gray);font-size:.95rem}
+    .support-info a{color:var(--tutor-teal);text-decoration:none;font-weight:600}
+    .support-info a:hover{text-decoration:underline}
+    .loading-spinner{display:inline-block;width:30px;height:30px;border:3px solid var(--earth-cream);border-top:3px solid var(--tutor-teal);border-radius:50%;animation:spin 1s linear infinite;margin:20px auto}
+    .hidden{display:none}
+    .error-details{background:#ffebee;border:1px solid #e57373;border-radius:8px;padding:15px;margin:15px 0;font-family:monospace;font-size:.9rem;text-align:left;white-space:pre-wrap;max-height:200px;overflow-y:auto}
+    @media (max-width:768px){.verification-container{padding:30px;margin:10px}.verification-title{font-size:1.8rem}.verification-message{font-size:1rem}.action-buttons{flex-direction:column;align-items:center}.btn{padding:16px 30px;font-size:1rem;width:100%;max-width:300px}}
+    @media (max-width:576px){body{padding:10px}.verification-container{padding:25px}.verification-title{font-size:1.6rem}.logo-text{font-size:20px}.verification-icon{font-size:3rem}.verification-details{padding:20px}}
+  </style>
 </head>
 <body>
-    <div class="verification-container">
-        <div class="verification-content">
-            <!-- Logo Section -->
-            <div class="logo-section">
-                <div class="logo">
-                    <div class="logo-icon"><i class="fas fa-chalkboard-teacher"></i></div>
-                    <div class="logo-text">Baobab Tutor Portal</div>
-                </div>
-                <p style="color: var(--trunk-gray); font-style: italic;">Empowering Nigerian Educators Globally</p>
-            </div>
+  <div class="verification-container">
+    <div class="verification-content">
+      <!-- Logo -->
+      <div class="logo">
+        <div class="logo-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+        <div class="logo-text">Baobab Tutor Portal</div>
+      </div>
+      <p style="color: var(--trunk-gray); font-style: italic; margin-bottom: 20px;">Empowering Nigerian Educators Globally</p>
 
-            <!-- Loading State -->
-            <div id="loadingState">
-                <i class="fas fa-spinner verification-icon loading-icon"></i>
-                <h1 class="verification-title">Verifying Your Email...</h1>
-                <p class="verification-message">Please wait while we verify your tutor account email address.</p>
-                <div class="loading-spinner"></div>
-            </div>
+      <!-- Loading -->
+      <div id="loadingState">
+        <i class="fas fa-spinner verification-icon loading-icon"></i>
+        <h1 class="verification-title">Verifying Your Email...</h1>
+        <p class="verification-message">Please wait while we verify your tutor account email address.</p>
+        <div class="loading-spinner"></div>
+      </div>
 
-            <!-- Success State -->
-            <div id="successState" class="hidden">
-                <i class="fas fa-check-circle verification-icon success-icon"></i>
-                <h1 class="verification-title">🎉 Email Verified Successfully!</h1>
-                <p class="verification-message">
-                    Welcome to the Baobab Academy tutor family! Your tutor account has been successfully verified and activated.
-                </p>
-
-                <div class="verification-details">
-                    <h4><i class="fas fa-star"></i> What's Next?</h4>
-                    <ul>
-                        <li><i class="fas fa-check-circle"></i> Access your secure tutor dashboard</li>
-                        <li><i class="fas fa-check-circle"></i> Complete your detailed tutor profile</li>
-                        <li><i class="fas fa-check-circle"></i> Upload teaching materials and credentials</li>
-                        <li><i class="fas fa-check-circle"></i> Get matched with your first students</li>
-                        <li><i class="fas fa-check-circle"></i> Start earning 75% of lesson fees</li>
-                    </ul>
-                </div>
-
-                <div class="action-buttons">
-                    <a href="/tutor-dashboard.html" class="btn btn-primary">
-                        <i class="fas fa-tachometer-alt"></i>
-                        Access Tutor Dashboard
-                    </a>
-                    <a href="/" class="btn btn-outlined">
-                        <i class="fas fa-home"></i>
-                        Return to Portal
-                    </a>
-                </div>
-            </div>
-
-            <!-- Error State -->
-            <div id="errorState" class="hidden">
-                <i class="fas fa-exclamation-triangle verification-icon error-icon"></i>
-                <h1 class="verification-title">Verification Failed</h1>
-                <p class="verification-message" id="errorMessage">
-                    We couldn't verify your tutor account email address. This could be due to an expired or invalid verification link.
-                </p>
-
-                <div id="errorDetails" class="error-details hidden"></div>
-
-                <div class="verification-details">
-                    <h4><i class="fas fa-lightbulb"></i> What You Can Do:</h4>
-                    <ul>
-                        <li><i class="fas fa-redo"></i> Try clicking the verification link again</li>
-                        <li><i class="fas fa-envelope"></i> Check if the link has expired (links expire after 24 hours)</li>
-                        <li><i class="fas fa-user-plus"></i> Request a new verification email</li>
-                        <li><i class="fas fa-headset"></i> Contact our tutor support team for assistance</li>
-                    </ul>
-                </div>
-
-                <div class="action-buttons">
-                    <a href="/" class="btn btn-secondary">
-                        <i class="fas fa-envelope"></i>
-                        Request New Verification
-                    </a>
-                    <a href="mailto:tutors@baobabonlineacademy.com" class="btn btn-outlined">
-                        <i class="fas fa-headset"></i>
-                        Contact Support
-                    </a>
-                </div>
-            </div>
-
-            <!-- Support Information -->
-            <div class="support-info">
-                <p>
-                    Need help? Contact our tutor support team at 
-                    <a href="mailto:tutors@baobabonlineacademy.com">tutors@baobabonlineacademy.com</a> 
-                    or call <a href="tel:+2348165011291">+234 (0) 816 501 1291</a>
-                </p>
-            </div>
+      <!-- Success -->
+      <div id="successState" class="hidden">
+        <i class="fas fa-check-circle verification-icon success-icon"></i>
+        <h1 class="verification-title">🎉 Email Verified Successfully!</h1>
+        <p class="verification-message">
+          Welcome to the Baobab Academy tutor family! Your tutor account has been successfully verified and activated.
+        </p>
+        <div class="verification-details">
+          <h4><i class="fas fa-star"></i> What's Next?</h4>
+          <ul>
+            <li><i class="fas fa-check-circle"></i> Access your secure tutor dashboard</li>
+            <li><i class="fas fa-check-circle"></i> Complete your detailed tutor profile</li>
+            <li><i class="fas fa-check-circle"></i> Upload teaching materials and credentials</li>
+            <li><i class="fas fa-check-circle"></i> Get matched with your first students</li>
+            <li><i class="fas fa-check-circle"></i> Start earning 75% of lesson fees</li>
+          </ul>
         </div>
+        <div class="action-buttons">
+          <a href="/tutor-dashboard.html" class="btn btn-primary"><i class="fas fa-tachometer-alt"></i> Access Tutor Dashboard</a>
+          <a href="/" class="btn btn-outlined"><i class="fas fa-home"></i> Return to Portal</a>
+        </div>
+      </div>
+
+      <!-- Error -->
+      <div id="errorState" class="hidden">
+        <i class="fas fa-exclamation-triangle verification-icon error-icon"></i>
+        <h1 class="verification-title">Verification Failed</h1>
+        <p class="verification-message" id="errorMessage">
+          We couldn't verify your tutor account email address. This could be due to an expired or invalid verification link.
+        </p>
+        <div id="errorDetails" class="error-details hidden"></div>
+        <div class="action-buttons">
+          <a href="/" class="btn btn-outlined"><i class="fas fa-home"></i> Return to Portal</a>
+          <a href="mailto:tutors@baobabonlineacademy.com" class="btn btn-primary"><i class="fas fa-headset"></i> Contact Support</a>
+        </div>
+      </div>
+
+      <!-- Support -->
+      <div class="support-info">
+        <p>
+          Need help? Contact our tutor support team at
+          <a href="mailto:tutors@baobabonlineacademy.com">tutors@baobabonlineacademy.com</a>
+          or call <a href="tel:+2348165011291">+234 (0) 816 501 1291</a>
+        </p>
+      </div>
     </div>
+  </div>
 
-    <script>
-const SUPABASE_URL = 'https://vcxdkacxbjsgaoxbhsip.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZjeGRrYWN4YmpzZ2FveGJoc2lwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI5MDQ5ODMsImV4cCI6MjA2ODQ4MDk4M30.T9KhHWzHZWyaZvyeFXtBu8tPLY9JOn6_wCHcH8B46FU';
+  <script>
+    const SUPABASE_URL = 'https://vcxdkacxbjsgaoxbhsip.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZjeGRrYWN4YmpzZ2FveGJoc2lwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI5MDQ5ODMsImV4cCI6MjA2ODQ4MDk4M30.T9KhHWzHZWyaZvyeFXtBu8tPLY9JOn6_wCHcH8B46FU';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-async function handleTutorEmailVerification() {
-    try {
-        const urlParams = new URLSearchParams(window.location.search);
-        console.log("URL params:", Object.fromEntries(urlParams));
-
-        const token_hash = urlParams.get('token_hash');
-        const type = urlParams.get('type');
-        const access_token = urlParams.get('access_token');
-        const refresh_token = urlParams.get('refresh_token');
-        const customToken = urlParams.get('token');
-        const emailParam = urlParams.get('email');
-
-        if (token_hash || type || access_token) {
-            console.log("Supabase native verification detected");
-            return await handleSupabaseVerification({ token_hash, type, access_token, refresh_token });
-        }
-
-        if (customToken && emailParam) {
-            console.log("Custom token verification detected");
-            return await handleCustomTokenVerification(customToken, decodeURIComponent(emailParam));
-        }
-
-        throw new Error("Invalid verification link. Missing required parameters.");
-    } catch (err) {
-        console.error("Verification error:", err);
-        showErrorState(err.message, err);
+    function showSuccessState() {
+      document.getElementById('loadingState').classList.add('hidden');
+      document.getElementById('errorState').classList.add('hidden');
+      document.getElementById('successState').classList.remove('hidden');
     }
-}
+    function showErrorState(message, error = null) {
+      document.getElementById('loadingState').classList.add('hidden');
+      document.getElementById('successState').classList.add('hidden');
+      document.getElementById('errorState').classList.remove('hidden');
+      document.getElementById('errorMessage').textContent = message;
+      if (error && (error.message || error.details || error.stack)) {
+        const errorDetails = document.getElementById('errorDetails');
+        errorDetails.textContent = JSON.stringify({
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+          code: error.code,
+          stack: error.stack
+        }, null, 2);
+        errorDetails.classList.remove('hidden');
+      }
+    }
 
-async function handleSupabaseVerification({ token_hash, type, access_token, refresh_token }) {
-    let verifiedUser = null;
+    async function markEmailAsUsed(email) {
+      try {
+        const { error } = await supabase
+          .from('authorised_tutor_emails')
+          .update({ is_used: true, used_at: new Date().toISOString() })
+          .ilike('email', email);
+        if (error) console.warn('Mark email as used failed:', error);
+      } catch (e) {
+        console.warn('markEmailAsUsed error:', e);
+      }
+    }
 
-    try {
-        if (access_token) {
-            console.log("Using setSession with access_token");
-            const { data, error } = await supabase.auth.setSession({ access_token, refresh_token });
-            if (error) throw error;
-            verifiedUser = data.user;
-        } else if (token_hash && type) {
-            console.log("Using verifyOtp with token_hash");
-            const { data, error } = await supabase.auth.verifyOtp({
-                token_hash,
-                type: type === 'email' ? 'email' : 'signup'
-            });
-            if (error) throw error;
-            verifiedUser = data.user;
+    async function insertOrUpdateTutorProfile(email, userId = null, userMeta = {}) {
+      console.log("Ensuring tutor profile exists for", email);
+      let metaFullName = userMeta.full_name || null;
+      let metaPhone = userMeta.phone || null;
+      let metaExperience = userMeta.teaching_experience || null;
+
+      try {
+        // Supplement from authorised_tutor_emails if needed
+        if (!metaFullName || !metaPhone || !metaExperience) {
+          try {
+            const { data: allowRows } = await supabase
+              .from('authorised_tutor_emails')
+              .select('*')
+              .ilike('email', email)
+              .limit(1);
+            if (allowRows && allowRows.length) {
+              const row = allowRows[0];
+              metaFullName = metaFullName || row.full_name || null;
+              metaPhone = metaPhone || row.phone || null;
+              metaExperience = metaExperience || row.teaching_experience || null;
+            }
+          } catch (e) {
+            console.warn('authorised_tutor_emails lookup failed:', e);
+          }
         }
 
-        if (!verifiedUser) throw new Error("No user returned after verification.");
+        // Does a tutor profile already exist?
+        const { data: existingRows, error: existingErr } = await supabase
+          .from('tutor_profiles')
+          .select('*')
+          .ilike('email', email)
+          .limit(1);
+        if (existingErr) throw new Error(`Database error checking tutor profile: ${existingErr.message}`);
 
-        await insertOrUpdateTutorProfile(verifiedUser.email, verifiedUser.id);
+        if (!existingRows || existingRows.length === 0) {
+          // Insert new (only if none exists)
+          const profileData = {
+            user_id: userId,
+            full_name: metaFullName || ('Tutor ' + email.split('@')[0]),
+            email,
+            phone: metaPhone,
+            teaching_experience: metaExperience,
+            status: 'verified'
+          };
+          const { error: insertErr } = await supabase.from('tutor_profiles').insert([profileData]);
+          if (insertErr) throw new Error(`Error inserting tutor profile: ${insertErr.message} (Code: ${insertErr.code})`);
+          console.log('Tutor profile created.');
+        } else {
+          // Update existing: set verified, set user_id if missing, fill any missing fields
+          const current = existingRows[0];
+          const updateData = { status: 'verified' };
+          if (userId && (!current.user_id || current.user_id !== userId)) updateData.user_id = userId;
+          if (!current.full_name && metaFullName) updateData.full_name = metaFullName;
+          if (!current.phone && metaPhone) updateData.phone = metaPhone;
+          if (!current.teaching_experience && metaExperience) updateData.teaching_experience = metaExperience;
+
+          const { error: updateErr } = await supabase
+            .from('tutor_profiles')
+            .update(updateData)
+            .ilike('email', email);
+          if (updateErr) throw new Error(`Error updating tutor profile: ${updateErr.message} (Code: ${updateErr.code})`);
+          console.log('Tutor profile updated.');
+        }
+      } catch (error) {
+        console.error('insertOrUpdateTutorProfile error:', error);
+        throw error;
+      }
+    }
+
+    async function handleSupabaseVerification({ token_hash, type, access_token, refresh_token }) {
+      let verifiedUser = null;
+
+      try {
+        if (access_token) {
+          // Hash fragment/PKCE path
+          const { data, error } = await supabase.auth.setSession({ access_token, refresh_token });
+          if (error) throw error;
+          verifiedUser = data.user;
+        } else if (token_hash && type) {
+          // OTP path (type=signup or email)
+          const { data, error } = await supabase.auth.verifyOtp({
+            token_hash,
+            type: (type === 'email' ? 'email' : 'signup')
+          });
+          if (error) throw error;
+          verifiedUser = data.user;
+        }
+
+        if (!verifiedUser) throw new Error('No user returned after verification.');
+
+        // Claim/link existing tutor profile, mark email as used
+        await insertOrUpdateTutorProfile(verifiedUser.email, verifiedUser.id, verifiedUser.user_metadata || {});
         await markEmailAsUsed(verifiedUser.email);
+
         showSuccessState();
         setTimeout(() => window.location.href = '/tutor-dashboard.html', 3000);
 
-    } catch (err) {
-        console.error("Supabase verification error:", err);
+      } catch (err) {
+        console.error('Supabase verification error:', err);
         throw err;
+      }
     }
-}
 
-async function handleCustomTokenVerification(token, email) {
-    try {
-        if (!isValidCustomToken(token, email)) {
-            throw new Error("Invalid or expired verification token.");
-        }
-
-        await insertSimpleTutorProfile(email);
-        await markEmailAsUsed(email);
-        showSuccessState();
-    } catch (err) {
-        console.error("Custom token verification error:", err);
-        throw err;
-    }
-}
-
-async function markEmailAsUsed(email) {
-    console.log("Marking email as used:", email);
-    
-    try {
-        const { data, error } = await supabase
-            .from('authorised_tutor_emails')
-            .update({ 
-                is_used: true, 
-                used_at: new Date().toISOString() 
-            })
-            .ilike('email', email)
-            .select();
-
-        if (error) {
-            console.error("Error marking email as used:", error);
-            // Don't throw here - this shouldn't stop the verification process
-        } else {
-            console.log("Email marked as used successfully:", data);
-        }
-    } catch (error) {
-        console.error("Error in markEmailAsUsed:", error);
-        // Don't throw here - this shouldn't stop the verification process
-    }
-}
-
-async function insertSimpleTutorProfile(email) {
-    console.log("Creating simple tutor profile for", email);
-
-    try {
-        // Check if profile already exists
-        let { data: profiles, error: profileError } = await supabase
-            .from('tutor_profiles')
-            .select('*')
-            .ilike('email', email)
-            .limit(1);
-
-        console.log("Existing profiles:", profiles);
-
-        if (profileError) {
-            console.error("Database error checking tutor profile:", profileError);
-            throw new Error(`Database error checking tutor profile: ${profileError.message}`);
-        }
-
-        if (!profiles || profiles.length === 0) {
-            console.log("Profile not found. Creating new profile...");
-
-            // Create a simple profile with NULL user_id
-            let profileData = {
-                user_id: null,
-                full_name: 'Tutor ' + email.split('@')[0],
-                email: email,
-                phone: null,
-                status: 'verified'
-            };
-
-            console.log("Profile data to insert:", profileData);
-
-            const { data: insertedProfile, error: insertError } = await supabase
-                .from('tutor_profiles')
-                .insert([profileData])
-                .select()
-                .single();
-
-            if (insertError) {
-                console.error("Error inserting tutor profile:", insertError);
-                throw new Error(`Error inserting tutor profile: ${insertError.message} (Code: ${insertError.code})`);
-            }
-            console.log("New tutor profile created:", insertedProfile);
-        } else {
-            console.log("Profile exists. Updating to verified status...");
-            
-            const { data: updatedProfile, error: updateError } = await supabase
-                .from('tutor_profiles')
-                .update({ status: 'verified' })
-                .ilike('email', email)
-                .select()
-                .single();
-
-            if (updateError) {
-                console.error("Error updating tutor profile:", updateError);
-                throw new Error(`Error updating tutor profile: ${updateError.message} (Code: ${updateError.code})`);
-            }
-            console.log("Tutor profile updated:", updatedProfile);
-        }
-
-    } catch (error) {
-        console.error("insertSimpleTutorProfile error:", error);
-        throw error;
-    }
-}
-
-async function insertOrUpdateTutorProfile(email, userId = null) {
-    console.log("Ensuring tutor profile exists for", email);
-
-    try {
-        // Try to get data from authorised_tutor_emails
-        let tutorData = null;
-        try {
-            const { data: authEmailData, error: authEmailError } = await supabase
-                .from('authorised_tutor_emails')
-                .select('*')
-                .ilike('email', email)
-                .limit(1);
-
-            if (authEmailError) {
-                console.warn("Could not access authorised_tutor_emails:", authEmailError.message);
-            } else if (authEmailData && authEmailData.length > 0) {
-                tutorData = authEmailData[0];
-                console.log("Tutor data from authorised emails:", tutorData);
-            }
-        } catch (authError) {
-            console.warn("Error accessing authorised_tutor_emails:", authError);
-        }
-
-        // Check if profile already exists
-        let { data: profiles, error: profileError } = await supabase
-            .from('tutor_profiles')
-            .select('*')
-            .ilike('email', email)
-            .limit(1);
-
-        if (profileError) {
-            throw new Error(`Database error checking tutor profile: ${profileError.message}`);
-        }
-
-        if (!profiles || profiles.length === 0) {
-            // Create new profile
-            let profileData = {
-                user_id: userId,
-                full_name: (tutorData && tutorData.full_name) || 'Tutor ' + email.split('@')[0],
-                email: email,
-                phone: (tutorData && tutorData.phone) || null,
-                status: 'verified'
-            };
-
-            const { data: insertedProfile, error: insertError } = await supabase
-                .from('tutor_profiles')
-                .insert([profileData])
-                .select()
-                .single();
-
-            if (insertError) {
-                throw new Error(`Error inserting tutor profile: ${insertError.message} (Code: ${insertError.code})`);
-            }
-            console.log("New tutor profile created:", insertedProfile);
-        } else {
-            // Update existing profile
-            let updateData = { status: 'verified' };
-            if (userId) {
-                updateData.user_id = userId;
-            }
-
-            const { data: updatedProfile, error: updateError } = await supabase
-                .from('tutor_profiles')
-                .update(updateData)
-                .ilike('email', email)
-                .select()
-                .single();
-
-            if (updateError) {
-                throw new Error(`Error updating tutor profile: ${updateError.message} (Code: ${updateError.code})`);
-            }
-            console.log("Tutor profile updated:", updatedProfile);
-        }
-
-    } catch (error) {
-        console.error("insertOrUpdateTutorProfile error:", error);
-        throw error;
-    }
-}
-
-function isValidCustomToken(token, email) {
-    try {
+    // Optional legacy custom token handler (kept for any old EmailJS links)
+    function isValidCustomToken(token, email) {
+      try {
         const decoded = atob(token);
         const [tokenEmail, tokenTimestamp] = decoded.split('-');
-        if (tokenEmail !== email) {
-            return false;
-        }
-
-        const maxAge = 24 * 60 * 60 * 1000; // 24 hours
-        const age = Date.now() - parseInt(tokenTimestamp);
-        if (age > maxAge) {
-            return false;
-        }
-
-        return true;
-    } catch (error) {
-        return false;
+        if (tokenEmail !== email) return false;
+        const maxAge = 24 * 60 * 60 * 1000; // 24h
+        const age = Date.now() - parseInt(tokenTimestamp, 10);
+        return age <= maxAge;
+      } catch { return false; }
     }
-}
-
-function showSuccessState() {
-    document.getElementById('loadingState').classList.add('hidden');
-    document.getElementById('errorState').classList.add('hidden');
-    document.getElementById('successState').classList.remove('hidden');
-}
-
-function showErrorState(message, error = null) {
-    document.getElementById('loadingState').classList.add('hidden');
-    document.getElementById('successState').classList.add('hidden');
-    document.getElementById('errorState').classList.remove('hidden');
-    document.getElementById('errorMessage').textContent = message;
-    
-    if (error && (error.message || error.details || error.stack)) {
-        const errorDetails = document.getElementById('errorDetails');
-        errorDetails.textContent = JSON.stringify({
-            message: error.message,
-            details: error.details,
-            hint: error.hint,
-            code: error.code,
-            stack: error.stack
-        }, null, 2);
-        errorDetails.classList.remove('hidden');
+    async function handleCustomTokenVerification(token, email) {
+      if (!isValidCustomToken(token, email)) throw new Error('Invalid or expired verification token.');
+      // Create/update a simple verified profile by email (no user_id, as there is no Supabase auth in this legacy path)
+      await insertOrUpdateTutorProfile(email, null, {});
+      await markEmailAsUsed(email);
+      showSuccessState();
     }
-}
 
-document.addEventListener('DOMContentLoaded', () => {
-    console.log("Tutor verification page loaded");
-    setTimeout(handleTutorEmailVerification, 1000);
-});
-</script>
+    async function handleTutorEmailVerification() {
+      try {
+        const url = new URL(window.location.href);
+        const token_hash = url.searchParams.get('token_hash');
+        const type = url.searchParams.get('type');
+        const access_token = url.searchParams.get('access_token');
+        const refresh_token = url.searchParams.get('refresh_token');
+        const customToken = url.searchParams.get('token');
+        const emailParam = url.searchParams.get('email');
 
+        if (token_hash || type || access_token) {
+          return await handleSupabaseVerification({ token_hash, type, access_token, refresh_token });
+        }
+        if (customToken && emailParam) {
+          return await handleCustomTokenVerification(customToken, decodeURIComponent(emailParam));
+        }
+        throw new Error('Invalid verification link. Missing required parameters.');
+      } catch (err) {
+        console.error('Verification error:', err);
+        showErrorState(err.message, err);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('Tutor verification page loaded');
+      setTimeout(handleTutorEmailVerification, 500);
+    });
+  </script>
 </body>
 </html>
