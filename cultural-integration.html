@@ -1,754 +1,460 @@
 <!DOCTYPE html>
-<html lang="en-GB">
+<html lang="en" data-theme="light">
 <head>
-  <meta charset="UTF-8">
-  <link rel="icon" type="image/png" sizes="32x32" href="/Images/logo.jpg">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cultural Integration Handbook - Tutor Portal - Baobab Online Academy</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cultural Integration Handbook - Tutor Portal - Baobab Digital Academy</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:#059669;--primary-dark:#047857;--primary-light:#34d399;
+  --accent:#f59e0b;--accent-dark:#d97706;
+  --bg:#ffffff;--bg-s:#f0fdf4;--bg-t:#f3f4f6;
+  --text:#1f2937;--text-s:#4b5563;--text-t:#6b7280;
+  --card:rgba(255,255,255,.72);--card-border:rgba(5,150,105,.12);
+  --shadow:0 8px 32px rgba(0,0,0,.08);
+  --radius:1rem;--nav-h:72px;
+  --gradient-1:#059669;--gradient-2:#f59e0b;--gradient-3:#0d9488;
+}
+[data-theme="dark"]{
+  --bg:#0f172a;--bg-s:#1e293b;--bg-t:#1e293b;
+  --text:#f1f5f9;--text-s:#cbd5e1;--text-t:#94a3b8;
+  --card:rgba(30,41,59,.72);--card-border:rgba(52,211,153,.15);
+  --shadow:0 8px 32px rgba(0,0,0,.3);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;transition:background .4s,color .4s;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
 
-  <!-- Fonts & Icons -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+/* NAV */
+.nav{position:fixed;top:0;left:0;width:100%;height:var(--nav-h);background:var(--card);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--card-border);z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;transition:background .4s}
+.nav-brand{display:flex;align-items:center;gap:.5rem;font-weight:700;font-size:1.15rem;color:var(--primary)}
+.nav-brand span{font-size:1.4rem}
+.nav-links{display:flex;align-items:center;gap:1.5rem;list-style:none}
+.nav-links a{font-size:.9rem;font-weight:500;color:var(--text-s);transition:color .3s}
+.nav-links a:hover{color:var(--primary)}
+.nav-btn{background:var(--primary);color:#fff;padding:.55rem 1.3rem;border-radius:.5rem;font-weight:600;font-size:.85rem;border:none;cursor:pointer;transition:background .3s,transform .2s}
+.nav-btn:hover{background:var(--primary-dark);transform:translateY(-1px)}
+.nav-btn.outline{background:transparent;border:1.5px solid var(--primary);color:var(--primary)}
+.nav-btn.outline:hover{background:var(--primary);color:#fff}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+.hamburger span{width:24px;height:2.5px;background:var(--text);border-radius:2px;transition:all .3s}
+.mobile-menu{display:none;position:fixed;top:var(--nav-h);left:0;width:100%;background:var(--card);backdrop-filter:blur(20px);border-bottom:1px solid var(--card-border);padding:1rem 2rem;z-index:999}
+.mobile-menu.active{display:block}
+.mobile-menu a{display:block;padding:.6rem 0;color:var(--text-s);font-weight:500}
+.mobile-menu a:hover{color:var(--primary)}
 
-  <style>
-    :root{
-      --baobab-brown:#8D4004;
-      --canopy-green:#2E7D32;
-      --sunset-gold:#F57C00;
-      --trunk-gray:#5D4037;
-      --sky-blue:#1976D2;
-      --earth-cream:#FFF8E1;
-      --desert-orange:#FF5722;
-      --sage-green:#689F38;
-      --deep-charcoal:#263238;
-      --white:#FFFFFF;
-      --tutor-teal:#00695C;
-      --tutor-light-teal:#B2DFDB;
+/* HERO */
+.hero{position:relative;min-height:60vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:calc(var(--nav-h) + 3rem) 2rem 4rem;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.35;animation:blobFloat 8s ease-in-out infinite}
+.blob-1{width:500px;height:500px;background:var(--gradient-1);top:-10%;left:-10%;animation-delay:0s}
+.blob-2{width:400px;height:400px;background:var(--gradient-2);top:20%;right:-8%;animation-delay:2s}
+.blob-3{width:350px;height:350px;background:var(--gradient-3);bottom:-5%;left:30%;animation-delay:4s}
+@keyframes blobFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-20px) scale(1.05)}66%{transform:translate(-20px,15px) scale(.95)}}
+.hero-content{position:relative;z-index:1;max-width:750px}
+.hero-badge{display:inline-flex;align-items:center;gap:.4rem;background:var(--card);backdrop-filter:blur(12px);border:1px solid var(--card-border);padding:.4rem 1rem;border-radius:2rem;font-size:.8rem;font-weight:600;color:var(--primary);margin-bottom:1.2rem}
+.hero h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;line-height:1.15;margin-bottom:1rem;background:linear-gradient(135deg,var(--primary),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:1.1rem;color:var(--text-s);max-width:600px;margin:0 auto}
 
-      --transition-slow:all .6s cubic-bezier(.165,.84,.44,1);
-      --transition-medium:all .4s cubic-bezier(.165,.84,.44,1);
-      --transition-fast:all .3s cubic-bezier(.165,.84,.44,1);
+/* SECTIONS */
+section{padding:4rem 2rem}
+.container{max-width:1100px;margin:0 auto}
+.section-label{display:inline-flex;align-items:center;gap:.4rem;background:rgba(5,150,105,.1);color:var(--primary);font-size:.8rem;font-weight:600;padding:.35rem 1rem;border-radius:2rem;margin-bottom:.75rem}
+.section-title{font-size:clamp(1.5rem,3.5vw,2.2rem);font-weight:800;margin-bottom:.6rem}
+.section-sub{color:var(--text-s);font-size:1rem;max-width:650px}
+.text-center{text-align:center;margin-left:auto;margin-right:auto}
 
-      --shadow-sm:0 1px 3px rgba(0,0,0,.1);
-      --shadow-md:0 4px 6px rgba(0,0,0,.1);
-      --shadow-lg:0 10px 15px -3px rgba(0,0,0,.1);
-      --shadow-xl:0 20px 25px -5px rgba(0,0,0,.1);
-    }
+/* GLASS CARD */
+.glass{background:var(--card);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--card-border);border-radius:var(--radius);padding:1.8rem;box-shadow:var(--shadow);transition:transform .3s,box-shadow .3s}
+.glass:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.12)}
 
-    *{margin:0;padding:0;box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      font-family:'Open Sans',sans-serif;
-      color:var(--deep-charcoal);
-      line-height:1.6;
-      background:var(--white);
-      overflow-x:hidden;
-    }
-    h1,h2,h3,h4,h5{
-      font-family:'Merriweather',serif;
-      font-weight:700;
-      line-height:1.25;
-      color:var(--deep-charcoal);
-    }
-    .container{
-      width:100%;
-      max-width:1200px;
-      margin:0 auto;
-      padding:0 20px;
-      position:relative;
-    }
-    .section{padding:80px 0;position:relative}
-    .btn{
-      display:inline-flex;align-items:center;gap:10px;
-      padding:12px 28px;border-radius:30px;font-weight:600;
-      transition:var(--transition-fast);text-decoration:none;cursor:pointer;
-      border:2px solid transparent;
-    }
-    .btn-primary{background:var(--tutor-teal);color:var(--white);border-color:var(--tutor-teal)}
-    .btn-primary:hover{background:var(--canopy-green);border-color:var(--canopy-green);transform:translateY(-2px);box-shadow:var(--shadow-md)}
-    .btn-outlined{background:transparent;color:var(--tutor-teal);border-color:var(--tutor-teal)}
-    .btn-outlined:hover{background:var(--tutor-teal);color:var(--white)}
-    .btn-secondary{background:var(--sunset-gold);color:var(--deep-charcoal);border-color:var(--sunset-gold)}
-    .badge{
-      display:inline-flex;align-items:center;gap:8px;
-      background:rgba(255,255,255,.18);color:#fff;
-      padding:8px 14px;border-radius:999px;font-weight:700;font-size:.9rem;
-      letter-spacing:.2px
-    }
+/* GRID */
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem}
 
-    /* Header */
-    .header{
-      position:sticky;top:0;left:0;width:100%;z-index:1000;
-      background:var(--white);box-shadow:var(--shadow-md);padding:10px 0
-    }
-    .nav-wrapper{display:flex;justify-content:space-between;align-items:center}
-    .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-    .logo-icon{
-      width:34px;height:34px;border-radius:8px;background:var(--tutor-teal);
-      color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px
-    }
-    .logo-text{font-weight:800;font-size:20px;color:var(--baobab-brown)}
-    .nav-menu{display:flex;gap:28px;list-style:none}
-    .nav-link{text-decoration:none;color:var(--deep-charcoal);font-weight:600}
-    .nav-link:hover{color:var(--tutor-teal)}
-    .nav-buttons{display:flex;gap:12px}
-    .menu-toggle{display:none;font-size:24px;color:var(--tutor-teal);cursor:pointer}
+/* SCROLL ANIMATIONS */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+.reveal.active{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.15s}
+.reveal-delay-2{transition-delay:.3s}
+.reveal-delay-3{transition-delay:.45s}
 
-    /* Mobile menu */
-    .mobile-menu-panel{
-      position:fixed;top:0;right:-100%;width:300px;height:100vh;background:#fff;z-index:1100;
-      padding:80px 28px 28px;box-shadow:var(--shadow-xl);transition:var(--transition-medium);overflow-y:auto
-    }
-    .mobile-menu-panel.active{right:0}
-    .mobile-menu{list-style:none;display:flex;flex-direction:column;gap:10px}
-    .mobile-link{display:block;padding:12px 0;border-bottom:1px solid var(--earth-cream);text-decoration:none;color:var(--deep-charcoal);font-weight:600}
-    .mobile-link:hover{color:var(--tutor-teal)}
-    .mobile-buttons{display:flex;flex-direction:column;gap:12px;margin-top:20px}
-    .menu-overlay{
-      position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);
-      z-index:1090;opacity:0;visibility:hidden;transition:var(--transition-medium)
-    }
-    .menu-overlay.active{opacity:1;visibility:visible}
+/* ICON CIRCLE */
+.icon-circle{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:1rem;flex-shrink:0}
+.icon-circle.green{background:rgba(5,150,105,.12);color:var(--primary)}
+.icon-circle.amber{background:rgba(245,158,11,.12);color:var(--accent)}
+.icon-circle.teal{background:rgba(13,148,136,.12);color:#0d9488}
 
-    /* Hero */
-    .hero{
-      background:linear-gradient(135deg, var(--tutor-teal) 0%, var(--sunset-gold) 60%, var(--baobab-brown) 100%);
-      color:#fff;padding:120px 0 60px;position:relative;overflow:hidden
-    }
-    .hero::before{
-      content:"";position:absolute;top:-120px;left:-120px;width:300px;height:300px;border-radius:50%;
-      background:radial-gradient(circle at center, rgba(255,255,255,.22), rgba(255,255,255,0) 60%)
-    }
-    .hero::after{
-      content:"";position:absolute;right:-100px;bottom:-100px;width:280px;height:280px;border-radius:50%;
-      background:radial-gradient(circle at center, rgba(255,255,255,.16), rgba(255,255,255,0) 60%)
-    }
-    .hero-title{font-size:2.8rem;margin-top:12px;margin-bottom:14px}
-    .hero-subtitle{font-size:1.12rem;opacity:.95;max-width:880px}
-    .breadcrumbs{
-      display:inline-flex;align-items:center;gap:8px;color:#fff;opacity:.9;text-decoration:none;font-weight:700
-    }
-    .breadcrumbs:hover{opacity:1;text-decoration:underline}
+/* TABS */
+.tabs{display:flex;gap:.5rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.tab-btn{padding:.55rem 1.2rem;border-radius:.5rem;border:1.5px solid var(--card-border);background:var(--card);backdrop-filter:blur(10px);font-size:.85rem;font-weight:600;cursor:pointer;color:var(--text-s);transition:all .3s}
+.tab-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.tab-content{display:none}
+.tab-content.active{display:block}
 
-    /* Intro */
-    .intro{background:var(--earth-cream)}
-    .lead{font-size:1.1rem;color:var(--trunk-gray);max-width:980px;margin:0 auto}
+/* PHRASE CARD */
+.phrase-card{display:flex;align-items:center;justify-content:space-between;gap:1rem;background:var(--card);backdrop-filter:blur(10px);border:1px solid var(--card-border);border-radius:.75rem;padding:1rem 1.2rem;margin-bottom:.75rem;transition:transform .2s}
+.phrase-card:hover{transform:translateX(4px)}
+.phrase-info h4{font-size:.95rem;font-weight:700;margin-bottom:.15rem}
+.phrase-info p{font-size:.82rem;color:var(--text-t)}
+.phrase-badge{font-size:.7rem;background:rgba(5,150,105,.1);color:var(--primary);padding:.2rem .6rem;border-radius:1rem;font-weight:600;margin-top:.3rem;display:inline-block}
+.copy-btn{background:var(--primary);color:#fff;border:none;padding:.45rem .9rem;border-radius:.4rem;font-size:.78rem;font-weight:600;cursor:pointer;transition:background .3s,transform .2s;white-space:nowrap}
+.copy-btn:hover{background:var(--primary-dark);transform:scale(1.03)}
 
-    /* Why it matters */
-    .cards-grid{
-      display:grid;grid-template-columns:repeat(3,1fr);gap:24px
-    }
-    .card{
-      background:#fff;border-radius:18px;padding:26px;box-shadow:var(--shadow-lg);border:3px solid transparent;transition:var(--transition-medium)
-    }
-    .card:hover{transform:translateY(-8px);border-color:var(--sunset-gold);box-shadow:var(--shadow-xl)}
-    .card-icon{
-      width:60px;height:60px;border-radius:14px;background:linear-gradient(135deg, var(--sunset-gold), #ffd699);
-      color:#4d2c00;display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:14px
-    }
-    .muted{color:var(--trunk-gray)}
+/* CALENDAR TABLE */
+.cal-grid{display:grid;gap:1rem}
+.cal-item{display:flex;gap:1.2rem;align-items:flex-start;background:var(--card);backdrop-filter:blur(10px);border:1px solid var(--card-border);border-radius:.75rem;padding:1.2rem;transition:transform .3s}
+.cal-item:hover{transform:translateY(-2px)}
+.cal-month{font-size:.75rem;font-weight:700;color:var(--primary);background:rgba(5,150,105,.1);padding:.3rem .7rem;border-radius:.4rem;white-space:nowrap;min-width:65px;text-align:center}
+.cal-info h4{font-size:.95rem;font-weight:700;margin-bottom:.25rem}
+.cal-info p{font-size:.85rem;color:var(--text-s)}
 
-    /* Language kits (tabs) */
-    .tabs{
-      background:#fff;border-radius:16px;box-shadow:var(--shadow-lg);overflow:hidden
-    }
-    .tab-list{
-      display:flex;gap:8px;flex-wrap:wrap;list-style:none;margin:0;padding:14px;background:var(--tutor-light-teal)
-    }
-    .tab-btn{
-      border:none;background:#fff;color:var(--deep-charcoal);padding:10px 14px;border-radius:999px;font-weight:700;cursor:pointer;
-      box-shadow:var(--shadow-sm);transition:var(--transition-fast)
-    }
-    .tab-btn:hover{transform:translateY(-2px)}
-    .tab-btn.active{background:var(--tutor-teal);color:#fff}
-    .tab-panel{display:none;padding:22px}
-    .tab-panel.active{display:block;animation:fadeIn .35s ease}
-    @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+/* STORY CARD */
+.story-card{background:var(--card);backdrop-filter:blur(12px);border:1px solid var(--card-border);border-radius:var(--radius);overflow:hidden;transition:transform .3s}
+.story-card:hover{transform:translateY(-4px)}
+.story-header{padding:1.3rem 1.5rem;border-bottom:1px solid var(--card-border)}
+.story-header h3{font-size:1.05rem;font-weight:700;margin-bottom:.4rem}
+.story-tags{display:flex;gap:.4rem;flex-wrap:wrap}
+.story-tag{font-size:.7rem;font-weight:600;padding:.2rem .55rem;border-radius:1rem;background:rgba(5,150,105,.1);color:var(--primary)}
+.story-body{padding:1.3rem 1.5rem}
+.story-body p{font-size:.88rem;color:var(--text-s);margin-bottom:.8rem}
+.story-body ul{list-style:none;padding:0}
+.story-body li{font-size:.85rem;color:var(--text-s);padding:.3rem 0;padding-left:1.2rem;position:relative}
+.story-body li::before{content:"•";color:var(--primary);position:absolute;left:0;font-weight:700}
 
-    .phrase-grid{
-      display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:10px
-    }
-    .phrase{
-      background:#fff;border:2px solid var(--earth-cream);border-radius:12px;padding:14px;box-shadow:var(--shadow-sm)
-    }
-    .phrase .native{font-weight:800}
-    .phrase .gloss{font-size:.95rem;color:var(--trunk-gray)}
-    .actions{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
-    .pill{
-      display:inline-flex;align-items:center;gap:8px;background:var(--earth-cream);color:var(--deep-charcoal);
-      padding:6px 12px;border-radius:999px;font-weight:700;font-size:.9rem
-    }
+/* SAFEGUARD */
+.safeguard-item{display:flex;gap:1rem;align-items:flex-start;padding:1rem 0;border-bottom:1px solid var(--card-border)}
+.safeguard-item:last-child{border-bottom:none}
+.safeguard-icon{width:36px;height:36px;border-radius:50%;background:rgba(5,150,105,.1);color:var(--primary);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1rem}
+.safeguard-text h4{font-size:.92rem;font-weight:700;margin-bottom:.2rem}
+.safeguard-text p{font-size:.85rem;color:var(--text-s)}
 
-    /* Proverb library */
-    .proverb-box{
-      background:#fff;border-radius:16px;padding:24px;box-shadow:var(--shadow-lg);border:3px solid var(--tutor-light-teal)
-    }
-    .proverb-text{font-size:1.2rem;font-weight:800;color:var(--tutor-teal)}
-    .proverb-meaning{margin-top:8px;color:var(--trunk-gray)}
-    .proverb-actions{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap}
+/* TEMPLATE BOX */
+.template-box{background:var(--bg-s);border:1.5px dashed var(--card-border);border-radius:var(--radius);padding:1.5rem;font-family:'Courier New',monospace;font-size:.82rem;color:var(--text-s);white-space:pre-wrap;max-height:400px;overflow-y:auto;line-height:1.8}
 
-    /* Cultural calendar */
-    .timeline{
-      display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:14px
-    }
-    .timeline-item{
-      background:#fff;border-left:6px solid var(--baobab-brown);border-radius:12px;padding:18px 18px 18px 16px;
-      box-shadow:var(--shadow-md);position:relative
-    }
-    .timeline-item .kicker{font-weight:800;color:var(--baobab-brown);text-transform:uppercase;font-size:.8rem;letter-spacing:.6px}
-    .timeline-item h5{margin:6px 0 6px}
-    .timeline-item p{color:var(--trunk-gray)}
-    .flag{color:var(--sunset-gold)}
+/* TIP CARDS */
+.tip-card{text-align:center;padding:2rem 1.5rem}
+.tip-card .icon-circle{margin:0 auto 1rem}
+.tip-card h3{font-size:1.05rem;font-weight:700;margin-bottom:.5rem}
+.tip-card p{font-size:.88rem;color:var(--text-s)}
 
-    /* Story bank (accordion) */
-    .accordion{border-radius:16px;overflow:hidden;box-shadow:var(--shadow-lg);background:#fff}
-    .acc-item + .acc-item{border-top:1px solid #f0f0f0}
-    .acc-header{
-      width:100%;text-align:left;border:0;background:#fff;padding:18px 20px;font-weight:800;cursor:pointer;display:flex;justify-content:space-between;align-items:center
-    }
-    .acc-header:hover{background:#fafafa}
-    .acc-content{display:none;padding:0 20px 20px;color:var(--trunk-gray)}
-    .acc-item.active .acc-content{display:block}
-    .rotate{transition:transform .25s ease}
-    .acc-item.active .rotate{transform:rotate(180deg)}
-    .story-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-    .tag{background:#f3f3f3;border-radius:999px;padding:4px 10px;font-size:.85rem}
+/* CTA SECTION */
+.cta-section{background:linear-gradient(135deg,var(--primary-dark),var(--primary),var(--gradient-3));padding:4rem 2rem;text-align:center;color:#fff;border-radius:var(--radius);margin:2rem auto;max-width:1100px;position:relative;overflow:hidden}
+.cta-section h2{font-size:clamp(1.5rem,3vw,2rem);font-weight:800;margin-bottom:.6rem}
+.cta-section p{opacity:.9;margin-bottom:1.5rem;font-size:1rem}
+.cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.cta-btn{padding:.7rem 1.6rem;border-radius:.5rem;font-weight:600;font-size:.9rem;cursor:pointer;border:none;transition:all .3s}
+.cta-btn.white{background:#fff;color:var(--primary-dark)}
+.cta-btn.white:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.2)}
+.cta-btn.outline-w{background:transparent;border:2px solid rgba(255,255,255,.5);color:#fff}
+.cta-btn.outline-w:hover{background:rgba(255,255,255,.15)}
 
-    /* Respect & safeguarding checklist */
-    .checklist{
-      display:grid;grid-template-columns:repeat(2,1fr);gap:14px
-    }
-    .check-item{
-      display:flex;gap:10px;align-items:flex-start;background:#fff;border:2px solid var(--earth-cream);
-      padding:12px;border-radius:12px
-    }
-    .check-item i{color:var(--canopy-green);margin-top:3px}
+/* PROVERB BOX */
+.proverb-box{background:var(--card);backdrop-filter:blur(14px);border:1px solid var(--card-border);border-radius:var(--radius);padding:2rem;text-align:center;max-width:600px;margin:0 auto}
+.proverb-box .proverb-origin{font-size:.8rem;font-weight:600;color:var(--primary);margin-bottom:.75rem}
+.proverb-box blockquote{font-size:1.15rem;font-weight:700;font-style:italic;margin-bottom:.5rem}
+.proverb-box .proverb-meaning{font-size:.9rem;color:var(--text-s);margin-bottom:.5rem}
+.proverb-box .proverb-prompt{font-size:.85rem;color:var(--accent-dark);font-weight:500;font-style:italic;margin-bottom:1.2rem}
+.proverb-btns{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap}
 
-    /* Planner */
-    .planner{
-      background:linear-gradient(135deg, #ffffff, #fff5e8)
-    }
-    .planner-wrap{
-      display:grid;grid-template-columns:1.2fr .8fr;gap:22px;align-items:stretch
-    }
-    .template{
-      background:#fff;border-radius:16px;padding:18px;border:2px dashed var(--sunset-gold)
-    }
-    textarea.template-area{
-      width:100%;min-height:260px;border:0;outline:none;font-family:'Open Sans',sans-serif;border-radius:10px;padding:14px;background:#fffaf3
-    }
-    .tips{
-      background:#fff;border-radius:16px;padding:22px;box-shadow:var(--shadow-lg)
-    }
-    .tip{
-      display:flex;gap:12px;align-items:flex-start;background:var(--earth-cream);padding:12px;border-radius:12px;margin-bottom:12px
-    }
-    .tip i{color:var(--baobab-brown);margin-top:3px}
+/* NOTE */
+.note{background:rgba(245,158,11,.08);border-left:4px solid var(--accent);padding:1rem 1.2rem;border-radius:0 .5rem .5rem 0;font-size:.88rem;color:var(--text-s);margin:1.5rem 0}
+.tip-note{background:rgba(5,150,105,.06);border-left:4px solid var(--primary);padding:.8rem 1rem;border-radius:0 .5rem .5rem 0;font-size:.85rem;color:var(--text-s);margin:.75rem 0}
 
-    /* Footer */
-    .footer{background:var(--deep-charcoal);color:#fff;padding:60px 0 28px;margin-top:40px}
-    .footer-content{
-      display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:36px;margin-bottom:28px
-    }
-    .footer h4{color:var(--tutor-teal);margin-bottom:12px}
-    .footer-link{color:rgba(255,255,255,.8);text-decoration:none;display:block;padding:6px 0}
-    .footer-link:hover{color:var(--sunset-gold)}
-    .footer-bottom{border-top:1px solid rgba(255,255,255,.12);margin-top:10px;padding-top:18px;text-align:center;color:rgba(255,255,255,.8)}
+/* FOOTER */
+.footer{background:var(--bg-s);border-top:1px solid var(--card-border);padding:3.5rem 2rem 1.5rem;margin-top:4rem;transition:background .4s}
+.footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem;max-width:1100px;margin:0 auto}
+.footer-col h3{font-size:.92rem;font-weight:700;margin-bottom:1rem;color:var(--text)}
+.footer-col a{display:block;font-size:.85rem;color:var(--text-s);padding:.3rem 0;transition:color .3s}
+.footer-col a:hover{color:var(--primary)}
+.footer-col p{font-size:.85rem;color:var(--text-s);line-height:1.6}
+.footer-bottom{text-align:center;padding-top:2rem;margin-top:2rem;border-top:1px solid var(--card-border);max-width:1100px;margin-left:auto;margin-right:auto}
+.footer-bottom p{font-size:.8rem;color:var(--text-t)}
 
-    /* Utilities */
-    .section-title{font-size:2.2rem;color:var(--baobab-brown);margin-bottom:10px}
-    .section-subtitle{color:var(--trunk-gray);margin-bottom:18px}
-    .spacer{height:14px}
+/* DARK TOGGLE */
+.dark-toggle{position:fixed;bottom:5.5rem;right:1.5rem;width:48px;height:48px;border-radius:50%;background:var(--card);backdrop-filter:blur(12px);border:1px solid var(--card-border);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:999;font-size:1.2rem;box-shadow:var(--shadow);transition:transform .3s}
+.dark-toggle:hover{transform:scale(1.1)}
 
-    /* Responsive */
-    @media (max-width: 1100px){
-      .phrase-grid{grid-template-columns:repeat(2,1fr)}
-      .timeline{grid-template-columns:repeat(2,1fr)}
-      .planner-wrap{grid-template-columns:1fr}
-      .checklist{grid-template-columns:1fr}
-    }
-    @media (max-width: 768px){
-      .menu-toggle{display:block}
-      .nav-menu,.nav-buttons{display:none}
-      .hero{padding:100px 0 50px}
-      .hero-title{font-size:2.2rem}
-      .cards-grid{grid-template-columns:1fr}
-      .phrase-grid{grid-template-columns:1fr}
-      .timeline{grid-template-columns:1fr}
-      .section{padding:60px 0}
-      .container{padding:0 16px}
-    }
-  </style>
+/* SCROLL TOP */
+.scroll-top{position:fixed;bottom:1.5rem;right:1.5rem;width:48px;height:48px;border-radius:50%;background:var(--primary);color:#fff;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:999;font-size:1.2rem;box-shadow:0 4px 16px rgba(5,150,105,.3);opacity:0;transform:translateY(20px);transition:opacity .3s,transform .3s}
+.scroll-top.visible{opacity:1;transform:translateY(0)}
+.scroll-top:hover{background:var(--primary-dark)}
+
+/* TOAST */
+.toast-container{position:fixed;top:calc(var(--nav-h) + .5rem);right:1rem;z-index:1100;display:flex;flex-direction:column;gap:.5rem}
+.toast{background:var(--card);backdrop-filter:blur(14px);border:1px solid var(--card-border);padding:.8rem 1.2rem;border-radius:.6rem;font-size:.85rem;font-weight:500;box-shadow:var(--shadow);animation:toastIn .3s ease}
+.toast.success{border-left:4px solid var(--primary)}
+.toast.info{border-left:4px solid var(--accent)}
+@keyframes toastIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+
+@media(max-width:768px){
+  .nav-links,.nav .nav-btn{display:none}
+  .hamburger{display:flex}
+  .hero{min-height:50vh;padding-top:calc(var(--nav-h) + 2rem)}
+  .hero h1{font-size:1.8rem}
+  .grid-3{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:480px){
+  .footer-grid{grid-template-columns:1fr}
+  .tabs{justify-content:center}
+}
+</style>
 </head>
 <body>
-  <!-- Header -->
-  <header class="header">
-    <div class="container">
-      <div class="nav-wrapper">
-        <a href="index.html" class="logo" aria-label="Tutor Portal Home">
-          <div class="logo-icon"><i class="fas fa-chalkboard-teacher"></i></div>
-          <div class="logo-text">Tutor Portal</div>
-        </a>
 
-        <div class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
-          <i class="fas fa-bars"></i>
-        </div>
+<!-- NAV -->
+<nav class="nav">
+  <a href="index.html" class="nav-brand"><span>🌳</span> Baobab Digital Academy</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="index.html#why-us">Why Choose Us</a></li>
+    <li><a href="index.html#earnings">Earnings</a></li>
+    <li><a href="index.html#apply">Apply Now</a></li>
+  </ul>
+  <div style="display:flex;gap:.5rem;align-items:center">
+    <button class="nav-btn outline" onclick="location.href='index.html#login'">Login</button>
+    <button class="nav-btn" onclick="location.href='index.html#apply'">Apply</button>
+  </div>
+  <button class="hamburger" onclick="document.querySelector('.mobile-menu').classList.toggle('active')" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu">
+  <a href="index.html">Home</a>
+  <a href="index.html#why-us">Why Choose Us</a>
+  <a href="index.html#earnings">Earnings</a>
+  <a href="index.html#apply">Apply Now</a>
+  <a href="index.html#login">Login</a>
+</div>
 
-        <ul class="nav-menu">
-          <li><a class="nav-link" href="index.html">Home</a></li>
-          <li><a class="nav-link" href="index.html#why-choose">Why Choose Us</a></li>
-          <li><a class="nav-link" href="index.html#earnings">Earnings</a></li>
-          <li><a class="nav-link" href="index.html#apply">Apply Now</a></li>
-          <li><a class="nav-link" href="https://baobabonlineacademy.com">Main Site</a></li>
-        </ul>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge">🎭 Culture in Every Lesson</div>
+    <h1>Cultural Integration Handbook</h1>
+    <p>Celebrate Nigerian heritage through language, stories, music, art, and lived experiences. This handbook offers practical tools and examples to weave authentic cultural perspectives into rigorous, global curricula—respectfully and joyfully.</p>
+  </div>
+</section>
 
-        <div class="nav-buttons">
-          <button class="btn btn-outlined" onclick="openLoginModal()"><i class="fas fa-right-to-bracket"></i> Login</button>
-          <a class="btn btn-primary" href="index.html#apply"><i class="fas fa-paper-plane"></i> Apply</a>
-        </div>
-      </div>
+<!-- WHY IT MATTERS -->
+<section>
+  <div class="container">
+    <div class="text-center reveal">
+      <div class="section-label">🌍 Foundation</div>
+      <h2 class="section-title">Why It Matters</h2>
+      <p class="section-sub text-center">Cultural integration strengthens identity, deepens engagement, and connects learning to real life. When students see their cultures honoured, they participate more, retain better, and transfer knowledge across contexts.</p>
     </div>
-  </header>
-
-  <!-- Mobile Menu -->
-  <div class="mobile-menu-panel" id="mobileMenuPanel" aria-hidden="true">
-    <ul class="mobile-menu">
-      <li><a class="mobile-link" href="index.html">Home</a></li>
-      <li><a class="mobile-link" href="index.html#why-choose">Why Choose Us</a></li>
-      <li><a class="mobile-link" href="index.html#earnings">Earnings</a></li>
-      <li><a class="mobile-link" href="index.html#apply">Apply Now</a></li>
-      <li><a class="mobile-link" href="https://baobabonlineacademy.com">Main Site</a></li>
-    </ul>
-    <div class="mobile-buttons">
-      <button class="btn btn-outlined" onclick="openLoginModal()"><i class="fas fa-right-to-bracket"></i> Login</button>
-      <a class="btn btn-primary" href="index.html#apply"><i class="fas fa-paper-plane"></i> Apply</a>
+    <div class="grid-3" style="margin-top:2rem">
+      <div class="glass reveal reveal-delay-1">
+        <div class="icon-circle green">🗣️</div>
+        <h3 style="font-weight:700;margin-bottom:.4rem">Language as Asset</h3>
+        <p style="font-size:.9rem;color:var(--text-s)">Use Yoruba, Igbo, Hausa and other Nigerian language phrases to scaffold understanding and build pride, while maintaining academic English mastery.</p>
+      </div>
+      <div class="glass reveal reveal-delay-2">
+        <div class="icon-circle amber">📖</div>
+        <h3 style="font-weight:700;margin-bottom:.4rem">Stories & Proverbs</h3>
+        <p style="font-size:.9rem;color:var(--text-s)">Teach big ideas through folktales and sayings, linking moral reasoning to modern dilemmas.</p>
+      </div>
+      <div class="glass reveal reveal-delay-3">
+        <div class="icon-circle teal">🎨</div>
+        <h3 style="font-weight:700;margin-bottom:.4rem">Arts & Rituals</h3>
+        <p style="font-size:.9rem;color:var(--text-s)">Explore music, textiles, festivals, and crafts to animate concepts in science, maths, and humanities.</p>
+      </div>
     </div>
   </div>
-  <div class="menu-overlay" id="menuOverlay"></div>
+</section>
 
-  <!-- Hero -->
-  <section class="hero">
-    <div class="container">
-      <a class="breadcrumbs" href="index.html" aria-label="Back to home">
-        <i class="fas fa-arrow-left"></i> Back to Home
-      </a>
-      <div class="spacer"></div>
-      <span class="badge"><i class="fas fa-feather"></i> Culture in Every Lesson</span>
-      <h1 class="hero-title">Cultural Integration Handbook</h1>
-      <p class="hero-subtitle">
-        Celebrate Nigerian heritage through language, stories, music, art, and lived experiences. This handbook offers practical tools
-        and examples to weave authentic cultural perspectives into rigorous, global curricula—respectfully and joyfully.
-      </p>
+<!-- CLASSROOM PHRASE KITS -->
+<section style="background:var(--bg-s)">
+  <div class="container">
+    <div class="text-center reveal">
+      <div class="section-label">🗣️ Phrase Kits</div>
+      <h2 class="section-title">Classroom Phrase Kits</h2>
+      <p class="section-sub text-center">Use authentic phrases for greetings, routines, praise, and transitions.</p>
     </div>
-  </section>
+    <div style="margin-top:2rem" class="reveal">
+      <div class="tabs" style="justify-content:center">
+        <button class="tab-btn active" onclick="switchTab('yoruba',this)">Yoruba</button>
+        <button class="tab-btn" onclick="switchTab('igbo',this)">Igbo</button>
+        <button class="tab-btn" onclick="switchTab('hausa',this)">Hausa</button>
+      </div>
 
-  <!-- Intro -->
-  <section class="section intro">
-    <div class="container">
-      <h2 class="section-title"><i class="fas fa-heart"></i> Why It Matters</h2>
-      <p class="lead">
-        Cultural integration strengthens identity, deepens engagement, and connects learning to real life. When students see their
-        cultures honoured, they participate more, retain better, and transfer knowledge across contexts.
-      </p>
+      <!-- YORUBA -->
+      <div id="tab-yoruba" class="tab-content active">
+        <div class="tip-note">💡 Tip: Model pronunciation slowly and invite students to lead.</div>
+        <div class="phrase-card"><div class="phrase-info"><h4>Ẹ káàárọ̀</h4><p>Good morning</p><span class="phrase-badge">Greeting</span></div><button class="copy-btn" onclick="copyText('Ẹ káàárọ̀')">Copy</button></div>
+        <div class="phrase-card"><div class="phrase-info"><h4>Báwo ní?</h4><p>How are you?</p><span class="phrase-badge">Check-in</span></div><button class="copy-btn" onclick="copyText('Báwo ní?')">Copy</button></div>
+        <div class="phrase-card"><div class="phrase-info"><h4>Jọwọ</h4><p>Please</p><span class="phrase-badge">Routine</span></div><button class="copy-btn" onclick="copyText('Jọwọ')">Copy</button></div>
+        <div class="phrase-card"><div class="phrase-info"><h4>O ṣe</h4><p>Thank you</p><span class="phrase-badge">Praise</span></div><button class="copy-btn" onclick="copyText('O ṣe')">Copy</button></div>
+        <div class="phrase-card"><div class="phrase-info"><h4>Ẹ ṣeun fún ìpinnu rẹ</h4><p>Well done for your effort</p><span class="phrase-badge">Praise</span></div><button class="copy-btn" onclick="copyText('Ẹ ṣeun fún ìpinnu rẹ')">Copy</button></div>
+        <div class="phrase-card"><div class="phrase-info"><h4>Ẹ jẹ́ ká bẹ̀rẹ̀</h4><p>Let's begin</p><span class="phrase-badge">Transition</span></div><button class="copy-btn" onclick="copyText('Ẹ jẹ́ ká bẹ̀rẹ̀')">Copy</button></div>
+      </div>
+
+      <!-- IGBO -->
+      <div id="tab-igbo" class="tab-content">
+        <div class="tip-note">💡 Tip: Encourage students to share local variants respectfully.</div>
+        <div class="phrase-card"><div class="phrase-info"><h4>Ụtụtụ ọma</h4><p>Good morning</p><span class="phrase-badge">Greeting</span></div><button class="copy-btn" onclick="copyText('Ụtụtụ ọma')">Copy</button></div>
+        <div class="phrase-card"><div class="phrase-info"><h4>Kedu?</h4><p>How are you?</p><span class="phrase-badge">Check-in</span></div><button class="copy-btn" onclick="copyText('Kedu?')">Copy</button></div>
+        <div class="phrase-card"><div class="phrase-info"><h4>Biko</h4><p>Please</p><span class="phrase-badge">Routine</span></div><button class="copy-btn" onclick="copyText('Biko')">Copy</button></div>
+        <div class="phrase-card"><div class="phrase-info"><h4>Daalụ</h4><p>Thank you</p><span class="phrase-badge">Praise</span></div><button class="copy-btn" onclick="copyText('Daalụ')">Copy</button></div>
+        <div class="phrase-card"><div class="phrase-info"><h4>Ka anyị bido</h4><p>Let's begin</p><span class="phrase-badge">Transition</span></div><button class="copy-btn" onclick="copyText('Ka anyị bido')">Copy</button></div>
+        <div class="phrase-card"><div class="phrase-info"><h4>Ị mere nke ọma</h4><p>You did well</p><span class="phrase-badge">Praise</span></div><button class="copy-btn" onclick="copyText('Ị mere nke ọma')">Copy</button></div>
+      </div>
+
+      <!-- HAUSA -->
+      <div id="tab-hausa" class="tab-content">
+        <div class="tip-note">💡 Tip: Adjust gendered forms (kake/kike) as needed.</div>
+        <div class="phrase-card"><div class="phrase-info"><h4>Ina kwana</h4><p>Good morning</p><span class="phrase-badge">Greeting</span></div><button class="copy-btn" onclick="copyText('Ina kwana')">Copy</button></div>
+        <div class="phrase-card"><div class="phrase-info"><h4>Yaya kake? / Yaya kike?</h4><p>How are you? (m/f)</p><span class="phrase-badge">Check-in</span></div><button class="copy-btn" onclick="copyText('Yaya kake? / Yaya kike?')">Copy</button></div>
+        <div class="phrase-card"><div class="phrase-info"><h4>Don Allah</h4><p>Please</p><span class="phrase-badge">Routine</span></div><button class="copy-btn" onclick="copyText('Don Allah')">Copy</button></div>
+        <div class="phrase-card"><div class="phrase-info"><h4>Nagode</h4><p>Thank you</p><span class="phrase-badge">Praise</span></div><button class="copy-btn" onclick="copyText('Nagode')">Copy</button></div>
+        <div class="phrase-card"><div class="phrase-info"><h4>Mu fara</h4><p>Let's begin</p><span class="phrase-badge">Transition</span></div><button class="copy-btn" onclick="copyText('Mu fara')">Copy</button></div>
+        <div class="phrase-card"><div class="phrase-info"><h4>Kin yi kyau / Ka yi kyau</h4><p>Well done (f/m)</p><span class="phrase-badge">Praise</span></div><button class="copy-btn" onclick="copyText('Kin yi kyau / Ka yi kyau')">Copy</button></div>
+      </div>
+      <div class="note">📝 Note: Spellings and usage can vary by region. Invite learners and parents to contribute local insights.</div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Benefits Cards -->
-  <section class="section">
-    <div class="container">
-      <div class="cards-grid">
-        <div class="card">
-          <div class="card-icon"><i class="fas fa-language"></i></div>
-          <h4>Language as Asset</h4>
-          <p class="muted">Use Yoruba, Igbo, Hausa and other Nigerian languages phrases to scaffold understanding and build pride, while maintaining academic English mastery.</p>
-        </div>
-        <div class="card">
-          <div class="card-icon"><i class="fas fa-book-open-reader"></i></div>
-          <h4>Stories & Proverbs</h4>
-          <p class="muted">Teach big ideas through folktales and sayings, linking moral reasoning to modern dilemmas.</p>
-        </div>
-        <div class="card">
-          <div class="card-icon"><i class="fas fa-drum"></i></div>
-          <h4>Arts & Rituals</h4>
-          <p class="muted">Explore music, textiles, festivals, and crafts to animate concepts in science, maths, and humanities.</p>
+<!-- PROVERB LIBRARY -->
+<section>
+  <div class="container">
+    <div class="text-center reveal">
+      <div class="section-label">📜 Proverbs</div>
+      <h2 class="section-title">Proverb Library</h2>
+      <p class="section-sub text-center">Use a proverb to spark discussion, write reflections, or frame a science/humanities concept.</p>
+    </div>
+    <div style="margin-top:2rem" class="reveal">
+      <div class="proverb-box" id="proverbBox">
+        <div class="proverb-origin" id="proverbOrigin">Yoruba • Community</div>
+        <blockquote id="proverbText">Igi kan kì í dá igbó ṣe.</blockquote>
+        <p class="proverb-meaning" id="proverbMeaning">One tree does not make a forest — we achieve more together.</p>
+        <p class="proverb-prompt" id="proverbPrompt">Class prompt: Where in today's lesson did teamwork improve results?</p>
+        <div class="proverb-btns">
+          <button class="copy-btn" onclick="newProverb()" style="background:var(--accent)">New Proverb</button>
+          <button class="copy-btn" onclick="copyProverb()">Copy Proverb</button>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Language Phrase Kits -->
-  <section class="section">
-    <div class="container">
-      <h2 class="section-title"><i class="fas fa-comments"></i> Classroom Phrase Kits</h2>
-      <p class="section-subtitle">Use authentic phrases for greetings, routines, praise, and transitions. Click to copy.</p>
+<!-- CULTURAL CALENDAR -->
+<section style="background:var(--bg-s)">
+  <div class="container">
+    <div class="text-center reveal">
+      <div class="section-label">📅 Calendar</div>
+      <h2 class="section-title">Cultural Calendar (Nigeria)</h2>
+      <p class="section-sub text-center">Dates may vary by year or lunar calendar—verify locally and adapt activities.</p>
+    </div>
+    <div class="cal-grid" style="margin-top:2rem">
+      <div class="cal-item reveal"><span class="cal-month">Feb–Mar</span><div class="cal-info"><h4>Argungu Fishing Festival (Kebbi)</h4><p>Explore ecology, sustainability, and river systems. Design a conservation poster.</p></div></div>
+      <div class="cal-item reveal"><span class="cal-month">Mar</span><div class="cal-info"><h4>International Women's Day (8 Mar)</h4><p>Highlight Nigerian women in STEM and the arts. Run a mini research project.</p></div></div>
+      <div class="cal-item reveal"><span class="cal-month">Apr–Jul</span><div class="cal-info"><h4>Durbar Festivals (Eid periods)</h4><p>Study horses in history, textile patterns, and community celebrations. Map trade routes.</p></div></div>
+      <div class="cal-item reveal"><span class="cal-month">May</span><div class="cal-info"><h4>Children's Day (27 May)</h4><p>Student-led exhibitions of local stories, proverbs, and inventions.</p></div></div>
+      <div class="cal-item reveal"><span class="cal-month">Aug</span><div class="cal-info"><h4>Osun-Osogbo Festival (Osun)</h4><p>Explore river conservation, sacred groves, and sculpture. Curate a photo-essay (drawn/stock-free).</p></div></div>
+      <div class="cal-item reveal"><span class="cal-month">Aug–Oct</span><div class="cal-info"><h4>New Yam Festivals</h4><p>Investigate agriculture cycles, measurement, and nutrition. Create a data table of yields.</p></div></div>
+      <div class="cal-item reveal"><span class="cal-month">Oct</span><div class="cal-info"><h4>Independence Day (1 Oct)</h4><p>Debate milestones in Nigerian science and literature. Timeline presentation.</p></div></div>
+      <div class="cal-item reveal"><span class="cal-month">Varies</span><div class="cal-info"><h4>Eyo Festival (Lagos)</h4><p>Study masquerade traditions, performance, and civic history. Design a festival programme.</p></div></div>
+      <div class="cal-item reveal"><span class="cal-month">Jun</span><div class="cal-info"><h4>Democracy Day (12 Jun)</h4><p>Explore civic participation, media literacy, and ethics. Hold a mock council.</p></div></div>
+    </div>
+  </div>
+</section>
 
-      <div class="tabs" id="phraseTabs">
-        <ul class="tab-list" role="tablist">
-          <li><button class="tab-btn active" data-tab="yoruba"><i class="fas fa-flag"></i> Yoruba</button></li>
-          <li><button class="tab-btn" data-tab="igbo"><i class="fas fa-flag"></i> Igbo</button></li>
-          <li><button class="tab-btn" data-tab="hausa"><i class="fas fa-flag"></i> Hausa</button></li>
-        </ul>
-
-        <!-- Yoruba -->
-        <div class="tab-panel active" id="panel-yoruba">
-          <span class="pill"><i class="fas fa-info-circle"></i> Tip: Model pronunciation slowly and invite students to lead.</span>
-          <div class="phrase-grid">
-            <div class="phrase">
-              <div class="native">Ẹ káàárọ̀</div>
-              <div class="gloss">Good morning</div>
-              <div class="actions">
-                <button class="btn btn-outlined btn-sm" data-copy="Ẹ káàárọ̀"><i class="fas fa-copy"></i> Copy</button>
-                <span class="tag">Greeting</span>
-              </div>
-            </div>
-            <div class="phrase">
-              <div class="native">Báwo ní?</div>
-              <div class="gloss">How are you?</div>
-              <div class="actions">
-                <button class="btn btn-outlined btn-sm" data-copy="Báwo ní?"><i class="fas fa-copy"></i> Copy</button>
-                <span class="tag">Check-in</span>
-              </div>
-            </div>
-            <div class="phrase">
-              <div class="native">Jọwọ</div>
-              <div class="gloss">Please</div>
-              <div class="actions">
-                <button class="btn btn-outlined btn-sm" data-copy="Jọwọ"><i class="fas fa-copy"></i> Copy</button>
-                <span class="tag">Routine</span>
-              </div>
-            </div>
-            <div class="phrase">
-              <div class="native">O ṣe</div>
-              <div class="gloss">Thank you</div>
-              <div class="actions">
-                <button class="btn btn-outlined btn-sm" data-copy="O ṣe"><i class="fas fa-copy"></i> Copy</button>
-                <span class="tag">Praise</span>
-              </div>
-            </div>
-            <div class="phrase">
-              <div class="native">Ẹ ṣeun fún ìpinnu rẹ</div>
-              <div class="gloss">Well done for your effort</div>
-              <div class="actions">
-                <button class="btn btn-outlined btn-sm" data-copy="Ẹ ṣeun fún ìpinnu rẹ"><i class="fas fa-copy"></i> Copy</button>
-                <span class="tag">Praise</span>
-              </div>
-            </div>
-            <div class="phrase">
-              <div class="native">Ẹ jẹ́ ká bẹ̀rẹ̀</div>
-              <div class="gloss">Let’s begin</div>
-              <div class="actions">
-                <button class="btn btn-outlined btn-sm" data-copy="Ẹ jẹ́ ká bẹ̀rẹ̀"><i class="fas fa-copy"></i> Copy</button>
-                <span class="tag">Transition</span>
-              </div>
-            </div>
-          </div>
+<!-- STORY BANK -->
+<section>
+  <div class="container">
+    <div class="text-center reveal">
+      <div class="section-label">📚 Stories</div>
+      <h2 class="section-title">Story Bank</h2>
+      <p class="section-sub text-center">Folktales to animate concepts. Use respectfully; avoid stereotyping and ensure accuracy.</p>
+    </div>
+    <div class="grid-3" style="margin-top:2rem">
+      <div class="story-card reveal reveal-delay-1">
+        <div class="story-header">
+          <h3>Why the Tortoise Has a Cracked Shell (Ijapa/Mbe)</h3>
+          <div class="story-tags"><span class="story-tag">Ethics</span><span class="story-tag">Cause & Effect</span><span class="story-tag">Narrative</span></div>
         </div>
-
-        <!-- Igbo -->
-        <div class="tab-panel" id="panel-igbo">
-          <span class="pill"><i class="fas fa-info-circle"></i> Tip: Encourage students to share local variants respectfully.</span>
-          <div class="phrase-grid">
-            <div class="phrase">
-              <div class="native">Ụtụtụ ọma</div>
-              <div class="gloss">Good morning</div>
-              <div class="actions">
-                <button class="btn btn-outlined btn-sm" data-copy="Ụtụtụ ọma"><i class="fas fa-copy"></i> Copy</button>
-                <span class="tag">Greeting</span>
-              </div>
-            </div>
-            <div class="phrase">
-              <div class="native">Kedu?</div>
-              <div class="gloss">How are you?</div>
-              <div class="actions">
-                <button class="btn btn-outlined btn-sm" data-copy="Kedu?"><i class="fas fa-copy"></i> Copy</button>
-                <span class="tag">Check-in</span>
-              </div>
-            </div>
-            <div class="phrase">
-              <div class="native">Biko</div>
-              <div class="gloss">Please</div>
-              <div class="actions">
-                <button class="btn btn-outlined btn-sm" data-copy="Biko"><i class="fas fa-copy"></i> Copy</button>
-                <span class="tag">Routine</span>
-              </div>
-            </div>
-            <div class="phrase">
-              <div class="native">Daalụ</div>
-              <div class="gloss">Thank you</div>
-              <div class="actions">
-                <button class="btn btn-outlined btn-sm" data-copy="Daalụ"><i class="fas fa-copy"></i> Copy</button>
-                <span class="tag">Praise</span>
-              </div>
-            </div>
-            <div class="phrase">
-              <div class="native">Ka anyị bido</div>
-              <div class="gloss">Let’s begin</div>
-              <div class="actions">
-                <button class="btn btn-outlined btn-sm" data-copy="Ka anyị bido"><i class="fas fa-copy"></i> Copy</button>
-                <span class="tag">Transition</span>
-              </div>
-            </div>
-            <div class="phrase">
-              <div class="native">Ị mere nke ọma</div>
-              <div class="gloss">You did well</div>
-              <div class="actions">
-                <button class="btn btn-outlined btn-sm" data-copy="Ị mere nke ọma"><i class="fas fa-copy"></i> Copy</button>
-                <span class="tag">Praise</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Hausa -->
-        <div class="tab-panel" id="panel-hausa">
-          <span class="pill"><i class="fas fa-info-circle"></i> Tip: Adjust gendered forms (kake/kike) as needed.</span>
-          <div class="phrase-grid">
-            <div class="phrase">
-              <div class="native">Ina kwana</div>
-              <div class="gloss">Good morning</div>
-              <div class="actions">
-                <button class="btn btn-outlined btn-sm" data-copy="Ina kwana"><i class="fas fa-copy"></i> Copy</button>
-                <span class="tag">Greeting</span>
-              </div>
-            </div>
-            <div class="phrase">
-              <div class="native">Yaya kake? / Yaya kike?</div>
-              <div class="gloss">How are you? (m/f)</div>
-              <div class="actions">
-                <button class="btn btn-outlined btn-sm" data-copy="Yaya kake?"><i class="fas fa-copy"></i> Copy</button>
-                <button class="btn btn-outlined btn-sm" data-copy="Yaya kike?"><i class="fas fa-copy"></i> Copy</button>
-                <span class="tag">Check-in</span>
-              </div>
-            </div>
-            <div class="phrase">
-              <div class="native">Don Allah</div>
-              <div class="gloss">Please</div>
-              <div class="actions">
-                <button class="btn btn-outlined btn-sm" data-copy="Don Allah"><i class="fas fa-copy"></i> Copy</button>
-                <span class="tag">Routine</span>
-              </div>
-            </div>
-            <div class="phrase">
-              <div class="native">Nagode</div>
-              <div class="gloss">Thank you</div>
-              <div class="actions">
-                <button class="btn btn-outlined btn-sm" data-copy="Nagode"><i class="fas fa-copy"></i> Copy</button>
-                <span class="tag">Praise</span>
-              </div>
-            </div>
-            <div class="phrase">
-              <div class="native">Mu fara</div>
-              <div class="gloss">Let’s begin</div>
-              <div class="actions">
-                <button class="btn btn-outlined btn-sm" data-copy="Mu fara"><i class="fas fa-copy"></i> Copy</button>
-                <span class="tag">Transition</span>
-              </div>
-            </div>
-            <div class="phrase">
-              <div class="native">Kin yi kyau / Ka yi kyau</div>
-              <div class="gloss">Well done (f/m)</div>
-              <div class="actions">
-                <button class="btn btn-outlined btn-sm" data-copy="Kin yi kyau"><i class="fas fa-copy"></i> Copy</button>
-                <button class="btn btn-outlined btn-sm" data-copy="Ka yi kyau"><i class="fas fa-copy"></i> Copy</button>
-                <span class="tag">Praise</span>
-              </div>
-            </div>
-          </div>
+        <div class="story-body">
+          <p>The trickster tortoise, through greed, falls and cracks his shell. Use to discuss decisions and consequences.</p>
+          <ul>
+            <li><strong>Science:</strong> Materials—why shells crack; energy of falling.</li>
+            <li><strong>English:</strong> Narrative structure; character motives.</li>
+            <li><strong>PSHE:</strong> Honesty and community trust.</li>
+          </ul>
         </div>
       </div>
-
-      <p class="muted" style="margin-top:10px">Note: Spellings and usage can vary by region. Invite learners and parents to contribute local insights.</p>
-    </div>
-  </section>
-
-  <!-- Proverb Library -->
-  <section class="section">
-    <div class="container">
-      <h2 class="section-title"><i class="fas fa-quote-left"></i> Proverb Library</h2>
-      <p class="section-subtitle">Use a proverb to spark discussion, write reflections, or frame a science/humanities concept.</p>
-
-      <div class="proverb-box" id="proverbBox" aria-live="polite">
-        <div class="pill" id="proverbMeta"><i class="fas fa-scroll"></i> Yoruba • Community</div>
-        <div class="proverb-text" id="proverbText">Igi kan kì í dá igbó ṣe.</div>
-        <div class="proverb-meaning" id="proverbMeaning">One tree does not make a forest — we achieve more together.</div>
-        <ul class="muted" id="proverbPrompts" style="margin-top:10px">
-          <li>Class prompt: Where in today’s lesson did teamwork improve results?</li>
-        </ul>
-        <div class="proverb-actions">
-          <button class="btn btn-primary" id="nextProverb"><i class="fas fa-shuffle"></i> New Proverb</button>
-          <button class="btn btn-outlined" id="copyProverb"><i class="fas fa-copy"></i> Copy Proverb</button>
+      <div class="story-card reveal reveal-delay-2">
+        <div class="story-header">
+          <h3>Queen Moremi Ajasoro</h3>
+          <div class="story-tags"><span class="story-tag">Courage</span><span class="story-tag">History</span><span class="story-tag">Leadership</span></div>
+        </div>
+        <div class="story-body">
+          <p>Legend of Moremi's bravery in protecting her people. Discuss sacrifice, leadership, and civic duty.</p>
+          <ul>
+            <li><strong>History:</strong> Oral histories vs written sources.</li>
+            <li><strong>English:</strong> Biography writing; persuasive speeches.</li>
+            <li><strong>Art:</strong> Symbolism in statues and memorials.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="story-card reveal reveal-delay-3">
+        <div class="story-header">
+          <h3>Bayajidda of Daura</h3>
+          <div class="story-tags"><span class="story-tag">Myth</span><span class="story-tag">Origins</span><span class="story-tag">Civics</span></div>
+        </div>
+        <div class="story-body">
+          <p>Origin story linking to the Hausa city-states. Compare myths and migration narratives.</p>
+          <ul>
+            <li><strong>Geography:</strong> Water sources and settlement.</li>
+            <li><strong>English:</strong> Compare origin myths across regions.</li>
+            <li><strong>Citizenship:</strong> Founding stories and identity.</li>
+          </ul>
         </div>
       </div>
     </div>
-  </section>
+    <div class="tip-note" style="margin-top:1.5rem">📝 Encourage learners to verify versions with family elders or community sources where appropriate.</div>
+  </div>
+</section>
 
-  <!-- Cultural Calendar -->
-  <section class="section">
-    <div class="container">
-      <h2 class="section-title"><i class="fas fa-calendar-alt"></i> Cultural Calendar (Nigeria)</h2>
-      <p class="section-subtitle">Dates may vary by year or lunar calendar—verify locally and adapt activities.</p>
-
-      <div class="timeline">
-        <div class="timeline-item">
-          <div class="kicker"><i class="fas fa-flag flag"></i> Feb–Mar</div>
-          <h5>Argungu Fishing Festival (Kebbi)</h5>
-          <p>Explore ecology, sustainability, and river systems. Design a conservation poster.</p>
-        </div>
-        <div class="timeline-item">
-          <div class="kicker"><i class="fas fa-flag flag"></i> Mar</div>
-          <h5>International Women’s Day (8 Mar)</h5>
-          <p>Highlight Nigerian women in STEM and the arts. Run a mini research project.</p>
-        </div>
-        <div class="timeline-item">
-          <div class="kicker"><i class="fas fa-flag flag"></i> Apr–Jul</div>
-          <h5>Durbar Festivals (Eid periods)</h5>
-          <p>Study horses in history, textile patterns, and community celebrations. Map trade routes.</p>
-        </div>
-        <div class="timeline-item">
-          <div class="kicker"><i class="fas fa-flag flag"></i> May</div>
-          <h5>Children’s Day (27 May)</h5>
-          <p>Student-led exhibitions of local stories, proverbs, and inventions.</p>
-        </div>
-        <div class="timeline-item">
-          <div class="kicker"><i class="fas fa-flag flag"></i> Aug</div>
-          <h5>Osun-Osogbo Festival (Osun)</h5>
-          <p>Explore river conservation, sacred groves, and sculpture. Curate a photo-essay (drawn/stock-free).</p>
-        </div>
-        <div class="timeline-item">
-          <div class="kicker"><i class="fas fa-flag flag"></i> Aug–Oct</div>
-          <h5>New Yam Festivals</h5>
-          <p>Investigate agriculture cycles, measurement, and nutrition. Create a data table of yields.</p>
-        </div>
-        <div class="timeline-item">
-          <div class="kicker"><i class="fas fa-flag flag"></i> Oct</div>
-          <h5>Independence Day (1 Oct)</h5>
-          <p>Debate milestones in Nigerian science and literature. Timeline presentation.</p>
-        </div>
-        <div class="timeline-item">
-          <div class="kicker"><i class="fas fa-flag flag"></i> Varies</div>
-          <h5>Eyo Festival (Lagos)</h5>
-          <p>Study masquerade traditions, performance, and civic history. Design a festival programme.</p>
-        </div>
-        <div class="timeline-item">
-          <div class="kicker"><i class="fas fa-flag flag"></i> Jun</div>
-          <h5>Democracy Day (12 Jun)</h5>
-          <p>Explore civic participation, media literacy, and ethics. Hold a mock council.</p>
-        </div>
-      </div>
+<!-- SAFEGUARDING -->
+<section style="background:var(--bg-s)">
+  <div class="container">
+    <div class="text-center reveal">
+      <div class="section-label">🛡️ Safety</div>
+      <h2 class="section-title">Respect & Safeguarding</h2>
+      <p class="section-sub text-center">A do-no-harm checklist for culturally responsive practice.</p>
     </div>
-  </section>
-
-  <!-- Story Bank -->
-  <section class="section">
-    <div class="container">
-      <h2 class="section-title"><i class="fas fa-book"></i> Story Bank</h2>
-      <p class="section-subtitle">Folktales to animate concepts. Use respectfully; avoid stereotyping and ensure accuracy.</p>
-
-      <div class="accordion" id="storyAccordion">
-        <div class="acc-item">
-          <button class="acc-header">
-            Why the Tortoise Has a Cracked Shell (Ijapa/Mbe)
-            <span class="story-tags">
-              <span class="tag">Ethics</span><span class="tag">Cause & Effect</span><span class="tag">Narrative</span>
-            </span>
-            <i class="fas fa-chevron-down rotate"></i>
-          </button>
-          <div class="acc-content">
-            <p>The trickster tortoise, through greed, falls and cracks his shell. Use to discuss decisions and consequences.</p>
-            <ul class="muted" style="margin-top:8px">
-              <li>Science: Materials—why shells crack; energy of falling.</li>
-              <li>English: Narrative structure; character motives.</li>
-              <li>PSHE: Honesty and community trust.</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="acc-item">
-          <button class="acc-header">
-            Queen Moremi Ajasoro
-            <span class="story-tags">
-              <span class="tag">Courage</span><span class="tag">History</span><span class="tag">Leadership</span>
-            </span>
-            <i class="fas fa-chevron-down rotate"></i>
-          </button>
-          <div class="acc-content">
-            <p>Legend of Moremi’s bravery in protecting her people. Discuss sacrifice, leadership, and civic duty.</p>
-            <ul class="muted" style="margin-top:8px">
-              <li>History: Oral histories vs written sources.</li>
-              <li>English: Biography writing; persuasive speeches.</li>
-              <li>Art: Symbolism in statues and memorials.</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="acc-item">
-          <button class="acc-header">
-            Bayajidda of Daura
-            <span class="story-tags">
-              <span class="tag">Myth</span><span class="tag">Origins</span><span class="tag">Civics</span>
-            </span>
-            <i class="fas fa-chevron-down rotate"></i>
-          </button>
-          <div class="acc-content">
-            <p>Origin story linking to the Hausa city-states. Compare myths and migration narratives.</p>
-            <ul class="muted" style="margin-top:8px">
-              <li>Geography: Water sources and settlement.</li>
-              <li>English: Compare origin myths across regions.</li>
-              <li>Citizenship: Founding stories and identity.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <p class="muted" style="margin-top:10px">Encourage learners to verify versions with family elders or community sources where appropriate.</p>
+    <div class="glass reveal" style="margin-top:2rem;max-width:700px;margin-left:auto;margin-right:auto">
+      <div class="safeguard-item"><div class="safeguard-icon">✅</div><div class="safeguard-text"><h4>Consent & Context</h4><p>Obtain permission before sharing personal stories or photos; explain purpose and audience.</p></div></div>
+      <div class="safeguard-item"><div class="safeguard-icon">🚫</div><div class="safeguard-text"><h4>Avoid Stereotypes</h4><p>Present diverse voices; avoid portraying cultures as static or monolithic.</p></div></div>
+      <div class="safeguard-item"><div class="safeguard-icon">🔒</div><div class="safeguard-text"><h4>Sacred Knowledge</h4><p>Skip restricted rituals or sacred items; focus on publicly available knowledge.</p></div></div>
+      <div class="safeguard-item"><div class="safeguard-icon">🗣️</div><div class="safeguard-text"><h4>Language Respect</h4><p>Acknowledge regional variants; avoid shaming learners for accents or code-switching.</p></div></div>
+      <div class="safeguard-item"><div class="safeguard-icon">📋</div><div class="safeguard-text"><h4>Source Quality</h4><p>Cross-check with reputable sources; teach learners to evaluate claims critically.</p></div></div>
+      <div class="safeguard-item"><div class="safeguard-icon">♿</div><div class="safeguard-text"><h4>Accessibility</h4><p>Provide multiple representations—text, visuals, and hands-on options.</p></div></div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Respect & Safeguarding -->
-  <section class="section">
-    <div class="container">
-      <h2 class="section-title"><i class="fas fa-shield-heart"></i> Respect & Safeguarding</h2>
-      <p class="section-subtitle">A do-no-harm checklist for culturally responsive practice.</p>
-
-      <div class="checklist">
-        <div class="check-item">
-          <i class="fas fa-check-circle"></i>
-          <div><strong>Consent & Context:</strong> Obtain permission before sharing personal stories or photos; explain purpose and audience.</div>
-        </div>
-        <div class="check-item">
-          <i class="fas fa-check-circle"></i>
-          <div><strong>Avoid Stereotypes:</strong> Present diverse voices; avoid portraying cultures as static or monolithic.</div>
-        </div>
-        <div class="check-item">
-          <i class="fas fa-check-circle"></i>
-          <div><strong>Sacred Knowledge:</strong> Skip restricted rituals or sacred items; focus on publicly available knowledge.</div>
-        </div>
-        <div class="check-item">
-          <i class="fas fa-check-circle"></i>
-          <div><strong>Language Respect:</strong> Acknowledge regional variants; avoid shaming learners for accents or code-switching.</div>
-        </div>
-        <div class="check-item">
-          <i class="fas fa-check-circle"></i>
-          <div><strong>Source Quality:</strong> Cross-check with reputable sources; teach learners to evaluate claims critically.</div>
-        </div>
-        <div class="check-item">
-          <i class="fas fa-check-circle"></i>
-          <div><strong>Accessibility:</strong> Provide multiple representations—text, visuals, and hands-on options.</div>
-        </div>
-      </div>
+<!-- PLANNER TEMPLATE -->
+<section>
+  <div class="container">
+    <div class="text-center reveal">
+      <div class="section-label">📝 Planner</div>
+      <h2 class="section-title">Cultural Integration Planner</h2>
+      <p class="section-sub text-center">Draft a plan for your next unit. Copy or download to get started.</p>
     </div>
-  </section>
+    <div class="reveal" style="margin-top:2rem;max-width:750px;margin-left:auto;margin-right:auto">
+      <div class="template-box" id="plannerTemplate">Integration Plan Template
 
-  <!-- Cultural Integration Planner -->
-  <section class="section planner" id="planner">
-    <div class="container">
-      <h2 class="section-title"><i class="fas fa-pen-ruler"></i> Cultural Integration Planner</h2>
-      <p class="section-subtitle">Draft a plan for your next unit. Copy or download to get started.</p>
-
-      <div class="planner-wrap">
-        <div class="template">
-          <div class="pill" style="margin-bottom:10px;"><i class="fas fa-file-alt"></i> Integration Plan Template</div>
-          <textarea id="plannerTemplate" class="template-area" aria-label="Cultural integration plan template">
 Unit Title: 
 Subject & Age Group: 
 Duration: 
@@ -786,263 +492,166 @@ Safeguarding Notes:
 
 Reflection:
 - What strengthened identity and understanding?
-- What to refine next time?
-          </textarea>
-
-          <div class="spacer"></div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap">
-            <button class="btn btn-primary" onclick="copyPlanner()"><i class="fas fa-copy"></i> Copy Template</button>
-            <button class="btn btn-outlined" onclick="downloadPlanner()"><i class="fas fa-download"></i> Download .txt</button>
-          </div>
-        </div>
-
-        <div class="tips">
-          <div class="tip">
-            <i class="fas fa-compass-drafting"></i>
-            <div>
-              <strong>Start Small</strong>
-              <div class="muted">Add one meaningful cultural element per week—build consistency over time.</div>
-            </div>
-          </div>
-          <div class="tip">
-            <i class="fas fa-hand-holding-heart"></i>
-            <div>
-              <strong>Co-create</strong>
-              <div class="muted">Invite students to suggest proverbs, songs, or case studies relevant to topics.</div>
-            </div>
-          </div>
-          <div class="tip">
-            <i class="fas fa-magnifying-glass"></i>
-            <div>
-              <strong>Reflect & Iterate</strong>
-              <div class="muted">Use exit tickets to gauge which integrations deepened understanding.</div>
-            </div>
-          </div>
-
-          <div class="spacer"></div>
-          <a href="curriculum-guidelines.html" class="btn btn-outlined"><i class="fas fa-book-open"></i> Curriculum Guidelines</a>
-          <a href="teaching-practices.html" class="btn btn-secondary"><i class="fas fa-graduation-cap"></i> Teaching Best Practices</a>
-        </div>
+- What to refine next time?</div>
+      <div style="display:flex;gap:.75rem;margin-top:1rem;flex-wrap:wrap">
+        <button class="copy-btn" onclick="copyTemplate()">Copy Template</button>
+        <button class="copy-btn" onclick="downloadTemplate()" style="background:var(--accent)">Download .txt</button>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Call to Action -->
-  <section class="section" style="text-align:center;background:#fff">
-    <div class="container">
-      <h2 class="section-title"><i class="fas fa-person-chalkboard"></i> Ready to Bring Culture Alive?</h2>
-      <p class="section-subtitle">Use the phrase kits and planner to embed identity-affirming learning—today.</p>
-      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
-        <a class="btn btn-primary" href="#planner"><i class="fas fa-file-pen"></i> Build Your Plan</a>
-        <a class="btn btn-outlined" href="technology-training.html"><i class="fas fa-laptop-code"></i> Explore Tech Tools</a>
-        <a class="btn btn-secondary" href="index.html#apply"><i class="fas fa-paper-plane"></i> Apply to Teach</a>
+<!-- TIPS -->
+<section style="background:var(--bg-s)">
+  <div class="container">
+    <div class="grid-3">
+      <div class="glass tip-card reveal reveal-delay-1">
+        <div class="icon-circle green">🌱</div>
+        <h3>Start Small</h3>
+        <p>Add one meaningful cultural element per week—build consistency over time.</p>
+      </div>
+      <div class="glass tip-card reveal reveal-delay-2">
+        <div class="icon-circle amber">🤝</div>
+        <h3>Co-create</h3>
+        <p>Invite students to suggest proverbs, songs, or case studies relevant to topics.</p>
+      </div>
+      <div class="glass tip-card reveal reveal-delay-3">
+        <div class="icon-circle teal">🔄</div>
+        <h3>Reflect & Iterate</h3>
+        <p>Use exit tickets to gauge which integrations deepened understanding.</p>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-content">
-        <div>
-          <h4><i class="fas fa-chalkboard-teacher"></i> Teaching Resources</h4>
-          <a class="footer-link" href="curriculum-guidelines.html">Curriculum Guidelines</a>
-          <a class="footer-link" href="cultural-integration.html">Cultural Integration Handbook</a>
-          <a class="footer-link" href="teaching-practices.html">Teaching Best Practices</a>
-          <a class="footer-link" href="technology-training.html">Technology Training</a>
-        </div>
-
-        <div>
-          <h4><i class="fas fa-life-ring"></i> Support</h4>
-          <a class="footer-link" href="help-center.html">Tutor Help Center</a>
-          <a class="footer-link" href="technical-support.html">Technical Support</a>
-          <a class="footer-link" href="payment-information.html">Payment Information</a>
-          <a class="footer-link" href="platform-guidelines.html">Platform Guidelines</a>
-        </div>
-
-        <div>
-          <h4><i class="fas fa-phone"></i> Contact</h4>
-          <p style="color:rgba(255,255,255,.8);margin-bottom:8px"><i class="fas fa-envelope"></i> tutors@baobabonlineacademy.com</p>
-          <p style="color:rgba(255,255,255,.8);margin-bottom:8px"><i class="fas fa-phone"></i> +234 (0) 816 501 1291</p>
-          <p style="color:rgba(255,255,255,.8)"><i class="fas fa-clock"></i> Mon–Fri: 9AM–5PM WAT</p>
-        </div>
-      </div>
-
-      <div class="footer-bottom">
-        <p>&copy; 2025 Baobab Online Academy Tutor Portal. Empowering Nigerian Educators Globally.</p>
-      </div>
+<!-- CTA -->
+<section style="padding:2rem">
+  <div class="cta-section reveal">
+    <h2>Ready to Bring Culture Alive?</h2>
+    <p>Use the phrase kits and planner to embed identity-affirming learning—today.</p>
+    <div class="cta-btns">
+      <button class="cta-btn white" onclick="scrollTo({top:0,behavior:'smooth'})">Build Your Plan</button>
+      <button class="cta-btn outline-w" onclick="location.href='technology-training.html'">Explore Tech Tools</button>
+      <button class="cta-btn outline-w" onclick="location.href='index.html#apply'">Apply to Teach</button>
     </div>
-  </footer>
+  </div>
+</section>
 
-  <script>
-    // Mobile menu
-    const menuToggle = document.getElementById('menuToggle');
-    const mobileMenuPanel = document.getElementById('mobileMenuPanel');
-    const menuOverlay = document.getElementById('menuOverlay');
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-col">
+      <h3>🌳 Baobab Digital Academy</h3>
+      <p>Empowering Nigerian Educators Globally. Share your knowledge and cultural heritage with students worldwide.</p>
+    </div>
+    <div class="footer-col">
+      <h3>Teaching Resources</h3>
+      <a href="curriculum-guidelines.html">Curriculum Guidelines</a>
+      <a href="cultural-integration.html">Cultural Integration Handbook</a>
+      <a href="teaching-practices.html">Teaching Best Practices</a>
+      <a href="technology-training.html">Technology Training</a>
+    </div>
+    <div class="footer-col">
+      <h3>Support</h3>
+      <a href="help-center.html">Tutor Help Center</a>
+      <a href="technical-support.html">Technical Support</a>
+      <a href="payment-information.html">Payment Information</a>
+      <a href="platform-guidelines.html">Platform Guidelines</a>
+    </div>
+    <div class="footer-col">
+      <h3>Contact</h3>
+      <p>tutors@baobabonlineacademy.com</p>
+      <p>+234 (0) 816 501 1291</p>
+      <p>Mon–Fri: 9AM–6PM WAT</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Baobab Digital Academy Tutor Portal. Empowering Nigerian Educators Globally.</p>
+  </div>
+</footer>
 
-    function openMenu(){
-      mobileMenuPanel.classList.add('active');
-      menuOverlay.classList.add('active');
-      document.body.style.overflow='hidden';
-      menuToggle.innerHTML='<i class="fas fa-times"></i>';
-    }
-    function closeMenu(){
-      mobileMenuPanel.classList.remove('active');
-      menuOverlay.classList.remove('active');
-      document.body.style.overflow='auto';
-      menuToggle.innerHTML='<i class="fas fa-bars"></i>';
-    }
-    function toggleMenu(){ mobileMenuPanel.classList.contains('active') ? closeMenu() : openMenu(); }
-    if(menuToggle){ menuToggle.addEventListener('click', toggleMenu); }
-    if(menuOverlay){ menuOverlay.addEventListener('click', closeMenu); }
+<!-- DARK MODE TOGGLE -->
+<button class="dark-toggle" onclick="toggleDark()" aria-label="Toggle dark mode" id="darkToggle">🌙</button>
 
-    // Phrase tabs
-    const phraseTabButtons = document.querySelectorAll('.tab-btn');
-    const phrasePanels = {
-      yoruba: document.getElementById('panel-yoruba'),
-      igbo: document.getElementById('panel-igbo'),
-      hausa: document.getElementById('panel-hausa'),
-    };
+<!-- SCROLL TO TOP -->
+<button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">↑</button>
 
-    phraseTabButtons.forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        const key = btn.dataset.tab;
-        phraseTabButtons.forEach(b=>b.classList.remove('active'));
-        btn.classList.add('active');
-        Object.values(phrasePanels).forEach(p=>p.classList.remove('active'));
-        const panel = document.getElementById('panel-' + key);
-        if(panel) panel.classList.add('active');
-        closeMenu();
-      });
-    });
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
 
-    // Copy phrase buttons
-    document.querySelectorAll('[data-copy]').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        const text = btn.getAttribute('data-copy');
-        navigator.clipboard.writeText(text).then(()=>{
-          btn.innerHTML = '<i class="fas fa-check"></i> Copied';
-          setTimeout(()=>btn.innerHTML = '<i class="fas fa-copy"></i> Copy', 1200);
-        });
-      });
-    });
+<script>
+// DARK MODE
+function toggleDark(){
+  const t=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme',t);
+  document.getElementById('darkToggle').textContent=t==='dark'?'☀️':'🌙';
+  try{localStorage.setItem('baobab-theme',t)}catch(e){}
+}
+try{const s=localStorage.getItem('baobab-theme');if(s){document.documentElement.setAttribute('data-theme',s);document.getElementById('darkToggle').textContent=s==='dark'?'☀️':'🌙'}}catch(e){}
 
-    // Proverb library
-    const proverbs = [
-      {
-        lang:'Yoruba', theme:'Community',
-        text:'Igi kan kì í dá igbó ṣe.',
-        meaning:'One tree does not make a forest — collaboration drives success.',
-        prompt:'Where did teamwork improve learning today?'
-      },
-      {
-        lang:'Yoruba', theme:'Wisdom',
-        text:'Ọmọdé gbọ́n, àgbà gbọ́n la fi dá ilú.',
-        meaning:'A town thrives on the wisdom of both young and old.',
-        prompt:'How can we include both novice and expert perspectives?'
-      },
-      {
-        lang:'Igbo', theme:'Unity',
-        text:'Igwe bụ ike.',
-        meaning:'Together is strength.',
-        prompt:'Design a task that needs each teammate’s role to succeed.'
-      },
-      {
-        lang:'Igbo', theme:'Learning',
-        text:'A na-amụ nwa ka a mụa ya.',
-        meaning:'A child is trained as they are raised — learning is continual.',
-        prompt:'What habit will you practise daily to master this skill?'
-      },
-      {
-        lang:'Hausa', theme:'Cooperation',
-        text:'Hannu ɗaya ba ya ɗaukar jinka.',
-        meaning:'One hand cannot lift a mortar — we need one another.',
-        prompt:'What parts of this project require collaboration?'
-      },
-      {
-        lang:'Hausa', theme:'Inevitability',
-        text:'Komai nisan jifa, ƙasa zai faɗi.',
-        meaning:'No matter how far you throw, it will land — actions have outcomes.',
-        prompt:'Predict outcomes of different choices in this scenario.'
-      }
-    ];
-    let proverbIndex = 0;
-    const proverbText = document.getElementById('proverbText');
-    const proverbMeaning = document.getElementById('proverbMeaning');
-    const proverbMeta = document.getElementById('proverbMeta');
-    const proverbPrompts = document.getElementById('proverbPrompts');
+// SCROLL TO TOP
+window.addEventListener('scroll',()=>{
+  document.getElementById('scrollTopBtn').classList.toggle('visible',window.scrollY>400);
+});
 
-    function renderProverb(i){
-      const p = proverbs[i % proverbs.length];
-      proverbText.textContent = p.text;
-      proverbMeaning.textContent = p.meaning;
-      proverbMeta.innerHTML = `<i class="fas fa-scroll"></i> ${p.lang} • ${p.theme}`;
-      proverbPrompts.innerHTML = `<li>${p.prompt}</li>`;
-    }
-    renderProverb(proverbIndex);
+// INTERSECTION OBSERVER
+const obs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('active');obs.unobserve(e.target)}})},{threshold:.15});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
-    document.getElementById('nextProverb').addEventListener('click', ()=>{
-      proverbIndex = (proverbIndex + 1) % proverbs.length;
-      renderProverb(proverbIndex);
-    });
+// TOAST
+function showToast(msg,type='success'){
+  const c=document.getElementById('toastContainer');
+  const t=document.createElement('div');t.className='toast '+type;t.textContent=msg;
+  c.appendChild(t);setTimeout(()=>t.remove(),3000);
+}
 
-    document.getElementById('copyProverb').addEventListener('click', ()=>{
-      const content = `${proverbText.textContent}\n${proverbMeaning.textContent}`;
-      navigator.clipboard.writeText(content);
-    });
+// COPY TEXT
+function copyText(text){
+  navigator.clipboard.writeText(text).then(()=>showToast('Copied: '+text)).catch(()=>showToast('Copy failed','info'));
+}
 
-    // Story accordion
-    document.querySelectorAll('.acc-item').forEach(item=>{
-      item.querySelector('.acc-header').addEventListener('click', ()=>{
-        const open = item.classList.contains('active');
-        document.querySelectorAll('.acc-item').forEach(i=>i.classList.remove('active'));
-        if(!open) item.classList.add('active');
-      });
-    });
+// TABS
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+}
 
-    // Planner actions
-    function copyPlanner(){
-      const el = document.getElementById('plannerTemplate');
-      el.select();
-      el.setSelectionRange(0, 99999);
-      document.execCommand('copy');
-      alert('Integration template copied to clipboard.');
-    }
-    function downloadPlanner(){
-      const content = document.getElementById('plannerTemplate').value;
-      const blob = new Blob([content], {type:'text/plain;charset=utf-8'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'Baobab_Cultural_Integration_Plan.txt';
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
-    }
-    window.copyPlanner = copyPlanner;
-    window.downloadPlanner = downloadPlanner;
+// PROVERBS
+const proverbs=[
+  {origin:'Yoruba • Community',text:'Igi kan kì í dá igbó ṣe.',meaning:'One tree does not make a forest — we achieve more together.',prompt:'Class prompt: Where in today\'s lesson did teamwork improve results?'},
+  {origin:'Igbo • Perseverance',text:'Onye aghana nwanne ya.',meaning:'Be your brother\'s keeper — support each other always.',prompt:'Class prompt: How did you help a peer understand today\'s concept?'},
+  {origin:'Hausa • Patience',text:'Hankuri maganin zafi.',meaning:'Patience is the remedy for pain — persistence pays off.',prompt:'Class prompt: What challenge did you overcome by being patient today?'},
+  {origin:'Yoruba • Wisdom',text:'Àgbà kì í wà lọjà kí orí ọmọ títún wó.',meaning:'An elder does not stand in the market and let a child\'s head go crooked — mentors guide the young.',prompt:'Class prompt: Who mentored you today, and how?'},
+  {origin:'Igbo • Hard Work',text:'Aka ajụ anaghị eri ofụma.',meaning:'The hand that does not work does not eat well — effort earns reward.',prompt:'Class prompt: Which effort in today\'s lesson are you most proud of?'},
+  {origin:'Hausa • Unity',text:'Haɗin kai nasara ne.',meaning:'Unity is victory — together we succeed.',prompt:'Class prompt: When did collaboration lead to a breakthrough today?'}
+];
+let pi=0;
+function newProverb(){
+  pi=(pi+1)%proverbs.length;
+  const p=proverbs[pi];
+  document.getElementById('proverbOrigin').textContent=p.origin;
+  document.getElementById('proverbText').textContent=p.text;
+  document.getElementById('proverbMeaning').textContent=p.meaning;
+  document.getElementById('proverbPrompt').textContent=p.prompt;
+}
+function copyProverb(){
+  const t=document.getElementById('proverbText').textContent+' — '+document.getElementById('proverbMeaning').textContent;
+  navigator.clipboard.writeText(t).then(()=>showToast('Proverb copied!')).catch(()=>showToast('Copy failed','info'));
+}
 
-    // Login modal (placeholder)
-    function openLoginModal(){
-      alert('Tutor Portal Login\n\nIn the full version, this links to a secure login for:\n• Schedule & student profiles\n• Lesson prep resources\n• Earnings & payments\n• Parent communications\n• Professional development\n\nNeed help? Email tutors@baobabonlineacademy.com');
-    }
-    window.openLoginModal = openLoginModal;
-
-    // Smooth scroll for on-page anchors
-    document.querySelectorAll('a[href^="#"]').forEach(a=>{
-      a.addEventListener('click', (e)=>{
-        const id = a.getAttribute('href');
-        if(id.length>1){
-          const target = document.querySelector(id);
-          if(target){
-            e.preventDefault();
-            target.scrollIntoView({behavior:'smooth', block:'start'});
-            closeMenu();
-          }
-        }
-      });
-    });
-  </script>
+// TEMPLATE
+function copyTemplate(){
+  const t=document.getElementById('plannerTemplate').textContent;
+  navigator.clipboard.writeText(t).then(()=>showToast('Template copied!')).catch(()=>showToast('Copy failed','info'));
+}
+function downloadTemplate(){
+  const t=document.getElementById('plannerTemplate').textContent;
+  const b=new Blob([t],{type:'text/plain'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='cultural-integration-plan.txt';a.click();
+  showToast('Template downloaded!');
+}
+</script>
 </body>
 </html>

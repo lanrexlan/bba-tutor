@@ -1,980 +1,180 @@
 <!DOCTYPE html>
-<html lang="en-GB">
+<html lang="en" data-theme="light">
 <head>
-  <meta charset="UTF-8">
-  <link rel="icon" type="image/png" sizes="32x32" href="/Images/logo.jpg">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Teaching Best Practices - Tutor Portal - Baobab Online Academy</title>
-
-  <!-- Fonts & Icons -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
-
-  <style>
-    :root{
-      --baobab-brown:#8D4004;
-      --canopy-green:#2E7D32;
-      --sunset-gold:#F57C00;
-      --trunk-gray:#5D4037;
-      --sky-blue:#1976D2;
-      --earth-cream:#FFF8E1;
-      --desert-orange:#FF5722;
-      --sage-green:#689F38;
-      --deep-charcoal:#263238;
-      --white:#FFFFFF;
-      --tutor-teal:#00695C;
-      --tutor-light-teal:#B2DFDB;
-
-      --transition-slow:all .6s cubic-bezier(.165,.84,.44,1);
-      --transition-medium:all .4s cubic-bezier(.165,.84,.44,1);
-      --transition-fast:all .3s cubic-bezier(.165,.84,.44,1);
-
-      --shadow-sm:0 1px 3px rgba(0,0,0,.1);
-      --shadow-md:0 4px 6px rgba(0,0,0,.1);
-      --shadow-lg:0 10px 15px -3px rgba(0,0,0,.1);
-      --shadow-xl:0 20px 25px -5px rgba(0,0,0,.1);
-    }
-
-    *{margin:0;padding:0;box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      font-family:'Open Sans',sans-serif;
-      color:var(--deep-charcoal);
-      line-height:1.6;
-      background:var(--white);
-      overflow-x:hidden;
-    }
-    h1,h2,h3,h4,h5{
-      font-family:'Merriweather',serif;
-      font-weight:700;
-      line-height:1.25;
-      color:var(--deep-charcoal);
-    }
-    .container{
-      width:100%;
-      max-width:1200px;
-      margin:0 auto;
-      padding:0 20px;
-      position:relative;
-    }
-    .section{padding:80px 0;position:relative}
-    .btn{
-      display:inline-flex;align-items:center;gap:10px;
-      padding:12px 28px;border-radius:30px;font-weight:600;
-      transition:var(--transition-fast);text-decoration:none;cursor:pointer;
-      border:2px solid transparent;
-    }
-    .btn-primary{background:var(--tutor-teal);color:var(--white);border-color:var(--tutor-teal)}
-    .btn-primary:hover{background:var(--canopy-green);border-color:var(--canopy-green);transform:translateY(-2px);box-shadow:var(--shadow-md)}
-    .btn-outlined{background:transparent;color:var(--tutor-teal);border-color:var(--tutor-teal)}
-    .btn-outlined:hover{background:var(--tutor-teal);color:var(--white)}
-    .btn-secondary{background:var(--sunset-gold);color:var(--deep-charcoal);border-color:var(--sunset-gold)}
-    .badge{
-      display:inline-flex;align-items:center;gap:8px;
-      background:rgba(255,255,255,.18);color:#fff;
-      padding:8px 14px;border-radius:999px;font-weight:700;font-size:.9rem;
-      letter-spacing:.2px
-    }
-
-    /* Header */
-    .header{
-      position:sticky;top:0;left:0;width:100%;z-index:1000;
-      background:var(--white);box-shadow:var(--shadow-md);padding:10px 0
-    }
-    .nav-wrapper{display:flex;justify-content:space-between;align-items:center}
-    .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-    .logo-icon{
-      width:34px;height:34px;border-radius:8px;background:var(--tutor-teal);
-      color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px
-    }
-    .logo-text{font-weight:800;font-size:20px;color:var(--baobab-brown)}
-    .nav-menu{display:flex;gap:28px;list-style:none}
-    .nav-link{text-decoration:none;color:var(--deep-charcoal);font-weight:600}
-    .nav-link:hover{color:var(--tutor-teal)}
-    .nav-buttons{display:flex;gap:12px}
-    .menu-toggle{display:none;font-size:24px;color:var(--tutor-teal);cursor:pointer}
-
-    /* Mobile menu */
-    .mobile-menu-panel{
-      position:fixed;top:0;right:-100%;width:300px;height:100vh;background:#fff;z-index:1100;
-      padding:80px 28px 28px;box-shadow:var(--shadow-xl);transition:var(--transition-medium);overflow-y:auto
-    }
-    .mobile-menu-panel.active{right:0}
-    .mobile-menu{list-style:none;display:flex;flex-direction:column;gap:10px}
-    .mobile-link{display:block;padding:12px 0;border-bottom:1px solid var(--earth-cream);text-decoration:none;color:var(--deep-charcoal);font-weight:600}
-    .mobile-link:hover{color:var(--tutor-teal)}
-    .mobile-buttons{display:flex;flex-direction:column;gap:12px;margin-top:20px}
-    .menu-overlay{
-      position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);
-      z-index:1090;opacity:0;visibility:hidden;transition:var(--transition-medium)
-    }
-    .menu-overlay.active{opacity:1;visibility:visible}
-
-    /* Hero - unique gradient */
-    .hero{
-      background:linear-gradient(135deg, var(--sky-blue) 0%, var(--tutor-teal) 55%, var(--canopy-green) 100%);
-      color:#fff;padding:120px 0 60px;position:relative;overflow:hidden
-    }
-    .hero::before{
-      content:"";position:absolute;top:-80px;right:-80px;width:240px;height:240px;border-radius:50%;
-      background:radial-gradient(circle at center, rgba(255,255,255,.18), rgba(255,255,255,0) 60%)
-    }
-    .hero::after{
-      content:"";position:absolute;left:-100px;bottom:-100px;width:300px;height:300px;border-radius:50%;
-      background:radial-gradient(circle at center, rgba(255,255,255,.14), rgba(255,255,255,0) 60%)
-    }
-    .hero-title{font-size:2.8rem;margin-top:12px;margin-bottom:14px}
-    .hero-subtitle{font-size:1.12rem;opacity:.95;max-width:880px}
-    .breadcrumbs{
-      display:inline-flex;align-items:center;gap:8px;color:#fff;opacity:.9;text-decoration:none;font-weight:700
-    }
-    .breadcrumbs:hover{opacity:1;text-decoration:underline}
-
-    /* Intro */
-    .intro{background:var(--earth-cream)}
-    .lead{font-size:1.08rem;color:var(--trunk-gray);max-width:980px;margin:0 auto}
-
-    /* Pillars */
-    .pillars{
-      display:grid;grid-template-columns:repeat(3,1fr);gap:22px
-    }
-    .pillar{
-      background:#fff;border-radius:18px;padding:26px;box-shadow:var(--shadow-lg);
-      border:3px solid transparent;transition:var(--transition-medium)
-    }
-    .pillar:hover{transform:translateY(-8px);border-color:var(--tutor-teal);box-shadow:var(--shadow-xl)}
-    .pillar-icon{
-      width:60px;height:60px;border-radius:14px;background:linear-gradient(135deg, var(--tutor-teal), var(--tutor-light-teal));
-      color:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:12px
-    }
-    .muted{color:var(--trunk-gray)}
-
-    /* Playbook Tabs */
-    .tabs{
-      background:#fff;border-radius:16px;box-shadow:var(--shadow-lg);overflow:hidden
-    }
-    .tab-list{
-      display:flex;gap:8px;flex-wrap:wrap;list-style:none;margin:0;padding:14px;background:var(--tutor-light-teal)
-    }
-    .tab-btn{
-      border:none;background:#fff;color:var(--deep-charcoal);padding:10px 14px;border-radius:999px;font-weight:700;cursor:pointer;
-      box-shadow:var(--shadow-sm);transition:var(--transition-fast)
-    }
-    .tab-btn:hover{transform:translateY(-2px)}
-    .tab-btn.active{background:var(--tutor-teal);color:#fff}
-    .tab-panel{display:none;padding:22px}
-    .tab-panel.active{display:block;animation:fadeIn .35s ease}
-    @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-    .mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-    .mini-card{background:#fff;border:2px solid var(--earth-cream);border-radius:12px;padding:16px;box-shadow:var(--shadow-sm)}
-    .mini-card h6{font-weight:800;margin-bottom:8px;color:var(--tutor-teal)}
-    .pill{display:inline-flex;align-items:center;gap:8px;background:var(--earth-cream);color:var(--deep-charcoal);padding:6px 12px;border-radius:999px;font-weight:700;font-size:.9rem}
-
-    /* Strategies Library */
-    .toolbar{
-      display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px
-    }
-    .chip{
-      border:2px solid var(--tutor-teal);color:var(--tutor-teal);background:#fff;border-radius:999px;padding:6px 12px;font-weight:700;cursor:pointer
-    }
-    .chip.active{background:var(--tutor-teal);color:#fff}
-    .search{
-      flex:1;min-width:220px;display:flex;align-items:center;background:#fff;border:2px solid var(--earth-cream);border-radius:999px;padding:6px 12px
-    }
-    .search input{border:0;outline:none;flex:1;padding:6px 8px}
-    .strategy-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-    .strategy{background:#fff;border-radius:14px;padding:16px;border:2px solid var(--earth-cream)}
-    .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-    .tag{background:#f3f8f8;border-radius:999px;padding:4px 10px;font-size:.85rem;color:var(--tutor-teal);border:1px solid var(--tutor-light-teal)}
-
-    /* Differentiation matrix */
-    .matrix{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-    .cell{background:#fff;border-radius:14px;padding:16px;border-top:5px solid var(--sky-blue);box-shadow:var(--shadow-sm)}
-    .cell:nth-child(2){border-top-color:var(--tutor-teal)}
-    .cell:nth-child(3){border-top-color:var(--sunset-gold)}
-    .cell:nth-child(4){border-top-color:var(--baobab-brown)}
-
-    /* Self-Assessment */
-    .checklist{
-      background:#fff;border-radius:16px;padding:20px;box-shadow:var(--shadow-lg)
-    }
-    .progress{
-      height:10px;background:#ececec;border-radius:999px;overflow:hidden;margin:8px 0 14px
-    }
-    .progress > span{
-      display:block;height:100%;background:var(--canopy-green);width:0%
-    }
-    .item{
-      display:flex;gap:10px;align-items:flex-start;background:#fff;border:2px solid var(--earth-cream);
-      padding:10px;border-radius:12px;margin-bottom:10px
-    }
-    .item input{margin-top:3px}
-    .save-note{color:var(--trunk-gray);font-size:.9rem}
-
-    /* Rubric */
-    .rubric{
-      background:#fff;border-radius:16px;padding:20px;box-shadow:var(--shadow-lg)
-    }
-    .rubric-row{
-      display:grid;grid-template-columns:1.6fr .6fr;gap:12px;align-items:center;margin-bottom:10px
-    }
-    .score{
-      display:flex;align-items:center;gap:10px
-    }
-    .meter{flex:1;height:8px;background:#ececec;border-radius:999px;overflow:hidden}
-    .meter > span{display:block;height:100%;background:var(--sunset-gold);width:0%}
-    .total{display:flex;align-items:center;gap:10px;margin-top:12px}
-    .total .badge{background:var(--tutor-teal)}
-
-    /* Hook generator */
-    .hook{
-      background:#fff;border-radius:16px;padding:20px;border:3px dashed var(--tutor-teal)
-    }
-    .hook p{margin:8px 0 0}
-    .hook strong{color:var(--tutor-teal)}
-
-    /* Footer */
-    .footer{background:var(--deep-charcoal);color:#fff;padding:60px 0 28px;margin-top:40px}
-    .footer-content{
-      display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:36px;margin-bottom:28px
-    }
-    .footer h4{color:var(--tutor-teal);margin-bottom:12px}
-    .footer-link{color:rgba(255,255,255,.8);text-decoration:none;display:block;padding:6px 0}
-    .footer-link:hover{color:var(--sunset-gold)}
-    .footer-bottom{border-top:1px solid rgba(255,255,255,.12);margin-top:10px;padding-top:18px;text-align:center;color:rgba(255,255,255,.8)}
-
-    /* Utilities */
-    .section-title{font-size:2.2rem;color:var(--tutor-teal);margin-bottom:10px}
-    .section-subtitle{color:var(--trunk-gray);margin-bottom:18px}
-    .spacer{height:14px}
-
-    /* Responsive */
-    @media (max-width: 1100px){
-      .pillars{grid-template-columns:repeat(2,1fr)}
-      .mini-grid{grid-template-columns:repeat(2,1fr)}
-      .strategy-grid{grid-template-columns:repeat(2,1fr)}
-      .matrix{grid-template-columns:repeat(2,1fr)}
-    }
-    @media (max-width: 768px){
-      .menu-toggle{display:block}
-      .nav-menu,.nav-buttons{display:none}
-      .hero{padding:100px 0 50px}
-      .hero-title{font-size:2.2rem}
-      .pillars{grid-template-columns:1fr}
-      .mini-grid{grid-template-columns:1fr}
-      .strategy-grid{grid-template-columns:1fr}
-      .matrix{grid-template-columns:1fr}
-      .rubric-row{grid-template-columns:1fr}
-      .section{padding:60px 0}
-      .container{padding:0 16px}
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teaching Best Practices - Tutor Portal - Baobab Digital Academy</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--primary:#059669;--primary-dark:#047857;--primary-light:#34d399;--accent:#f59e0b;--accent-dark:#d97706;--bg:#fff;--bg-s:#f0fdf4;--bg-t:#f3f4f6;--text:#1f2937;--text-s:#4b5563;--text-t:#6b7280;--card:rgba(255,255,255,.72);--card-border:rgba(5,150,105,.12);--shadow:0 8px 32px rgba(0,0,0,.08);--radius:1rem;--nav-h:72px}
+[data-theme="dark"]{--bg:#0f172a;--bg-s:#1e293b;--bg-t:#1e293b;--text:#f1f5f9;--text-s:#cbd5e1;--text-t:#94a3b8;--card:rgba(30,41,59,.72);--card-border:rgba(52,211,153,.15);--shadow:0 8px 32px rgba(0,0,0,.3)}
+html{scroll-behavior:smooth}body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;transition:background .4s,color .4s;overflow-x:hidden}a{text-decoration:none;color:inherit}
+.nav{position:fixed;top:0;left:0;width:100%;height:var(--nav-h);background:var(--card);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--card-border);z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 2rem}.nav-brand{display:flex;align-items:center;gap:.5rem;font-weight:700;font-size:1.15rem;color:var(--primary)}.nav-brand span{font-size:1.4rem}.nav-links{display:flex;align-items:center;gap:1.5rem;list-style:none}.nav-links a{font-size:.9rem;font-weight:500;color:var(--text-s);transition:color .3s}.nav-links a:hover{color:var(--primary)}.nav-btn{background:var(--primary);color:#fff;padding:.55rem 1.3rem;border-radius:.5rem;font-weight:600;font-size:.85rem;border:none;cursor:pointer;transition:background .3s,transform .2s}.nav-btn:hover{background:var(--primary-dark);transform:translateY(-1px)}.nav-btn.outline{background:transparent;border:1.5px solid var(--primary);color:var(--primary)}.nav-btn.outline:hover{background:var(--primary);color:#fff}.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}.hamburger span{width:24px;height:2.5px;background:var(--text);border-radius:2px}.mobile-menu{display:none;position:fixed;top:var(--nav-h);left:0;width:100%;background:var(--card);backdrop-filter:blur(20px);border-bottom:1px solid var(--card-border);padding:1rem 2rem;z-index:999}.mobile-menu.active{display:block}.mobile-menu a{display:block;padding:.6rem 0;color:var(--text-s);font-weight:500}
+.hero{position:relative;min-height:55vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:calc(var(--nav-h)+3rem) 2rem 4rem;overflow:hidden}.hero-bg{position:absolute;inset:0;z-index:0}.blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.35;animation:bF 8s ease-in-out infinite}.blob-1{width:500px;height:500px;background:#059669;top:-10%;left:-10%}.blob-2{width:400px;height:400px;background:#f59e0b;top:20%;right:-8%;animation-delay:2s}.blob-3{width:350px;height:350px;background:#0d9488;bottom:-5%;left:30%;animation-delay:4s}@keyframes bF{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-20px) scale(1.05)}66%{transform:translate(-20px,15px) scale(.95)}}.hero-content{position:relative;z-index:1;max-width:750px}.hero-badge{display:inline-flex;align-items:center;gap:.4rem;background:var(--card);backdrop-filter:blur(12px);border:1px solid var(--card-border);padding:.4rem 1rem;border-radius:2rem;font-size:.8rem;font-weight:600;color:var(--primary);margin-bottom:1.2rem}.hero h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;line-height:1.15;margin-bottom:1rem;background:linear-gradient(135deg,var(--primary),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.hero p{font-size:1.1rem;color:var(--text-s);max-width:600px;margin:0 auto}
+section{padding:4rem 2rem}.container{max-width:1100px;margin:0 auto}.section-label{display:inline-flex;align-items:center;gap:.4rem;background:rgba(5,150,105,.1);color:var(--primary);font-size:.8rem;font-weight:600;padding:.35rem 1rem;border-radius:2rem;margin-bottom:.75rem}.section-title{font-size:clamp(1.5rem,3.5vw,2.2rem);font-weight:800;margin-bottom:.6rem}.section-sub{color:var(--text-s);font-size:1rem;max-width:650px}.text-center{text-align:center;margin-left:auto;margin-right:auto}
+.glass{background:var(--card);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--card-border);border-radius:var(--radius);padding:1.8rem;box-shadow:var(--shadow);transition:transform .3s,box-shadow .3s}.glass:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.12)}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem}.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}.reveal.active{opacity:1;transform:translateY(0)}.reveal-delay-1{transition-delay:.15s}.reveal-delay-2{transition-delay:.3s}.reveal-delay-3{transition-delay:.45s}
+.icon-circle{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:1rem}.icon-circle.green{background:rgba(5,150,105,.12);color:var(--primary)}.icon-circle.amber{background:rgba(245,158,11,.12);color:var(--accent)}.icon-circle.teal{background:rgba(13,148,136,.12);color:#0d9488}.icon-circle.blue{background:rgba(59,130,246,.12);color:#3b82f6}.icon-circle.rose{background:rgba(244,63,94,.12);color:#f43f5e}.icon-circle.purple{background:rgba(139,92,246,.12);color:#8b5cf6}
+.tabs{display:flex;gap:.5rem;margin-bottom:1.5rem;flex-wrap:wrap}.tab-btn{padding:.55rem 1.2rem;border-radius:.5rem;border:1.5px solid var(--card-border);background:var(--card);backdrop-filter:blur(10px);font-size:.85rem;font-weight:600;cursor:pointer;color:var(--text-s);transition:all .3s}.tab-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}.tab-content{display:none}.tab-content.active{display:block}
+.copy-btn{background:var(--primary);color:#fff;border:none;padding:.55rem 1.2rem;border-radius:.5rem;font-size:.85rem;font-weight:600;cursor:pointer;transition:background .3s,transform .2s}.copy-btn:hover{background:var(--primary-dark);transform:scale(1.03)}
+.subj-list{list-style:none;padding:0;margin-bottom:.5rem}.subj-list li{font-size:.87rem;color:var(--text-s);padding:.3rem 0;padding-left:1.2rem;position:relative}.subj-list li::before{content:"→";position:absolute;left:0;color:var(--primary);font-weight:700}
+/* STRATEGY CARD */
+.strat-card{padding:1.2rem;border-radius:.75rem;background:var(--card);border:1px solid var(--card-border);display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;margin-bottom:.75rem;transition:transform .2s}.strat-card:hover{transform:translateX(4px)}.strat-info h4{font-size:.95rem;font-weight:700;margin-bottom:.2rem}.strat-info p{font-size:.85rem;color:var(--text-s);margin-bottom:.3rem}.strat-tags{display:flex;gap:.3rem;flex-wrap:wrap}.strat-tag{font-size:.7rem;font-weight:600;padding:.15rem .5rem;border-radius:1rem;background:rgba(5,150,105,.1);color:var(--primary)}
+/* DIFF MATRIX */
+.diff-col h4{font-size:.92rem;font-weight:700;color:var(--primary);margin-bottom:.6rem}
+/* RUBRIC */
+.rubric-row{display:flex;align-items:center;gap:1rem;padding:.6rem 0;border-bottom:1px solid var(--card-border)}.rubric-row:last-child{border-bottom:none}.rubric-label{flex:1;font-size:.88rem;font-weight:600}.rubric-sub{font-size:.78rem;color:var(--text-t)}.rubric-input{width:60px;padding:.4rem;border:1.5px solid var(--card-border);border-radius:.4rem;text-align:center;font-size:.9rem;font-weight:700;background:var(--bg);color:var(--text);outline:none}.rubric-input:focus{border-color:var(--primary)}
+.rubric-result{text-align:center;padding:1rem;margin-top:1rem;border-radius:.75rem;background:rgba(5,150,105,.06)}.rubric-score{font-size:2rem;font-weight:800;color:var(--primary)}.rubric-desc{font-size:.85rem;color:var(--text-s)}
+/* HOOK */
+.hook-box{text-align:center;padding:2rem;background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);backdrop-filter:blur(12px)}.hook-label{font-size:.8rem;font-weight:600;color:var(--accent);margin-bottom:.5rem}.hook-text{font-size:1rem;color:var(--text);font-style:italic;margin-bottom:1.2rem;line-height:1.6}
+/* CHECKLIST */
+.check-item{display:flex;align-items:center;gap:.75rem;padding:.65rem 0;border-bottom:1px solid var(--card-border)}.check-item:last-child{border-bottom:none}.check-item input{width:18px;height:18px;accent-color:var(--primary);cursor:pointer}.check-item label{font-size:.88rem;color:var(--text-s);cursor:pointer}
+.cta-section{background:linear-gradient(135deg,var(--primary-dark),var(--primary),#0d9488);padding:4rem 2rem;text-align:center;color:#fff;border-radius:var(--radius);margin:2rem auto;max-width:1100px}.cta-section h2{font-size:clamp(1.5rem,3vw,2rem);font-weight:800;margin-bottom:.6rem}.cta-section p{opacity:.9;margin-bottom:1.5rem}.cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}.cta-btn{padding:.7rem 1.6rem;border-radius:.5rem;font-weight:600;font-size:.9rem;cursor:pointer;border:none;transition:all .3s}.cta-btn.white{background:#fff;color:var(--primary-dark)}.cta-btn.white:hover{transform:translateY(-2px)}.cta-btn.outline-w{background:transparent;border:2px solid rgba(255,255,255,.5);color:#fff}.cta-btn.outline-w:hover{background:rgba(255,255,255,.15)}
+.footer{background:var(--bg-s);border-top:1px solid var(--card-border);padding:3.5rem 2rem 1.5rem;margin-top:4rem}.footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem;max-width:1100px;margin:0 auto}.footer-col h3{font-size:.92rem;font-weight:700;margin-bottom:1rem}.footer-col a{display:block;font-size:.85rem;color:var(--text-s);padding:.3rem 0;transition:color .3s}.footer-col a:hover{color:var(--primary)}.footer-col p{font-size:.85rem;color:var(--text-s);line-height:1.6}.footer-bottom{text-align:center;padding-top:2rem;margin-top:2rem;border-top:1px solid var(--card-border);max-width:1100px;margin-left:auto;margin-right:auto}.footer-bottom p{font-size:.8rem;color:var(--text-t)}
+.dark-toggle{position:fixed;bottom:5.5rem;right:1.5rem;width:48px;height:48px;border-radius:50%;background:var(--card);backdrop-filter:blur(12px);border:1px solid var(--card-border);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:999;font-size:1.2rem;box-shadow:var(--shadow);transition:transform .3s}.dark-toggle:hover{transform:scale(1.1)}
+.scroll-top{position:fixed;bottom:1.5rem;right:1.5rem;width:48px;height:48px;border-radius:50%;background:var(--primary);color:#fff;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:999;font-size:1.2rem;box-shadow:0 4px 16px rgba(5,150,105,.3);opacity:0;transform:translateY(20px);transition:opacity .3s,transform .3s}.scroll-top.visible{opacity:1;transform:translateY(0)}
+.toast-container{position:fixed;top:calc(var(--nav-h)+.5rem);right:1rem;z-index:1100;display:flex;flex-direction:column;gap:.5rem}.toast{background:var(--card);backdrop-filter:blur(14px);border:1px solid var(--card-border);padding:.8rem 1.2rem;border-radius:.6rem;font-size:.85rem;font-weight:500;box-shadow:var(--shadow);animation:tI .3s ease}.toast.success{border-left:4px solid var(--primary)}.toast.info{border-left:4px solid var(--accent)}@keyframes tI{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+@media(max-width:768px){.nav-links,.nav .nav-btn{display:none}.hamburger{display:flex}.hero{min-height:45vh;padding-top:calc(var(--nav-h)+2rem)}.hero h1{font-size:1.8rem}.grid-3,.grid-2{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr}}@media(max-width:480px){.footer-grid{grid-template-columns:1fr}.tabs{justify-content:center}}
+</style>
 </head>
 <body>
-  <!-- Header -->
-  <header class="header">
-    <div class="container">
-      <div class="nav-wrapper">
-        <a href="index.html" class="logo" aria-label="Tutor Portal Home">
-          <div class="logo-icon"><i class="fas fa-chalkboard-teacher"></i></div>
-          <div class="logo-text">Tutor Portal</div>
-        </a>
+<nav class="nav"><a href="index.html" class="nav-brand"><span>🌳</span> Baobab Digital Academy</a><ul class="nav-links"><li><a href="index.html">Home</a></li><li><a href="index.html#why-us">Why Choose Us</a></li><li><a href="index.html#earnings">Earnings</a></li><li><a href="index.html#apply">Apply Now</a></li></ul><div style="display:flex;gap:.5rem;align-items:center"><button class="nav-btn outline" onclick="location.href='index.html#login'">Login</button><button class="nav-btn" onclick="location.href='index.html#apply'">Apply</button></div><button class="hamburger" onclick="document.querySelector('.mobile-menu').classList.toggle('active')"><span></span><span></span><span></span></button></nav>
+<div class="mobile-menu"><a href="index.html">Home</a><a href="index.html#why-us">Why Choose Us</a><a href="index.html#earnings">Earnings</a><a href="index.html#apply">Apply Now</a><a href="index.html#login">Login</a></div>
 
-        <div class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
-          <i class="fas fa-bars"></i>
-        </div>
+<section class="hero"><div class="hero-bg"><div class="blob blob-1"></div><div class="blob blob-2"></div><div class="blob blob-3"></div></div><div class="hero-content"><div class="hero-badge">🎯 High-Impact Teaching</div><h1>Teaching Best Practices</h1><p>Practical, research-driven strategies for planning, delivery, assessment, and classroom culture. Adapt these tools to your context—anchored in African heritage, aimed at global excellence.</p></div></section>
 
-        <ul class="nav-menu">
-          <li><a class="nav-link" href="index.html">Home</a></li>
-          <li><a class="nav-link" href="index.html#why-choose">Why Choose Us</a></li>
-          <li><a class="nav-link" href="index.html#earnings">Earnings</a></li>
-          <li><a class="nav-link" href="index.html#apply">Apply Now</a></li>
-          <li><a class="nav-link" href="https://baobabonlineacademy.com">Main Site</a></li>
-        </ul>
-
-        <div class="nav-buttons">
-          <button class="btn btn-outlined" onclick="openLoginModal()"><i class="fas fa-right-to-bracket"></i> Login</button>
-          <a class="btn btn-primary" href="index.html#apply"><i class="fas fa-paper-plane"></i> Apply</a>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <!-- Mobile Menu -->
-  <div class="mobile-menu-panel" id="mobileMenuPanel" aria-hidden="true">
-    <ul class="mobile-menu">
-      <li><a class="mobile-link" href="index.html">Home</a></li>
-      <li><a class="mobile-link" href="index.html#why-choose">Why Choose Us</a></li>
-      <li><a class="mobile-link" href="index.html#earnings">Earnings</a></li>
-      <li><a class="mobile-link" href="index.html#apply">Apply Now</a></li>
-      <li><a class="mobile-link" href="https://baobabonlineacademy.com">Main Site</a></li>
-    </ul>
-    <div class="mobile-buttons">
-      <button class="btn btn-outlined" onclick="openLoginModal()"><i class="fas fa-right-to-bracket"></i> Login</button>
-      <a class="btn btn-primary" href="index.html#apply"><i class="fas fa-paper-plane"></i> Apply</a>
+<!-- PILLARS -->
+<section>
+  <div class="container">
+    <div class="text-center reveal"><div class="section-label">🏛️ Pillars</div><h2 class="section-title">Pedagogical Pillars</h2><p class="section-sub text-center">The core ingredients of high-impact lessons.</p></div>
+    <div class="grid-3" style="margin-top:2rem">
+      <div class="glass reveal reveal-delay-1"><div class="icon-circle green">🔍</div><h3 style="font-weight:700;margin-bottom:.4rem">Clarity</h3><p style="font-size:.9rem;color:var(--text-s)">State learning objectives, success criteria, and models of excellence. Reference them throughout the lesson.</p></div>
+      <div class="glass reveal reveal-delay-2"><div class="icon-circle amber">🙋</div><h3 style="font-weight:700;margin-bottom:.4rem">Active Engagement</h3><p style="font-size:.9rem;color:var(--text-s)">Think–Pair–Share, mini whiteboards, cold-calling with warmth, and student explanations drive learning.</p></div>
+      <div class="glass reveal reveal-delay-3"><div class="icon-circle teal">💬</div><h3 style="font-weight:700;margin-bottom:.4rem">Feedback</h3><p style="font-size:.9rem;color:var(--text-s)">Frequent, specific, actionable. Use exit tickets and exemplars; plan time for revision and improvement.</p></div>
+      <div class="glass reveal reveal-delay-1"><div class="icon-circle blue">📈</div><h3 style="font-weight:700;margin-bottom:.4rem">Rigour & Support</h3><p style="font-size:.9rem;color:var(--text-s)">High expectations with scaffolds: sentence stems, visuals, guided practice, and structured talk.</p></div>
+      <div class="glass reveal reveal-delay-2"><div class="icon-circle rose">♿</div><h3 style="font-weight:700;margin-bottom:.4rem">Inclusion</h3><p style="font-size:.9rem;color:var(--text-s)">Differentiate content, process, and product; design accessible materials and multiple ways to show learning.</p></div>
+      <div class="glass reveal reveal-delay-3"><div class="icon-circle purple">🌍</div><h3 style="font-weight:700;margin-bottom:.4rem">Relevance</h3><p style="font-size:.9rem;color:var(--text-s)">Connect concepts to lives, communities, and Nigerian/African contexts for deeper meaning.</p></div>
     </div>
   </div>
-  <div class="menu-overlay" id="menuOverlay"></div>
+</section>
 
-  <!-- Hero -->
-  <section class="hero">
-    <div class="container">
-      <a class="breadcrumbs" href="index.html" aria-label="Back to home">
-        <i class="fas fa-arrow-left"></i> Back to Home
-      </a>
-      <div class="spacer"></div>
-      <span class="badge"><i class="fas fa-graduation-cap"></i> High-Impact Teaching</span>
-      <h1 class="hero-title">Teaching Best Practices</h1>
-      <p class="hero-subtitle">
-        Practical, research-driven strategies for planning, delivery, assessment, and classroom culture.
-        Adapt these tools to your context—anchored in African heritage, aimed at global excellence.
-      </p>
+<!-- PLAYBOOK TABS -->
+<section style="background:var(--bg-s)">
+  <div class="container">
+    <div class="text-center reveal"><div class="section-label">📖 Playbook</div><h2 class="section-title">Best Practices Playbook</h2></div>
+    <div style="margin-top:2rem" class="reveal">
+      <div class="tabs" style="justify-content:center"><button class="tab-btn active" onclick="switchTab('plan',this)">Planning</button><button class="tab-btn" onclick="switchTab('deliver',this)">Delivery</button><button class="tab-btn" onclick="switchTab('assess',this)">Assessment</button><button class="tab-btn" onclick="switchTab('culture',this)">Classroom Culture</button></div>
+      <div id="tab-plan" class="tab-content active"><div class="glass"><h4 style="font-weight:700;margin-bottom:.8rem">Start with outcomes, then design backwards.</h4><p style="font-size:.88rem;font-weight:600;margin-bottom:.4rem">Objectives & Criteria</p><ul class="subj-list"><li>SWBAT statements in student-friendly language</li><li>Success criteria and exemplars</li><li>Pre-plan checks for understanding</li></ul><p style="font-size:.88rem;font-weight:600;margin-bottom:.4rem">Sequencing</p><ul class="subj-list"><li>Hook → Input → Practice → Show → Reflect</li><li>Chunking and pacing</li><li>Homework that extends thinking</li></ul><p style="font-size:.88rem;font-weight:600;margin-bottom:.4rem">Cultural Links</p><ul class="subj-list"><li>Local examples, proverbs, case studies</li><li>Bilingual supports where helpful</li><li>Community resources/guest shares</li></ul></div></div>
+      <div id="tab-deliver" class="tab-content"><div class="glass"><h4 style="font-weight:700;margin-bottom:.8rem">Keep explanations crisp; maximise student thinking time.</h4><p style="font-size:.88rem;font-weight:600;margin-bottom:.4rem">Modelling</p><ul class="subj-list"><li>Think alouds for complex tasks</li><li>Dual coding: words + visuals</li><li>Worked examples → faded guidance</li></ul><p style="font-size:.88rem;font-weight:600;margin-bottom:.4rem">Talk Routines</p><ul class="subj-list"><li>Think–Pair–Share; Rally Coach</li><li>Cold call with warmth & wait time</li><li>Academic sentence stems</li></ul><p style="font-size:.88rem;font-weight:600;margin-bottom:.4rem">Checks for Understanding</p><ul class="subj-list"><li>Mini whiteboards or polls</li><li>Stop–Solve–Share cycles</li><li>Error analysis & reteach</li></ul></div></div>
+      <div id="tab-assess" class="tab-content"><div class="glass"><h4 style="font-weight:700;margin-bottom:.8rem">Assess for learning, not just of learning.</h4><p style="font-size:.88rem;font-weight:600;margin-bottom:.4rem">Formative</p><ul class="subj-list"><li>Exit tickets; hinge questions</li><li>Peer assessment with rubrics</li><li>Misconception probes</li></ul><p style="font-size:.88rem;font-weight:600;margin-bottom:.4rem">Summative</p><ul class="subj-list"><li>Performance tasks & practicals</li><li>Projects with public audience</li><li>Moderation for fairness</li></ul><p style="font-size:.88rem;font-weight:600;margin-bottom:.4rem">Feedback</p><ul class="subj-list"><li>WWW/EBI: What Went Well / Even Better If</li><li>Actionable next steps</li><li>Dedicated improvement time</li></ul></div></div>
+      <div id="tab-culture" class="tab-content"><div class="glass"><h4 style="font-weight:700;margin-bottom:.8rem">Relationships first: respect, safety, and joy.</h4><p style="font-size:.88rem;font-weight:600;margin-bottom:.4rem">Routines</p><ul class="subj-list"><li>Do Now; materials check</li><li>Signals & transitions</li><li>End-of-lesson reflection</li></ul><p style="font-size:.88rem;font-weight:600;margin-bottom:.4rem">Belonging</p><ul class="subj-list"><li>Pronounce names correctly</li><li>Celebrate effort and growth</li><li>Use student voice & choice</li></ul><p style="font-size:.88rem;font-weight:600;margin-bottom:.4rem">Safeguarding</p><ul class="subj-list"><li>Clear boundaries online</li><li>Report concerns promptly</li><li>Privacy & consent norms</li></ul></div></div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Intro -->
-  <section class="section intro">
-    <div class="container">
-      <h2 class="section-title"><i class="fas fa-compass"></i> Purpose</h2>
-      <p class="lead">
-        This playbook distils proven methods into simple routines and checklists. Use it to build strong habits:
-        clear objectives, active learning, frequent feedback, and inclusive practices that honour identity and voice.
-      </p>
+<!-- STRATEGIES -->
+<section>
+  <div class="container">
+    <div class="text-center reveal"><div class="section-label">🧰 Strategies</div><h2 class="section-title">Strategies Library</h2></div>
+    <div style="margin-top:2rem">
+      <div class="strat-card reveal"><div class="strat-info"><h4>Think–Pair–Share</h4><p>Individual think time → partner discussion → whole-class share.</p><div class="strat-tags"><span class="strat-tag">Engagement</span><span class="strat-tag">Collaboration</span></div></div><button class="copy-btn" onclick="copyText('Think–Pair–Share: Individual think time → partner discussion → whole-class share.')">Copy</button></div>
+      <div class="strat-card reveal"><div class="strat-info"><h4>Cold Call (with warmth)</h4><p>Pose, pause, then invite diverse students. Normalise participation.</p><div class="strat-tags"><span class="strat-tag">Questioning</span><span class="strat-tag">Engagement</span></div></div><button class="copy-btn" onclick="copyText('Cold Call: Pose, pause, then invite diverse students. Normalise participation.')">Copy</button></div>
+      <div class="strat-card reveal"><div class="strat-info"><h4>Exit Ticket</h4><p>1–2 targeted questions to close learning; inform next lesson.</p><div class="strat-tags"><span class="strat-tag">Feedback</span><span class="strat-tag">Assessment</span></div></div><button class="copy-btn" onclick="copyText('Exit Ticket: 1–2 targeted questions to close learning; inform next lesson.')">Copy</button></div>
+      <div class="strat-card reveal"><div class="strat-info"><h4>Jigsaw</h4><p>Teams become experts on parts, then teach one another.</p><div class="strat-tags"><span class="strat-tag">Collaboration</span><span class="strat-tag">Engagement</span></div></div><button class="copy-btn" onclick="copyText('Jigsaw: Teams become experts on parts, then teach one another.')">Copy</button></div>
+      <div class="strat-card reveal"><div class="strat-info"><h4>Hinge Question</h4><p>A mid-lesson check that guides go-on vs. reteach.</p><div class="strat-tags"><span class="strat-tag">Questioning</span><span class="strat-tag">Feedback</span></div></div><button class="copy-btn" onclick="copyText('Hinge Question: A mid-lesson check that guides go-on vs. reteach.')">Copy</button></div>
+      <div class="strat-card reveal"><div class="strat-info"><h4>WWW / EBI</h4><p>Frame feedback as What Went Well and Even Better If.</p><div class="strat-tags"><span class="strat-tag">Feedback</span></div></div><button class="copy-btn" onclick="copyText('WWW/EBI: Frame feedback as What Went Well and Even Better If.')">Copy</button></div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Pedagogical Pillars -->
-  <section class="section">
-    <div class="container">
-      <h2 class="section-title"><i class="fas fa-brain"></i> Pedagogical Pillars</h2>
-      <p class="section-subtitle">The core ingredients of high-impact lessons.</p>
-      <div class="pillars">
-        <div class="pillar">
-          <div class="pillar-icon"><i class="fas fa-bullseye"></i></div>
-          <h4>Clarity</h4>
-          <p class="muted">State learning objectives, success criteria, and models of excellence. Reference them throughout the lesson.</p>
-        </div>
-        <div class="pillar">
-          <div class="pillar-icon"><i class="fas fa-people-group"></i></div>
-          <h4>Active Engagement</h4>
-          <p class="muted">Think–Pair–Share, mini whiteboards, cold-calling with warmth, and student explanations drive learning.</p>
-        </div>
-        <div class="pillar">
-          <div class="pillar-icon"><i class="fas fa-clipboard-check"></i></div>
-          <h4>Feedback</h4>
-          <p class="muted">Frequent, specific, actionable. Use exit tickets and exemplars; plan time for revision and improvement.</p>
-        </div>
-        <div class="pillar">
-          <div class="pillar-icon"><i class="fas fa-scale-balanced"></i></div>
-          <h4>Rigour & Support</h4>
-          <p class="muted">High expectations with scaffolds: sentence stems, visuals, guided practice, and structured talk.</p>
-        </div>
-        <div class="pillar">
-          <div class="pillar-icon"><i class="fas fa-users-gear"></i></div>
-          <h4>Inclusion</h4>
-          <p class="muted">Differentiate content, process, and product; design accessible materials and multiple ways to show learning.</p>
-        </div>
-        <div class="pillar">
-          <div class="pillar-icon"><i class="fas fa-globe-africa"></i></div>
-          <h4>Relevance</h4>
-          <p class="muted">Connect concepts to lives, communities, and Nigerian/African contexts for deeper meaning.</p>
-        </div>
+<!-- DIFFERENTIATION + RUBRIC + HOOK -->
+<section style="background:var(--bg-s)">
+  <div class="container">
+    <div class="grid-2">
+      <!-- DIFF MATRIX -->
+      <div class="glass reveal">
+        <h3 style="font-weight:700;margin-bottom:1rem">📐 Differentiation Matrix</h3>
+        <p style="font-size:.85rem;color:var(--text-s);margin-bottom:1rem">Adjust the challenge, not the destination. Offer multiple pathways to the same goals.</p>
+        <div class="diff-col"><h4>Content</h4><ul class="subj-list"><li>Texts at varied reading levels</li><li>Audio/visual supports</li><li>Vocabulary pre-teaching</li></ul></div>
+        <div class="diff-col"><h4>Process</h4><ul class="subj-list"><li>Graphic organisers</li><li>Choice of strategies (TPR, visuals)</li><li>Guided vs. independent practice</li></ul></div>
+        <div class="diff-col"><h4>Product</h4><ul class="subj-list"><li>Essay, presentation, or model</li><li>Rubric with tiered criteria</li><li>Oral alternatives for some tasks</li></ul></div>
+        <div class="diff-col"><h4>Environment</h4><ul class="subj-list"><li>Quiet spaces vs. collaboration zones</li><li>Assistive tech and tools</li><li>Flexible timing where appropriate</li></ul></div>
       </div>
-    </div>
-  </section>
 
-  <!-- Best Practices Playbook (Tabs) -->
-  <section class="section">
-    <div class="container">
-      <h2 class="section-title"><i class="fas fa-book-open"></i> Best Practices Playbook</h2>
-      <p class="section-subtitle">Click a tab to explore practical moves and resources.</p>
-
-      <div class="tabs" id="playbookTabs">
-        <ul class="tab-list" role="tablist">
-          <li><button class="tab-btn active" data-tab="planning"><i class="fas fa-calendar-check"></i> Planning</button></li>
-          <li><button class="tab-btn" data-tab="delivery"><i class="fas fa-person-chalkboard"></i> Delivery</button></li>
-          <li><button class="tab-btn" data-tab="assessment"><i class="fas fa-clipboard-list"></i> Assessment</button></li>
-          <li><button class="tab-btn" data-tab="culture"><i class="fas fa-handshake-angle"></i> Classroom Culture</button></li>
-        </ul>
-
-        <!-- Planning -->
-        <div class="tab-panel active" id="panel-planning">
-          <span class="pill"><i class="fas fa-lightbulb"></i> Start with outcomes, then design backwards.</span>
-          <div class="mini-grid" style="margin-top:10px">
-            <div class="mini-card">
-              <h6>Objectives & Criteria</h6>
-              <ul class="muted">
-                <li>SWBAT statements in student-friendly language</li>
-                <li>Success criteria and exemplars</li>
-                <li>Pre-plan checks for understanding</li>
-              </ul>
-            </div>
-            <div class="mini-card">
-              <h6>Sequencing</h6>
-              <ul class="muted">
-                <li>Hook → Input → Practice → Show → Reflect</li>
-                <li>Chunking and pacing</li>
-                <li>Homework that extends thinking</li>
-              </ul>
-            </div>
-            <div class="mini-card">
-              <h6>Cultural Links</h6>
-              <ul class="muted">
-                <li>Local examples, proverbs, case studies</li>
-                <li>Bilingual supports where helpful</li>
-                <li>Community resources/guest shares</li>
-              </ul>
-            </div>
-          </div>
+      <div>
+        <!-- RUBRIC -->
+        <div class="glass reveal" style="margin-bottom:1.5rem">
+          <h3 style="font-weight:700;margin-bottom:1rem">📊 Quick Rubric Builder</h3>
+          <p style="font-size:.85rem;color:var(--text-s);margin-bottom:1rem">Rate each criterion 1–4. Use the overall score to give a clear next step.</p>
+          <div class="rubric-row"><div><div class="rubric-label">Understanding</div><div class="rubric-sub">Accuracy and depth</div></div><input class="rubric-input" type="number" value="3" min="1" max="4" onchange="calcRubric()"></div>
+          <div class="rubric-row"><div><div class="rubric-label">Reasoning</div><div class="rubric-sub">Evidence and explanation</div></div><input class="rubric-input" type="number" value="3" min="1" max="4" onchange="calcRubric()"></div>
+          <div class="rubric-row"><div><div class="rubric-label">Communication</div><div class="rubric-sub">Clarity and structure</div></div><input class="rubric-input" type="number" value="3" min="1" max="4" onchange="calcRubric()"></div>
+          <div class="rubric-row"><div><div class="rubric-label">Creativity</div><div class="rubric-sub">Originality and insight</div></div><input class="rubric-input" type="number" value="3" min="1" max="4" onchange="calcRubric()"></div>
+          <div class="rubric-result"><div class="rubric-score" id="rubricScore">3.0</div><div>/ 4</div><div class="rubric-desc" id="rubricDesc">Proficient — highlight strengths; set one improvement target.</div></div>
+          <button class="copy-btn" style="margin-top:1rem" onclick="copyRubric()">Copy Summary</button>
         </div>
 
-        <!-- Delivery -->
-        <div class="tab-panel" id="panel-delivery">
-          <span class="pill"><i class="fas fa-bolt"></i> Keep explanations crisp; maximise student thinking time.</span>
-          <div class="mini-grid" style="margin-top:10px">
-            <div class="mini-card">
-              <h6>Modelling</h6>
-              <ul class="muted">
-                <li>Think alouds for complex tasks</li>
-                <li>Dual coding: words + visuals</li>
-                <li>Worked examples → faded guidance</li>
-              </ul>
-            </div>
-            <div class="mini-card">
-              <h6>Talk Routines</h6>
-              <ul class="muted">
-                <li>Think–Pair–Share; Rally Coach</li>
-                <li>Cold call with warmth & wait time</li>
-                <li>Academic sentence stems</li>
-              </ul>
-            </div>
-            <div class="mini-card">
-              <h6>Checks for Understanding</h6>
-              <ul class="muted">
-                <li>Mini whiteboards or polls</li>
-                <li>Stop–Solve–Share cycles</li>
-                <li>Error analysis & reteach</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <!-- Assessment -->
-        <div class="tab-panel" id="panel-assessment">
-          <span class="pill"><i class="fas fa-scale-balanced"></i> Assess for learning, not just of learning.</span>
-          <div class="mini-grid" style="margin-top:10px">
-            <div class="mini-card">
-              <h6>Formative</h6>
-              <ul class="muted">
-                <li>Exit tickets; hinge questions</li>
-                <li>Peer assessment with rubrics</li>
-                <li>Misconception probes</li>
-              </ul>
-            </div>
-            <div class="mini-card">
-              <h6>Summative</h6>
-              <ul class="muted">
-                <li>Performance tasks & practicals</li>
-                <li>Projects with public audience</li>
-                <li>Moderation for fairness</li>
-              </ul>
-            </div>
-            <div class="mini-card">
-              <h6>Feedback</h6>
-              <ul class="muted">
-                <li>WWW/EBI: What Went Well / Even Better If</li>
-                <li>Actionable next steps</li>
-                <li>Dedicated improvement time</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <!-- Culture -->
-        <div class="tab-panel" id="panel-culture">
-          <span class="pill"><i class="fas fa-heart"></i> Relationships first: respect, safety, and joy.</span>
-          <div class="mini-grid" style="margin-top:10px">
-            <div class="mini-card">
-              <h6>Routines</h6>
-              <ul class="muted">
-                <li>Do Now; materials check</li>
-                <li>Signals & transitions</li>
-                <li>End-of-lesson reflection</li>
-              </ul>
-            </div>
-            <div class="mini-card">
-              <h6>Belonging</h6>
-              <ul class="muted">
-                <li>Pronounce names correctly</li>
-                <li>Celebrate effort and growth</li>
-                <li>Use student voice & choice</li>
-              </ul>
-            </div>
-            <div class="mini-card">
-              <h6>Safeguarding</h6>
-              <ul class="muted">
-                <li>Clear boundaries online</li>
-                <li>Report concerns promptly</li>
-                <li>Privacy & consent norms</li>
-              </ul>
-            </div>
+        <!-- HOOK GENERATOR -->
+        <div class="glass reveal">
+          <h3 style="font-weight:700;margin-bottom:1rem">💡 Lesson Hook Generator</h3>
+          <div class="hook-box" id="hookBox">
+            <div class="hook-label" id="hookLabel">Analogy Hook</div>
+            <div class="hook-text" id="hookText">Compare today's concept to a Lagos traffic system. What "traffic rules" does our topic follow?</div>
+            <div style="display:flex;gap:.5rem;justify-content:center"><button class="copy-btn" onclick="newHook()" style="background:var(--accent)">New Hook</button><button class="copy-btn" onclick="copyHook()">Copy Hook</button></div>
           </div>
         </div>
       </div>
-
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Strategies Library -->
-  <section class="section">
-    <div class="container">
-      <h2 class="section-title"><i class="fas fa-toolbox"></i> Strategies Library</h2>
-      <p class="section-subtitle">Filter and search for techniques. Click to copy a quick description.</p>
-
-      <div class="toolbar">
-        <button class="chip active" data-filter="all">All</button>
-        <button class="chip" data-filter="engagement">Engagement</button>
-        <button class="chip" data-filter="questioning">Questioning</button>
-        <button class="chip" data-filter="feedback">Feedback</button>
-        <button class="chip" data-filter="collaboration">Collaboration</button>
-        <div class="search">
-          <i class="fas fa-search" style="color:var(--tutor-teal)"></i>
-          <input type="text" id="strategySearch" placeholder="Search strategies...">
-        </div>
-      </div>
-
-      <div class="strategy-grid" id="strategyGrid">
-        <div class="strategy" data-tags="engagement collaboration" data-text="Think–Pair–Share: pose a question, individual think time, discuss with partner, then share to class.">
-          <strong>Think–Pair–Share</strong>
-          <p class="muted">Individual think time → partner discussion → whole-class share.</p>
-          <div class="tags"><span class="tag">Engagement</span><span class="tag">Collaboration</span></div>
-          <div class="spacer"></div>
-          <button class="btn btn-outlined btn-sm copy-btn"><i class="fas fa-copy"></i> Copy</button>
-        </div>
-        <div class="strategy" data-tags="questioning engagement" data-text="Cold Call (with warmth): ask a range of students after suitable think time; normalise participation.">
-          <strong>Cold Call (with warmth)</strong>
-          <p class="muted">Pose, pause, then invite diverse students. Normalise participation.</p>
-          <div class="tags"><span class="tag">Questioning</span><span class="tag">Engagement</span></div>
-          <div class="spacer"></div>
-          <button class="btn btn-outlined btn-sm copy-btn"><i class="fas fa-copy"></i> Copy</button>
-        </div>
-        <div class="strategy" data-tags="feedback assessment" data-text="Exit Ticket: 1–2 targeted questions at end; use responses to plan reteach or next steps.">
-          <strong>Exit Ticket</strong>
-          <p class="muted">1–2 targeted questions to close learning; inform next lesson.</p>
-          <div class="tags"><span class="tag">Feedback</span><span class="tag">Assessment</span></div>
-          <div class="spacer"></div>
-          <button class="btn btn-outlined btn-sm copy-btn"><i class="fas fa-copy"></i> Copy</button>
-        </div>
-        <div class="strategy" data-tags="collaboration engagement" data-text="Jigsaw: groups master different subtopics and teach peers; ensures accountability and interdependence.">
-          <strong>Jigsaw</strong>
-          <p class="muted">Teams become experts on parts, then teach one another.</p>
-          <div class="tags"><span class="tag">Collaboration</span><span class="tag">Engagement</span></div>
-          <div class="spacer"></div>
-          <button class="btn btn-outlined btn-sm copy-btn"><i class="fas fa-copy"></i> Copy</button>
-        </div>
-        <div class="strategy" data-tags="feedback questioning" data-text="Hinge Question: a single multiple-choice or short prompt mid-lesson to decide whether to move on or reteach.">
-          <strong>Hinge Question</strong>
-          <p class="muted">A mid-lesson check that guides go-on vs. reteach.</p>
-          <div class="tags"><span class="tag">Questioning</span><span class="tag">Feedback</span></div>
-          <div class="spacer"></div>
-          <button class="btn btn-outlined btn-sm copy-btn"><i class="fas fa-copy"></i> Copy</button>
-        </div>
-        <div class="strategy" data-tags="feedback" data-text="WWW/EBI: Students receive feedback in the form of What Went Well and Even Better If, followed by action steps.">
-          <strong>WWW / EBI</strong>
-          <p class="muted">Frame feedback as What Went Well and Even Better If.</p>
-          <div class="tags"><span class="tag">Feedback</span></div>
-          <div class="spacer"></div>
-          <button class="btn btn-outlined btn-sm copy-btn"><i class="fas fa-copy"></i> Copy</button>
-        </div>
-      </div>
+<!-- SELF-ASSESSMENT -->
+<section>
+  <div class="container" style="max-width:650px">
+    <div class="text-center reveal"><div class="section-label">✅ Self-Check</div><h2 class="section-title">Self-Assessment Checklist</h2><p class="section-sub text-center">Tick what you consistently do.</p></div>
+    <div class="glass reveal" style="margin-top:2rem">
+      <div class="check-item"><input type="checkbox" id="sa1"><label for="sa1">Post and reference clear objectives and success criteria.</label></div>
+      <div class="check-item"><input type="checkbox" id="sa2"><label for="sa2">Use at least two checks for understanding per lesson.</label></div>
+      <div class="check-item"><input type="checkbox" id="sa3"><label for="sa3">Plan structured student talk (e.g., Think–Pair–Share).</label></div>
+      <div class="check-item"><input type="checkbox" id="sa4"><label for="sa4">Provide specific feedback and time to improve.</label></div>
+      <div class="check-item"><input type="checkbox" id="sa5"><label for="sa5">Embed a cultural connection authentically.</label></div>
+      <div class="check-item"><input type="checkbox" id="sa6"><label for="sa6">Offer at least one differentiated pathway.</label></div>
+      <div class="check-item"><input type="checkbox" id="sa7"><label for="sa7">Close with reflection/exit ticket to inform planning.</label></div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Differentiation Matrix -->
-  <section class="section">
-    <div class="container">
-      <h2 class="section-title"><i class="fas fa-diagram-project"></i> Differentiation Matrix</h2>
-      <p class="section-subtitle">Adjust the challenge, not the destination. Offer multiple pathways to the same goals.</p>
+<section style="padding:2rem">
+  <div class="cta-section reveal"><h2>Put Best Practices to Work</h2><p>Pair these strategies with our Curriculum and Cultural guides.</p><div class="cta-btns"><button class="cta-btn white" onclick="location.href='curriculum-guidelines.html'">Curriculum Guidelines</button><button class="cta-btn outline-w" onclick="location.href='cultural-integration.html'">Cultural Integration</button><button class="cta-btn outline-w" onclick="location.href='index.html#apply'">Apply to Teach</button></div></div>
+</section>
 
-      <div class="matrix">
-        <div class="cell">
-          <h5>Content</h5>
-          <ul class="muted">
-            <li>Texts at varied reading levels</li>
-            <li>Audio/visual supports</li>
-            <li>Vocabulary pre-teaching</li>
-          </ul>
-        </div>
-        <div class="cell">
-          <h5>Process</h5>
-          <ul class="muted">
-            <li>Graphic organisers</li>
-            <li>Choice of strategies (TPR, visuals)</li>
-            <li>Guided vs. independent practice</li>
-          </ul>
-        </div>
-        <div class="cell">
-          <h5>Product</h5>
-          <ul class="muted">
-            <li>Essay, presentation, or model</li>
-            <li>Rubric with tiered criteria</li>
-            <li>Oral alternatives for some tasks</li>
-          </ul>
-        </div>
-        <div class="cell">
-          <h5>Environment</h5>
-          <ul class="muted">
-            <li>Quiet spaces vs. collaboration zones</li>
-            <li>Assistive tech and tools</li>
-            <li>Flexible timing where appropriate</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Self-Assessment Checklist -->
-  <section class="section" id="checklist">
-    <div class="container">
-      <h2 class="section-title"><i class="fas fa-list-check"></i> Self-Assessment Checklist</h2>
-      <p class="section-subtitle">Tick what you consistently do. Your progress auto-saves on this device.</p>
-
-      <div class="checklist">
-        <div class="progress" aria-label="Checklist progress">
-          <span id="checkProgress"></span>
-        </div>
-        <p class="save-note"><i class="fas fa-circle-info"></i> Saved locally as “baobab_best_practices_checklist”.</p>
-
-        <label class="item"><input type="checkbox" data-key="objectives"> <div>Post and reference clear objectives and success criteria.</div></label>
-        <label class="item"><input type="checkbox" data-key="checks"> <div>Use at least two checks for understanding per lesson.</div></label>
-        <label class="item"><input type="checkbox" data-key="talk"> <div>Plan structured student talk (e.g., Think–Pair–Share).</div></label>
-        <label class="item"><input type="checkbox" data-key="feedback"> <div>Provide specific feedback and time to improve.</div></label>
-        <label class="item"><input type="checkbox" data-key="culture"> <div>Embed a cultural connection authentically.</div></label>
-        <label class="item"><input type="checkbox" data-key="differentiation"> <div>Offer at least one differentiated pathway.</div></label>
-        <label class="item"><input type="checkbox" data-key="reflection"> <div>Close with reflection/exit ticket to inform planning.</div></label>
-      </div>
-    </div>
-  </section>
-
-  <!-- Quick Rubric Builder -->
-  <section class="section">
-    <div class="container">
-      <h2 class="section-title"><i class="fas fa-ruler"></i> Quick Rubric Builder</h2>
-      <p class="section-subtitle">Rate each criterion 1–4. Use the overall score to give a clear next step.</p>
-
-      <div class="rubric" id="rubric">
-        <div class="rubric-row">
-          <div><strong>Understanding</strong> <span class="muted">Accuracy and depth</span></div>
-          <div class="score">
-            <input type="range" min="1" max="4" step="1" value="3" class="slider">
-            <div class="meter"><span></span></div>
-            <span class="val">3</span>
-          </div>
-        </div>
-        <div class="rubric-row">
-          <div><strong>Reasoning</strong> <span class="muted">Evidence and explanation</span></div>
-          <div class="score">
-            <input type="range" min="1" max="4" step="1" value="3" class="slider">
-            <div class="meter"><span></span></div>
-            <span class="val">3</span>
-          </div>
-        </div>
-        <div class="rubric-row">
-          <div><strong>Communication</strong> <span class="muted">Clarity and structure</span></div>
-          <div class="score">
-            <input type="range" min="1" max="4" step="1" value="3" class="slider">
-            <div class="meter"><span></span></div>
-            <span class="val">3</span>
-          </div>
-        </div>
-        <div class="rubric-row">
-          <div><strong>Creativity</strong> <span class="muted">Originality and insight</span></div>
-          <div class="score">
-            <input type="range" min="1" max="4" step="1" value="3" class="slider">
-            <div class="meter"><span></span></div>
-            <span class="val">3</span>
-          </div>
-        </div>
-
-        <div class="total">
-          <span class="badge"><i class="fas fa-chart-line"></i> Overall: <strong id="overallScore">3.0</strong>/4</span>
-          <span class="muted" id="overallDescriptor">Proficient — highlight strengths; set one improvement target.</span>
-        </div>
-        <div class="spacer"></div>
-        <button class="btn btn-outlined" id="copyRubric"><i class="fas fa-copy"></i> Copy Summary</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- Hook Generator -->
-  <section class="section">
-    <div class="container">
-      <h2 class="section-title"><i class="fas fa-fire"></i> Lesson Hook Generator</h2>
-      <p class="section-subtitle">Kick off with curiosity. Generate a quick opener and adapt to your topic.</p>
-
-      <div class="hook" id="hookBox">
-        <div class="pill" id="hookType"><i class="fas fa-wand-magic-sparkles"></i> Analogy Hook</div>
-        <p id="hookText"><strong>Analogy:</strong> Compare today’s concept to a Lagos traffic system. What “traffic rules” does our topic follow?</p>
-        <div class="spacer"></div>
-        <button class="btn btn-primary" id="newHook"><i class="fas fa-shuffle"></i> New Hook</button>
-        <button class="btn btn-outlined" id="copyHook"><i class="fas fa-copy"></i> Copy Hook</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section class="section" style="text-align:center;background:#fff">
-    <div class="container">
-      <h2 class="section-title"><i class="fas fa-rocket"></i> Put Best Practices to Work</h2>
-      <p class="section-subtitle">Pair these strategies with our Curriculum and Cultural guides.</p>
-      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
-        <a class="btn btn-primary" href="curriculum-guidelines.html"><i class="fas fa-book-open"></i> Curriculum Guidelines</a>
-        <a class="btn btn-outlined" href="cultural-integration.html"><i class="fas fa-feather"></i> Cultural Integration</a>
-        <a class="btn btn-secondary" href="index.html#apply"><i class="fas fa-paper-plane"></i> Apply to Teach</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-content">
-        <div>
-          <h4><i class="fas fa-chalkboard-teacher"></i> Teaching Resources</h4>
-          <a class="footer-link" href="curriculum-guidelines.html">Curriculum Guidelines</a>
-          <a class="footer-link" href="cultural-integration.html">Cultural Integration Handbook</a>
-          <a class="footer-link" href="teaching-practices.html">Teaching Best Practices</a>
-          <a class="footer-link" href="technology-training.html">Technology Training</a>
-        </div>
-
-
-
-        <div>
-          <h4><i class="fas fa-life-ring"></i> Support</h4>
-          <a class="footer-link" href="help-center.html">Tutor Help Center</a>
-          <a class="footer-link" href="technical-support.html">Technical Support</a>
-          <a class="footer-link" href="payment-information.html">Payment Information</a>
-          <a class="footer-link" href="platform-guidelines.html">Platform Guidelines</a>
-        </div>
-
-        <div>
-          <h4><i class="fas fa-phone"></i> Contact</h4>
-          <p style="color:rgba(255,255,255,.8);margin-bottom:8px"><i class="fas fa-envelope"></i> tutors@baobabonlineacademy.com</p>
-          <p style="color:rgba(255,255,255,.8);margin-bottom:8px"><i class="fas fa-phone"></i> +234 (0) 816 501 1291</p>
-          <p style="color:rgba(255,255,255,.8)"><i class="fas fa-clock"></i> Mon–Fri: 9AM–5PM WAT</p>
-        </div>
-      </div>
-
-      <div class="footer-bottom">
-        <p>&copy; 2025 Baobab Online Academy Tutor Portal. Empowering Nigerian Educators Globally.</p>
-      </div>
-    </div>
-  </footer>
-
-  <script>
-    // Mobile menu
-    const menuToggle = document.getElementById('menuToggle');
-    const mobileMenuPanel = document.getElementById('mobileMenuPanel');
-    const menuOverlay = document.getElementById('menuOverlay');
-
-    function openMenu(){
-      mobileMenuPanel.classList.add('active');
-      menuOverlay.classList.add('active');
-      document.body.style.overflow='hidden';
-      menuToggle.innerHTML='<i class="fas fa-times"></i>';
-    }
-    function closeMenu(){
-      mobileMenuPanel.classList.remove('active');
-      menuOverlay.classList.remove('active');
-      document.body.style.overflow='auto';
-      menuToggle.innerHTML='<i class="fas fa-bars"></i>';
-    }
-    function toggleMenu(){ mobileMenuPanel.classList.contains('active') ? closeMenu() : openMenu(); }
-    if(menuToggle){ menuToggle.addEventListener('click', toggleMenu); }
-    if(menuOverlay){ menuOverlay.addEventListener('click', closeMenu); }
-
-    // Tabs
-    const tabButtons = document.querySelectorAll('.tab-btn');
-    const panels = {
-      planning: document.getElementById('panel-planning'),
-      delivery: document.getElementById('panel-delivery'),
-      assessment: document.getElementById('panel-assessment'),
-      culture: document.getElementById('panel-culture'),
-    };
-    tabButtons.forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        const key = btn.dataset.tab;
-        tabButtons.forEach(b=>b.classList.remove('active'));
-        btn.classList.add('active');
-        Object.values(panels).forEach(p=>p.classList.remove('active'));
-        const panel = document.getElementById('panel-' + key);
-        if(panel) panel.classList.add('active');
-        closeMenu();
-      });
-    });
-
-    // Strategy filtering and search
-    const chips = document.querySelectorAll('.chip');
-    const grid = document.getElementById('strategyGrid');
-    const cards = Array.from(grid.querySelectorAll('.strategy'));
-    const search = document.getElementById('strategySearch');
-    let activeFilter = 'all';
-
-    function applyFilters(){
-      const q = search.value.toLowerCase().trim();
-      cards.forEach(card=>{
-        const tags = card.getAttribute('data-tags');
-        const text = (card.textContent || '').toLowerCase();
-        const matchesFilter = activeFilter === 'all' || (tags && tags.includes(activeFilter));
-        const matchesQuery = !q || text.includes(q);
-        card.style.display = (matchesFilter && matchesQuery) ? 'block' : 'none';
-      });
-    }
-    chips.forEach(ch=>{
-      ch.addEventListener('click', ()=>{
-        chips.forEach(c=>c.classList.remove('active'));
-        ch.classList.add('active');
-        activeFilter = ch.getAttribute('data-filter');
-        applyFilters();
-      });
-    });
-    search.addEventListener('input', applyFilters);
-
-    // Copy strategy text
-    document.querySelectorAll('.copy-btn').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        const text = btn.closest('.strategy').getAttribute('data-text') || btn.closest('.strategy').innerText;
-        navigator.clipboard.writeText(text).then(()=>{
-          btn.innerHTML = '<i class="fas fa-check"></i> Copied';
-          setTimeout(()=>btn.innerHTML = '<i class="fas fa-copy"></i> Copy', 1200);
-        });
-      });
-    });
-
-    // Checklist with localStorage
-    const CHECK_KEY = 'baobab_best_practices_checklist';
-    const checks = document.querySelectorAll('.checklist input[type="checkbox"][data-key]');
-    const progressBar = document.getElementById('checkProgress');
-
-    function loadChecklist(){
-      try{
-        const data = JSON.parse(localStorage.getItem(CHECK_KEY) || '{}');
-        checks.forEach(cb=>{
-          cb.checked = !!data[cb.dataset.key];
-        });
-      }catch(e){}
-      updateProgress();
-    }
-    function saveChecklist(){
-      const data = {};
-      checks.forEach(cb=>{ data[cb.dataset.key] = cb.checked; });
-      localStorage.setItem(CHECK_KEY, JSON.stringify(data));
-      updateProgress();
-    }
-    function updateProgress(){
-      const total = checks.length;
-      const done = Array.from(checks).filter(c=>c.checked).length;
-      const pct = total ? Math.round((done/total)*100) : 0;
-      progressBar.style.width = pct + '%';
-      progressBar.style.background = pct >= 80 ? 'var(--canopy-green)' : (pct >= 40 ? 'var(--sunset-gold)' : '#d0d0d0');
-      progressBar.title = pct + '% complete';
-    }
-    checks.forEach(cb=>cb.addEventListener('change', saveChecklist));
-    loadChecklist();
-
-    // Rubric sliders
-    const rubric = document.getElementById('rubric');
-    const sliders = rubric.querySelectorAll('.slider');
-    const overallScoreEl = document.getElementById('overallScore');
-    const descriptorEl = document.getElementById('overallDescriptor');
-
-    function updateSliderUI(slider){
-      const val = Number(slider.value);
-      const meter = slider.parentElement.querySelector('.meter > span');
-      const label = slider.parentElement.querySelector('.val');
-      const pct = ((val-1)/(4-1))*100;
-      meter.style.width = pct + '%';
-      label.textContent = val.toString();
-      meter.style.background = val >= 4 ? 'var(--canopy-green)' : (val >= 3 ? 'var(--sunset-gold)' : '#d66');
-    }
-    function updateOverall(){
-      const vals = Array.from(sliders).map(s=>Number(s.value));
-      const avg = vals.reduce((a,b)=>a+b,0)/vals.length;
-      const rounded = Math.round(avg*10)/10;
-      overallScoreEl.textContent = rounded.toFixed(1);
-      let desc = 'Developing — target key gaps with guided practice.';
-      if(rounded >= 3.5) desc = 'Exemplary — extend with challenge tasks and leadership.';
-      else if(rounded >= 2.5) desc = 'Proficient — highlight strengths; set one improvement target.';
-      else if(rounded >= 1.5) desc = 'Emerging — prioritise core skills with scaffolds.';
-      descriptorEl.textContent = desc;
-    }
-    sliders.forEach(s=>{
-      updateSliderUI(s);
-      s.addEventListener('input', ()=>{ updateSliderUI(s); updateOverall(); });
-    });
-    updateOverall();
-
-    // Copy rubric summary
-    document.getElementById('copyRubric').addEventListener('click', ()=>{
-      const rows = rubric.querySelectorAll('.rubric-row');
-      const lines = Array.from(rows).map(r=>{
-        const name = r.querySelector('div strong').textContent.trim();
-        const val = r.querySelector('.val').textContent.trim();
-        return `${name}: ${val}/4`;
-      });
-      const summary = `Rubric Summary\n${lines.join('\n')}\nOverall: ${overallScoreEl.textContent}/4 — ${descriptorEl.textContent}`;
-      navigator.clipboard.writeText(summary);
-    });
-
-    // Hook generator
-    const hooks = [
-      {type:'Analogy Hook', text:'Analogy: Compare today’s concept to a Lagos traffic system. What “traffic rules” does our topic follow?'},
-      {type:'Mystery Hook', text:'Mystery: Show a surprising result or riddle that today’s lesson will explain.'},
-      {type:'Story Hook', text:'Story: A short anecdote from Nigerian history or daily life that mirrors the concept.'},
-      {type:'Demo Hook', text:'Demo: A mini experiment or quick visual that raises a why/how question.'},
-      {type:'Image Hook', text:'Image: Display a diagram/sketch and ask students to predict what it shows and why.'},
-      {type:'Debate Hook', text:'Debate: Pose a provocative statement and have students vote, then justify.'},
-      {type:'Data Hook', text:'Data: Share a short data table about a local issue; ask what it suggests and what else we need to know.'},
-    ];
-    let hookIndex = 0;
-    const hookType = document.getElementById('hookType');
-    const hookText = document.getElementById('hookText');
-
-    function renderHook(i){
-      const h = hooks[i % hooks.length];
-      hookType.innerHTML = `<i class="fas fa-wand-magic-sparkles"></i> ${h.type}`;
-      hookText.innerHTML = `<strong>${h.type.split(' ')[0]}:</strong> ${h.text.replace(/^(Analogy:|Mystery:|Story:|Demo:|Image:|Debate:|Data:)\s*/,'')}`;
-    }
-    renderHook(hookIndex);
-    document.getElementById('newHook').addEventListener('click', ()=>{
-      hookIndex = (hookIndex + 1) % hooks.length;
-      renderHook(hookIndex);
-    });
-    document.getElementById('copyHook').addEventListener('click', ()=>{
-      const content = `${hookType.textContent} — ${hookText.textContent}`;
-      navigator.clipboard.writeText(content);
-    });
-
-    // Login modal (placeholder)
-    function openLoginModal(){
-      alert('Tutor Portal Login\n\nIn the full version, this links to a secure login for:\n• Schedule & student profiles\n• Lesson prep resources\n• Earnings & payments\n• Parent communications\n• Professional development\n\nNeed help? Email tutors@baobabonlineacademy.com');
-    }
-    window.openLoginModal = openLoginModal;
-
-    // Smooth scroll (on-page anchors)
-    document.querySelectorAll('a[href^="#"]').forEach(a=>{
-      a.addEventListener('click', (e)=>{
-        const id = a.getAttribute('href');
-        if(id.length>1){
-          const target = document.querySelector(id);
-          if(target){
-            e.preventDefault();
-            target.scrollIntoView({behavior:'smooth', block:'start'});
-            closeMenu();
-          }
-        }
-      });
-    });
-  </script>
+<footer class="footer"><div class="footer-grid"><div class="footer-col"><h3>🌳 Baobab Digital Academy</h3><p>Empowering Nigerian Educators Globally. Share your knowledge and cultural heritage with students worldwide.</p></div><div class="footer-col"><h3>Teaching Resources</h3><a href="curriculum-guidelines.html">Curriculum Guidelines</a><a href="cultural-integration.html">Cultural Integration Handbook</a><a href="teaching-practices.html">Teaching Best Practices</a><a href="technology-training.html">Technology Training</a></div><div class="footer-col"><h3>Support</h3><a href="help-center.html">Tutor Help Center</a><a href="technical-support.html">Technical Support</a><a href="payment-information.html">Payment Information</a><a href="platform-guidelines.html">Platform Guidelines</a></div><div class="footer-col"><h3>Contact</h3><p>tutors@baobabonlineacademy.com</p><p>+234 (0) 816 501 1291</p><p>Mon–Fri: 9AM–6PM WAT</p></div></div><div class="footer-bottom"><p>© 2025 Baobab Digital Academy Tutor Portal. Empowering Nigerian Educators Globally.</p></div></footer>
+<button class="dark-toggle" onclick="toggleDark()" id="darkToggle">🌙</button>
+<button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<div class="toast-container" id="toastContainer"></div>
+<script>
+function toggleDark(){const t=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',t);document.getElementById('darkToggle').textContent=t==='dark'?'☀️':'🌙';try{localStorage.setItem('baobab-theme',t)}catch(e){}}
+try{const s=localStorage.getItem('baobab-theme');if(s){document.documentElement.setAttribute('data-theme',s);document.getElementById('darkToggle').textContent=s==='dark'?'☀️':'🌙'}}catch(e){}
+window.addEventListener('scroll',()=>{document.getElementById('scrollTopBtn').classList.toggle('visible',window.scrollY>400)});
+const obs=new IntersectionObserver(en=>{en.forEach(e=>{if(e.isIntersecting){e.target.classList.add('active');obs.unobserve(e.target)}})},{threshold:.15});document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+function showToast(m,t='success'){const c=document.getElementById('toastContainer');const d=document.createElement('div');d.className='toast '+t;d.textContent=m;c.appendChild(d);setTimeout(()=>d.remove(),3000)}
+function copyText(t){navigator.clipboard.writeText(t).then(()=>showToast('Copied!')).catch(()=>showToast('Copy failed','info'))}
+function switchTab(id,btn){document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));document.getElementById('tab-'+id).classList.add('active');btn.classList.add('active')}
+// Rubric
+function calcRubric(){const inputs=document.querySelectorAll('.rubric-input');let sum=0;inputs.forEach(i=>sum+=Math.min(4,Math.max(1,parseInt(i.value)||1)));const avg=(sum/inputs.length).toFixed(1);document.getElementById('rubricScore').textContent=avg;const descs=['Beginning — reteach core concepts.','Developing — targeted practice needed.','Proficient — highlight strengths; set one improvement target.','Exemplary — extend with challenge tasks.'];document.getElementById('rubricDesc').textContent=descs[Math.min(3,Math.max(0,Math.round(avg)-1))]}
+function copyRubric(){const s=document.getElementById('rubricScore').textContent;const d=document.getElementById('rubricDesc').textContent;copyText(`Rubric Score: ${s}/4 — ${d}`)}
+// Hook
+const hooks=[
+  {label:'Analogy Hook',text:'Compare today\'s concept to a Lagos traffic system. What "traffic rules" does our topic follow?'},
+  {label:'Mystery Hook',text:'Show a puzzling image or data set. Ask: "What do you think happened here?" Connect to today\'s learning.'},
+  {label:'Challenge Hook',text:'Can you solve this in 60 seconds? Present a rapid mini-problem tied to the lesson objective.'},
+  {label:'Story Hook',text:'Begin with a short Nigerian folktale or proverb. Ask: "How does this connect to what we\'re about to learn?"'},
+  {label:'Real-World Hook',text:'Show a headline or data point from Nigeria. Ask: "Why does this matter, and what can we learn from it?"'}
+];
+let hi=0;function newHook(){hi=(hi+1)%hooks.length;document.getElementById('hookLabel').textContent=hooks[hi].label;document.getElementById('hookText').textContent=hooks[hi].text}
+function copyHook(){copyText(document.getElementById('hookText').textContent)}
+</script>
 </body>
 </html>
