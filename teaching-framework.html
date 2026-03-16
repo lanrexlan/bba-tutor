@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" sizes="32x32" href="/Images/logo.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teaching Framework - Baobab Digital Academy</title>
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ================================================
+           BAOBAB BRAND PALETTE
+           ================================================ */
+        :root {
+            --baobab-brown:       #6B3A2A;
+            --baobab-brown-dark:  #4A2218;
+            --baobab-brown-light: #8C5442;
+            --canopy-green:       #2D6A4F;
+            --canopy-green-dark:  #1B4332;
+            --canopy-green-light: #52B788;
+            --sunset-gold:        #F4A261;
+            --sunset-gold-warm:   #E76F51;
+            --earth-cream:        #FEF6EE;
+            --earth-cream-dark:   #F5E6D3;
+            --warm-white:         #FEFEFE;
+            --deep-charcoal:      #18120F;
+            --text-dark:          #2C1810;
+            --text-medium:        #5C3E30;
+            --text-light:         #8C7066;
+            --border-light:       #EDD9C8;
+            --shadow-warm:        rgba(107,58,42,0.12);
+            --max-w:              1280px;
+            --section-py:         5rem;
+            --section-px:         2rem;
+            --r-card:             24px;
+            --r-pill:             50px;
+            --transition:         all 0.3s cubic-bezier(.4,0,.2,1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; font-size: 18px; }
+        @media (max-width: 992px) { html { font-size: 16px; } }
+
+        body { font-family: 'DM Sans', sans-serif; color: var(--text-dark); background-color: var(--warm-white); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+        h1, h2, h3, h4, h5 { font-family: 'Playfair Display', serif; font-weight: 700; line-height: 1.2; color: var(--baobab-brown-dark); }
+        ul { list-style: none; }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+
+        .container { max-width: var(--max-w); margin: 0 auto; padding: 0 var(--section-px); position: relative; }
+        .section { padding: var(--section-py) 0; position: relative; }
+        .t-cen { text-align: center; }
+        
+        .eyebrow {
+            display: inline-block; font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .18em;
+            color: var(--canopy-green); background: rgba(45,106,79,.1); border-left: 3px solid var(--canopy-green);
+            padding: .28rem .75rem; border-radius: 0 4px 4px 0; margin-bottom: .85rem;
+        }
+        .sec-title { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 1rem; }
+        .sec-sub { font-size: 1rem; color: var(--text-medium); line-height: 1.75; max-width: 700px; margin: 0 auto 3rem; }
+
+        .fu { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+        .fu.vis { opacity: 1; transform: translateY(0); }
+
+        /* Buttons */
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; padding: .85rem 1.75rem; border-radius: var(--r-pill); font-weight: 700; font-size: .95rem; transition: var(--transition); border: 2px solid transparent; cursor: pointer; white-space: nowrap; font-family: 'DM Sans', sans-serif; }
+        .btn-primary { background: linear-gradient(135deg, var(--canopy-green), var(--canopy-green-dark)); color: white; box-shadow: 0 4px 14px rgba(45,106,79,.25); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(45,106,79,.35); }
+        .btn-gold { background: linear-gradient(135deg, var(--sunset-gold), var(--sunset-gold-warm)); color: white; box-shadow: 0 4px 14px rgba(244,162,97,.25); }
+        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(244,162,97,.35); }
+        .btn-outline { background: transparent; color: var(--baobab-brown-dark); border-color: var(--border-light); }
+        .btn-outline:hover { background: var(--earth-cream); border-color: var(--sunset-gold); }
+        .btn-white { background: #fff; color: var(--canopy-green-dark); box-shadow: 0 4px 14px rgba(0,0,0,.08); }
+        .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.15); }
+        .btn-sm { padding: .5rem 1.25rem; font-size: .85rem; }
+
+        /* Header */
+        .header { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(15px); box-shadow: 0 2px 20px var(--shadow-warm); padding: .75rem 0; transition: var(--transition); }
+        .nav-wrapper { display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; gap: .6rem; }
+        .logo-icon { width: 46px; height: 46px; min-width: 46px; border-radius: 50%; border: 2px solid var(--sunset-gold); overflow: hidden; display: flex; align-items: center; justify-content: center; background: #fff; }
+        .logo-icon img { width: 100%; height: 100%; object-fit: cover; }
+        .logo-text { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.2rem; color: var(--baobab-brown-dark); line-height: 1.1; }
+        .logo-tag { display: block; font-family: 'DM Sans', sans-serif; font-size: .65rem; font-style: italic; color: var(--text-light); }
+        
+        .nav-menu { display: flex; gap: 1.5rem; align-items: center; }
+        .nav-link { font-weight: 600; font-size: .9rem; color: var(--text-medium); }
+        .nav-link:hover, .nav-link.active { color: var(--sunset-gold); }
+        .nav-buttons { display: flex; gap: .5rem; }
+        
+        /* Mobile Menu */
+        .ham { display: none; flex-direction: column; gap: 5px; padding: .4rem; background: none; border: none; cursor: pointer; }
+        .ham span { display: block; width: 24px; height: 2px; background: var(--baobab-brown); border-radius: 2px; transition: all .3s; }
+        .ham.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .ham.open span:nth-child(2) { opacity: 0; }
+        .ham.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        .mob-menu { display: none; flex-direction: column; background: #fff; padding: 1.5rem 2rem 2rem; border-top: 1px solid var(--border-light); box-shadow: 0 12px 30px var(--shadow-warm); position: absolute; top: 100%; left: 0; width: 100%; z-index: 999; }
+        .mob-menu.open { display: flex; animation: slideDown 0.3s ease; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .mob-menu a { font-size: 1rem; font-weight: 500; color: var(--text-dark); padding: 1rem 0; border-bottom: 1px solid var(--border-light); }
+
+        /* Hero Section */
+        .hero { background: linear-gradient(145deg, var(--canopy-green-dark) 0%, var(--baobab-brown-dark) 100%); color: white; padding: 10rem 0 6rem; position: relative; overflow: hidden; }
+        .hero::before { content: ''; position: absolute; inset: 0; opacity: 0.05; background-image: url("data:image/svg+xml,%3Csvg width='44' height='44' viewBox='0 0 44 44' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M22 0 L44 22 L22 44 L0 22 Z' fill='none' stroke='%23FFFFFF' stroke-width='1'/%3E%3C/svg%3E"); background-size: 44px 44px; }
+        .hero-content { position: relative; z-index: 2; max-width: 800px; margin: 0 auto; text-align: center; }
+        .hero-badge { background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); padding: .5rem 1.25rem; border-radius: var(--r-pill); font-size: .8rem; font-weight: 700; display: inline-block; margin-bottom: 1.5rem; border: 1px solid rgba(255,255,255,0.3); color: var(--sunset-gold); text-transform: uppercase; letter-spacing: .05em; }
+        .hero-title { font-size: clamp(2.5rem, 5vw, 3.5rem); margin-bottom: 1rem; color: white; }
+        .hero-subtitle { font-size: 1.1rem; opacity: 0.9; line-height: 1.7; }
+
+        /* Breadcrumbs */
+        .breadcrumbs { background: var(--earth-cream); padding: 1rem 0; border-bottom: 1px solid var(--border-light); }
+        .breadcrumb-nav { display: flex; align-items: center; gap: .75rem; font-size: .85rem; }
+        .breadcrumb-link { color: var(--text-medium); font-weight: 600; }
+        .breadcrumb-link:hover { color: var(--sunset-gold); }
+        .breadcrumb-current { color: var(--baobab-brown-dark); font-weight: 700; }
+
+        /* Main Content Layout */
+        .main-content { padding: 4rem 0; }
+        .content-layout { display: grid; grid-template-columns: 1fr 300px; gap: 4rem; align-items: start; }
+        
+        /* Block Styling */
+        .framework-block { margin-bottom: 4rem; scroll-margin-top: 120px; }
+        .block-header { margin-bottom: 2rem; }
+        .block-header h2 { font-size: 2.2rem; margin-bottom: .5rem; display: flex; align-items: center; gap: .75rem; }
+        .block-header h2 i { color: var(--canopy-green); }
+        .block-desc { color: var(--text-medium); font-size: 1.05rem; }
+
+        /* Tabs System */
+        .tabs-container { background: white; border-radius: var(--r-card); box-shadow: 0 10px 30px var(--shadow-warm); border: 1px solid var(--border-light); overflow: hidden; }
+        .tab-list { display: flex; flex-wrap: wrap; background: var(--earth-cream); padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-light); gap: .5rem; }
+        .tab-btn { background: transparent; border: 2px solid transparent; padding: .6rem 1.25rem; border-radius: var(--r-pill); font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: .9rem; color: var(--text-medium); cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: .5rem; }
+        .tab-btn:hover { background: rgba(255,255,255,0.5); color: var(--canopy-green); }
+        .tab-btn.active { background: white; border-color: var(--border-light); color: var(--canopy-green); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        
+        .tab-panel { display: none; padding: 2.5rem; }
+        .tab-panel.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .panel-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
+        .mini-card { background: var(--earth-cream); border-radius: 16px; padding: 1.5rem; border: 1px solid var(--border-light); }
+        .mini-card h4 { font-size: 1.1rem; color: var(--baobab-brown-dark); margin-bottom: 1rem; border-bottom: 2px solid var(--border-light); padding-bottom: .5rem; font-family: 'DM Sans', sans-serif; }
+        .mini-card ul { padding-left: 1.2rem; color: var(--deep-charcoal); font-size: .9rem; }
+        .mini-card li { margin-bottom: .5rem; }
+
+        /* Interactive Tools */
+        .interactive-tool { background: var(--white); border-radius: var(--r-card); padding: 2.5rem; box-shadow: 0 8px 24px var(--shadow-warm); border: 2px dashed var(--canopy-green-light); margin-bottom: 2rem; }
+        .tool-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .tool-header h3 { margin: 0; font-size: 1.4rem; color: var(--canopy-green-dark); }
+        
+        /* Phrase Grid */
+        .phrase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+        .phrase-box { background: var(--earth-cream); border: 1px solid var(--border-light); border-radius: 12px; padding: 1rem; position: relative; }
+        .phrase-native { font-weight: 800; color: var(--baobab-brown-dark); font-size: 1.1rem; margin-bottom: .25rem; }
+        .phrase-english { color: var(--text-medium); font-size: .85rem; margin-bottom: 1rem; }
+        .copy-btn { background: white; border: 1px solid var(--border-light); border-radius: 8px; padding: .3rem .6rem; font-size: .75rem; font-weight: 700; color: var(--canopy-green); cursor: pointer; transition: var(--transition); }
+        .copy-btn:hover { background: var(--canopy-green); color: white; }
+
+        /* Rubric Sliders */
+        .rubric-row { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem; }
+        .rubric-label { width: 140px; font-weight: 700; font-size: .95rem; color: var(--deep-charcoal); }
+        .rubric-slider-container { flex: 1; display: flex; align-items: center; gap: 1rem; }
+        .slider { flex: 1; -webkit-appearance: none; height: 8px; border-radius: 4px; background: var(--earth-cream-dark); outline: none; }
+        .slider::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--sunset-gold); cursor: pointer; transition: transform 0.1s; }
+        .slider::-webkit-slider-thumb:hover { transform: scale(1.2); }
+        .score-display { font-family: 'Playfair Display', serif; font-weight: 800; font-size: 1.2rem; color: var(--canopy-green); width: 30px; text-align: center; }
+
+        /* Sticky Sidebar */
+        .content-sidebar { position: sticky; top: 100px; }
+        .sidebar-box { background: var(--earth-cream); border-radius: 16px; padding: 1.5rem; border: 1px solid var(--border-light); margin-bottom: 1.5rem; }
+        .sidebar-title { font-size: 1.1rem; margin-bottom: 1rem; border-bottom: 2px solid var(--border-light); padding-bottom: .5rem; }
+        .sidebar-nav li { margin-bottom: .5rem; }
+        .sidebar-nav a { display: flex; align-items: center; gap: .75rem; padding: .6rem .8rem; border-radius: 8px; font-weight: 600; font-size: .9rem; color: var(--text-medium); transition: var(--transition); }
+        .sidebar-nav a:hover, .sidebar-nav a.active { background: var(--white); color: var(--canopy-green); box-shadow: var(--shadow-sm); transform: translateX(5px); }
+        
+        .apply-widget { background: linear-gradient(135deg, var(--canopy-green), var(--canopy-green-dark)); color: white; border-radius: 16px; padding: 2rem 1.5rem; text-align: center; box-shadow: 0 10px 24px rgba(45,106,79,0.2); }
+        .apply-widget i { font-size: 2.5rem; color: var(--sunset-gold); margin-bottom: 1rem; }
+        .apply-widget h3 { color: white; font-size: 1.3rem; margin-bottom: .5rem; }
+        .apply-widget p { font-size: .9rem; opacity: 0.9; margin-bottom: 1.5rem; }
+
+        /* Footer */
+        .footer { background: var(--deep-charcoal); padding: 4rem 0 2rem; color: white; margin-top: 4rem; }
+        .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 3rem; margin-bottom: 3rem; }
+        .footer-section h4 { color: var(--sunset-gold); margin-bottom: 1.25rem; font-size: 1.1rem; font-family: 'DM Sans', sans-serif; }
+        .footer-link { color: rgba(255,255,255,0.6); display: block; padding: .4rem 0; font-size: .85rem; transition: var(--transition); }
+        .footer-link:hover { color: var(--sunset-gold); padding-left: 5px; }
+        .footer-bottom { text-align: center; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); font-size: .8rem; color: rgba(255,255,255,0.4); }
+
+        @media (max-width: 992px) {
+            .nav-menu { display: none; }
+            .ham { display: flex; }
+            .content-layout { grid-template-columns: 1fr; }
+            .content-sidebar { display: none; }
+        }
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.2rem; }
+            .rubric-row { flex-direction: column; align-items: flex-start; gap: .5rem; }
+            .rubric-slider-container { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="nav-wrapper">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon"><img src="/Images/Logo_Baobab.svg" alt="Baobab" onerror="this.src='/Images/logo.jpg'"></div>
+                    <div>
+                        <div class="logo-text">Tutor Portal</div>
+                        <span class="logo-tag">Baobab Digital Academy</span>
+                    </div>
+                </a>
+                
+                <ul class="nav-menu">
+                    <li><a href="index.html#features" class="nav-link">Features</a></li>
+                    <li><a href="index.html#why-us" class="nav-link">Why Choose Us</a></li>
+                    <li><a href="teaching-framework.html" class="nav-link active">Teaching Framework</a></li>
+                    <li><a href="index.html#apply" class="nav-link">Open Roles</a></li>
+                </ul>
+
+                <button class="ham" id="ham" aria-label="Toggle navigation">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+        
+        <div class="mob-menu" id="mob">
+            <a href="index.html#features">Features</a>
+            <a href="index.html#why-us">Why Choose Us</a>
+            <a href="teaching-framework.html">Teaching Framework</a>
+            <a href="index.html#apply">Open Roles</a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content fu">
+                <div class="hero-badge">
+                    <i class="fas fa-book-open"></i> Academic Excellence & Heritage
+                </div>
+                <h1 class="hero-title">The Baobab Teaching Framework</h1>
+                <p class="hero-subtitle">
+                    A practical guide to our academic expectations, cultural integration strategies, and proven 
+                    pedagogical practices designed to help you deliver world-class lessons.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="breadcrumbs">
+        <div class="container">
+            <nav class="breadcrumb-nav">
+                <a href="index.html" class="breadcrumb-link"><i class="fas fa-home"></i> Home</a>
+                <span class="breadcrumb-separator">/</span>
+                <span class="breadcrumb-current">Teaching Framework</span>
+            </nav>
+        </div>
+    </section>
+
+    <section class="main-content">
+        <div class="container">
+            <div class="content-layout">
+                <div class="content-main">
+                    
+                    <div id="curriculum" class="framework-block fu">
+                        <div class="block-header">
+                            <h2><i class="fas fa-graduation-cap"></i> Curriculum Expectations</h2>
+                            <p class="block-desc">Explore the UK National Curriculum core strands and assessment types for your subject area.</p>
+                        </div>
+
+                        <div class="tabs-container">
+                            <div class="tab-list">
+                                <button class="tab-btn active" data-tab="science"><i class="fas fa-flask"></i> Sciences</button>
+                                <button class="tab-btn" data-tab="math"><i class="fas fa-calculator"></i> Mathematics</button>
+                                <button class="tab-btn" data-tab="english"><i class="fas fa-book"></i> English</button>
+                            </div>
+
+                            <div class="tab-panel active" id="tab-science">
+                                <h3>Science (Biology, Chemistry, Physics)</h3>
+                                <p style="color: var(--text-medium); margin-bottom: 1rem;">Recommended: 180–240 mins/week | Target: UK GCSE Standard</p>
+                                <div class="panel-grid">
+                                    <div class="mini-card">
+                                        <h4>Core Strands</h4>
+                                        <ul>
+                                            <li>Scientific Inquiry & Data Analysis</li>
+                                            <li>Life Sciences (Biology)</li>
+                                            <li>Matter & Reactions (Chemistry)</li>
+                                            <li>Forces & Energy (Physics)</li>
+                                        </ul>
+                                    </div>
+                                    <div class="mini-card">
+                                        <h4>Assessment Types</h4>
+                                        <ul>
+                                            <li>Virtual Lab Reports</li>
+                                            <li>Data Interpretation Tasks</li>
+                                            <li>Weekly Mini-Quizzes</li>
+                                            <li>End-of-Unit GCSE Style Exams</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-panel" id="tab-math">
+                                <h3>Mathematics</h3>
+                                <p style="color: var(--text-medium); margin-bottom: 1rem;">Recommended: 180–240 mins/week | Target: UK GCSE Standard</p>
+                                <div class="panel-grid">
+                                    <div class="mini-card">
+                                        <h4>Core Strands</h4>
+                                        <ul>
+                                            <li>Number & Operations</li>
+                                            <li>Algebraic Thinking</li>
+                                            <li>Geometry & Measurement</li>
+                                            <li>Data & Probability</li>
+                                        </ul>
+                                    </div>
+                                    <div class="mini-card">
+                                        <h4>Assessment Types</h4>
+                                        <ul>
+                                            <li>Weekly Problem Sets</li>
+                                            <li>Real-world application tasks</li>
+                                            <li>Mental Math checks</li>
+                                            <li>End-of-Unit GCSE Style Exams</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-panel" id="tab-english">
+                                <h3>English Language & Literature</h3>
+                                <p style="color: var(--text-medium); margin-bottom: 1rem;">Recommended: 240–300 mins/week | Target: UK GCSE Standard</p>
+                                <div class="panel-grid">
+                                    <div class="mini-card">
+                                        <h4>Core Strands</h4>
+                                        <ul>
+                                            <li>Reading Comprehension</li>
+                                            <li>Creative & Academic Writing</li>
+                                            <li>Speaking & Listening</li>
+                                            <li>Grammar & Vocabulary</li>
+                                        </ul>
+                                    </div>
+                                    <div class="mini-card">
+                                        <h4>Assessment Types</h4>
+                                        <ul>
+                                            <li>Analytical Essays</li>
+                                            <li>Creative Writing Portfolios</li>
+                                            <li>Oral Presentations</li>
+                                            <li>Reading Logs</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="culture" class="framework-block fu">
+                        <div class="block-header">
+                            <h2><i class="fas fa-globe-africa"></i> Cultural Integration</h2>
+                            <p class="block-desc">Use these authentic tools to weave Nigerian heritage into your lessons respectfully and joyfully.</p>
+                        </div>
+
+                        <div class="interactive-tool">
+                            <div class="tool-header">
+                                <h3>Classroom Phrase Kits</h3>
+                                <div style="display:flex; gap:.5rem;">
+                                    <button class="btn btn-outline btn-sm lang-btn active" data-lang="yoruba">Yoruba</button>
+                                    <button class="btn btn-outline btn-sm lang-btn" data-lang="igbo">Igbo</button>
+                                    <button class="btn btn-outline btn-sm lang-btn" data-lang="hausa">Hausa</button>
+                                </div>
+                            </div>
+
+                            <div class="phrase-grid lang-panel active" id="lang-yoruba">
+                                <div class="phrase-box">
+                                    <div class="phrase-native">Ẹ káàárọ̀</div>
+                                    <div class="phrase-english">Good morning</div>
+                                    <button class="copy-btn" onclick="copyText('Ẹ káàárọ̀')">Copy</button>
+                                </div>
+                                <div class="phrase-box">
+                                    <div class="phrase-native">Ẹ ṣeun fún ìpinnu rẹ</div>
+                                    <div class="phrase-english">Well done for your effort</div>
+                                    <button class="copy-btn" onclick="copyText('Ẹ ṣeun fún ìpinnu rẹ')">Copy</button>
+                                </div>
+                                <div class="phrase-box">
+                                    <div class="phrase-native">Ẹ jẹ́ ká bẹ̀rẹ̀</div>
+                                    <div class="phrase-english">Let’s begin</div>
+                                    <button class="copy-btn" onclick="copyText('Ẹ jẹ́ ká bẹ̀rẹ̀')">Copy</button>
+                                </div>
+                            </div>
+
+                            <div class="phrase-grid lang-panel" id="lang-igbo" style="display:none;">
+                                <div class="phrase-box">
+                                    <div class="phrase-native">Ụtụtụ ọma</div>
+                                    <div class="phrase-english">Good morning</div>
+                                    <button class="copy-btn" onclick="copyText('Ụtụtụ ọma')">Copy</button>
+                                </div>
+                                <div class="phrase-box">
+                                    <div class="phrase-native">Ị mere nke ọma</div>
+                                    <div class="phrase-english">You did well</div>
+                                    <button class="copy-btn" onclick="copyText('Ị mere nke ọma')">Copy</button>
+                                </div>
+                                <div class="phrase-box">
+                                    <div class="phrase-native">Ka anyị bido</div>
+                                    <div class="phrase-english">Let’s begin</div>
+                                    <button class="copy-btn" onclick="copyText('Ka anyị bido')">Copy</button>
+                                </div>
+                            </div>
+
+                            <div class="phrase-grid lang-panel" id="lang-hausa" style="display:none;">
+                                <div class="phrase-box">
+                                    <div class="phrase-native">Ina kwana</div>
+                                    <div class="phrase-english">Good morning</div>
+                                    <button class="copy-btn" onclick="copyText('Ina kwana')">Copy</button>
+                                </div>
+                                <div class="phrase-box">
+                                    <div class="phrase-native">Ka yi kyau</div>
+                                    <div class="phrase-english">Well done</div>
+                                    <button class="copy-btn" onclick="copyText('Ka yi kyau')">Copy</button>
+                                </div>
+                                <div class="phrase-box">
+                                    <div class="phrase-native">Mu fara</div>
+                                    <div class="phrase-english">Let’s begin</div>
+                                    <button class="copy-btn" onclick="copyText('Mu fara')">Copy</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="practices" class="framework-block fu">
+                        <div class="block-header">
+                            <h2><i class="fas fa-chalkboard-user"></i> Pedagogical Best Practices</h2>
+                            <p class="block-desc">Interactive tools to help you plan rigorous, engaging, and highly effective online lessons.</p>
+                        </div>
+
+                        <div class="interactive-tool" style="border-color: var(--sunset-gold);">
+                            <div class="tool-header">
+                                <h3><i class="fas fa-lightbulb" style="color:var(--sunset-gold);"></i> Lesson Hook Generator</h3>
+                                <button class="btn btn-gold btn-sm" onclick="generateHook()"><i class="fas fa-sync-alt"></i> Generate New</button>
+                            </div>
+                            <div style="background: var(--earth-cream); padding: 1.5rem; border-radius: 12px;">
+                                <h4 id="hookTitle" style="color: var(--baobab-brown-dark); margin-bottom:.5rem;">Analogy Hook</h4>
+                                <p id="hookDesc" style="color: var(--text-medium); margin:0;">Compare today’s scientific concept to the Lagos traffic system. What "traffic rules" does our topic follow?</p>
+                            </div>
+                        </div>
+
+                        <div class="interactive-tool">
+                            <div class="tool-header">
+                                <h3>Quick Assessment Rubric</h3>
+                                <div style="font-family: 'Playfair Display'; font-weight:800; font-size:1.5rem; color:var(--canopy-green);">
+                                    <span id="totalScore">12</span>/16
+                                </div>
+                            </div>
+                            <p style="color: var(--text-medium); margin-bottom: 2rem; font-size:.9rem;">Slide to assess a student's work. Use the total to determine their feedback level.</p>
+                            
+                            <div class="rubric-row">
+                                <div class="rubric-label">Understanding</div>
+                                <div class="rubric-slider-container">
+                                    <input type="range" min="1" max="4" value="3" class="slider" oninput="updateRubric(this, 'score1')">
+                                    <div class="score-display" id="score1">3</div>
+                                </div>
+                            </div>
+                            <div class="rubric-row">
+                                <div class="rubric-label">Reasoning</div>
+                                <div class="rubric-slider-container">
+                                    <input type="range" min="1" max="4" value="3" class="slider" oninput="updateRubric(this, 'score2')">
+                                    <div class="score-display" id="score2">3</div>
+                                </div>
+                            </div>
+                            <div class="rubric-row">
+                                <div class="rubric-label">Communication</div>
+                                <div class="rubric-slider-container">
+                                    <input type="range" min="1" max="4" value="3" class="slider" oninput="updateRubric(this, 'score3')">
+                                    <div class="score-display" id="score3">3</div>
+                                </div>
+                            </div>
+                            <div class="rubric-row">
+                                <div class="rubric-label">Creativity</div>
+                                <div class="rubric-slider-container">
+                                    <input type="range" min="1" max="4" value="3" class="slider" oninput="updateRubric(this, 'score4')">
+                                    <div class="score-display" id="score4">3</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="content-sidebar">
+                    <div class="sidebar-box">
+                        <h3 class="sidebar-title">Framework Navigation</h3>
+                        <ul class="sidebar-nav">
+                            <li><a href="#curriculum" class="active"><i class="fas fa-graduation-cap"></i> Curriculum Specs</a></li>
+                            <li><a href="#culture"><i class="fas fa-globe-africa"></i> Cultural Integration</a></li>
+                            <li><a href="#practices"><i class="fas fa-chalkboard-user"></i> Best Practices</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="apply-widget">
+                        <i class="fas fa-laptop-house"></i>
+                        <h3>Ready to Teach?</h3>
+                        <p>Apply these practices to impact students globally.</p>
+                        <a href="index.html#apply" class="btn btn-white" style="width: 100%; justify-content: center;">Apply Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4><i class="fas fa-book-open"></i> Teaching Resources</h4>
+                    <a href="teaching-framework.html" class="footer-link">The Baobab Framework</a>
+                    <a href="tutor-support.html" class="footer-link">Tutor Support & FAQs</a>
+                    <a href="tech-check.html" class="footer-link">Tech Requirements</a>
+                </div>
+                <div class="footer-section">
+                    <h4><i class="fas fa-headset"></i> Support</h4>
+                    <a href="tutor-support.html#payments" class="footer-link">Payment Information</a>
+                    <a href="tutor-support.html#guidelines" class="footer-link">Platform Guidelines</a>
+                </div>
+                <div class="footer-section">
+                    <h4><i class="fas fa-envelope"></i> Contact</h4>
+                    <p style="color: rgba(255,255,255,0.7); font-size: .85rem; margin-bottom: .5rem;"><i class="fas fa-envelope"></i> tutors@baobabonlineacademy.com</p>
+                    <p style="color: rgba(255,255,255,0.7); font-size: .85rem;"><i class="fas fa-phone"></i> +234 (0) 816 501 1291</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Baobab Digital Academy Tutor Portal. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu
+        const ham = document.getElementById('ham');
+        const mob = document.getElementById('mob');
+        if (ham && mob) {
+            ham.addEventListener('click', () => {
+                ham.classList.toggle('open');
+                mob.classList.toggle('open');
+            });
+        }
+
+        // Scroll animations
+        const fuEls = document.querySelectorAll('.fu');
+        const fuObs = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('vis');
+                    fuObs.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        fuEls.forEach(el => fuObs.observe(el));
+
+        // Subject Tabs
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active classes
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+                // Add active to clicked
+                btn.classList.add('active');
+                document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Language Tabs
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active', 'btn-primary'));
+                document.querySelectorAll('.lang-btn').forEach(b => b.classList.add('btn-outline'));
+                document.querySelectorAll('.lang-panel').forEach(p => p.style.display = 'none');
+                
+                btn.classList.remove('btn-outline');
+                btn.classList.add('active', 'btn-primary');
+                document.getElementById('lang-' + btn.dataset.lang).style.display = 'grid';
+            });
+        });
+
+        // Copy Text Function
+        function copyText(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Copied to clipboard: ' + text);
+            });
+        }
+
+        // Hook Generator
+        const hooks = [
+            { title: 'Analogy Hook', desc: 'Compare today’s scientific concept to the Lagos traffic system. What "traffic rules" does our topic follow?' },
+            { title: 'Mystery Hook', desc: 'Show a surprising image or riddle at the start of the lesson that today’s curriculum will explain.' },
+            { title: 'Story Hook', desc: 'Tell a brief 2-minute anecdote from Nigerian history or daily life that mirrors the core academic concept.' },
+            { title: 'Debate Hook', desc: 'Pose a provocative statement related to the lesson and have students vote, then justify their stance.' }
+        ];
+        function generateHook() {
+            const random = hooks[Math.floor(Math.random() * hooks.length)];
+            document.getElementById('hookTitle').textContent = random.title;
+            document.getElementById('hookDesc').textContent = random.desc;
+        }
+
+        // Rubric Calculator
+        function updateRubric(slider, displayId) {
+            document.getElementById(displayId).textContent = slider.value;
+            let total = 0;
+            document.querySelectorAll('.slider').forEach(s => total += parseInt(s.value));
+            document.getElementById('totalScore').textContent = total;
+            document.getElementById('totalScore').style.color = total >= 12 ? 'var(--canopy-green)' : (total >= 8 ? 'var(--sunset-gold)' : '#D32F2F');
+        }
+
+        // Smooth scrolling and sidebar active state
+        const sections = document.querySelectorAll('.framework-block');
+        const navLinks = document.querySelectorAll('.sidebar-nav a[href^="#"]');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= (sectionTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
