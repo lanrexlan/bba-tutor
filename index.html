@@ -198,11 +198,40 @@
         .jd-meta-item { display: flex; align-items: center; gap: .5rem; font-size: .9rem; color: var(--text-medium); background: var(--earth-cream); padding: .5rem 1rem; border-radius: 8px; font-weight: 600; }
         .jd-meta-item i { color: var(--canopy-green); }
         
-        .jd-section { margin-bottom: 2rem; }
-        .jd-section h4 { color: var(--baobab-brown-dark); font-size: 1.2rem; margin-bottom: 1rem; display: flex; align-items: center; gap: .5rem; }
-        .jd-section h4 i { color: var(--sunset-gold); }
-        .jd-section p { color: var(--text-medium); font-size: .95rem; line-height: 1.7; margin-bottom: 1rem; }
-        .jd-section ul { padding-left: 1.5rem; color: var(--text-medium); font-size: .95rem; line-height: 1.7; }
+.jd-section { margin-bottom: 2rem; }
+        
+        /* Changed heading to deep green for a crisp, professional look */
+        .jd-section h4 { 
+            color: var(--canopy-green-dark); 
+            font-size: 1.25rem; 
+            margin-bottom: 1rem; 
+            display: flex; 
+            align-items: center; 
+            gap: .5rem; 
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 800;
+        }
+        
+        /* Made the icon a slightly warmer gold to pop against the green */
+        .jd-section h4 i { color: var(--sunset-gold-warm); }
+        
+        /* Changed text to Deep Charcoal for maximum contrast and readability */
+        .jd-section p { 
+            color: var(--deep-charcoal); 
+            font-size: .95rem; 
+            line-height: 1.7; 
+            margin-bottom: 1rem; 
+            font-weight: 500;
+        }
+        
+        .jd-section ul { 
+            padding-left: 1.5rem; 
+            color: var(--deep-charcoal); 
+            font-size: .95rem; 
+            line-height: 1.7; 
+            font-weight: 500;
+        }
+        
         .jd-section li { margin-bottom: .5rem; }
         
         .jd-footer { padding: 1.5rem 3rem; background: var(--earth-cream); border-top: 1px solid var(--border-light); display: flex; justify-content: space-between; align-items: center; }
@@ -412,7 +441,7 @@
                         <span class="stat-lbl">Revenue Share</span>
                     </div>
                     <div class="hero-stat">
-                        <span class="stat-num">500+</span>
+                        <span class="stat-num">10+</span>
                         <span class="stat-lbl">Active Tutors</span>
                     </div>
                     <div class="hero-stat">
