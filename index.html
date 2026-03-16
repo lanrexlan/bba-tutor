@@ -28,7 +28,6 @@
             --sunset-gold:        #F4A261;
             --sunset-gold-warm:   #E76F51;
             --earth-cream:        #FEF6EE;
-            --earth-cream-dark:   #F5E6D3;
             --warm-white:         #FEFEFE;
             --deep-charcoal:      #18120F;
             --text-dark:          #2C1810;
@@ -65,7 +64,6 @@
         .sec-title { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 1rem; }
         .sec-sub { font-size: 1rem; color: var(--text-medium); line-height: 1.75; max-width: 700px; margin: 0 auto 3rem; }
 
-        /* Animation */
         .fu { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
         .fu.vis { opacity: 1; transform: translateY(0); }
 
@@ -81,7 +79,7 @@
         .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.15); }
         .btn-sm { padding: .5rem 1.25rem; font-size: .85rem; }
 
-        /* Shared Header */
+        /* Header */
         .header { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(15px); box-shadow: 0 2px 20px var(--shadow-warm); padding: .75rem 0; transition: var(--transition); }
         .nav-wrapper { display: flex; justify-content: space-between; align-items: center; }
         .logo { display: flex; align-items: center; gap: .6rem; }
@@ -95,7 +93,6 @@
         .nav-link:hover, .nav-link.active { color: var(--sunset-gold); }
         .nav-buttons { display: flex; gap: .5rem; }
         
-        /* Mobile Menu */
         .ham { display: none; flex-direction: column; gap: 5px; padding: .4rem; background: none; border: none; cursor: pointer; }
         .ham span { display: block; width: 24px; height: 2px; background: var(--baobab-brown); border-radius: 2px; transition: all .3s; }
         .ham.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
@@ -106,9 +103,7 @@
         .mob-menu.open { display: flex; animation: slideDown 0.3s ease; }
         @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
         .mob-menu a { font-size: 1rem; font-weight: 500; color: var(--text-dark); padding: 1rem 0; border-bottom: 1px solid var(--border-light); }
-        .mob-menu a:hover { color: var(--canopy-green); padding-left: 5px; }
         .mob-btns { display: flex; flex-direction: column; gap: .75rem; margin-top: 1.5rem; }
-        .mob-btns .btn { width: 100%; justify-content: center; padding: 1rem; font-size: 1rem; }
 
         /* Hero Section */
         .hero { background: linear-gradient(135deg, var(--baobab-brown-dark) 0%, var(--canopy-green-dark) 100%); color: white; padding: 10rem 0 6rem; position: relative; overflow: hidden; }
@@ -154,8 +149,8 @@
         .feature-card:hover::before { opacity: 1; }
         
         .feature-icon { width: 72px; height: 72px; background: linear-gradient(135deg, var(--earth-cream), var(--earth-cream-dark)); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 1.5rem; color: var(--canopy-green); box-shadow: 0 8px 24px rgba(45,106,79,0.15); }
-        .feature-card:nth-child(2) .feature-icon { color: var(--sunset-gold-warm); background: rgba(244,162,97,0.15); box-shadow: 0 8px 24px rgba(244,162,97,0.15); }
-        .feature-card:nth-child(3) .feature-icon { color: var(--baobab-brown); background: rgba(107,58,42,0.1); box-shadow: 0 8px 24px rgba(107,58,42,0.15); }
+        .feature-card:nth-child(2) .feature-icon { color: var(--sunset-gold-warm); background: rgba(244,162,97,0.15); }
+        .feature-card:nth-child(3) .feature-icon { color: var(--baobab-brown); background: rgba(107,58,42,0.1); }
         
         .feature-card h3 { font-size: 1.4rem; margin-bottom: 1rem; }
         .feature-card p { color: var(--text-medium); font-size: .95rem; margin-bottom: 1.5rem; }
@@ -191,10 +186,31 @@
         .job-reqs li { display: flex; align-items: center; gap: .5rem; font-size: .85rem; color: var(--text-dark); margin-bottom: .4rem; }
         .job-reqs i { color: var(--sunset-gold); font-size: .8rem; }
 
+        /* Job Details Modal */
+        .job-details-modal .modal-content { max-width: 750px; padding: 0; overflow: hidden; display: flex; flex-direction: column; }
+        .jd-header { background: linear-gradient(135deg, var(--baobab-brown-dark), var(--baobab-brown)); padding: 2.5rem 3rem; color: white; position: relative; }
+        .jd-header h2 { color: white; font-size: 2rem; margin-bottom: .5rem; }
+        .jd-close { position: absolute; top: 1.5rem; right: 1.5rem; background: rgba(255,255,255,0.2); border: none; width: 36px; height: 36px; border-radius: 50%; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
+        .jd-close:hover { background: rgba(255,255,255,0.4); transform: scale(1.1); }
+        
+        .jd-body { padding: 2.5rem 3rem; max-height: 60vh; overflow-y: auto; }
+        .jd-meta { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border-light); }
+        .jd-meta-item { display: flex; align-items: center; gap: .5rem; font-size: .9rem; color: var(--text-medium); background: var(--earth-cream); padding: .5rem 1rem; border-radius: 8px; font-weight: 600; }
+        .jd-meta-item i { color: var(--canopy-green); }
+        
+        .jd-section { margin-bottom: 2rem; }
+        .jd-section h4 { color: var(--baobab-brown-dark); font-size: 1.2rem; margin-bottom: 1rem; display: flex; align-items: center; gap: .5rem; }
+        .jd-section h4 i { color: var(--sunset-gold); }
+        .jd-section p { color: var(--text-medium); font-size: .95rem; line-height: 1.7; margin-bottom: 1rem; }
+        .jd-section ul { padding-left: 1.5rem; color: var(--text-medium); font-size: .95rem; line-height: 1.7; }
+        .jd-section li { margin-bottom: .5rem; }
+        
+        .jd-footer { padding: 1.5rem 3rem; background: var(--earth-cream); border-top: 1px solid var(--border-light); display: flex; justify-content: space-between; align-items: center; }
+
         /* Application Form Container (Hidden by default) */
         .form-wrapper { display: none; margin-top: 3rem; animation: fadeIn 0.5s ease; }
         .form-container { max-width: 860px; margin: 0 auto; background: white; border-radius: var(--r-card); box-shadow: 0 12px 40px var(--shadow-warm); overflow: hidden; border: 1px solid var(--border-light); }
-        .form-header { background: linear-gradient(135deg, var(--baobab-brown-dark), var(--baobab-brown)); padding: 2.5rem 3rem; color: white; display: flex; justify-content: space-between; align-items: center;}
+        .form-header { background: linear-gradient(135deg, var(--canopy-green-dark), var(--canopy-green)); padding: 2.5rem 3rem; color: white; display: flex; justify-content: space-between; align-items: center;}
         .form-header-text h3 { color: white; font-size: 1.8rem; margin-bottom: .5rem; display: flex; align-items: center; gap: .75rem; }
         .form-header-text p { font-size: .95rem; opacity: 0.9; margin: 0; }
         .close-form-btn { background: rgba(255,255,255,0.2); border: none; width: 40px; height: 40px; border-radius: 50%; color: white; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
@@ -231,7 +247,7 @@
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
             outline: none; border-color: var(--canopy-green-light); background: white; box-shadow: 0 4px 14px rgba(45,106,79,.1);
         }
-        .form-group input[readonly] { background: #f0f0f0; cursor: not-allowed; opacity: 0.8; }
+        .form-group input[readonly] { background: #f0f0f0; cursor: not-allowed; opacity: 0.8; border-color: var(--border-light); }
         
         /* Checkbox Grid */
         .checkbox-grid { display: flex; flex-wrap: wrap; gap: .75rem; }
@@ -280,7 +296,6 @@
         .modal-footer { text-align: center; padding: 0 2.5rem 2.5rem; font-size: .9rem; color: var(--text-medium); border-top: 1px solid var(--border-light); padding-top: 1.5rem; }
         .modal-footer a { color: var(--canopy-green); font-weight: 700; }
         
-        /* Updated Success Modal Styling for Readability */
         .modal-success { text-align: center; padding: 3rem 2.5rem; }
         .modal-success i { font-size: 4rem; color: var(--canopy-green); margin-bottom: 1.5rem; }
         .modal-success h2 { font-size: 1.8rem; margin-bottom: 1rem; color: var(--baobab-brown-dark); }
@@ -292,14 +307,11 @@
         .toast.error { border-left-color: #D32F2F; }
         .toast.error i { color: #D32F2F; }
         .toast.success i { color: var(--canopy-green); }
-        @keyframes toastIn { from { opacity: 0; transform: translateX(100px); } to { opacity: 1; transform: translateX(0); } }
-        @keyframes toastOut { from { opacity: 1; } to { opacity: 0; transform: translateX(100px); } }
 
         /* Preloader & Loading Overlay */
         #preloader { position: fixed; inset: 0; background: var(--baobab-brown-dark); z-index: 10000; display: flex; align-items: center; justify-content: center; transition: opacity .6s; }
         #preloader.hide { opacity: 0; pointer-events: none; }
         .loader { width: 50px; height: 50px; border: 4px solid rgba(255,255,255,.2); border-top-color: var(--sunset-gold); border-radius: 50%; animation: spin 1s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
 
         .loading-overlay { position: fixed; inset: 0; background: rgba(24,18,15,.8); backdrop-filter: blur(8px); z-index: 5000; display: none; align-items: center; justify-content: center; flex-direction: column; gap: 1.5rem; color: white; }
         .loading-overlay.show { display: flex; }
@@ -312,6 +324,7 @@
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
             .form-header { padding: 2rem; }
             .form-body { padding: 2rem; }
+            .jd-header, .jd-body, .jd-footer { padding: 2rem; }
         }
         @media(max-width: 768px) {
             .nav-menu, .nav-buttons { display: none; }
@@ -323,6 +336,7 @@
             .form-progress { padding: 1.5rem; gap: 4px; }
             .progress-line { width: 20px; }
             .jobs-grid { grid-template-columns: 1fr; }
+            .jd-meta-item { width: 100%; }
         }
     </style>
 </head>
@@ -398,7 +412,7 @@
                         <span class="stat-lbl">Revenue Share</span>
                     </div>
                     <div class="hero-stat">
-                        <span class="stat-num">10+</span>
+                        <span class="stat-num">500+</span>
                         <span class="stat-lbl">Active Tutors</span>
                     </div>
                     <div class="hero-stat">
@@ -424,7 +438,8 @@
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
 <section class="section has-pattern" id="why-us">
     <div class="container">
@@ -474,7 +489,7 @@
 <section class="section earnings-section" id="earnings">
     <div class="container">
         <div class="t-cen fu">
-            <div class="eyebrow">Earnings</div>
+            <div class="eyebrow">Earnings & Support</div>
             <h2 class="sec-title">Transparent Revenue Sharing</h2>
             <p class="sec-sub cen">We believe in fairly compensating our educators for their expertise, cultural knowledge, and dedication to student success.</p>
         </div>
@@ -493,14 +508,14 @@
                 <div class="lbl">Payouts</div>
             </div>
             <div class="stat-box">
-                <div class="num" style="font-size: 2rem;">Flexible</div>
-                <div class="lbl">Timetable</div>
+                <div class="num" style="font-size: 2rem;">Ongoing</div>
+                <div class="lbl">Free Training</div>
             </div>
         </div>
         
         <div class="earnings-info fu">
             <i class="fas fa-lightbulb"></i>
-            <p><strong>How It Works:</strong> You keep 75% of every lesson fee, while we use 25% to maintain the platform, acquire students, handle payments, provide technical support, and develop new features.</p>
+            <p><strong>How It Works:</strong> You keep 75% of every lesson fee, while we use 25% to maintain the platform, acquire students, handle payments, provide free ongoing professional development, and develop new features.</p>
         </div>
     </div>
 </section>
@@ -510,7 +525,7 @@
         <div class="t-cen fu">
             <div class="eyebrow">Apply Now</div>
             <h2 class="sec-title">Current Opportunities</h2>
-            <p class="sec-sub cen">We are actively expanding our network of expert Nigerian educators. Select a role below to begin your application process.</p>
+            <p class="sec-sub cen">We are actively expanding our network of expert Nigerian educators. Select a role below to view requirements and begin your application.</p>
         </div>
 
         <div class="jobs-grid fu">
@@ -520,12 +535,12 @@
                     <span class="job-badge">Priority Role</span>
                 </div>
                 <h3>Chemistry Tutor</h3>
-                <p class="job-desc">Seeking experienced Chemistry educators to guide international students through GCSE and Foundation level sciences.</p>
+                <p class="job-desc">Seeking experienced Chemistry educators to guide international students through UK curriculum and GCSE sciences.</p>
                 <ul class="job-reqs">
                     <li><i class="fas fa-check"></i> Degree in Chemistry/Science Education</li>
-                    <li><i class="fas fa-check"></i> Remote / Flexible Hours</li>
+                    <li><i class="fas fa-check"></i> Fully Remote / Flexible Hours</li>
                 </ul>
-                <button class="btn btn-outline" style="width: 100%;" onclick="openApplicationForm('Chemistry Tutor')">Apply for this Role</button>
+                <button class="btn btn-outline" style="width: 100%;" onclick="openJobDetails('Chemistry Tutor')">View Full Details</button>
             </div>
 
             <div class="job-card">
@@ -537,9 +552,9 @@
                 <p class="job-desc">We need passionate Biology teachers to deliver engaging, world-class life science lessons to diaspora students.</p>
                 <ul class="job-reqs">
                     <li><i class="fas fa-check"></i> Degree in Biology/Life Sciences</li>
-                    <li><i class="fas fa-check"></i> Remote / Flexible Hours</li>
+                    <li><i class="fas fa-check"></i> Fully Remote / Flexible Hours</li>
                 </ul>
-                <button class="btn btn-outline" style="width: 100%;" onclick="openApplicationForm('Biology Tutor')">Apply for this Role</button>
+                <button class="btn btn-outline" style="width: 100%;" onclick="openJobDetails('Biology Tutor')">View Full Details</button>
             </div>
 
             <div class="job-card">
@@ -547,12 +562,12 @@
                     <div class="job-icon"><i class="fas fa-chalkboard-user"></i></div>
                 </div>
                 <h3>General Educator</h3>
-                <p class="job-desc">Don't see your subject above? Submit a general application for Mathematics, English, History, or African Languages.</p>
+                <p class="job-desc">Don't see your subject? Submit a general application for Mathematics, English, History, or African Languages.</p>
                 <ul class="job-reqs">
                     <li><i class="fas fa-check"></i> Relevant Subject Degree</li>
-                    <li><i class="fas fa-check"></i> Remote / Flexible Hours</li>
+                    <li><i class="fas fa-check"></i> Fully Remote / Flexible Hours</li>
                 </ul>
-                <button class="btn btn-outline" style="width: 100%;" onclick="openApplicationForm('General Educator')">Submit General Application</button>
+                <button class="btn btn-outline" style="width: 100%;" onclick="openJobDetails('General Educator')">View Full Details</button>
             </div>
         </div>
         
@@ -789,6 +804,59 @@
     </div>
 </footer>
 
+<div class="modal-overlay job-details-modal" id="jobDetailsModal">
+    <div class="modal">
+        <div class="jd-header">
+            <h2 id="jdTitle">Role Title</h2>
+            <button class="jd-close" onclick="closeModal('jobDetailsModal')"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="jd-body">
+            <div class="jd-meta">
+                <div class="jd-meta-item"><i class="fas fa-map-marker-alt"></i> <span id="jdLocation">Anywhere in Nigeria</span></div>
+                <div class="jd-meta-item"><i class="fas fa-laptop-house"></i> <span id="jdMode">Fully Remote</span></div>
+                <div class="jd-meta-item"><i class="fas fa-clock"></i> <span id="jdAvailability">Flexible Hours</span></div>
+                <div class="jd-meta-item"><i class="fas fa-calendar-alt"></i> Deadline: <span id="jdDeadline">Rolling</span></div>
+            </div>
+            
+            <div class="jd-section">
+                <h4><i class="fas fa-info-circle"></i> About Baobab Digital Academy</h4>
+                <p>Baobab Digital Academy is a premium online after-school institution connecting African students in the diaspora with expert, Nigeria-based educators. We deliver the UK National Curriculum while proudly integrating African cultural heritage, ensuring our students achieve academic excellence without losing their roots.</p>
+            </div>
+
+            <div class="jd-section">
+                <h4><i class="fas fa-briefcase"></i> Job Summary</h4>
+                <p id="jdSummary">Role summary goes here...</p>
+            </div>
+
+            <div class="jd-section">
+                <h4><i class="fas fa-tasks"></i> Key Responsibilities</h4>
+                <ul id="jdResponsibilities">
+                    <li>Responsibility 1</li>
+                </ul>
+            </div>
+
+            <div class="jd-section">
+                <h4><i class="fas fa-clipboard-check"></i> Requirements</h4>
+                <ul id="jdRequirements">
+                    <li>Requirement 1</li>
+                </ul>
+            </div>
+
+            <div class="jd-section">
+                <h4><i class="fas fa-exclamation-triangle"></i> Important Notes</h4>
+                <ul id="jdNotes">
+                    <li>This is a fully remote role requiring a stable power and internet setup.</li>
+                    <li>Only candidates with explicit UK curriculum experience will be shortlisted for priority roles.</li>
+                </ul>
+            </div>
+        </div>
+        <div class="jd-footer">
+            <button class="btn btn-outline" onclick="closeModal('jobDetailsModal')">Cancel</button>
+            <button class="btn btn-gold" id="jdApplyBtn" onclick="proceedToApply()"><i class="fas fa-paper-plane"></i> Apply for this Role</button>
+        </div>
+    </div>
+</div>
+
 <div class="modal-overlay" id="loginModal">
     <div class="modal">
         <div class="modal-header">
@@ -888,7 +956,10 @@
 // ============================================================
 emailjs.init("axzjFvaj8oDzIdLHB"); // REPLACE WITH YOUR EMAILJS PUBLIC KEY
 
+
+
 const SUPABASE_URL = 'https://wqvjrgnfxdcnlyiuhzeb.supabase.co';
+
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndxdmpyZ25meGRjbmx5aXVoemViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4MjEwMTMsImV4cCI6MjA4ODM5NzAxM30.7JCllFemIHaucIsyUYLFQ8nxFv6yzNzHOX9uXd26ebc';
 
 let supabaseClient = null;
@@ -993,7 +1064,6 @@ async function handleLogin(e) {
         else {
             showToast('Login successful!');
             closeModal('loginModal');
-            // window.location.href = 'tutor-dashboard.html';
         }
     } catch (err) { hideLoading(); showToast('Login failed.', 'error'); }
 }
@@ -1026,17 +1096,100 @@ async function handleRegister(e) {
 }
 
 // ============================================================
-// JOB APPLICATION FORM LOGIC
+// JOB DATA & DETAILS MODAL
 // ============================================================
-function openApplicationForm(roleName) {
+const jobData = {
+    'Chemistry Tutor': {
+        title: 'Expert Chemistry Tutor (GCSE Focus)',
+        deadline: 'Rolling Recruitment',
+        summary: 'We are seeking a highly reliable, proactive, and passionate Chemistry Tutor to guide international students through the UK curriculum. The ideal candidate must be tech-savvy, emotionally intelligent, and capable of making complex scientific concepts engaging through a screen.',
+        responsibilities: [
+            'Deliver high-quality, interactive online Chemistry lessons (1-on-1 and small groups).',
+            'Prepare students comprehensively for UK GCSE examinations.',
+            'Develop engaging digital resources and practical remote experiments.',
+            'Track student progress and provide detailed feedback to parents via the portal.',
+            'Weave African cultural context into scientific examples where appropriate.'
+        ],
+        requirements: [
+            'Minimum of B.Sc in Chemistry, Science Education, or a related field.',
+            'At least 3 years of proven experience teaching the UK National Curriculum.',
+            'Must possess a highly reliable internet connection and a modern laptop/desktop.',
+            'Must have a quiet, professional background for video teaching.',
+            'Excellent communication and time-management skills.'
+        ]
+    },
+    'Biology Tutor': {
+        title: 'Expert Biology Tutor (GCSE Focus)',
+        deadline: 'Rolling Recruitment',
+        summary: 'We are looking for a dedicated Biology Educator to bring the living world to life for our diaspora students. You will be responsible for delivering the UK curriculum while fostering a love for science and critical thinking.',
+        responsibilities: [
+            'Conduct interactive online Biology lessons tailored to the UK National Curriculum.',
+            'Equip students with the knowledge and exam techniques required for GCSE success.',
+            'Create visually stimulating presentations and virtual lab activities.',
+            'Maintain accurate records of student progress and learning milestones.',
+            'Incorporate African biodiversity and ecological examples into the syllabus.'
+        ],
+        requirements: [
+            'Minimum of B.Sc in Biology, Life Sciences, Education, or a related field.',
+            'At least 3 years of proven experience teaching the UK National Curriculum.',
+            'Must possess a highly reliable internet connection and a modern laptop/desktop.',
+            'Must have a quiet, professional background for video teaching.',
+            'Excellent communication and time-management skills.'
+        ]
+    },
+    'General Educator': {
+        title: 'General Educator (Various Subjects)',
+        deadline: 'Open Application',
+        summary: 'Passionate about a subject not listed as a priority? We are always on the lookout for exceptional Nigerian educators who excel in Mathematics, English, History, or African Languages to join our global network.',
+        responsibilities: [
+            'Deliver premium online tutoring in your specific area of expertise.',
+            'Adapt teaching methods to suit individual student learning styles.',
+            'Provide regular, constructive feedback to students and parents.',
+            'Contribute to a positive, culturally rich learning environment.'
+        ],
+        requirements: [
+            'A relevant degree in your subject area or in Education.',
+            'Demonstrable experience teaching online or in international curriculum settings.',
+            'A stable internet connection and professional teaching environment.',
+            'A passion for continuous learning and cultural integration.'
+        ]
+    }
+};
+
+let currentRoleBeingAppliedFor = '';
+
+function openJobDetails(roleName) {
+    const job = jobData[roleName];
+    if(!job) return;
+
+    currentRoleBeingAppliedFor = roleName;
+
+    // Populate Modal
+    document.getElementById('jdTitle').textContent = job.title;
+    document.getElementById('jdDeadline').textContent = job.deadline;
+    document.getElementById('jdSummary').textContent = job.summary;
+
+    // Map Arrays to Lists
+    document.getElementById('jdResponsibilities').innerHTML = job.responsibilities.map(r => `<li>${r}</li>`).join('');
+    document.getElementById('jdRequirements').innerHTML = job.requirements.map(r => `<li>${r}</li>`).join('');
+
+    // Open Modal
+    document.getElementById('jobDetailsModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+
+function proceedToApply() {
+    closeModal('jobDetailsModal');
+    
+    // Setup the form
     const wrapper = document.getElementById('applicationFormWrapper');
-    document.getElementById('displayRole').textContent = roleName;
-    document.getElementById('appRole').value = roleName;
+    document.getElementById('displayRole').textContent = currentRoleBeingAppliedFor;
+    document.getElementById('appRole').value = currentRoleBeingAppliedFor;
     
     // Auto-check the subject box based on role if it matches
     document.querySelectorAll('input[name="subjects"]').forEach(cb => cb.checked = false);
-    if(roleName.includes('Chemistry')) document.getElementById('sub1').checked = true;
-    if(roleName.includes('Biology')) document.getElementById('sub2').checked = true;
+    if(currentRoleBeingAppliedFor.includes('Chemistry')) document.getElementById('sub1').checked = true;
+    if(currentRoleBeingAppliedFor.includes('Biology')) document.getElementById('sub2').checked = true;
 
     wrapper.style.display = 'block';
     wrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1049,6 +1202,9 @@ function closeApplicationForm() {
     updateFormUI();
 }
 
+// ============================================================
+// MULTI-STEP FORM LOGIC
+// ============================================================
 let currentStep = 1;
 const totalSteps = 5;
 
@@ -1153,7 +1309,7 @@ async function submitApplication(e) {
 
     if (supabaseClient) {
         try {
-            // 1. Upload CV to Supabase Storage
+            // 1. Upload CV
             const fileExt = selectedFile.name.split('.').pop();
             const filePath = 'cvs/' + Date.now() + '_' + formData.name.replace(/\s+/g, '_') + '.' + fileExt;
             const { error: uploadError } = await supabaseClient.storage.from('tutor-applications').upload(filePath, selectedFile);
@@ -1164,15 +1320,15 @@ async function submitApplication(e) {
             }
             formData.cvPath = filePath;
 
-            // Optional: Get a public URL for the CV to send in the email
+            // Get Public URL for Email
             const { data: publicUrlData } = supabaseClient.storage.from('tutor-applications').getPublicUrl(filePath);
             const cvPublicLink = publicUrlData.publicUrl;
 
-            // 2. Save Application to Supabase Database
+            // 2. Save to Database
             const { error: insertError } = await supabaseClient.from('tutor_applications').insert([formData]);
             if (insertError) throw insertError;
 
-            // 3. Send Email Notification via EmailJS
+            // 3. Send Email Notification
             const templateParams = {
                 role: formData.roleAppliedFor,
                 name: formData.name,
@@ -1183,13 +1339,20 @@ async function submitApplication(e) {
                 field: formData.field,
                 qualification: formData.qualification,
                 experience: formData.experience,
+                experienceDetails: formData.experienceDetails || 'None provided',
                 subjects: formData.subjects.join(', '),
                 ageGroups: formData.ageGroups.join(', '),
+                internet: formData.internet,
+                device: formData.device,
+                environment: formData.environment,
+                timezone: formData.timezone,
+                heritage: formData.heritage || 'Not specified',
                 days: formData.days.join(', '),
-                cv_link: cvPublicLink
+                comments: formData.comments || 'No additional comments.',
+                cvFileName: formData.cvFileName,
+                cvLink: cvPublicLink
             };
 
-            // REPLACE WITH YOUR EMAILJS SERVICE AND TEMPLATE IDs
             await emailjs.send("service_02brniu", "template_8xrj4li", templateParams);
 
         } catch (err) {
@@ -1206,7 +1369,7 @@ async function submitApplication(e) {
     hideLoading();
     document.getElementById('successModal').classList.add('open');
     document.body.style.overflow = 'hidden';
-    closeApplicationForm(); // Resets and hides the form
+    closeApplicationForm();
 }
 </script>
 </body>
