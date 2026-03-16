@@ -886,7 +886,7 @@
 // ============================================================
 // INITIALIZATION (EMAILJS & SUPABASE)
 // ============================================================
-emailjs.init("YOUR_PUBLIC_KEY"); // REPLACE WITH YOUR EMAILJS PUBLIC KEY
+emailjs.init("axzjFvaj8oDzIdLHB"); // REPLACE WITH YOUR EMAILJS PUBLIC KEY
 
 const SUPABASE_URL = 'https://wqvjrgnfxdcnlyiuhzeb.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndxdmpyZ25meGRjbmx5aXVoemViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4MjEwMTMsImV4cCI6MjA4ODM5NzAxM30.7JCllFemIHaucIsyUYLFQ8nxFv6yzNzHOX9uXd26ebc';
@@ -1190,7 +1190,7 @@ async function submitApplication(e) {
             };
 
             // REPLACE WITH YOUR EMAILJS SERVICE AND TEMPLATE IDs
-            await emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", templateParams);
+            await emailjs.send("service_02brniu", "template_8xrj4li", templateParams);
 
         } catch (err) {
             hideLoading();
