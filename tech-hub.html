@@ -47,8 +47,7 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; font-size: 18px; }
-        @media (max-width: 992px) { html { font-size: 16px; } }
-
+        
         body { font-family: 'DM Sans', sans-serif; color: var(--text-dark); background-color: var(--warm-white); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
         h1, h2, h3, h4, h5 { font-family: 'Playfair Display', serif; font-weight: 700; line-height: 1.2; color: var(--baobab-brown-dark); }
         ul { list-style: none; }
@@ -97,31 +96,31 @@
         .hero::before { content: ''; position: absolute; inset: 0; opacity: 0.05; background-image: url("data:image/svg+xml,%3Csvg width='44' height='44' viewBox='0 0 44 44' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M22 0 L44 22 L22 44 L0 22 Z' fill='none' stroke='%23FFFFFF' stroke-width='1'/%3E%3C/svg%3E"); background-size: 44px 44px; }
         .hero-content { position: relative; z-index: 2; max-width: 800px; margin: 0 auto; text-align: center; }
         .hero-badge { background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); padding: .5rem 1.25rem; border-radius: var(--r-pill); font-size: .8rem; font-weight: 700; display: inline-block; margin-bottom: 1.5rem; border: 1px solid rgba(255,255,255,0.3); color: var(--earth-cream); text-transform: uppercase; letter-spacing: .05em; }
-        .hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); margin-bottom: 1rem; color: white; }
-        .hero-subtitle { font-size: 1.1rem; opacity: 0.9; line-height: 1.7; }
+        .hero-title { font-size: clamp(2rem, 4vw, 3.5rem); margin-bottom: 1rem; color: white; }
+        .hero-subtitle { font-size: 1rem; opacity: 0.9; line-height: 1.7; }
 
         /* Layout & Blocks */
         .main-content { padding: 4rem 0; }
-        .content-layout { display: grid; grid-template-columns: 1fr 300px; gap: 4rem; align-items: start; }
-        .framework-block { margin-bottom: 4rem; scroll-margin-top: 120px; }
-        .block-header { margin-bottom: 2rem; border-bottom: 2px solid var(--border-light); padding-bottom: 1.5rem; }
-        .block-header h2 { font-size: 2.2rem; margin-bottom: .5rem; display: flex; align-items: center; gap: .75rem; }
+        .content-layout { display: grid; grid-template-columns: 1fr 320px; gap: 3rem; align-items: start; }
+        .framework-block { margin-bottom: 3rem; scroll-margin-top: 100px; }
+        .block-header { margin-bottom: 1.5rem; border-bottom: 2px solid var(--border-light); padding-bottom: 1rem; }
+        .block-header h2 { font-size: 1.8rem; margin-bottom: .5rem; display: flex; align-items: center; gap: .75rem; }
         .block-header h2 i { color: var(--canopy-green); }
-        .block-desc { color: var(--text-medium); font-size: 1.05rem; }
+        .block-desc { color: var(--text-medium); font-size: .95rem; }
 
         /* Interactive Tools & Cards */
-        .interactive-tool { background: var(--white); border-radius: var(--r-card); padding: 2.5rem; box-shadow: 0 8px 24px var(--shadow-warm); border: 1px solid var(--border-light); margin-bottom: 2rem; }
-        .tool-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
-        .tool-header h3 { margin: 0; font-size: 1.3rem; color: var(--baobab-brown-dark); display: flex; align-items: center; gap:.5rem;}
+        .interactive-tool { background: var(--white); border-radius: var(--r-card); padding: 2rem; box-shadow: 0 8px 24px var(--shadow-warm); border: 1px solid var(--border-light); margin-bottom: 2rem; }
+        .tool-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;}
+        .tool-header h3 { margin: 0; font-size: 1.2rem; color: var(--baobab-brown-dark); display: flex; align-items: center; gap:.5rem;}
 
         /* Diagnostics Grid */
-        .diag-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
-        .diag-card { background: var(--earth-cream); border: 2px solid var(--border-light); border-radius: 16px; padding: 1.5rem; transition: var(--transition); }
+        .diag-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 1.5rem; }
+        .diag-card { background: var(--earth-cream); border: 2px solid var(--border-light); border-radius: 16px; padding: 1.25rem; transition: var(--transition); }
         .diag-card:hover { border-color: var(--canopy-green-light); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        .diag-kicker { font-weight: 800; color: var(--canopy-green); text-transform: uppercase; font-size: .75rem; letter-spacing: .05em; margin-bottom: .5rem; font-family: 'DM Sans', sans-serif;}
-        .diag-card h4 { font-size: 1.1rem; color: var(--baobab-brown-dark); margin-bottom: .25rem; font-family: 'DM Sans', sans-serif;}
+        .diag-kicker { font-weight: 800; color: var(--canopy-green); text-transform: uppercase; font-size: .7rem; letter-spacing: .05em; margin-bottom: .5rem; font-family: 'DM Sans', sans-serif;}
+        .diag-card h4 { font-size: 1.05rem; color: var(--baobab-brown-dark); margin-bottom: .25rem; font-family: 'DM Sans', sans-serif;}
         .diag-card p { font-size: .85rem; color: var(--text-medium); margin-bottom: 1rem; line-height: 1.5; min-height: 40px;}
-        .status-badge { display: inline-flex; align-items: center; gap: 6px; padding: .4rem .8rem; border-radius: 999px; font-weight: 700; font-size: .8rem; }
+        .status-badge { display: inline-flex; align-items: center; gap: 6px; padding: .3rem .6rem; border-radius: 999px; font-weight: 700; font-size: .75rem; }
         .status-badge.ok { background: var(--status-ok); color: var(--status-ok-text); border: 1px solid #b8ebcd; }
         .status-badge.warn { background: var(--status-warn); color: var(--status-warn-text); border: 1px solid #ffe0b3; }
         .status-badge.fail { background: var(--status-fail); color: var(--status-fail-text); border: 1px solid #ffd0d0; }
@@ -131,26 +130,26 @@
 
         /* Hardware Checklist */
         .checklist-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
-        .chk-item { display: flex; gap: .75rem; align-items: flex-start; background: var(--earth-cream); padding: 1rem 1.5rem; border-radius: 12px; border: 1px solid var(--border-light); cursor: pointer; transition: var(--transition); }
+        .chk-item { display: flex; gap: .75rem; align-items: flex-start; background: var(--earth-cream); padding: 1rem; border-radius: 12px; border: 1px solid var(--border-light); cursor: pointer; transition: var(--transition); }
         .chk-item:hover { border-color: var(--sunset-gold); }
         .chk-item input[type="checkbox"] { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--canopy-green); }
-        .chk-item div { font-size: .95rem; color: var(--deep-charcoal); line-height: 1.4; }
+        .chk-item div { font-size: .9rem; color: var(--deep-charcoal); line-height: 1.4; }
 
         /* Micro Courses (LMS) */
-        .courses-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
+        .courses-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
         .course-card { background: white; border: 2px solid var(--border-light); border-radius: 16px; padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.03); display: flex; flex-direction: column;}
-        .course-card h4 { color: var(--canopy-green-dark); font-size: 1.1rem; margin-bottom: .5rem; font-family: 'DM Sans', sans-serif; }
+        .course-card h4 { color: var(--canopy-green-dark); font-size: 1.05rem; margin-bottom: .5rem; font-family: 'DM Sans', sans-serif; }
         .course-meta { display: flex; gap: 8px; margin-bottom: .75rem; }
-        .c-pill { background: var(--earth-cream); color: var(--text-medium); padding: 2px 8px; border-radius: 6px; font-size: .75rem; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;}
+        .c-pill { background: var(--earth-cream); color: var(--text-medium); padding: 2px 8px; border-radius: 6px; font-size: .7rem; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;}
         .course-card p { font-size: .85rem; color: var(--text-medium); margin-bottom: 1rem; flex: 1;}
 
         /* Accordions */
         .accordion { border-radius: 16px; overflow: hidden; border: 1px solid var(--border-light); }
         .acc-item { border-bottom: 1px solid var(--border-light); background: white; }
         .acc-item:last-child { border-bottom: none; }
-        .acc-header { width: 100%; text-align: left; border: 0; background: white; padding: 1.25rem 1.5rem; font-weight: 700; font-size: 1.05rem; color: var(--baobab-brown-dark); cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: var(--transition); font-family: 'DM Sans', sans-serif;}
+        .acc-header { width: 100%; text-align: left; border: 0; background: white; padding: 1.25rem 1.5rem; font-weight: 700; font-size: 1rem; color: var(--baobab-brown-dark); cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: var(--transition); font-family: 'DM Sans', sans-serif;}
         .acc-header:hover { background: var(--earth-cream); }
-        .acc-content { display: none; padding: 0 1.5rem 1.5rem; color: var(--text-medium); font-size: .95rem; }
+        .acc-content { display: none; padding: 0 1.5rem 1.5rem; color: var(--text-medium); font-size: .9rem; }
         .acc-item.active .acc-content { display: block; animation: fadeIn .3s ease; }
         .acc-item.active .acc-header { color: var(--canopy-green); }
         .rotate { transition: transform .3s ease; }
@@ -160,12 +159,12 @@
 
         /* Report Form */
         .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
-        .input, .select, .textarea { width: 100%; padding: .85rem 1rem; border: 2px solid var(--border-light); border-radius: 12px; font-size: .95rem; font-family: 'DM Sans', sans-serif; background: var(--earth-cream); transition: var(--transition); }
+        .input, .select, .textarea { width: 100%; padding: .85rem 1rem; border: 2px solid var(--border-light); border-radius: 12px; font-size: .9rem; font-family: 'DM Sans', sans-serif; background: var(--earth-cream); transition: var(--transition); }
         .input:focus, .select:focus, .textarea:focus { outline: none; border-color: var(--canopy-green-light); background: white; box-shadow: 0 4px 14px rgba(45,106,79,.1); }
         .textarea { min-height: 120px; resize: vertical; }
-        .log-box { background: var(--deep-charcoal); color: #00ff00; padding: 1rem; border-radius: 12px; font-family: monospace; font-size: .85rem; white-space: pre-wrap; margin-top: 1rem; display: none; max-height: 200px; overflow-y: auto;}
+        .log-box { background: var(--deep-charcoal); color: #00ff00; padding: 1rem; border-radius: 12px; font-family: monospace; font-size: .75rem; white-space: pre-wrap; margin-top: 1rem; display: none; max-height: 200px; overflow-y: auto;}
 
-        /* Sticky Sidebar */
+        /* Sidebar */
         .content-sidebar { position: sticky; top: 100px; }
         .sidebar-box { background: var(--earth-cream); border-radius: 16px; padding: 1.5rem; border: 1px solid var(--border-light); margin-bottom: 1.5rem; }
         .sidebar-title { font-size: 1.1rem; margin-bottom: 1rem; border-bottom: 2px solid var(--border-light); padding-bottom: .5rem; }
@@ -181,7 +180,7 @@
         .sys-val { font-weight: 700; color: var(--baobab-brown-dark); }
 
         /* Footer */
-        .footer { background: var(--deep-charcoal); padding: 4rem 0 2rem; color: white; margin-top: 4rem; }
+        .footer { background: var(--deep-charcoal); padding: 4rem 0 2rem; color: white; margin-top: 2rem; }
         .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 3rem; margin-bottom: 3rem; }
         .footer-section h4 { color: var(--sunset-gold); margin-bottom: 1.25rem; font-size: 1.1rem; font-family: 'DM Sans', sans-serif; }
         .footer-link { color: rgba(255,255,255,0.6); display: block; padding: .4rem 0; font-size: .85rem; transition: var(--transition); }
@@ -190,12 +189,26 @@
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
+        /* =========================================
+           MOBILE RESPONSIVENESS FIXES
+           ========================================= */
         @media (max-width: 992px) {
+            html { font-size: 16px; }
             .nav-menu { display: none; }
             .ham { display: flex; }
-            .content-layout { grid-template-columns: 1fr; }
-            .content-sidebar { display: none; }
+            /* Instead of hiding sidebar, let it stack nicely */
+            .content-layout { grid-template-columns: 1fr; gap: 2rem; }
+            .content-sidebar { position: static; }
             .row-2 { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .hero { padding: 7rem 0 4rem; }
+            .hero-title { font-size: 2.2rem; }
+            .container { padding: 0 1.5rem; }
+            /* Reduce massive padding on tools */
+            .interactive-tool { padding: 1.5rem; }
+            .diag-grid, .courses-grid { grid-template-columns: 1fr; }
+            .block-header h2 { font-size: 1.8rem; }
         }
     </style>
 </head>
@@ -321,9 +334,9 @@
                                 </div>
                             </div>
 
-                            <div style="display:flex; gap:1rem; align-items:center; margin-top:1.5rem; border-top:1px solid var(--border-light); padding-top:1.5rem;">
+                            <div style="display:flex; gap:1rem; align-items:center; margin-top:1.5rem; border-top:1px solid var(--border-light); padding-top:1.5rem; flex-wrap: wrap;">
                                 <button class="btn btn-primary" id="runChecks"><i class="fas fa-rocket"></i> Run Hardware Checks</button>
-                                <p style="font-size:.85rem; color:var(--text-medium); margin:0;"><i class="fas fa-shield-alt"></i> Tests run locally. We do not record or store your audio/video.</p>
+                                <p style="font-size:.85rem; color:var(--text-medium); margin:0;"><i class="fas fa-shield-alt"></i> Tests run locally. We do not record your audio/video.</p>
                             </div>
                         </div>
                     </div>
@@ -451,7 +464,7 @@
                             </div>
                             <textarea id="rDesc" class="textarea" placeholder="Describe the issue... (What happened? What were you trying to do?)"></textarea>
                             
-                            <div style="display:flex; gap:1rem; align-items:center; margin-top:1rem;">
+                            <div style="display:flex; gap:1rem; align-items:center; margin-top:1rem; flex-wrap:wrap;">
                                 <button class="btn btn-primary" onclick="generateLog()"><i class="fas fa-file-code"></i> Generate Report</button>
                                 <a href="#" id="emailLogBtn" class="btn btn-outline" style="pointer-events:none; opacity:0.5;"><i class="fas fa-paper-plane"></i> Email Tech Team</a>
                             </div>
@@ -474,12 +487,36 @@
                     </div>
                     
                     <div class="sidebar-box">
-                        <h3 class="sidebar-title" style="border:none; margin:0;"><i class="fas fa-desktop"></i> My System</h3>
+                        <h3 class="sidebar-title" style="border:none; margin:0; display:flex; justify-content:space-between; align-items:center;">
+                            <span><i class="fas fa-desktop"></i> My System</span>
+                            <span id="overallGrade" style="font-size:.75rem; padding:.2rem .6rem; border-radius:8px; background:var(--earth-cream-dark); color:var(--text-medium);">Checking...</span>
+                        </h3>
                         <div class="sys-profile">
-                            <div class="sys-item"><span class="sys-lbl">Browser:</span> <span class="sys-val" id="sbBrowser">Checking...</span></div>
-                            <div class="sys-item"><span class="sys-lbl">CPU Cores:</span> <span class="sys-val" id="sbCPU">--</span></div>
-                            <div class="sys-item"><span class="sys-lbl">RAM (Est):</span> <span class="sys-val" id="sbRAM">--</span></div>
-                            <div class="sys-item"><span class="sys-lbl">Status:</span> <span class="sys-val" id="sbOnline" style="color:var(--canopy-green);">Online</span></div>
+                            <div class="sys-item">
+                                <span class="sys-lbl">Browser:</span> 
+                                <span class="sys-val" id="sbBrowser">Checking...</span>
+                            </div>
+                            <div class="sys-item">
+                                <span class="sys-lbl">CPU Cores:</span> 
+                                <div style="text-align:right;">
+                                    <span class="sys-val" id="sbCPU">--</span>
+                                    <div id="cpuGrade" style="font-size:.7rem; font-weight:700;"></div>
+                                </div>
+                            </div>
+                            <div class="sys-item">
+                                <span class="sys-lbl">RAM (Est):</span> 
+                                <div style="text-align:right;">
+                                    <span class="sys-val" id="sbRAM">--</span>
+                                    <div id="ramGrade" style="font-size:.7rem; font-weight:700;"></div>
+                                </div>
+                            </div>
+                            <div class="sys-item">
+                                <span class="sys-lbl">Network:</span> 
+                                <div style="text-align:right;">
+                                    <span class="sys-val" id="sbNet">--</span>
+                                    <div id="netGrade" style="font-size:.7rem; font-weight:700;"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -546,42 +583,119 @@
         });
 
         // ==========================================
-        // DIAGNOSTICS ENGINE
+        // SYSTEM GRADER ENGINE
         // ==========================================
-        
-        // 1. Browser & Device Info
-        (function initSystemInfo(){
+        (function evaluateSystem() {
+            // 1. Get Browser
             const ua = navigator.userAgent;
-            let name = 'Your browser';
-            if(/Chrome/.test(ua) && !/Edge/.test(ua)) name = 'Chrome';
-            if(/Edg\//.test(ua)) name = 'Edge';
-            if(/Firefox/.test(ua)) name = 'Firefox';
-            if(/Safari/.test(ua) && !/Chrome/.test(ua)) name = 'Safari';
-            
-            document.getElementById('browserInfo').textContent = name;
-            document.getElementById('sbBrowser').textContent = name;
-            document.getElementById('sbCPU').textContent = navigator.hardwareConcurrency || 'n/a';
-            document.getElementById('sbRAM').textContent = navigator.deviceMemory ? navigator.deviceMemory + 'GB' : 'n/a';
+            let browserName = 'Unknown Browser';
+            if(/Chrome/.test(ua) && !/Edge/.test(ua)) browserName = 'Chrome';
+            if(/Edg\//.test(ua)) browserName = 'Edge';
+            if(/Firefox/.test(ua)) browserName = 'Firefox';
+            if(/Safari/.test(ua) && !/Chrome/.test(ua)) browserName = 'Safari';
+            document.getElementById('sbBrowser').textContent = browserName;
 
-            const support = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
-            const bStatus = document.getElementById('browserStatus');
-            bStatus.className = 'status-badge ' + (support ? 'ok' : 'fail');
-            bStatus.innerHTML = support ? '<i class="fas fa-check-circle"></i> Supported' : '<i class="fas fa-times-circle"></i> Unsupported';
-        })();
-
-        // 2. Network Info
-        (function initNetwork(){
-            const c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-            const nInfo = document.getElementById('netInfo');
-            const nStatus = document.getElementById('netStatus');
+            // 2. Evaluate CPU Cores (Requirement: 4+ is Good, 2 is Warn)
+            const cores = navigator.hardwareConcurrency || 0;
+            const cpuEl = document.getElementById('sbCPU');
+            const cpuGrade = document.getElementById('cpuGrade');
+            let cpuScore = 0;
             
-            if(c){
-                nInfo.textContent = `Type: ${c.effectiveType.toUpperCase()} | Speed: ~${c.downlink}Mbps`;
-                const ok = c.downlink >= 5;
-                nStatus.className = 'status-badge ' + (ok ? 'ok' : 'warn');
-                nStatus.innerHTML = ok ? '<i class="fas fa-check-circle"></i> Good' : '<i class="fas fa-exclamation-triangle"></i> Weak';
+            if (cores >= 4) {
+                cpuEl.textContent = cores + ' Cores';
+                cpuGrade.textContent = 'Meets Requirement';
+                cpuGrade.style.color = 'var(--canopy-green)';
+                cpuScore = 2;
+            } else if (cores >= 2) {
+                cpuEl.textContent = cores + ' Cores';
+                cpuGrade.textContent = 'Minimum Requirement';
+                cpuGrade.style.color = 'var(--sunset-gold)';
+                cpuScore = 1;
             } else {
-                nInfo.textContent = 'Network API blocked. Ensure stable Wi-Fi.';
+                cpuEl.textContent = cores ? cores + ' Cores' : 'Unknown';
+                cpuGrade.textContent = 'Below Requirement';
+                cpuGrade.style.color = '#D32F2F';
+            }
+
+            // 3. Evaluate RAM (Requirement: 8GB+ is Good, 4GB is Warn)
+            const ram = navigator.deviceMemory || 0;
+            const ramEl = document.getElementById('sbRAM');
+            const ramGrade = document.getElementById('ramGrade');
+            let ramScore = 0;
+
+            if (ram >= 8) {
+                ramEl.textContent = '8GB+';
+                ramGrade.textContent = 'Optimal';
+                ramGrade.style.color = 'var(--canopy-green)';
+                ramScore = 2;
+            } else if (ram >= 4) {
+                ramEl.textContent = ram + 'GB';
+                ramGrade.textContent = 'Minimum Requirement';
+                ramGrade.style.color = 'var(--sunset-gold)';
+                ramScore = 1;
+            } else {
+                ramEl.textContent = ram ? ram + 'GB' : 'Unknown';
+                ramGrade.textContent = 'Below Requirement';
+                ramGrade.style.color = '#D32F2F';
+            }
+
+            // 4. Evaluate Network (Requirement: 5Mbps+ is Good)
+            const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+            const netEl = document.getElementById('sbNet');
+            const netGrade = document.getElementById('netGrade');
+            let netScore = 0;
+
+            if (conn && conn.downlink) {
+                const speed = conn.downlink;
+                netEl.textContent = speed + ' Mbps';
+                if (speed >= 5) {
+                    netGrade.textContent = 'Optimal';
+                    netGrade.style.color = 'var(--canopy-green)';
+                    netScore = 2;
+                } else if (speed >= 2) {
+                    netGrade.textContent = 'Minimum Requirement';
+                    netGrade.style.color = 'var(--sunset-gold)';
+                    netScore = 1;
+                } else {
+                    netGrade.textContent = 'Unstable/Slow';
+                    netGrade.style.color = '#D32F2F';
+                }
+            } else {
+                netEl.textContent = 'Unknown';
+                netGrade.textContent = 'API Blocked by Browser';
+                netGrade.style.color = 'var(--text-medium)';
+                netScore = 2; // Pass by default if blocked
+            }
+
+            // 5. Overall System Grade
+            const overallBadge = document.getElementById('overallGrade');
+            const totalScore = cpuScore + ramScore + netScore;
+
+            if (totalScore >= 5) {
+                overallBadge.textContent = 'System Ready';
+                overallBadge.style.background = 'var(--status-ok)';
+                overallBadge.style.color = 'var(--canopy-green)';
+            } else if (totalScore >= 3) {
+                overallBadge.textContent = 'Acceptable';
+                overallBadge.style.background = 'var(--status-warn)';
+                overallBadge.style.color = 'var(--sunset-gold-warm)';
+            } else {
+                overallBadge.textContent = 'Upgrade Needed';
+                overallBadge.style.background = 'var(--status-fail)';
+                overallBadge.style.color = '#D32F2F';
+            }
+            
+            // Sync with Top Grid
+            const browserStatus = document.getElementById('browserStatus');
+            document.getElementById('browserInfo').textContent = browserName;
+            browserStatus.className = 'status-badge ok'; 
+            browserStatus.innerHTML = '<i class="fas fa-check-circle"></i> Supported';
+
+            if (conn) {
+                document.getElementById('netInfo').textContent = `Type: ${conn.effectiveType.toUpperCase()} | Speed: ~${conn.downlink}Mbps`;
+                const nStatus = document.getElementById('netStatus');
+                nStatus.className = 'status-badge ' + (conn.downlink >= 5 ? 'ok' : 'warn');
+                nStatus.innerHTML = conn.downlink >= 5 ? '<i class="fas fa-check-circle"></i> Good' : '<i class="fas fa-exclamation-triangle"></i> Weak';
             }
         })();
 
