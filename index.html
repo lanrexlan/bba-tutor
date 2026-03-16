@@ -2,7 +2,7 @@
 <html lang="en-GB">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" type="image/png" sizes="32x32" href="/Images/Logo_Baobab.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/Images/logo.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tutor Portal - Baobab Digital Academy</title>
     
@@ -12,6 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     
     <style>
         /* ================================================
@@ -133,6 +134,18 @@
         .h-card p { color: rgba(255,255,255,0.7); font-size: .9rem; margin-bottom: 1rem; }
         .h-tag { display: inline-block; background: rgba(244,162,97,0.2); color: var(--sunset-gold); padding: .3rem .8rem; border-radius: 8px; font-size: .75rem; font-weight: 700; }
 
+        /* Pattern Background */
+        .has-pattern { position: relative; background-color: var(--earth-cream); }
+        .has-pattern::before {
+            content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+            background-image: 
+                url("data:image/svg+xml,%3Csvg width='44' height='44' viewBox='0 0 44 44' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M22 0 L44 22 L22 44 L0 22 Z' fill='none' stroke='%236B3A2A' stroke-opacity='0.045' stroke-width='1'/%3E%3Ccircle cx='22' cy='22' r='3' fill='%232D6A4F' fill-opacity='0.04'/%3E%3C/svg%3E"),
+                repeating-linear-gradient(45deg,transparent,transparent 11px,rgba(107,58,42,0.025) 11px,rgba(107,58,42,0.025) 12px),
+                repeating-linear-gradient(-45deg,transparent,transparent 11px,rgba(45,106,79,0.025) 11px,rgba(45,106,79,0.025) 12px);
+            background-size: 44px 44px, auto, auto;
+        }
+        .has-pattern > .container { position: relative; z-index: 1; }
+
         /* Features Section */
         .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
         .feature-card { background: var(--white); border-radius: var(--r-card); padding: 2.5rem 2rem; box-shadow: 0 10px 30px var(--shadow-warm); border: 1px solid var(--border-light); transition: var(--transition); text-align: center; position: relative; overflow: hidden; }
@@ -164,12 +177,28 @@
         .earnings-info i { font-size: 2rem; color: var(--sunset-gold); }
         .earnings-info p { color: var(--text-medium); font-size: .95rem; margin: 0; }
 
-        /* Application Form Section */
-        .apply-section { background: var(--warm-white); }
+        /* Job Openings Section */
+        .jobs-section { background: var(--warm-white); }
+        .jobs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin-bottom: 3rem; }
+        .job-card { background: white; border-radius: var(--r-card); padding: 2rem; border: 1px solid var(--border-light); box-shadow: 0 8px 24px var(--shadow-warm); transition: var(--transition); display: flex; flex-direction: column; }
+        .job-card:hover { transform: translateY(-5px); box-shadow: 0 12px 30px rgba(107,58,42,0.15); border-color: var(--canopy-green); }
+        .job-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+        .job-icon { width: 50px; height: 50px; border-radius: 12px; background: var(--earth-cream); color: var(--canopy-green); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+        .job-badge { background: rgba(45,106,79,.1); color: var(--canopy-green); padding: .3rem .8rem; border-radius: var(--r-pill); font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
+        .job-card h3 { font-size: 1.4rem; margin-bottom: .5rem; }
+        .job-desc { color: var(--text-medium); font-size: .9rem; margin-bottom: 1.5rem; flex: 1; }
+        .job-reqs { list-style: none; margin-bottom: 1.5rem; }
+        .job-reqs li { display: flex; align-items: center; gap: .5rem; font-size: .85rem; color: var(--text-dark); margin-bottom: .4rem; }
+        .job-reqs i { color: var(--sunset-gold); font-size: .8rem; }
+
+        /* Application Form Container (Hidden by default) */
+        .form-wrapper { display: none; margin-top: 3rem; animation: fadeIn 0.5s ease; }
         .form-container { max-width: 860px; margin: 0 auto; background: white; border-radius: var(--r-card); box-shadow: 0 12px 40px var(--shadow-warm); overflow: hidden; border: 1px solid var(--border-light); }
-        .form-header { background: linear-gradient(135deg, var(--baobab-brown-dark), var(--baobab-brown)); padding: 2.5rem 3rem; color: white; }
-        .form-header h3 { color: white; font-size: 1.8rem; margin-bottom: .5rem; display: flex; align-items: center; gap: .75rem; }
-        .form-header p { font-size: .95rem; opacity: 0.9; margin: 0; }
+        .form-header { background: linear-gradient(135deg, var(--baobab-brown-dark), var(--baobab-brown)); padding: 2.5rem 3rem; color: white; display: flex; justify-content: space-between; align-items: center;}
+        .form-header-text h3 { color: white; font-size: 1.8rem; margin-bottom: .5rem; display: flex; align-items: center; gap: .75rem; }
+        .form-header-text p { font-size: .95rem; opacity: 0.9; margin: 0; }
+        .close-form-btn { background: rgba(255,255,255,0.2); border: none; width: 40px; height: 40px; border-radius: 50%; color: white; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+        .close-form-btn:hover { background: rgba(255,255,255,0.4); transform: scale(1.05); }
         
         /* Multi-step progress */
         .form-progress { display: flex; align-items: center; justify-content: center; padding: 1.5rem 3rem; background: var(--earth-cream); border-bottom: 1px solid var(--border-light); }
@@ -202,6 +231,7 @@
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
             outline: none; border-color: var(--canopy-green-light); background: white; box-shadow: 0 4px 14px rgba(45,106,79,.1);
         }
+        .form-group input[readonly] { background: #f0f0f0; cursor: not-allowed; opacity: 0.8; }
         
         /* Checkbox Grid */
         .checkbox-grid { display: flex; flex-wrap: wrap; gap: .75rem; }
@@ -250,10 +280,11 @@
         .modal-footer { text-align: center; padding: 0 2.5rem 2.5rem; font-size: .9rem; color: var(--text-medium); border-top: 1px solid var(--border-light); padding-top: 1.5rem; }
         .modal-footer a { color: var(--canopy-green); font-weight: 700; }
         
+        /* Updated Success Modal Styling for Readability */
         .modal-success { text-align: center; padding: 3rem 2.5rem; }
         .modal-success i { font-size: 4rem; color: var(--canopy-green); margin-bottom: 1.5rem; }
-        .modal-success h2 { font-size: 1.8rem; margin-bottom: 1rem; }
-        .modal-success p { color: var(--text-medium); font-size: .95rem; margin-bottom: 2rem; }
+        .modal-success h2 { font-size: 1.8rem; margin-bottom: 1rem; color: var(--baobab-brown-dark); }
+        .modal-success p { color: var(--text-dark); font-size: 1rem; font-weight: 500; margin-bottom: 2rem; line-height: 1.6; }
 
         /* Toasts */
         .toast-container { position: fixed; top: 90px; right: 24px; z-index: 3000; display: flex; flex-direction: column; gap: 10px; }
@@ -291,6 +322,7 @@
             .stats-grid { grid-template-columns: 1fr; }
             .form-progress { padding: 1.5rem; gap: 4px; }
             .progress-line { width: 20px; }
+            .jobs-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -320,7 +352,7 @@
                 <li><a href="#hero" class="nav-link active">Home</a></li>
                 <li><a href="#why-us" class="nav-link">Why Choose Us</a></li>
                 <li><a href="#earnings" class="nav-link">Earnings</a></li>
-                <li><a href="#apply" class="nav-link">Apply Now</a></li>
+                <li><a href="#apply" class="nav-link">Open Roles</a></li>
             </ul>
 
             <div class="nav-buttons">
@@ -338,8 +370,8 @@
         <a href="#hero" onclick="closeMobileNav()">Home</a>
         <a href="#why-us" onclick="closeMobileNav()">Why Choose Us</a>
         <a href="#earnings" onclick="closeMobileNav()">Earnings</a>
-        <a href="#apply" onclick="closeMobileNav()">Apply Now</a>
-        <div class="mob-btns" style="display: flex; flex-direction: column; gap: .75rem; margin-top: 1rem;">
+        <a href="#apply" onclick="closeMobileNav()">Open Roles</a>
+        <div class="mob-btns">
             <button class="btn btn-outline" onclick="openTutorLoginModal();closeMobileNav()">Login</button>
             <button class="btn btn-gold" onclick="openTutorRegistrationModal();closeMobileNav()">Register</button>
         </div>
@@ -350,14 +382,14 @@
     <div class="container">
         <div class="hero-content">
             <div class="fu">
-                <div class="hero-badge"><i class="fas fa-star"></i> Nigeria's Premier Teaching Platform</div>
+                <div class="hero-badge"><i class="fas fa-chalkboard-teacher"></i> Join Our Elite Educator Network</div>
                 <h1 class="hero-title">Teach From Nigeria, <span>Impact the World</span></h1>
                 <p class="hero-subtitle">
                     Transform young minds globally while celebrating African heritage from the comfort of your home. 
                     Join our community of passionate Nigerian educators earning 75% of lesson fees.
                 </p>
                 <div class="hero-btns">
-                    <button class="btn btn-gold btn-lg" onclick="openTutorRegistrationModal()"><i class="fas fa-rocket"></i> Register as Tutor</button>
+                    <a href="#apply" class="btn btn-gold btn-lg"><i class="fas fa-briefcase"></i> View Open Roles</a>
                     <a href="#earnings" class="btn btn-outline btn-lg" style="color:white; border-color:rgba(255,255,255,0.4);"><i class="fas fa-chart-line"></i> See Earnings</a>
                 </div>
                 <div class="hero-stats">
@@ -420,7 +452,7 @@
                 <p>Keep 75% of all lesson fees while we handle platform operations, student acquisition, payment processing, and technical support. You focus on teaching.</p>
                 <ul class="feature-list">
                     <li><i class="fas fa-check-circle"></i> 75% of lesson fees for tutors</li>
-                    <li><i class="fas fa-check-circle"></i> Monthly performance bonuses</li>
+                    <li><i class="fas fa-check-circle"></i> Secure, automated payouts</li>
                     <li><i class="fas fa-check-circle"></i> Reliable monthly payments</li>
                 </ul>
             </div>
@@ -461,221 +493,271 @@
                 <div class="lbl">Payouts</div>
             </div>
             <div class="stat-box">
-                <div class="num" data-count="20">0%</div>
-                <div class="lbl">Bonus Potential</div>
+                <div class="num" style="font-size: 2rem;">Flexible</div>
+                <div class="lbl">Timetable</div>
             </div>
         </div>
         
         <div class="earnings-info fu">
             <i class="fas fa-lightbulb"></i>
-            <p><strong>How It Works:</strong> You keep 75% of every lesson fee, while we use 25% to maintain the platform, acquire students, handle payments, provide technical support, and develop new features. Earn up to 20% performance bonuses based on student satisfaction.</p>
+            <p><strong>How It Works:</strong> You keep 75% of every lesson fee, while we use 25% to maintain the platform, acquire students, handle payments, provide technical support, and develop new features.</p>
         </div>
     </div>
 </section>
 
-<section class="section apply-section" id="apply">
+<section class="section jobs-section" id="apply">
     <div class="container">
         <div class="t-cen fu">
             <div class="eyebrow">Apply Now</div>
-            <h2 class="sec-title">Join Our Teaching Community</h2>
-            <p class="sec-sub cen">Complete the application below to start your journey with Baobab Digital Academy. We review submissions within 3-5 business days.</p>
+            <h2 class="sec-title">Current Opportunities</h2>
+            <p class="sec-sub cen">We are actively expanding our network of expert Nigerian educators. Select a role below to begin your application process.</p>
+        </div>
+
+        <div class="jobs-grid fu">
+            <div class="job-card">
+                <div class="job-card-header">
+                    <div class="job-icon"><i class="fas fa-flask"></i></div>
+                    <span class="job-badge">Priority Role</span>
+                </div>
+                <h3>Chemistry Tutor</h3>
+                <p class="job-desc">Seeking experienced Chemistry educators to guide international students through GCSE and Foundation level sciences.</p>
+                <ul class="job-reqs">
+                    <li><i class="fas fa-check"></i> Degree in Chemistry/Science Education</li>
+                    <li><i class="fas fa-check"></i> Remote / Flexible Hours</li>
+                </ul>
+                <button class="btn btn-outline" style="width: 100%;" onclick="openApplicationForm('Chemistry Tutor')">Apply for this Role</button>
+            </div>
+
+            <div class="job-card">
+                <div class="job-card-header">
+                    <div class="job-icon"><i class="fas fa-dna"></i></div>
+                    <span class="job-badge">Priority Role</span>
+                </div>
+                <h3>Biology Tutor</h3>
+                <p class="job-desc">We need passionate Biology teachers to deliver engaging, world-class life science lessons to diaspora students.</p>
+                <ul class="job-reqs">
+                    <li><i class="fas fa-check"></i> Degree in Biology/Life Sciences</li>
+                    <li><i class="fas fa-check"></i> Remote / Flexible Hours</li>
+                </ul>
+                <button class="btn btn-outline" style="width: 100%;" onclick="openApplicationForm('Biology Tutor')">Apply for this Role</button>
+            </div>
+
+            <div class="job-card">
+                <div class="job-card-header">
+                    <div class="job-icon"><i class="fas fa-chalkboard-user"></i></div>
+                </div>
+                <h3>General Educator</h3>
+                <p class="job-desc">Don't see your subject above? Submit a general application for Mathematics, English, History, or African Languages.</p>
+                <ul class="job-reqs">
+                    <li><i class="fas fa-check"></i> Relevant Subject Degree</li>
+                    <li><i class="fas fa-check"></i> Remote / Flexible Hours</li>
+                </ul>
+                <button class="btn btn-outline" style="width: 100%;" onclick="openApplicationForm('General Educator')">Submit General Application</button>
+            </div>
         </div>
         
-        <div class="form-container fu">
-            <div class="form-header">
-                <h3><i class="fas fa-clipboard-list"></i> Tutor Application Form</h3>
-                <p>All fields marked with <span style="color:#F4A261">*</span> are required.</p>
-            </div>
-            
-            <div class="form-progress">
-                <div class="progress-step"><div class="progress-dot active" data-step="1">1</div></div>
-                <div class="progress-line"></div>
-                <div class="progress-step"><div class="progress-dot" data-step="2">2</div></div>
-                <div class="progress-line"></div>
-                <div class="progress-step"><div class="progress-dot" data-step="3">3</div></div>
-                <div class="progress-line"></div>
-                <div class="progress-step"><div class="progress-dot" data-step="4">4</div></div>
-                <div class="progress-line"></div>
-                <div class="progress-step"><div class="progress-dot" data-step="5">5</div></div>
-            </div>
-            
-            <form id="applicationForm" onsubmit="submitApplication(event)">
-                <div class="form-body">
-                    <div class="form-step active" data-step="1">
-                        <h4><i class="fas fa-user"></i> Personal Information</h4>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Full Name <span class="req">*</span></label>
-                                <input type="text" id="appName" placeholder="Enter your full name" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Email Address <span class="req">*</span></label>
-                                <input type="email" id="appEmail" placeholder="you@example.com" required>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Phone Number <span class="req">*</span></label>
-                                <input type="tel" id="appPhone" placeholder="+234 xxx xxx xxxx" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Location (City, State) <span class="req">*</span></label>
-                                <input type="text" id="appLocation" placeholder="e.g., Lagos, Lagos State" required>
-                            </div>
-                        </div>
+        <div class="form-wrapper" id="applicationFormWrapper">
+            <div class="form-container">
+                <div class="form-header">
+                    <div class="form-header-text">
+                        <h3><i class="fas fa-clipboard-list"></i> Tutor Application</h3>
+                        <p>You are applying for: <strong id="displayRole" style="color: var(--sunset-gold);">General Educator</strong></p>
                     </div>
-
-                    <div class="form-step" data-step="2">
-                        <h4><i class="fas fa-graduation-cap"></i> Education & Experience</h4>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Highest Education Level <span class="req">*</span></label>
-                                <select id="appEducation" required>
-                                    <option value="">Select your education level</option>
-                                    <option>High School Diploma</option>
-                                    <option>Associate Degree</option>
-                                    <option>Bachelor's Degree</option>
-                                    <option>Master's Degree</option>
-                                    <option>Doctorate/PhD</option>
-                                    <option>Professional Certification</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Field of Study <span class="req">*</span></label>
-                                <input type="text" id="appField" placeholder="e.g., Mathematics, English" required>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Specific Qualification <span class="req">*</span></label>
-                                <input type="text" id="appQualification" placeholder="e.g., B.Ed Mathematics" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Teaching Experience <span class="req">*</span></label>
-                                <select id="appExperience" required>
-                                    <option value="">Select your experience level</option>
-                                    <option>No formal teaching experience</option>
-                                    <option>Less than 1 year</option>
-                                    <option>1-2 years</option>
-                                    <option>3-5 years</option>
-                                    <option>6-10 years</option>
-                                    <option>More than 10 years</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Teaching Experience Details</label>
-                            <textarea id="appExpDetails" placeholder="Tell us about your teaching experience, methods, and achievements..." rows="4"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="form-step" data-step="3">
-                        <h4><i class="fas fa-chalkboard-user"></i> Teaching Preferences</h4>
-                        <div class="form-group">
-                            <label>Subjects You Can Teach <span class="req">*</span></label>
-                            <div class="checkbox-grid" id="subjectsGrid">
-                                <div class="checkbox-chip"><input type="checkbox" id="sub1" name="subjects" value="Mathematics"><label for="sub1">Mathematics</label></div>
-                                <div class="checkbox-chip"><input type="checkbox" id="sub2" name="subjects" value="English Language"><label for="sub2">English</label></div>
-                                <div class="checkbox-chip"><input type="checkbox" id="sub3" name="subjects" value="Sciences"><label for="sub3">Sciences</label></div>
-                                <div class="checkbox-chip"><input type="checkbox" id="sub4" name="subjects" value="History"><label for="sub4">History</label></div>
-                                <div class="checkbox-chip"><input type="checkbox" id="sub5" name="subjects" value="Geography"><label for="sub5">Geography</label></div>
-                                <div class="checkbox-chip"><input type="checkbox" id="sub6" name="subjects" value="Literature"><label for="sub6">Literature</label></div>
-                            </div>
-                        </div>
-                        <div class="form-group" style="margin-top:1.5rem">
-                            <label>Preferred Age Groups <span class="req">*</span></label>
-                            <div class="checkbox-grid" id="agesGrid">
-                                <div class="checkbox-chip"><input type="checkbox" id="age1" name="ages" value="5-7"><label for="age1">Ages 5-7</label></div>
-                                <div class="checkbox-chip"><input type="checkbox" id="age2" name="ages" value="8-10"><label for="age2">Ages 8-10</label></div>
-                                <div class="checkbox-chip"><input type="checkbox" id="age3" name="ages" value="11-13"><label for="age3">Ages 11-13</label></div>
-                                <div class="checkbox-chip"><input type="checkbox" id="age4" name="ages" value="14-16"><label for="age4">Ages 14-16</label></div>
-                                <div class="checkbox-chip"><input type="checkbox" id="age5" name="ages" value="17+"><label for="age5">Ages 17+</label></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-step" data-step="4">
-                        <h4><i class="fas fa-laptop-code"></i> Technical Setup & Availability</h4>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Internet Connection <span class="req">*</span></label>
-                                <select id="appInternet" required>
-                                    <option value="">Select option</option>
-                                    <option>Yes, I have reliable internet</option>
-                                    <option>No, my internet is unreliable</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Device for Teaching <span class="req">*</span></label>
-                                <select id="appDevice" required>
-                                    <option value="">Select your device</option>
-                                    <option>Laptop/Desktop</option>
-                                    <option>Tablet</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Quiet Teaching Environment <span class="req">*</span></label>
-                                <select id="appEnvironment" required>
-                                    <option value="">Select option</option>
-                                    <option>Yes, I have a quiet space</option>
-                                    <option>No, my environment is noisy</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Time Zone <span class="req">*</span></label>
-                                <select id="appTimezone" required>
-                                    <option value="">Select your time zone</option>
-                                    <option>WAT (West Africa Time)</option>
-                                    <option>Other</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Cultural Heritage (Optional)</label>
-                            <input type="text" id="appHeritage" placeholder="e.g., Yoruba, Igbo, Hausa...">
-                        </div>
-                        <div class="form-group">
-                            <label>Available Days <span class="req">*</span></label>
-                            <div class="checkbox-grid" id="daysGrid">
-                                <div class="checkbox-chip"><input type="checkbox" id="day1" name="days" value="Monday"><label for="day1">Monday</label></div>
-                                <div class="checkbox-chip"><input type="checkbox" id="day2" name="days" value="Tuesday"><label for="day2">Tuesday</label></div>
-                                <div class="checkbox-chip"><input type="checkbox" id="day3" name="days" value="Wednesday"><label for="day3">Wednesday</label></div>
-                                <div class="checkbox-chip"><input type="checkbox" id="day4" name="days" value="Thursday"><label for="day4">Thursday</label></div>
-                                <div class="checkbox-chip"><input type="checkbox" id="day5" name="days" value="Friday"><label for="day5">Friday</label></div>
-                                <div class="checkbox-chip"><input type="checkbox" id="day6" name="days" value="Saturday"><label for="day6">Saturday</label></div>
-                                <div class="checkbox-chip"><input type="checkbox" id="day7" name="days" value="Sunday"><label for="day7">Sunday</label></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-step" data-step="5">
-                        <h4><i class="fas fa-cloud-arrow-up"></i> Upload Your CV</h4>
-                        <div class="form-group">
-                            <label>Curriculum Vitae (CV) <span class="req">*</span></label>
-                            <div class="file-upload" id="fileUpload" onclick="document.getElementById('cvFile').click()">
-                                <i class="fas fa-cloud-upload-alt"></i>
-                                <p>Click to upload or drag and drop your CV</p>
-                                <small>Accepted formats: PDF, DOC, DOCX (Max size: 10MB)</small>
-                                <div class="file-name" id="fileName" style="display:none"></div>
-                            </div>
-                            <input type="file" id="cvFile" accept=".pdf,.doc,.docx" style="display:none" onchange="handleFileSelect(this)">
-                        </div>
-                        <div class="form-group">
-                            <label>Additional Comments</label>
-                            <textarea id="appComments" placeholder="Any additional information you'd like to share..." rows="4"></textarea>
-                        </div>
-                    </div>
+                    <button class="close-form-btn" onclick="closeApplicationForm()" title="Close Form"><i class="fas fa-times"></i></button>
                 </div>
-
-                <div class="form-nav">
-                    <button type="button" class="btn btn-outline" id="prevBtn" onclick="changeStep(-1)" style="display:none"><i class="fas fa-arrow-left"></i> Previous</button>
-                    <div></div>
-                    <button type="button" class="btn btn-primary" id="nextBtn" onclick="changeStep(1)">Next <i class="fas fa-arrow-right"></i></button>
-                    <button type="submit" class="btn btn-gold" id="submitBtn" style="display:none"><i class="fas fa-paper-plane"></i> Submit Application</button>
+                
+                <div class="form-progress">
+                    <div class="progress-step"><div class="progress-dot active" data-step="1">1</div></div>
+                    <div class="progress-line"></div>
+                    <div class="progress-step"><div class="progress-dot" data-step="2">2</div></div>
+                    <div class="progress-line"></div>
+                    <div class="progress-step"><div class="progress-dot" data-step="3">3</div></div>
+                    <div class="progress-line"></div>
+                    <div class="progress-step"><div class="progress-dot" data-step="4">4</div></div>
+                    <div class="progress-line"></div>
+                    <div class="progress-step"><div class="progress-dot" data-step="5">5</div></div>
                 </div>
-            </form>
+                
+                <form id="applicationForm" onsubmit="submitApplication(event)">
+                    <input type="hidden" id="appRole" value="General Educator">
+
+                    <div class="form-body">
+                        <div class="form-step active" data-step="1">
+                            <h4><i class="fas fa-user"></i> Personal Information</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Full Name <span class="req">*</span></label>
+                                    <input type="text" id="appName" placeholder="Enter your full name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Email Address <span class="req">*</span></label>
+                                    <input type="email" id="appEmail" placeholder="you@example.com" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Phone Number <span class="req">*</span></label>
+                                    <input type="tel" id="appPhone" placeholder="+234 xxx xxx xxxx" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Location (City, State) <span class="req">*</span></label>
+                                    <input type="text" id="appLocation" placeholder="e.g., Lagos, Lagos State" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-step" data-step="2">
+                            <h4><i class="fas fa-graduation-cap"></i> Education & Experience</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Highest Education Level <span class="req">*</span></label>
+                                    <select id="appEducation" required>
+                                        <option value="">Select your education level</option>
+                                        <option>High School Diploma</option>
+                                        <option>Associate Degree</option>
+                                        <option>Bachelor's Degree</option>
+                                        <option>Master's Degree</option>
+                                        <option>Doctorate/PhD</option>
+                                        <option>Professional Certification</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Field of Study <span class="req">*</span></label>
+                                    <input type="text" id="appField" placeholder="e.g., Mathematics, Chemistry" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Specific Qualification <span class="req">*</span></label>
+                                    <input type="text" id="appQualification" placeholder="e.g., B.Sc Chemistry" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Teaching Experience <span class="req">*</span></label>
+                                    <select id="appExperience" required>
+                                        <option value="">Select your experience level</option>
+                                        <option>No formal teaching experience</option>
+                                        <option>Less than 1 year</option>
+                                        <option>1-2 years</option>
+                                        <option>3-5 years</option>
+                                        <option>6-10 years</option>
+                                        <option>More than 10 years</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Teaching Experience Details</label>
+                                <textarea id="appExpDetails" placeholder="Tell us about your teaching experience, methods, and achievements..." rows="4"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-step" data-step="3">
+                            <h4><i class="fas fa-chalkboard-user"></i> Teaching Preferences</h4>
+                            <div class="form-group">
+                                <label>Subjects You Can Teach <span class="req">*</span></label>
+                                <div class="checkbox-grid" id="subjectsGrid">
+                                    <div class="checkbox-chip"><input type="checkbox" id="sub1" name="subjects" value="Chemistry"><label for="sub1">Chemistry</label></div>
+                                    <div class="checkbox-chip"><input type="checkbox" id="sub2" name="subjects" value="Biology"><label for="sub2">Biology</label></div>
+                                    <div class="checkbox-chip"><input type="checkbox" id="sub3" name="subjects" value="Mathematics"><label for="sub3">Mathematics</label></div>
+                                    <div class="checkbox-chip"><input type="checkbox" id="sub4" name="subjects" value="English Language"><label for="sub4">English</label></div>
+                                    <div class="checkbox-chip"><input type="checkbox" id="sub5" name="subjects" value="Physics"><label for="sub5">Physics</label></div>
+                                    <div class="checkbox-chip"><input type="checkbox" id="sub6" name="subjects" value="African Languages"><label for="sub6">African Languages</label></div>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-top:1.5rem">
+                                <label>Preferred Age Groups <span class="req">*</span></label>
+                                <div class="checkbox-grid" id="agesGrid">
+                                    <div class="checkbox-chip"><input type="checkbox" id="age1" name="ages" value="5-7"><label for="age1">Ages 5-7</label></div>
+                                    <div class="checkbox-chip"><input type="checkbox" id="age2" name="ages" value="8-10"><label for="age2">Ages 8-10</label></div>
+                                    <div class="checkbox-chip"><input type="checkbox" id="age3" name="ages" value="11-13"><label for="age3">Ages 11-13</label></div>
+                                    <div class="checkbox-chip"><input type="checkbox" id="age4" name="ages" value="14-16"><label for="age4">Ages 14-16</label></div>
+                                    <div class="checkbox-chip"><input type="checkbox" id="age5" name="ages" value="17+"><label for="age5">Ages 17+</label></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-step" data-step="4">
+                            <h4><i class="fas fa-laptop-code"></i> Technical Setup & Availability</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Internet Connection <span class="req">*</span></label>
+                                    <select id="appInternet" required>
+                                        <option value="">Select option</option>
+                                        <option>Yes, I have reliable internet</option>
+                                        <option>No, my internet is unreliable</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Device for Teaching <span class="req">*</span></label>
+                                    <select id="appDevice" required>
+                                        <option value="">Select your device</option>
+                                        <option>Laptop/Desktop</option>
+                                        <option>Tablet</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Quiet Teaching Environment <span class="req">*</span></label>
+                                    <select id="appEnvironment" required>
+                                        <option value="">Select option</option>
+                                        <option>Yes, I have a quiet space</option>
+                                        <option>No, my environment is noisy</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Time Zone <span class="req">*</span></label>
+                                    <select id="appTimezone" required>
+                                        <option value="">Select your time zone</option>
+                                        <option>WAT (West Africa Time)</option>
+                                        <option>Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Cultural Heritage (Optional)</label>
+                                <input type="text" id="appHeritage" placeholder="e.g., Yoruba, Igbo, Hausa...">
+                            </div>
+                            <div class="form-group">
+                                <label>Available Days <span class="req">*</span></label>
+                                <div class="checkbox-grid" id="daysGrid">
+                                    <div class="checkbox-chip"><input type="checkbox" id="day1" name="days" value="Monday"><label for="day1">Monday</label></div>
+                                    <div class="checkbox-chip"><input type="checkbox" id="day2" name="days" value="Tuesday"><label for="day2">Tuesday</label></div>
+                                    <div class="checkbox-chip"><input type="checkbox" id="day3" name="days" value="Wednesday"><label for="day3">Wednesday</label></div>
+                                    <div class="checkbox-chip"><input type="checkbox" id="day4" name="days" value="Thursday"><label for="day4">Thursday</label></div>
+                                    <div class="checkbox-chip"><input type="checkbox" id="day5" name="days" value="Friday"><label for="day5">Friday</label></div>
+                                    <div class="checkbox-chip"><input type="checkbox" id="day6" name="days" value="Saturday"><label for="day6">Saturday</label></div>
+                                    <div class="checkbox-chip"><input type="checkbox" id="day7" name="days" value="Sunday"><label for="day7">Sunday</label></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-step" data-step="5">
+                            <h4><i class="fas fa-cloud-arrow-up"></i> Upload Your CV</h4>
+                            <div class="form-group">
+                                <label>Curriculum Vitae (CV) <span class="req">*</span></label>
+                                <div class="file-upload" id="fileUpload" onclick="document.getElementById('cvFile').click()">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <p>Click to upload or drag and drop your CV</p>
+                                    <small>Accepted formats: PDF, DOC, DOCX (Max size: 10MB)</small>
+                                    <div class="file-name" id="fileName" style="display:none"></div>
+                                </div>
+                                <input type="file" id="cvFile" accept=".pdf,.doc,.docx" style="display:none" onchange="handleFileSelect(this)">
+                            </div>
+                            <div class="form-group">
+                                <label>Additional Comments</label>
+                                <textarea id="appComments" placeholder="Any additional information you'd like to share..." rows="4"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-nav">
+                        <button type="button" class="btn btn-outline" id="prevBtn" onclick="changeStep(-1)" style="display:none"><i class="fas fa-arrow-left"></i> Previous</button>
+                        <div></div>
+                        <button type="button" class="btn btn-primary" id="nextBtn" onclick="changeStep(1)">Next <i class="fas fa-arrow-right"></i></button>
+                        <button type="submit" class="btn btn-gold" id="submitBtn" style="display:none"><i class="fas fa-paper-plane"></i> Submit Application</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </section>
@@ -783,7 +865,7 @@
         <div class="modal-success">
             <i class="fas fa-envelope-open-text" style="font-size: 4rem; color: var(--sunset-gold); margin-bottom: 1rem;"></i>
             <h2 style="color: var(--baobab-brown-dark); margin-bottom: 1rem;">Check Your Email!</h2>
-            <p style="color: var(--text-medium); margin-bottom: 1.5rem;">We've sent a secure verification link to your email address. Please click the link to activate your tutor account.</p>
+            <p style="color: var(--text-dark); font-weight: 500; margin-bottom: 1.5rem;">We've sent a secure verification link to your email address. Please click the link to activate your tutor account.</p>
             <button class="btn btn-primary" onclick="closeModal('verifyModal')" style="width: 100%;">I'll Check My Email</button>
         </div>
     </div>
@@ -793,8 +875,8 @@
     <div class="modal">
         <div class="modal-success">
             <i class="fas fa-check-circle" style="font-size: 4rem; color: var(--canopy-green); margin-bottom: 1rem;"></i>
-            <h2 style="color: var(--baobab-brown-dark); margin-bottom: 1rem;">Application Submitted!</h2>
-            <p style="color: var(--text-medium); margin-bottom: 1.5rem;">Thank you! We have received your application and CV. Our team will review it and get back to you within 3-5 business days.</p>
+            <h2 style="color: var(--baobab-brown-dark); margin-bottom: 1rem;">Application Submitted! 🎉</h2>
+            <p style="color: var(--text-dark); font-weight: 500; margin-bottom: 1.5rem;">Thank you! We have received your application and CV. Our team will review it and get back to you within 3-5 business days.</p>
             <button class="btn btn-primary" onclick="closeModal('successModal');window.location.hash='hero'" style="width: 100%;">Return to Home</button>
         </div>
     </div>
@@ -802,9 +884,10 @@
 
 <script>
 // ============================================================
-// SUPABASE INITIALIZATION
-// Ensure you replace the keys with your actual Supabase details
+// INITIALIZATION (EMAILJS & SUPABASE)
 // ============================================================
+emailjs.init("YOUR_PUBLIC_KEY"); // REPLACE WITH YOUR EMAILJS PUBLIC KEY
+
 const SUPABASE_URL = 'https://wqvjrgnfxdcnlyiuhzeb.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndxdmpyZ25meGRjbmx5aXVoemViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4MjEwMTMsImV4cCI6MjA4ODM5NzAxM30.7JCllFemIHaucIsyUYLFQ8nxFv6yzNzHOX9uXd26ebc';
 
@@ -943,8 +1026,29 @@ async function handleRegister(e) {
 }
 
 // ============================================================
-// MULTI-STEP APPLICATION FORM
+// JOB APPLICATION FORM LOGIC
 // ============================================================
+function openApplicationForm(roleName) {
+    const wrapper = document.getElementById('applicationFormWrapper');
+    document.getElementById('displayRole').textContent = roleName;
+    document.getElementById('appRole').value = roleName;
+    
+    // Auto-check the subject box based on role if it matches
+    document.querySelectorAll('input[name="subjects"]').forEach(cb => cb.checked = false);
+    if(roleName.includes('Chemistry')) document.getElementById('sub1').checked = true;
+    if(roleName.includes('Biology')) document.getElementById('sub2').checked = true;
+
+    wrapper.style.display = 'block';
+    wrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function closeApplicationForm() {
+    document.getElementById('applicationFormWrapper').style.display = 'none';
+    document.getElementById('applicationForm').reset();
+    currentStep = 1;
+    updateFormUI();
+}
+
 let currentStep = 1;
 const totalSteps = 5;
 
@@ -1016,7 +1120,7 @@ fileUploadEl.addEventListener('drop', (e) => {
     if (e.dataTransfer.files[0]) { document.getElementById('cvFile').files = e.dataTransfer.files; handleFileSelect(document.getElementById('cvFile')); }
 });
 
-// Final Submit
+// Final Submit (Supabase + EmailJS)
 async function submitApplication(e) {
     e.preventDefault();
     if (!validateStep(5)) return;
@@ -1025,6 +1129,7 @@ async function submitApplication(e) {
     showLoading('Encrypting and submitting application...');
 
     const formData = {
+        roleAppliedFor: document.getElementById('appRole').value,
         name: document.getElementById('appName').value,
         email: document.getElementById('appEmail').value,
         phone: document.getElementById('appPhone').value,
@@ -1048,30 +1153,60 @@ async function submitApplication(e) {
 
     if (supabaseClient) {
         try {
+            // 1. Upload CV to Supabase Storage
             const fileExt = selectedFile.name.split('.').pop();
             const filePath = 'cvs/' + Date.now() + '_' + formData.name.replace(/\s+/g, '_') + '.' + fileExt;
             const { error: uploadError } = await supabaseClient.storage.from('tutor-applications').upload(filePath, selectedFile);
             
-            if (uploadError) console.warn('CV upload error:', uploadError.message);
-            else formData.cvPath = filePath;
+            if (uploadError) {
+                console.warn('CV upload error:', uploadError.message);
+                throw new Error("Failed to upload CV: " + uploadError.message);
+            }
+            formData.cvPath = filePath;
 
+            // Optional: Get a public URL for the CV to send in the email
+            const { data: publicUrlData } = supabaseClient.storage.from('tutor-applications').getPublicUrl(filePath);
+            const cvPublicLink = publicUrlData.publicUrl;
+
+            // 2. Save Application to Supabase Database
             const { error: insertError } = await supabaseClient.from('tutor_applications').insert([formData]);
             if (insertError) throw insertError;
+
+            // 3. Send Email Notification via EmailJS
+            const templateParams = {
+                role: formData.roleAppliedFor,
+                name: formData.name,
+                email: formData.email,
+                phone: formData.phone,
+                location: formData.location,
+                education: formData.education,
+                field: formData.field,
+                qualification: formData.qualification,
+                experience: formData.experience,
+                subjects: formData.subjects.join(', '),
+                ageGroups: formData.ageGroups.join(', '),
+                days: formData.days.join(', '),
+                cv_link: cvPublicLink
+            };
+
+            // REPLACE WITH YOUR EMAILJS SERVICE AND TEMPLATE IDs
+            await emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", templateParams);
+
         } catch (err) {
             hideLoading();
-            showToast('Submission error. Please try again.', 'error');
+            showToast('Submission error. ' + err.message, 'error');
             return;
         }
+    } else {
+        showToast('Supabase keys missing. Please configure backend.', 'error');
+        hideLoading();
+        return;
     }
 
     hideLoading();
     document.getElementById('successModal').classList.add('open');
     document.body.style.overflow = 'hidden';
-    document.getElementById('applicationForm').reset();
-    selectedFile = null;
-    document.getElementById('fileName').style.display = 'none';
-    document.querySelector('.file-upload i').className = 'fas fa-cloud-upload-alt';
-    currentStep = 1; updateFormUI();
+    closeApplicationForm(); // Resets and hides the form
 }
 </script>
 </body>
