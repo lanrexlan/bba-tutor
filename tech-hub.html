@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" sizes="32x32" href="/Images/logo.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Hub - Baobab Digital Academy</title>
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ================================================
+           BAOBAB BRAND PALETTE
+           ================================================ */
+        :root {
+            --baobab-brown:       #6B3A2A;
+            --baobab-brown-dark:  #4A2218;
+            --canopy-green:       #2D6A4F;
+            --canopy-green-dark:  #1B4332;
+            --canopy-green-light: #52B788;
+            --sunset-gold:        #F4A261;
+            --sunset-gold-warm:   #E76F51;
+            --earth-cream:        #FEF6EE;
+            --earth-cream-dark:   #F5E6D3;
+            --warm-white:         #FEFEFE;
+            --deep-charcoal:      #18120F;
+            --text-dark:          #2C1810;
+            --text-medium:        #5C3E30;
+            --border-light:       #EDD9C8;
+            --shadow-warm:        rgba(107,58,42,0.12);
+            --max-w:              1280px;
+            --r-card:             24px;
+            --r-pill:             50px;
+            --transition:         all 0.3s cubic-bezier(.4,0,.2,1);
+            
+            /* Status Colors */
+            --status-ok:          #e6f7ed;
+            --status-ok-text:     #116b39;
+            --status-warn:        #fff6e9;
+            --status-warn-text:   #8a4b00;
+            --status-fail:        #ffefef;
+            --status-fail-text:   #D32F2F;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; font-size: 18px; }
+        @media (max-width: 992px) { html { font-size: 16px; } }
+
+        body { font-family: 'DM Sans', sans-serif; color: var(--text-dark); background-color: var(--warm-white); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+        h1, h2, h3, h4, h5 { font-family: 'Playfair Display', serif; font-weight: 700; line-height: 1.2; color: var(--baobab-brown-dark); }
+        ul { list-style: none; }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+
+        .container { max-width: var(--max-w); margin: 0 auto; padding: 0 2rem; position: relative; }
+        
+        .fu { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+        .fu.vis { opacity: 1; transform: translateY(0); }
+
+        /* Buttons */
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; padding: .85rem 1.75rem; border-radius: var(--r-pill); font-weight: 700; font-size: .95rem; transition: var(--transition); border: 2px solid transparent; cursor: pointer; white-space: nowrap; font-family: 'DM Sans', sans-serif; }
+        .btn-primary { background: linear-gradient(135deg, var(--canopy-green), var(--canopy-green-dark)); color: white; box-shadow: 0 4px 14px rgba(45,106,79,.25); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(45,106,79,.35); }
+        .btn-outline { background: transparent; color: var(--baobab-brown-dark); border-color: var(--border-light); }
+        .btn-outline:hover { background: var(--earth-cream); border-color: var(--sunset-gold); }
+        .btn-sm { padding: .5rem 1.25rem; font-size: .85rem; }
+
+        /* Header */
+        .header { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(15px); box-shadow: 0 2px 20px var(--shadow-warm); padding: .75rem 0; }
+        .nav-wrapper { display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; gap: .6rem; }
+        .logo-icon { width: 46px; height: 46px; min-width: 46px; border-radius: 50%; border: 2px solid var(--sunset-gold); overflow: hidden; display: flex; align-items: center; justify-content: center; background: #fff; }
+        .logo-icon img { width: 100%; height: 100%; object-fit: cover; }
+        .logo-text { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.2rem; color: var(--baobab-brown-dark); line-height: 1.1; }
+        .logo-tag { display: block; font-family: 'DM Sans', sans-serif; font-size: .65rem; font-style: italic; color: var(--text-light); }
+        
+        .nav-menu { display: flex; gap: 1.5rem; align-items: center; }
+        .nav-link { font-weight: 600; font-size: .9rem; color: var(--text-medium); }
+        .nav-link:hover, .nav-link.active { color: var(--sunset-gold); }
+        
+        /* Mobile Menu */
+        .ham { display: none; flex-direction: column; gap: 5px; padding: .4rem; background: none; border: none; cursor: pointer; }
+        .ham span { display: block; width: 24px; height: 2px; background: var(--baobab-brown); border-radius: 2px; transition: all .3s; }
+        .ham.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .ham.open span:nth-child(2) { opacity: 0; }
+        .ham.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        .mob-menu { display: none; flex-direction: column; background: #fff; padding: 1.5rem 2rem 2rem; border-top: 1px solid var(--border-light); box-shadow: 0 12px 30px var(--shadow-warm); position: absolute; top: 100%; left: 0; width: 100%; z-index: 999; }
+        .mob-menu.open { display: flex; animation: slideDown 0.3s ease; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .mob-menu a { font-size: 1rem; font-weight: 500; color: var(--text-dark); padding: 1rem 0; border-bottom: 1px solid var(--border-light); }
+
+        /* Hero Section */
+        .hero { background: linear-gradient(135deg, #1E88E5 0%, var(--canopy-green-dark) 100%); color: white; padding: 9rem 0 5rem; position: relative; overflow: hidden; }
+        .hero::before { content: ''; position: absolute; inset: 0; opacity: 0.05; background-image: url("data:image/svg+xml,%3Csvg width='44' height='44' viewBox='0 0 44 44' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M22 0 L44 22 L22 44 L0 22 Z' fill='none' stroke='%23FFFFFF' stroke-width='1'/%3E%3C/svg%3E"); background-size: 44px 44px; }
+        .hero-content { position: relative; z-index: 2; max-width: 800px; margin: 0 auto; text-align: center; }
+        .hero-badge { background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); padding: .5rem 1.25rem; border-radius: var(--r-pill); font-size: .8rem; font-weight: 700; display: inline-block; margin-bottom: 1.5rem; border: 1px solid rgba(255,255,255,0.3); color: var(--earth-cream); text-transform: uppercase; letter-spacing: .05em; }
+        .hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); margin-bottom: 1rem; color: white; }
+        .hero-subtitle { font-size: 1.1rem; opacity: 0.9; line-height: 1.7; }
+
+        /* Layout & Blocks */
+        .main-content { padding: 4rem 0; }
+        .content-layout { display: grid; grid-template-columns: 1fr 300px; gap: 4rem; align-items: start; }
+        .framework-block { margin-bottom: 4rem; scroll-margin-top: 120px; }
+        .block-header { margin-bottom: 2rem; border-bottom: 2px solid var(--border-light); padding-bottom: 1.5rem; }
+        .block-header h2 { font-size: 2.2rem; margin-bottom: .5rem; display: flex; align-items: center; gap: .75rem; }
+        .block-header h2 i { color: var(--canopy-green); }
+        .block-desc { color: var(--text-medium); font-size: 1.05rem; }
+
+        /* Interactive Tools & Cards */
+        .interactive-tool { background: var(--white); border-radius: var(--r-card); padding: 2.5rem; box-shadow: 0 8px 24px var(--shadow-warm); border: 1px solid var(--border-light); margin-bottom: 2rem; }
+        .tool-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .tool-header h3 { margin: 0; font-size: 1.3rem; color: var(--baobab-brown-dark); display: flex; align-items: center; gap:.5rem;}
+
+        /* Diagnostics Grid */
+        .diag-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+        .diag-card { background: var(--earth-cream); border: 2px solid var(--border-light); border-radius: 16px; padding: 1.5rem; transition: var(--transition); }
+        .diag-card:hover { border-color: var(--canopy-green-light); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .diag-kicker { font-weight: 800; color: var(--canopy-green); text-transform: uppercase; font-size: .75rem; letter-spacing: .05em; margin-bottom: .5rem; font-family: 'DM Sans', sans-serif;}
+        .diag-card h4 { font-size: 1.1rem; color: var(--baobab-brown-dark); margin-bottom: .25rem; font-family: 'DM Sans', sans-serif;}
+        .diag-card p { font-size: .85rem; color: var(--text-medium); margin-bottom: 1rem; line-height: 1.5; min-height: 40px;}
+        .status-badge { display: inline-flex; align-items: center; gap: 6px; padding: .4rem .8rem; border-radius: 999px; font-weight: 700; font-size: .8rem; }
+        .status-badge.ok { background: var(--status-ok); color: var(--status-ok-text); border: 1px solid #b8ebcd; }
+        .status-badge.warn { background: var(--status-warn); color: var(--status-warn-text); border: 1px solid #ffe0b3; }
+        .status-badge.fail { background: var(--status-fail); color: var(--status-fail-text); border: 1px solid #ffd0d0; }
+        
+        .progress-bar { height: 6px; background: var(--border-light); border-radius: 999px; overflow: hidden; margin-top: 10px; width: 100%;}
+        .progress-fill { display: block; height: 100%; background: var(--canopy-green); width: 0%; transition: width 0.4s ease; }
+
+        /* Hardware Checklist */
+        .checklist-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+        .chk-item { display: flex; gap: .75rem; align-items: flex-start; background: var(--earth-cream); padding: 1rem 1.5rem; border-radius: 12px; border: 1px solid var(--border-light); cursor: pointer; transition: var(--transition); }
+        .chk-item:hover { border-color: var(--sunset-gold); }
+        .chk-item input[type="checkbox"] { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--canopy-green); }
+        .chk-item div { font-size: .95rem; color: var(--deep-charcoal); line-height: 1.4; }
+
+        /* Micro Courses (LMS) */
+        .courses-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
+        .course-card { background: white; border: 2px solid var(--border-light); border-radius: 16px; padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.03); display: flex; flex-direction: column;}
+        .course-card h4 { color: var(--canopy-green-dark); font-size: 1.1rem; margin-bottom: .5rem; font-family: 'DM Sans', sans-serif; }
+        .course-meta { display: flex; gap: 8px; margin-bottom: .75rem; }
+        .c-pill { background: var(--earth-cream); color: var(--text-medium); padding: 2px 8px; border-radius: 6px; font-size: .75rem; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;}
+        .course-card p { font-size: .85rem; color: var(--text-medium); margin-bottom: 1rem; flex: 1;}
+
+        /* Accordions */
+        .accordion { border-radius: 16px; overflow: hidden; border: 1px solid var(--border-light); }
+        .acc-item { border-bottom: 1px solid var(--border-light); background: white; }
+        .acc-item:last-child { border-bottom: none; }
+        .acc-header { width: 100%; text-align: left; border: 0; background: white; padding: 1.25rem 1.5rem; font-weight: 700; font-size: 1.05rem; color: var(--baobab-brown-dark); cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: var(--transition); font-family: 'DM Sans', sans-serif;}
+        .acc-header:hover { background: var(--earth-cream); }
+        .acc-content { display: none; padding: 0 1.5rem 1.5rem; color: var(--text-medium); font-size: .95rem; }
+        .acc-item.active .acc-content { display: block; animation: fadeIn .3s ease; }
+        .acc-item.active .acc-header { color: var(--canopy-green); }
+        .rotate { transition: transform .3s ease; }
+        .acc-item.active .rotate { transform: rotate(180deg); }
+        .fix-list { padding-left: 1.2rem; margin-top: .5rem;}
+        .fix-list li { margin-bottom: .4rem; }
+
+        /* Report Form */
+        .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+        .input, .select, .textarea { width: 100%; padding: .85rem 1rem; border: 2px solid var(--border-light); border-radius: 12px; font-size: .95rem; font-family: 'DM Sans', sans-serif; background: var(--earth-cream); transition: var(--transition); }
+        .input:focus, .select:focus, .textarea:focus { outline: none; border-color: var(--canopy-green-light); background: white; box-shadow: 0 4px 14px rgba(45,106,79,.1); }
+        .textarea { min-height: 120px; resize: vertical; }
+        .log-box { background: var(--deep-charcoal); color: #00ff00; padding: 1rem; border-radius: 12px; font-family: monospace; font-size: .85rem; white-space: pre-wrap; margin-top: 1rem; display: none; max-height: 200px; overflow-y: auto;}
+
+        /* Sticky Sidebar */
+        .content-sidebar { position: sticky; top: 100px; }
+        .sidebar-box { background: var(--earth-cream); border-radius: 16px; padding: 1.5rem; border: 1px solid var(--border-light); margin-bottom: 1.5rem; }
+        .sidebar-title { font-size: 1.1rem; margin-bottom: 1rem; border-bottom: 2px solid var(--border-light); padding-bottom: .5rem; }
+        .sidebar-nav li { margin-bottom: .5rem; }
+        .sidebar-nav a { display: flex; align-items: center; gap: .75rem; padding: .6rem .8rem; border-radius: 8px; font-weight: 600; font-size: .9rem; color: var(--text-medium); transition: var(--transition); }
+        .sidebar-nav a:hover, .sidebar-nav a.active { background: var(--white); color: var(--canopy-green); box-shadow: var(--shadow-sm); transform: translateX(5px); }
+        
+        /* System Profile Sidebar */
+        .sys-profile { background: white; border: 1px solid var(--border-light); border-radius: 12px; padding: 1rem; margin-top: 1rem; }
+        .sys-item { display: flex; justify-content: space-between; font-size: .85rem; margin-bottom: .4rem; border-bottom: 1px solid var(--earth-cream); padding-bottom: .4rem;}
+        .sys-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0;}
+        .sys-lbl { color: var(--text-medium); }
+        .sys-val { font-weight: 700; color: var(--baobab-brown-dark); }
+
+        /* Footer */
+        .footer { background: var(--deep-charcoal); padding: 4rem 0 2rem; color: white; margin-top: 4rem; }
+        .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 3rem; margin-bottom: 3rem; }
+        .footer-section h4 { color: var(--sunset-gold); margin-bottom: 1.25rem; font-size: 1.1rem; font-family: 'DM Sans', sans-serif; }
+        .footer-link { color: rgba(255,255,255,0.6); display: block; padding: .4rem 0; font-size: .85rem; transition: var(--transition); }
+        .footer-link:hover { color: var(--sunset-gold); padding-left: 5px; }
+        .footer-bottom { text-align: center; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); font-size: .8rem; color: rgba(255,255,255,0.4); }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        @media (max-width: 992px) {
+            .nav-menu { display: none; }
+            .ham { display: flex; }
+            .content-layout { grid-template-columns: 1fr; }
+            .content-sidebar { display: none; }
+            .row-2 { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="nav-wrapper">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon"><img src="/Images/Logo_Baobab.svg" alt="Baobab" onerror="this.src='/Images/logo.jpg'"></div>
+                    <div>
+                        <div class="logo-text">Tutor Portal</div>
+                        <span class="logo-tag">Baobab Digital Academy</span>
+                    </div>
+                </a>
+                
+                <button class="ham" id="ham" aria-label="Toggle navigation">
+                    <span></span><span></span><span></span>
+                </button>
+                
+                <ul class="nav-menu">
+                    <li><a href="index.html#features" class="nav-link">Features</a></li>
+                    <li><a href="teaching-framework.html" class="nav-link">Teaching Framework</a></li>
+                    <li><a href="tutor-support.html" class="nav-link">Support Hub</a></li>
+                    <li><a href="tech-hub.html" class="nav-link active">Tech Hub</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="mob-menu" id="mob">
+            <a href="index.html#features">Features</a>
+            <a href="teaching-framework.html">Teaching Framework</a>
+            <a href="tutor-support.html">Support Hub</a>
+            <a href="tech-hub.html">Tech Hub</a>
+            <div style="margin-top: 1rem;">
+                <a href="index.html#apply" class="btn btn-gold" style="width: 100%; justify-content: center;">Apply Now</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content fu">
+                <div class="hero-badge">
+                    <i class="fas fa-microchip"></i> Diagnostics & Training
+                </div>
+                <h1 class="hero-title">Technology Hub</h1>
+                <p class="hero-subtitle">
+                    Your command center for technical excellence. Run system diagnostics, master our platform 
+                    through micro-courses, and quickly resolve connectivity or hardware issues.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="breadcrumbs">
+        <div class="container">
+            <nav class="breadcrumb-nav" style="display:flex; gap:8px; font-size:.85rem; font-weight:700; color:var(--text-medium); padding: 1rem 0;">
+                <a href="index.html" style="color:var(--text-medium);"><i class="fas fa-home"></i> Home</a>
+                <span>/</span>
+                <span style="color:var(--baobab-brown-dark);">Tech Hub</span>
+            </nav>
+        </div>
+    </section>
+
+    <section class="main-content">
+        <div class="container">
+            <div class="content-layout">
+                <div class="content-main">
+                    
+                    <div id="diagnostics" class="framework-block fu">
+                        <div class="block-header">
+                            <h2><i class="fas fa-microscope"></i> System Diagnostics</h2>
+                            <p class="block-desc">Run a full system check to ensure your device and network meet our teaching standards.</p>
+                        </div>
+
+                        <div class="interactive-tool">
+                            <div class="diag-grid">
+                                <div class="diag-card">
+                                    <div class="diag-kicker">Camera</div>
+                                    <h4>Video Access</h4>
+                                    <p id="camText">Check permissions and lens functionality.</p>
+                                    <span class="status-badge warn" id="camStatus"><i class="fas fa-circle-exclamation"></i> Not tested</span>
+                                </div>
+
+                                <div class="diag-card">
+                                    <div class="diag-kicker">Microphone</div>
+                                    <h4>Audio Input</h4>
+                                    <p id="micText">Verify mic selection and access permissions.</p>
+                                    <span class="status-badge warn" id="micStatus"><i class="fas fa-circle-exclamation"></i> Not tested</span>
+                                </div>
+
+                                <div class="diag-card">
+                                    <div class="diag-kicker">Speakers</div>
+                                    <h4>Audio Output</h4>
+                                    <p>Play a tone to test your headset/speakers.</p>
+                                    <div style="display:flex; gap:5px; margin-bottom:.5rem;">
+                                        <button class="btn btn-outline btn-sm" id="playTone" style="padding:.2rem .5rem;"><i class="fas fa-play"></i> Play</button>
+                                        <button class="btn btn-outline btn-sm" id="stopTone" style="padding:.2rem .5rem;" disabled><i class="fas fa-stop"></i> Stop</button>
+                                    </div>
+                                    <span class="status-badge warn" id="spkStatus"><i class="fas fa-circle-exclamation"></i> Not tested</span>
+                                </div>
+
+                                <div class="diag-card">
+                                    <div class="diag-kicker">Network</div>
+                                    <h4>Connection</h4>
+                                    <p id="netInfo">Checking network status...</p>
+                                    <span class="status-badge warn" id="netStatus"><i class="fas fa-circle-exclamation"></i> Not tested</span>
+                                </div>
+
+                                <div class="diag-card">
+                                    <div class="diag-kicker">Browser</div>
+                                    <h4>Compatibility</h4>
+                                    <p id="browserInfo">Detecting browser version...</p>
+                                    <span class="status-badge ok" id="browserStatus"><i class="fas fa-check-circle"></i> Supported</span>
+                                </div>
+
+                                <div class="diag-card">
+                                    <div class="diag-kicker">Performance</div>
+                                    <h4>Event Loop Lag</h4>
+                                    <p>Estimates responsiveness of your device.</p>
+                                    <div class="progress-bar"><span class="progress-fill" id="lagBar"></span></div>
+                                    <span class="status-badge warn" id="lagStatus" style="margin-top:.5rem;"><i class="fas fa-circle-notch fa-spin"></i> Measuring...</span>
+                                </div>
+                            </div>
+
+                            <div style="display:flex; gap:1rem; align-items:center; margin-top:1.5rem; border-top:1px solid var(--border-light); padding-top:1.5rem;">
+                                <button class="btn btn-primary" id="runChecks"><i class="fas fa-rocket"></i> Run Hardware Checks</button>
+                                <p style="font-size:.85rem; color:var(--text-medium); margin:0;"><i class="fas fa-shield-alt"></i> Tests run locally. We do not record or store your audio/video.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="training" class="framework-block fu">
+                        <div class="block-header">
+                            <h2><i class="fas fa-laptop-code"></i> Technology Training</h2>
+                            <p class="block-desc">Master the digital classroom through our hardware checklists and self-paced micro-courses.</p>
+                        </div>
+
+                        <div class="interactive-tool">
+                            <div class="tool-header">
+                                <h3>Hardware Readiness</h3>
+                                <div class="progress-bar" style="width: 150px; margin-top:0;"><span class="progress-fill" id="hc_progress"></span></div>
+                            </div>
+                            <div class="checklist-grid" id="hcChecklist">
+                                <label class="chk-item"><input type="checkbox" id="hc_camera"> <div><strong>HD Webcam:</strong> Positioned at eye level with front lighting.</div></label>
+                                <label class="chk-item"><input type="checkbox" id="hc_headset"> <div><strong>Headset/Mic:</strong> USB headset or lapel mic to eliminate echo.</div></label>
+                                <label class="chk-item"><input type="checkbox" id="hc_internet"> <div><strong>Stable Internet:</strong> 10+ Mbps down, ideally wired connection.</div></label>
+                                <label class="chk-item"><input type="checkbox" id="hc_power"> <div><strong>Power Backup:</strong> Fully charged device, UPS, or data hotspot ready.</div></label>
+                            </div>
+                        </div>
+
+                        <div class="interactive-tool" style="border-color: var(--canopy-green);">
+                            <div class="tool-header">
+                                <h3><i class="fas fa-graduation-cap" style="color:var(--canopy-green);"></i> Micro-Courses (Self-Paced)</h3>
+                            </div>
+                            <div class="courses-grid" id="coursesGrid">
+                                <div class="course-card" data-key="c_video">
+                                    <h4>Video Platform Mastery</h4>
+                                    <div class="course-meta">
+                                        <span class="c-pill"><i class="fas fa-clock"></i> 20m</span>
+                                        <span class="c-pill"><i class="fas fa-shield-alt"></i> Security</span>
+                                    </div>
+                                    <p>Waiting rooms, screen share best practices, and recording etiquette.</p>
+                                    <div class="progress-bar"><span class="progress-fill"></span></div>
+                                    <div style="margin-top:1rem; display:flex; justify-content:space-between; align-items:center;">
+                                        <button class="btn btn-outline btn-sm start-course"><i class="fas fa-play"></i> Start</button>
+                                        <button class="btn btn-white btn-sm complete-course" style="display:none;"><i class="fas fa-check"></i> Done</button>
+                                    </div>
+                                </div>
+
+                                <div class="course-card" data-key="c_whiteboard">
+                                    <h4>Interactive Whiteboards</h4>
+                                    <div class="course-meta">
+                                        <span class="c-pill"><i class="fas fa-clock"></i> 15m</span>
+                                        <span class="c-pill"><i class="fas fa-pen"></i> Engagement</span>
+                                    </div>
+                                    <p>How to annotate, draw, and share boards for student collaboration.</p>
+                                    <div class="progress-bar"><span class="progress-fill"></span></div>
+                                    <div style="margin-top:1rem; display:flex; justify-content:space-between; align-items:center;">
+                                        <button class="btn btn-outline btn-sm start-course"><i class="fas fa-play"></i> Start</button>
+                                        <button class="btn btn-white btn-sm complete-course" style="display:none;"><i class="fas fa-check"></i> Done</button>
+                                    </div>
+                                </div>
+
+                                <div class="course-card" data-key="c_files">
+                                    <h4>File Management</h4>
+                                    <div class="course-meta">
+                                        <span class="c-pill"><i class="fas fa-clock"></i> 10m</span>
+                                        <span class="c-pill"><i class="fas fa-folder"></i> Workflow</span>
+                                    </div>
+                                    <p>Organizing resources, naming conventions, and secure student sharing.</p>
+                                    <div class="progress-bar"><span class="progress-fill"></span></div>
+                                    <div style="margin-top:1rem; display:flex; justify-content:space-between; align-items:center;">
+                                        <button class="btn btn-outline btn-sm start-course"><i class="fas fa-play"></i> Start</button>
+                                        <button class="btn btn-white btn-sm complete-course" style="display:none;"><i class="fas fa-check"></i> Done</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="troubleshooting" class="framework-block fu">
+                        <div class="block-header">
+                            <h2><i class="fas fa-screwdriver-wrench"></i> Troubleshooting & Support</h2>
+                            <p class="block-desc">Quick fixes for common issues, and a tool to instantly report bugs to our tech team.</p>
+                        </div>
+
+                        <div class="accordion" style="margin-bottom: 2rem;">
+                            <div class="acc-item">
+                                <button class="acc-header">Camera or Microphone Not Working <i class="fas fa-chevron-down rotate"></i></button>
+                                <div class="acc-content">
+                                    <ul class="fix-list">
+                                        <li>Close other apps using camera/mic (e.g., Skype, Teams).</li>
+                                        <li>Check browser address bar settings to allow camera/mic.</li>
+                                        <li>Unplug and replug USB headsets; try a different port.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="acc-item">
+                                <button class="acc-header">Students Hear Echo / Background Noise <i class="fas fa-chevron-down rotate"></i></button>
+                                <div class="acc-content">
+                                    <ul class="fix-list">
+                                        <li>Always use a headset; mute laptop speakers to prevent feedback loops.</li>
+                                        <li>Ask students to mute their mics when not speaking.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="acc-item">
+                                <button class="acc-header">Platform Feels Slow or Laggy <i class="fas fa-chevron-down rotate"></i></button>
+                                <div class="acc-content">
+                                    <ul class="fix-list">
+                                        <li>Close unused browser tabs and memory-heavy applications.</li>
+                                        <li>Disable virtual backgrounds (they require heavy CPU usage).</li>
+                                        <li>If internet is slow, lower video resolution or switch to audio-only.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="interactive-tool" style="border-color: #D32F2F;">
+                            <div class="tool-header">
+                                <h3><i class="fas fa-bug" style="color:#D32F2F;"></i> Report a Tech Issue</h3>
+                            </div>
+                            <p style="font-size:.9rem; color:var(--text-medium); margin-bottom:1rem;">This tool will automatically grab your system profile and attach it to your report so our engineers can help you faster.</p>
+                            
+                            <div class="row-2">
+                                <input type="text" id="rName" class="input" placeholder="Your Name">
+                                <select id="rSeverity" class="select">
+                                    <option value="LOW">Low (General Bug)</option>
+                                    <option value="MEDIUM">Medium (Affects Next Lesson)</option>
+                                    <option value="HIGH">High (Currently Blocking Lesson)</option>
+                                </select>
+                            </div>
+                            <textarea id="rDesc" class="textarea" placeholder="Describe the issue... (What happened? What were you trying to do?)"></textarea>
+                            
+                            <div style="display:flex; gap:1rem; align-items:center; margin-top:1rem;">
+                                <button class="btn btn-primary" onclick="generateLog()"><i class="fas fa-file-code"></i> Generate Report</button>
+                                <a href="#" id="emailLogBtn" class="btn btn-outline" style="pointer-events:none; opacity:0.5;"><i class="fas fa-paper-plane"></i> Email Tech Team</a>
+                            </div>
+                            
+                            <div id="logBox" class="log-box"></div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="content-sidebar">
+                    <div class="sidebar-box">
+                        <h3 class="sidebar-title">Tech Navigation</h3>
+                        <ul class="sidebar-nav">
+                            <li><a href="#diagnostics" class="active"><i class="fas fa-microscope"></i> Diagnostics</a></li>
+                            <li><a href="#training"><i class="fas fa-laptop-code"></i> Tech Training</a></li>
+                            <li><a href="#troubleshooting"><i class="fas fa-screwdriver-wrench"></i> Troubleshooting</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="sidebar-box">
+                        <h3 class="sidebar-title" style="border:none; margin:0;"><i class="fas fa-desktop"></i> My System</h3>
+                        <div class="sys-profile">
+                            <div class="sys-item"><span class="sys-lbl">Browser:</span> <span class="sys-val" id="sbBrowser">Checking...</span></div>
+                            <div class="sys-item"><span class="sys-lbl">CPU Cores:</span> <span class="sys-val" id="sbCPU">--</span></div>
+                            <div class="sys-item"><span class="sys-lbl">RAM (Est):</span> <span class="sys-val" id="sbRAM">--</span></div>
+                            <div class="sys-item"><span class="sys-lbl">Status:</span> <span class="sys-val" id="sbOnline" style="color:var(--canopy-green);">Online</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4><i class="fas fa-book-open"></i> Teaching Resources</h4>
+                    <a href="teaching-framework.html" class="footer-link">The Baobab Framework</a>
+                    <a href="tutor-support.html" class="footer-link">Tutor Support & FAQs</a>
+                    <a href="tech-hub.html" class="footer-link">Tech Hub</a>
+                </div>
+                <div class="footer-section">
+                    <h4><i class="fas fa-headset"></i> Support</h4>
+                    <a href="tutor-support.html#payments" class="footer-link">Payment Information</a>
+                    <a href="tutor-support.html#guidelines" class="footer-link">Platform Guidelines</a>
+                </div>
+                <div class="footer-section">
+                    <h4><i class="fas fa-envelope"></i> Contact</h4>
+                    <p style="color: rgba(255,255,255,0.7); font-size: .85rem; margin-bottom: .5rem;"><i class="fas fa-envelope"></i> tutors@baobabonlineacademy.com</p>
+                    <p style="color: rgba(255,255,255,0.7); font-size: .85rem;"><i class="fas fa-phone"></i> +234 (0) 816 501 1291</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Baobab Digital Academy Tutor Portal. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu
+        const ham = document.getElementById('ham');
+        const mob = document.getElementById('mob');
+        if (ham && mob) {
+            ham.addEventListener('click', () => {
+                ham.classList.toggle('open');
+                mob.classList.toggle('open');
+            });
+        }
+
+        // Scroll animations
+        const fuEls = document.querySelectorAll('.fu');
+        const fuObs = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('vis');
+                    fuObs.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        fuEls.forEach(el => fuObs.observe(el));
+
+        // Accordion
+        document.querySelectorAll('.acc-item').forEach(item=>{
+            item.querySelector('.acc-header').addEventListener('click', ()=>{
+                const open = item.classList.contains('active');
+                document.querySelectorAll('.acc-item').forEach(i=>i.classList.remove('active'));
+                if(!open) item.classList.add('active');
+            });
+        });
+
+        // ==========================================
+        // DIAGNOSTICS ENGINE
+        // ==========================================
+        
+        // 1. Browser & Device Info
+        (function initSystemInfo(){
+            const ua = navigator.userAgent;
+            let name = 'Your browser';
+            if(/Chrome/.test(ua) && !/Edge/.test(ua)) name = 'Chrome';
+            if(/Edg\//.test(ua)) name = 'Edge';
+            if(/Firefox/.test(ua)) name = 'Firefox';
+            if(/Safari/.test(ua) && !/Chrome/.test(ua)) name = 'Safari';
+            
+            document.getElementById('browserInfo').textContent = name;
+            document.getElementById('sbBrowser').textContent = name;
+            document.getElementById('sbCPU').textContent = navigator.hardwareConcurrency || 'n/a';
+            document.getElementById('sbRAM').textContent = navigator.deviceMemory ? navigator.deviceMemory + 'GB' : 'n/a';
+
+            const support = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+            const bStatus = document.getElementById('browserStatus');
+            bStatus.className = 'status-badge ' + (support ? 'ok' : 'fail');
+            bStatus.innerHTML = support ? '<i class="fas fa-check-circle"></i> Supported' : '<i class="fas fa-times-circle"></i> Unsupported';
+        })();
+
+        // 2. Network Info
+        (function initNetwork(){
+            const c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+            const nInfo = document.getElementById('netInfo');
+            const nStatus = document.getElementById('netStatus');
+            
+            if(c){
+                nInfo.textContent = `Type: ${c.effectiveType.toUpperCase()} | Speed: ~${c.downlink}Mbps`;
+                const ok = c.downlink >= 5;
+                nStatus.className = 'status-badge ' + (ok ? 'ok' : 'warn');
+                nStatus.innerHTML = ok ? '<i class="fas fa-check-circle"></i> Good' : '<i class="fas fa-exclamation-triangle"></i> Weak';
+            } else {
+                nInfo.textContent = 'Network API blocked. Ensure stable Wi-Fi.';
+            }
+        })();
+
+        // 3. Lag Measurement (Event Loop)
+        function measureLag(){
+            return new Promise(resolve=>{
+                const start = performance.now();
+                let samples = 0, totalLag = 0;
+                function tick(){
+                    samples++;
+                    const expected = performance.now();
+                    setTimeout(()=>{
+                        const actual = performance.now();
+                        totalLag += Math.max(0, actual - expected);
+                        if(performance.now() - start < 1500) tick();
+                        else resolve(totalLag / samples);
+                    }, 0);
+                }
+                tick();
+            });
+        }
+        (async function initLag(){
+            const avg = await measureLag();
+            const bar = document.getElementById('lagBar');
+            const stat = document.getElementById('lagStatus');
+            
+            bar.style.width = Math.min(100, avg*5) + '%';
+            if(avg <= 8) {
+                stat.className = 'status-badge ok'; stat.innerHTML = '<i class="fas fa-check-circle"></i> Responsive';
+                bar.style.background = 'var(--canopy-green)';
+            } else if (avg <= 20) {
+                stat.className = 'status-badge warn'; stat.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Moderate Lag';
+                bar.style.background = 'var(--sunset-gold)';
+            } else {
+                stat.className = 'status-badge fail'; stat.innerHTML = '<i class="fas fa-times-circle"></i> High Lag';
+                bar.style.background = '#D32F2F';
+            }
+        })();
+
+        // 4. Audio Tone Test
+        let audioCtx, osc, gain;
+        const playBtn = document.getElementById('playTone');
+        const stopBtn = document.getElementById('stopTone');
+        const spkStatus = document.getElementById('spkStatus');
+        
+        playBtn.addEventListener('click', ()=>{
+            try {
+                const AC = window.AudioContext || window.webkitAudioContext;
+                audioCtx = audioCtx || new AC();
+                osc = audioCtx.createOscillator();
+                gain = audioCtx.createGain();
+                osc.type = 'sine'; osc.frequency.value = 440;
+                gain.gain.value = 0.05; 
+                osc.connect(gain).connect(audioCtx.destination);
+                osc.start();
+                
+                spkStatus.className = 'status-badge ok'; spkStatus.innerHTML = '<i class="fas fa-volume-up"></i> Playing';
+                playBtn.disabled = true; stopBtn.disabled = false;
+            } catch(e) {
+                spkStatus.className = 'status-badge fail'; spkStatus.innerHTML = '<i class="fas fa-times-circle"></i> Audio Blocked';
+            }
+        });
+        stopBtn.addEventListener('click', ()=>{
+            if(osc) { try{ osc.stop(); } catch(e){} }
+            spkStatus.className = 'status-badge ok'; spkStatus.innerHTML = '<i class="fas fa-check-circle"></i> Tested OK';
+            playBtn.disabled = false; stopBtn.disabled = true;
+        });
+
+        // 5. Hardware Checks (Cam/Mic)
+        document.getElementById('runChecks').addEventListener('click', async ()=>{
+            const btn = document.getElementById('runChecks');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Testing...';
+            
+            // Cam
+            const cStat = document.getElementById('camStatus');
+            try {
+                const s = await navigator.mediaDevices.getUserMedia({video:true});
+                cStat.className = 'status-badge ok'; cStat.innerHTML = '<i class="fas fa-check-circle"></i> Working';
+                document.getElementById('camText').textContent = "Camera accessed successfully.";
+                s.getTracks().forEach(t=>t.stop());
+            } catch(e) {
+                cStat.className = 'status-badge fail'; cStat.innerHTML = '<i class="fas fa-times-circle"></i> Blocked';
+                document.getElementById('camText').textContent = "Access denied. Check browser permissions.";
+            }
+
+            // Mic
+            const mStat = document.getElementById('micStatus');
+            try {
+                const s = await navigator.mediaDevices.getUserMedia({audio:true});
+                mStat.className = 'status-badge ok'; mStat.innerHTML = '<i class="fas fa-check-circle"></i> Working';
+                document.getElementById('micText').textContent = "Microphone accessed successfully.";
+                s.getTracks().forEach(t=>t.stop());
+            } catch(e) {
+                mStat.className = 'status-badge fail'; mStat.innerHTML = '<i class="fas fa-times-circle"></i> Blocked';
+                document.getElementById('micText').textContent = "Access denied. Check browser permissions.";
+            }
+            
+            btn.innerHTML = '<i class="fas fa-rocket"></i> Run Hardware Checks';
+        });
+
+        // ==========================================
+        // TRAINING & LMS TOOLS
+        // ==========================================
+        
+        // 1. Hardware Checklist LocalStorage
+        const HC_KEY = 'baobab_hardware_check';
+        const hcBoxes = [...document.querySelectorAll('#hcChecklist input[type="checkbox"]')];
+        const hcBar = document.getElementById('hc_progress');
+
+        function updateHC() {
+            const done = hcBoxes.filter(b => b.checked).length;
+            const pct = Math.round((done / hcBoxes.length) * 100);
+            hcBar.style.width = pct + '%';
+            
+            const data = {};
+            hcBoxes.forEach(b => data[b.id] = b.checked);
+            localStorage.setItem(HC_KEY, JSON.stringify(data));
+        }
+
+        try {
+            const data = JSON.parse(localStorage.getItem(HC_KEY) || '{}');
+            hcBoxes.forEach(b => b.checked = !!data[b.id]);
+            updateHC();
+        } catch(e) {}
+        hcBoxes.forEach(b => b.addEventListener('change', updateHC));
+
+        // 2. Micro-Courses LocalStorage
+        const COURSE_KEY = 'baobab_courses_progress';
+        function loadCourses() {
+            let data = {};
+            try { data = JSON.parse(localStorage.getItem(COURSE_KEY) || '{}'); } catch(e) {}
+            
+            document.querySelectorAll('.course-card').forEach(card => {
+                const key = card.dataset.key;
+                const pBar = card.querySelector('.progress-fill');
+                const startBtn = card.querySelector('.start-course');
+                const doneBtn = card.querySelector('.complete-course');
+                const status = data[key] || 'new';
+
+                if(status === 'new') { pBar.style.width='0%'; startBtn.style.display='inline-flex'; doneBtn.style.display='none'; }
+                if(status === 'inprogress') { pBar.style.width='50%'; startBtn.innerHTML='<i class="fas fa-play"></i> Resume'; startBtn.style.display='inline-flex'; doneBtn.style.display='inline-flex'; }
+                if(status === 'done') { pBar.style.width='100%'; startBtn.style.display='none'; doneBtn.style.display='inline-flex'; doneBtn.innerHTML='<i class="fas fa-check"></i> Completed'; doneBtn.disabled=true; }
+
+                startBtn.onclick = () => {
+                    data[key] = 'inprogress';
+                    localStorage.setItem(COURSE_KEY, JSON.stringify(data));
+                    loadCourses();
+                };
+                doneBtn.onclick = () => {
+                    data[key] = 'done';
+                    localStorage.setItem(COURSE_KEY, JSON.stringify(data));
+                    loadCourses();
+                };
+            });
+        }
+        loadCourses();
+
+        // ==========================================
+        // REPORT GENERATOR
+        // ==========================================
+        function generateLog() {
+            const name = document.getElementById('rName').value || 'Tutor';
+            const sev = document.getElementById('rSeverity').value;
+            const desc = document.getElementById('rDesc').value;
+            
+            if(!desc) { alert("Please describe the issue."); return; }
+
+            const sysData = {
+                browser: document.getElementById('sbBrowser').textContent,
+                cpu: navigator.hardwareConcurrency || 'unknown',
+                memory: navigator.deviceMemory || 'unknown',
+                screen: `${screen.width}x${screen.height}`,
+                userAgent: navigator.userAgent
+            };
+
+            const logText = `TUTOR ISSUE REPORT\nName: ${name}\nSeverity: ${sev}\nTime: ${new Date().toLocaleString()}\n\nDESCRIPTION:\n${desc}\n\nSYSTEM DATA:\n${JSON.stringify(sysData, null, 2)}`;
+            
+            const logBox = document.getElementById('logBox');
+            logBox.textContent = logText;
+            logBox.style.display = 'block';
+
+            const emailBtn = document.getElementById('emailLogBtn');
+            emailBtn.style.pointerEvents = 'auto';
+            emailBtn.style.opacity = '1';
+            emailBtn.className = 'btn btn-primary';
+            
+            const mailto = `mailto:techsupport@baobabonlineacademy.com?subject=${encodeURIComponent(`[${sev}] Tech Support Request`)}&body=${encodeURIComponent(logText)}`;
+            emailBtn.href = mailto;
+        }
+
+        // Sidebar Spy
+        const sectionsArr = document.querySelectorAll('.framework-block');
+        const navLinksArr = document.querySelectorAll('.sidebar-nav a[href^="#"]');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sectionsArr.forEach(section => {
+                if (scrollY >= (section.offsetTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            navLinksArr.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) link.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

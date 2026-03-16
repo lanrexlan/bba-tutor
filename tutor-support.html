@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" sizes="32x32" href="/Images/logo.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutor Support Hub - Baobab Digital Academy</title>
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ================================================
+           BAOBAB BRAND PALETTE
+           ================================================ */
+        :root {
+            --baobab-brown:       #6B3A2A;
+            --baobab-brown-dark:  #4A2218;
+            --canopy-green:       #2D6A4F;
+            --canopy-green-dark:  #1B4332;
+            --canopy-green-light: #52B788;
+            --sunset-gold:        #F4A261;
+            --sunset-gold-warm:   #E76F51;
+            --earth-cream:        #FEF6EE;
+            --earth-cream-dark:   #F5E6D3;
+            --warm-white:         #FEFEFE;
+            --deep-charcoal:      #18120F;
+            --text-dark:          #2C1810;
+            --text-medium:        #5C3E30;
+            --border-light:       #EDD9C8;
+            --shadow-warm:        rgba(107,58,42,0.12);
+            --max-w:              1280px;
+            --r-card:             24px;
+            --r-pill:             50px;
+            --transition:         all 0.3s cubic-bezier(.4,0,.2,1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; font-size: 18px; }
+        @media (max-width: 992px) { html { font-size: 16px; } }
+
+        body { font-family: 'DM Sans', sans-serif; color: var(--text-dark); background-color: var(--warm-white); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+        h1, h2, h3, h4, h5 { font-family: 'Playfair Display', serif; font-weight: 700; line-height: 1.2; color: var(--baobab-brown-dark); }
+        ul { list-style: none; }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+
+        .container { max-width: var(--max-w); margin: 0 auto; padding: 0 2rem; position: relative; }
+        
+        .fu { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+        .fu.vis { opacity: 1; transform: translateY(0); }
+
+        /* Buttons */
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; padding: .85rem 1.75rem; border-radius: var(--r-pill); font-weight: 700; font-size: .95rem; transition: var(--transition); border: 2px solid transparent; cursor: pointer; white-space: nowrap; font-family: 'DM Sans', sans-serif; }
+        .btn-primary { background: linear-gradient(135deg, var(--canopy-green), var(--canopy-green-dark)); color: white; box-shadow: 0 4px 14px rgba(45,106,79,.25); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(45,106,79,.35); }
+        .btn-outline { background: transparent; color: var(--baobab-brown-dark); border-color: var(--border-light); }
+        .btn-outline:hover { background: var(--earth-cream); border-color: var(--sunset-gold); }
+        .btn-sm { padding: .5rem 1.25rem; font-size: .85rem; }
+
+        /* Header */
+        .header { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(15px); box-shadow: 0 2px 20px var(--shadow-warm); padding: .75rem 0; }
+        .nav-wrapper { display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; gap: .6rem; }
+        .logo-icon { width: 46px; height: 46px; min-width: 46px; border-radius: 50%; border: 2px solid var(--sunset-gold); overflow: hidden; display: flex; align-items: center; justify-content: center; background: #fff; }
+        .logo-icon img { width: 100%; height: 100%; object-fit: cover; }
+        .logo-text { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.2rem; color: var(--baobab-brown-dark); line-height: 1.1; }
+        .logo-tag { display: block; font-family: 'DM Sans', sans-serif; font-size: .65rem; font-style: italic; color: var(--text-light); }
+        
+        .nav-menu { display: flex; gap: 1.5rem; align-items: center; }
+        .nav-link { font-weight: 600; font-size: .9rem; color: var(--text-medium); }
+        .nav-link:hover, .nav-link.active { color: var(--sunset-gold); }
+        
+        /* Mobile Menu */
+        .ham { display: none; flex-direction: column; gap: 5px; padding: .4rem; background: none; border: none; cursor: pointer; }
+        .ham span { display: block; width: 24px; height: 2px; background: var(--baobab-brown); border-radius: 2px; transition: all .3s; }
+        .ham.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .ham.open span:nth-child(2) { opacity: 0; }
+        .ham.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        .mob-menu { display: none; flex-direction: column; background: #fff; padding: 1.5rem 2rem 2rem; border-top: 1px solid var(--border-light); box-shadow: 0 12px 30px var(--shadow-warm); position: absolute; top: 100%; left: 0; width: 100%; z-index: 999; }
+        .mob-menu.open { display: flex; animation: slideDown 0.3s ease; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .mob-menu a { font-size: 1rem; font-weight: 500; color: var(--text-dark); padding: 1rem 0; border-bottom: 1px solid var(--border-light); }
+
+        /* Hero Section */
+        .hero { background: linear-gradient(135deg, var(--canopy-green-dark) 0%, var(--baobab-brown-dark) 100%); color: white; padding: 9rem 0 5rem; position: relative; overflow: hidden; }
+        .hero::before { content: ''; position: absolute; inset: 0; opacity: 0.05; background-image: url("data:image/svg+xml,%3Csvg width='44' height='44' viewBox='0 0 44 44' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M22 0 L44 22 L22 44 L0 22 Z' fill='none' stroke='%23FFFFFF' stroke-width='1'/%3E%3C/svg%3E"); background-size: 44px 44px; }
+        .hero-content { position: relative; z-index: 2; max-width: 800px; margin: 0 auto; text-align: center; }
+        .hero-badge { background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); padding: .5rem 1.25rem; border-radius: var(--r-pill); font-size: .8rem; font-weight: 700; display: inline-block; margin-bottom: 1.5rem; border: 1px solid rgba(255,255,255,0.3); color: var(--sunset-gold); text-transform: uppercase; letter-spacing: .05em; }
+        .hero-title { font-size: clamp(2.5rem, 4vw, 3.5rem); margin-bottom: 1rem; color: white; }
+        .hero-subtitle { font-size: 1.1rem; opacity: 0.9; line-height: 1.7; }
+
+        /* Layout & Blocks */
+        .main-content { padding: 4rem 0; }
+        .content-layout { display: grid; grid-template-columns: 1fr 300px; gap: 4rem; align-items: start; }
+        .framework-block { margin-bottom: 4rem; scroll-margin-top: 120px; }
+        .block-header { margin-bottom: 2rem; border-bottom: 2px solid var(--border-light); padding-bottom: 1.5rem; }
+        .block-header h2 { font-size: 2.2rem; margin-bottom: .5rem; display: flex; align-items: center; gap: .75rem; }
+        .block-header h2 i { color: var(--canopy-green); }
+        .block-desc { color: var(--text-medium); font-size: 1.05rem; }
+
+        /* Interactive Tools & Cards */
+        .interactive-tool { background: var(--white); border-radius: var(--r-card); padding: 2.5rem; box-shadow: 0 8px 24px var(--shadow-warm); border: 1px solid var(--border-light); margin-bottom: 2rem; }
+        .tool-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .tool-header h3 { margin: 0; font-size: 1.3rem; color: var(--baobab-brown-dark); display: flex; align-items: center; gap:.5rem;}
+        
+        /* Search & Articles (Help Center) */
+        .searchbar { display: flex; gap: 10px; align-items: center; border: 2px solid var(--earth-cream-dark); border-radius: var(--r-pill); padding: .5rem 1rem; background: var(--earth-cream); transition: var(--transition); }
+        .searchbar:focus-within { border-color: var(--canopy-green); background: white; }
+        .searchbar input { border: 0; outline: none; flex: 1; padding: .5rem; font-size: 1rem; background: transparent; font-family: 'DM Sans';}
+        .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 1rem; }
+        .chip { border: 2px solid var(--border-light); color: var(--text-medium); background: white; border-radius: 999px; padding: .4rem 1rem; font-weight: 700; cursor: pointer; transition: var(--transition); font-size: .85rem; }
+        .chip.active, .chip:hover { background: var(--canopy-green); color: white; border-color: var(--canopy-green); }
+        
+        .articles-list .item { padding: 1.5rem 0; border-bottom: 1px solid var(--border-light); }
+        .articles-list .item:last-child { border-bottom: none; padding-bottom: 0; }
+        .item h4 { display: flex; align-items: center; gap: .5rem; margin-bottom: .5rem; color: var(--baobab-brown-dark); font-size: 1.1rem; }
+        .item .mark { background: var(--sunset-gold); color: white; padding: 0 4px; border-radius: 4px; }
+        .item-tags { display: flex; gap: 8px; margin-top: .5rem; }
+        .item-tag { background: var(--earth-cream-dark); padding: 2px 8px; border-radius: 4px; font-size: .75rem; color: var(--text-medium); font-weight: 700; }
+
+        /* Accordions */
+        .accordion { border-radius: 16px; overflow: hidden; border: 1px solid var(--border-light); }
+        .acc-item { border-bottom: 1px solid var(--border-light); background: white; }
+        .acc-item:last-child { border-bottom: none; }
+        .acc-header { width: 100%; text-align: left; border: 0; background: white; padding: 1.25rem 1.5rem; font-weight: 700; font-size: 1.05rem; color: var(--baobab-brown-dark); cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: var(--transition); font-family: 'DM Sans', sans-serif;}
+        .acc-header:hover { background: var(--earth-cream); }
+        .acc-content { display: none; padding: 0 1.5rem 1.5rem; color: var(--text-medium); font-size: .95rem; }
+        .acc-item.active .acc-content { display: block; animation: fadeIn .3s ease; }
+        .acc-item.active .acc-header { color: var(--canopy-green); }
+        .rotate { transition: transform .3s ease; }
+        .acc-item.active .rotate { transform: rotate(180deg); }
+
+        /* Calculator & Forms */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; font-size: .85rem; font-weight: 700; color: var(--baobab-brown-dark); margin-bottom: .25rem; }
+        .input, .select, .textarea { width: 100%; padding: .75rem 1rem; border: 2px solid var(--border-light); border-radius: 12px; font-size: .95rem; font-family: 'DM Sans', sans-serif; background: var(--earth-cream); transition: var(--transition); }
+        .input:focus, .select:focus, .textarea:focus { outline: none; border-color: var(--sunset-gold); background: white; }
+        .textarea { min-height: 100px; resize: vertical; }
+        .calc-result { background: linear-gradient(135deg, var(--earth-cream), white); border: 2px dashed var(--canopy-green); border-radius: 16px; padding: 1.5rem; height: 100%; }
+        
+        /* Checklists */
+        .checklist-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .chk-item { display: flex; gap: .75rem; align-items: flex-start; background: var(--earth-cream); padding: 1rem; border-radius: 12px; border: 1px solid var(--border-light); cursor: pointer; transition: var(--transition); }
+        .chk-item:hover { border-color: var(--sunset-gold); }
+        .chk-item input[type="checkbox"] { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--canopy-green); }
+        .chk-item div { font-size: .9rem; color: var(--deep-charcoal); line-height: 1.4; }
+        .progress-bar { height: 8px; background: var(--border-light); border-radius: 999px; overflow: hidden; margin-top: 1rem; }
+        .progress-fill { display: block; height: 100%; background: var(--canopy-green); width: 0%; transition: width 0.4s ease; }
+
+        /* Quiz Widget */
+        .quiz-opt { display: flex; gap: 10px; align-items: flex-start; border: 2px solid var(--border-light); border-radius: 12px; padding: 1rem; margin-bottom: .5rem; cursor: pointer; transition: var(--transition); background: white;}
+        .quiz-opt:hover { border-color: var(--sunset-gold); }
+        .quiz-opt input { margin-top: 4px; accent-color: var(--canopy-green); }
+        .quiz-opt div { font-size: .95rem; color: var(--deep-charcoal); }
+
+        /* Sticky Sidebar */
+        .content-sidebar { position: sticky; top: 100px; }
+        .sidebar-box { background: var(--earth-cream); border-radius: 16px; padding: 1.5rem; border: 1px solid var(--border-light); margin-bottom: 1.5rem; }
+        .sidebar-title { font-size: 1.1rem; margin-bottom: 1rem; border-bottom: 2px solid var(--border-light); padding-bottom: .5rem; }
+        .sidebar-nav li { margin-bottom: .5rem; }
+        .sidebar-nav a { display: flex; align-items: center; gap: .75rem; padding: .6rem .8rem; border-radius: 8px; font-weight: 600; font-size: .9rem; color: var(--text-medium); transition: var(--transition); }
+        .sidebar-nav a:hover, .sidebar-nav a.active { background: var(--white); color: var(--canopy-green); box-shadow: var(--shadow-sm); transform: translateX(5px); }
+        
+        .apply-widget { background: linear-gradient(135deg, var(--sunset-gold), var(--sunset-gold-warm)); color: white; border-radius: 16px; padding: 2rem 1.5rem; text-align: center; box-shadow: 0 10px 24px rgba(244,162,97,0.3); }
+        .apply-widget i { font-size: 2.5rem; color: white; margin-bottom: 1rem; }
+        .apply-widget h3 { color: white; font-size: 1.3rem; margin-bottom: .5rem; }
+        .apply-widget p { font-size: .9rem; opacity: 0.9; margin-bottom: 1.5rem; }
+
+        /* Footer */
+        .footer { background: var(--deep-charcoal); padding: 4rem 0 2rem; color: white; margin-top: 4rem; }
+        .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 3rem; margin-bottom: 3rem; }
+        .footer-section h4 { color: var(--sunset-gold); margin-bottom: 1.25rem; font-size: 1.1rem; font-family: 'DM Sans', sans-serif; }
+        .footer-link { color: rgba(255,255,255,0.6); display: block; padding: .4rem 0; font-size: .85rem; transition: var(--transition); }
+        .footer-link:hover { color: var(--sunset-gold); padding-left: 5px; }
+        .footer-bottom { text-align: center; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); font-size: .8rem; color: rgba(255,255,255,0.4); }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        @media (max-width: 992px) {
+            .nav-menu { display: none; }
+            .ham { display: flex; }
+            .content-layout { grid-template-columns: 1fr; }
+            .content-sidebar { display: none; }
+            .grid-2, .checklist-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="nav-wrapper">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon"><img src="/Images/Logo_Baobab.svg" alt="Baobab" onerror="this.src='/Images/logo.jpg'"></div>
+                    <div>
+                        <div class="logo-text">Tutor Portal</div>
+                        <span class="logo-tag">Baobab Digital Academy</span>
+                    </div>
+                </a>
+                
+                <button class="ham" id="ham" aria-label="Toggle navigation">
+                    <span></span><span></span><span></span>
+                </button>
+                
+                <ul class="nav-menu">
+                    <li><a href="index.html#features" class="nav-link">Features</a></li>
+                    <li><a href="index.html#why-us" class="nav-link">Why Choose Us</a></li>
+                    <li><a href="teaching-framework.html" class="nav-link">Teaching Framework</a></li>
+                    <li><a href="tutor-support.html" class="nav-link active">Support Hub</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="mob-menu" id="mob">
+            <a href="index.html#features">Features</a>
+            <a href="index.html#why-us">Why Choose Us</a>
+            <a href="teaching-framework.html">Teaching Framework</a>
+            <a href="tutor-support.html">Support Hub</a>
+            <div style="margin-top: 1rem;">
+                <a href="index.html#apply" class="btn btn-gold" style="width: 100%; justify-content: center;">Apply Now</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content fu">
+                <div class="hero-badge">
+                    <i class="fas fa-life-ring"></i> Guidance & Administration
+                </div>
+                <h1 class="hero-title">Tutor Support Hub</h1>
+                <p class="hero-subtitle">
+                    Your complete resource center for platform guidelines, payment processes, and administrative help. 
+                    Everything you need to manage your Baobab tutoring career smoothly.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="breadcrumbs">
+        <div class="container">
+            <nav class="breadcrumb-nav" style="display:flex; gap:8px; font-size:.85rem; font-weight:700; color:var(--text-medium); padding: 1rem 0;">
+                <a href="index.html" style="color:var(--text-medium);"><i class="fas fa-home"></i> Home</a>
+                <span>/</span>
+                <span style="color:var(--baobab-brown-dark);">Support Hub</span>
+            </nav>
+        </div>
+    </section>
+
+    <section class="main-content">
+        <div class="container">
+            <div class="content-layout">
+                <div class="content-main">
+                    
+                    <div id="help" class="framework-block fu">
+                        <div class="block-header">
+                            <h2><i class="fas fa-circle-question"></i> Help Center & FAQs</h2>
+                            <p class="block-desc">Search for solutions or browse our most frequently asked administrative questions.</p>
+                        </div>
+
+                        <div class="interactive-tool">
+                            <div class="searchbar">
+                                <i class="fas fa-search" style="color:var(--canopy-green)"></i>
+                                <input type="text" id="searchInput" placeholder="Search topics (e.g., zoom, schedule, profile...)">
+                            </div>
+                            <div class="chips" id="filterChips">
+                                <button class="chip active" data-filter="all">All</button>
+                                <button class="chip" data-filter="scheduling">Scheduling</button>
+                                <button class="chip" data-filter="account">Account</button>
+                            </div>
+
+                            <div class="articles-list" id="articlesList" style="margin-top: 1.5rem;">
+                                </div>
+                        </div>
+
+                        <div class="accordion">
+                            <div class="acc-item">
+                                <button class="acc-header">What if a student doesn't join the session? <i class="fas fa-chevron-down rotate"></i></button>
+                                <div class="acc-content">Wait at least 10 minutes while messaging the guardian via the portal. Document the no-show in your dashboard and offer a brief recap resource. Follow the no-show payout policy.</div>
+                            </div>
+                            <div class="acc-item">
+                                <button class="acc-header">Can I reschedule a lesson within 24 hours? <i class="fas fa-chevron-down rotate"></i></button>
+                                <div class="acc-content">Yes, but only if the guardian explicitly agrees via portal messages. Once agreed, use the scheduling tool to propose a new slot and update the calendar invite.</div>
+                            </div>
+                            <div class="acc-item">
+                                <button class="acc-header">How do I handle sensitive topics in class? <i class="fas fa-chevron-down rotate"></i></button>
+                                <div class="acc-content">Follow Platform Guidelines and Safeguarding rules. Keep discussions factual, inclusive, and age-appropriate. Escalate immediate concerns to the Support Team.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="payments" class="framework-block fu">
+                        <div class="block-header">
+                            <h2><i class="fas fa-hand-holding-dollar"></i> Payments & Earnings</h2>
+                            <p class="block-desc">Understand your revenue share, calculate payouts, and track your setup progress.</p>
+                        </div>
+
+                        <div class="interactive-tool">
+                            <div class="tool-header">
+                                <h3><i class="fas fa-calculator" style="color:var(--sunset-gold);"></i> Earnings Calculator</h3>
+                            </div>
+                            <div class="grid-2">
+                                <div>
+                                    <div class="form-group">
+                                        <label>Hourly Rate (NGN)</label>
+                                        <input type="number" id="calcRate" class="input" placeholder="e.g. 5000">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Hours per Week</label>
+                                        <input type="number" id="calcHours" class="input" placeholder="e.g. 5">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Weeks</label>
+                                        <input type="number" id="calcWeeks" class="input" value="4">
+                                    </div>
+                                    <button class="btn btn-primary" onclick="calculateEarnings()" style="width:100%"><i class="fas fa-equals"></i> Calculate Payout</button>
+                                </div>
+                                <div class="calc-result" id="calcResultBox">
+                                    <h4 style="color:var(--canopy-green-dark); margin-bottom:1rem; font-family:'DM Sans';">Estimated Summary</h4>
+                                    <ul style="color:var(--text-medium); font-size:.9rem; line-height:1.8;">
+                                        <li>Gross Generated: <span id="resGross" style="font-weight:700; color:var(--deep-charcoal);">--</span></li>
+                                        <li>Platform Share (25%): <span id="resPlat" style="font-weight:700; color:var(--deep-charcoal);">--</span></li>
+                                    </ul>
+                                    <div style="margin-top:1rem; padding-top:1rem; border-top:1px solid var(--border-light);">
+                                        <div style="font-size:.85rem; text-transform:uppercase; letter-spacing:.05em; font-weight:700; color:var(--sunset-gold);">Your Net Take-Home</div>
+                                        <div id="resNet" style="font-family:'Playfair Display'; font-size:2rem; font-weight:800; color:var(--canopy-green-dark); line-height:1;">--</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="interactive-tool">
+                            <div class="tool-header">
+                                <h3>Payment Setup Checklist</h3>
+                                <div class="progress-bar" style="width: 150px; margin-top:0;"><span class="progress-fill" id="payProgress"></span></div>
+                            </div>
+                            <p style="font-size:.85rem; color:var(--text-medium); margin-top:-10px; margin-bottom:1rem;">Progress saved locally to your device.</p>
+                            <div class="checklist-grid" id="payChecklist">
+                                <label class="chk-item"><input type="checkbox" data-key="profile"> <div>Complete tutor profile with legal name.</div></label>
+                                <label class="chk-item"><input type="checkbox" data-key="bank"> <div>Submit bank details securely in portal.</div></label>
+                                <label class="chk-item"><input type="checkbox" data-key="id"> <div>Upload verification ID documents.</div></label>
+                                <label class="chk-item"><input type="checkbox" data-key="notify"> <div>Enable payout email notifications.</div></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="guidelines" class="framework-block fu">
+                        <div class="block-header">
+                            <h2><i class="fas fa-scale-balanced"></i> Platform Guidelines</h2>
+                            <p class="block-desc">Review our strict policies on conduct, safeguarding, and academic integrity.</p>
+                        </div>
+
+                        <div class="accordion" style="margin-bottom: 2rem;">
+                            <div class="acc-item">
+                                <button class="acc-header">Code of Conduct <i class="fas fa-chevron-down rotate"></i></button>
+                                <div class="acc-content">Be punctual and professional. Use inclusive language. Keep tutor-student boundaries clear. Never share personal contact details (phone/social media) outside the platform.</div>
+                            </div>
+                            <div class="acc-item">
+                                <button class="acc-header">Safeguarding & Privacy <i class="fas fa-chevron-down rotate"></i></button>
+                                <div class="acc-content">Never meet students in private unrecorded channels. Report safeguarding concerns immediately. Protect student data and do not download materials to personal unencrypted devices.</div>
+                            </div>
+                            <div class="acc-item">
+                                <button class="acc-header">Consequences Policy <i class="fas fa-chevron-down rotate"></i></button>
+                                <div class="acc-content">1. Reminder (minor issues) <br>2. Formal Warning (persistent issues) <br>3. Suspension <br>4. Immediate Termination (severe violations or safeguarding breaches).</div>
+                            </div>
+                        </div>
+
+                        <div class="interactive-tool" style="border-color: var(--baobab-brown-dark);">
+                            <div class="tool-header">
+                                <h3><i class="fas fa-file-signature" style="color:var(--baobab-brown-dark);"></i> Acknowledge Guidelines</h3>
+                            </div>
+                            <p style="font-size:.9rem; color:var(--text-medium); margin-bottom:1rem;">Type your name to confirm you have read and will adhere to Baobab's Platform & Safeguarding Guidelines.</p>
+                            <div style="display:flex; gap:1rem; align-items:center; flex-wrap:wrap;">
+                                <input type="text" id="ackName" class="input" placeholder="Your Full Name" style="flex:1; min-width:200px;">
+                                <button class="btn btn-outline" id="ackBtn" onclick="saveAck()"><i class="fas fa-check"></i> Sign & Save</button>
+                            </div>
+                            <div id="ackReceipt" style="margin-top:1rem; padding:1rem; background:#e6f7ed; color:#116b39; border-radius:8px; font-weight:700; display:none; font-size:.85rem;">
+                                <i class="fas fa-shield-check"></i> Acknowledged securely on this device.
+                            </div>
+                        </div>
+
+                        <div class="interactive-tool">
+                            <div class="tool-header">
+                                <h3><i class="fas fa-brain" style="color:var(--canopy-green);"></i> Scenario Check</h3>
+                            </div>
+                            <p id="quizPrompt" style="font-weight:700; color:var(--deep-charcoal); margin-bottom:1rem;">A guardian asks for your personal WhatsApp to "make scheduling quicker". What should you do?</p>
+                            
+                            <div id="quizOptions">
+                                <label class="quiz-opt"><input type="radio" name="q" value="0"> <div>Share your number to be helpful.</div></label>
+                                <label class="quiz-opt"><input type="radio" name="q" value="1"> <div>Politely decline and direct them to portal messaging.</div></label>
+                                <label class="quiz-opt"><input type="radio" name="q" value="2"> <div>Create a burner number just for them.</div></label>
+                            </div>
+                            
+                            <div style="margin-top: 1rem; display:flex; gap:1rem; align-items:center;">
+                                <button class="btn btn-primary btn-sm" onclick="checkQuiz()">Submit Answer</button>
+                                <span id="quizFeedback" style="font-weight:700; font-size:.9rem;"></span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="content-sidebar">
+                    <div class="sidebar-box">
+                        <h3 class="sidebar-title">Support Navigation</h3>
+                        <ul class="sidebar-nav">
+                            <li><a href="#help" class="active"><i class="fas fa-circle-question"></i> Help Center</a></li>
+                            <li><a href="#payments"><i class="fas fa-hand-holding-dollar"></i> Payments & Earnings</a></li>
+                            <li><a href="#guidelines"><i class="fas fa-scale-balanced"></i> Platform Guidelines</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="sidebar-box" style="background: linear-gradient(135deg, var(--canopy-green), var(--canopy-green-dark)); color:white; border:none;">
+                        <h3 style="color:white; font-size:1.1rem; margin-bottom:.5rem;"><i class="fas fa-envelope"></i> Contact Support</h3>
+                        <p style="font-size:.85rem; opacity:0.9; margin-bottom:1rem;">Can't find the answer? Reach out to our admin team.</p>
+                        <a href="mailto:tutors@baobabonlineacademy.com" class="btn btn-white" style="width:100%; font-size:.85rem; padding:.5rem;"><i class="fas fa-paper-plane"></i> Email Us</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4><i class="fas fa-book-open"></i> Teaching Resources</h4>
+                    <a href="teaching-framework.html" class="footer-link">The Baobab Framework</a>
+                    <a href="tutor-support.html" class="footer-link">Tutor Support & FAQs</a>
+                    <a href="tech-check.html" class="footer-link">Tech Requirements</a>
+                </div>
+                <div class="footer-section">
+                    <h4><i class="fas fa-headset"></i> Support</h4>
+                    <a href="tutor-support.html#payments" class="footer-link">Payment Information</a>
+                    <a href="tutor-support.html#guidelines" class="footer-link">Platform Guidelines</a>
+                </div>
+                <div class="footer-section">
+                    <h4><i class="fas fa-envelope"></i> Contact</h4>
+                    <p style="color: rgba(255,255,255,0.7); font-size: .85rem; margin-bottom: .5rem;"><i class="fas fa-envelope"></i> tutors@baobabonlineacademy.com</p>
+                    <p style="color: rgba(255,255,255,0.7); font-size: .85rem;"><i class="fas fa-phone"></i> +234 (0) 816 501 1291</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Baobab Digital Academy Tutor Portal. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu
+        const ham = document.getElementById('ham');
+        const mob = document.getElementById('mob');
+        if (ham && mob) {
+            ham.addEventListener('click', () => {
+                ham.classList.toggle('open');
+                mob.classList.toggle('open');
+            });
+        }
+
+        // Scroll animations
+        const fuEls = document.querySelectorAll('.fu');
+        const fuObs = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('vis');
+                    fuObs.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        fuEls.forEach(el => fuObs.observe(el));
+
+        // Accordion
+        document.querySelectorAll('.acc-item').forEach(item=>{
+            item.querySelector('.acc-header').addEventListener('click', ()=>{
+                const open = item.classList.contains('active');
+                document.querySelectorAll('.acc-item').forEach(i=>i.classList.remove('active'));
+                if(!open) item.classList.add('active');
+            });
+        });
+
+        // Search & Articles Data
+        const ARTICLES = [
+            { title:'How to update your tutor profile', excerpt:'Change your photo, bio, or subjects.', category:'account' },
+            { title:'Scheduling lessons across time zones', excerpt:'Always confirm guardian time zones in portal.', category:'scheduling' },
+            { title:'Rescheduling and cancellation rules', excerpt:'Provide 24h notice where possible.', category:'scheduling' }
+        ];
+
+        function highlight(text, query){
+            if(!query) return text;
+            const re = new RegExp('('+query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')+')', 'ig');
+            return text.replace(re, '<span class="mark">$1</span>');
+        }
+
+        function renderArticles(filter = 'all', query = ''){
+            const list = document.getElementById('articlesList');
+            const items = ARTICLES.filter(a => {
+                const inFilter = filter === 'all' || a.category === filter;
+                const inQuery = !query || a.title.toLowerCase().includes(query) || a.excerpt.toLowerCase().includes(query);
+                return inFilter && inQuery;
+            });
+
+            if(items.length === 0){
+                list.innerHTML = '<p style="color:var(--text-light); font-size:.9rem;">No articles found.</p>';
+                return;
+            }
+
+            list.innerHTML = items.map(a => `
+                <div class="item">
+                    <h4><i class="fas fa-file-lines" style="color:var(--canopy-green); font-size:.9rem;"></i> ${highlight(a.title, query)}</h4>
+                    <p style="color:var(--text-medium); font-size:.9rem; margin:0;">${highlight(a.excerpt, query)}</p>
+                    <div class="item-tags"><span class="item-tag">${a.category}</span></div>
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const activeFilter = document.querySelector('.chip.active').dataset.filter;
+            renderArticles(activeFilter, e.target.value.toLowerCase().trim());
+        });
+
+        document.querySelectorAll('.chip').forEach(chip => {
+            chip.addEventListener('click', (e) => {
+                document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+                e.target.classList.add('active');
+                renderArticles(e.target.dataset.filter, document.getElementById('searchInput').value.toLowerCase().trim());
+            });
+        });
+        renderArticles();
+
+        // Calculator
+        function calculateEarnings() {
+            const rate = Number(document.getElementById('calcRate').value) || 0;
+            const hrs = Number(document.getElementById('calcHours').value) || 0;
+            const wks = Number(document.getElementById('calcWeeks').value) || 0;
+            
+            const gross = rate * hrs * wks;
+            const net = gross * 0.75;
+            const plat = gross * 0.25;
+
+            document.getElementById('resGross').textContent = '₦' + gross.toLocaleString();
+            document.getElementById('resPlat').textContent = '₦' + plat.toLocaleString();
+            document.getElementById('resNet').textContent = '₦' + net.toLocaleString();
+        }
+
+        // Checklist LocalStorage
+        const CK_KEY = 'baobab_support_checklist';
+        const ckBoxes = [...document.querySelectorAll('#payChecklist input[type="checkbox"]')];
+        const ckBar = document.getElementById('payProgress');
+
+        function updateCK() {
+            const total = ckBoxes.length;
+            const done = ckBoxes.filter(b => b.checked).length;
+            const pct = Math.round((done / total) * 100);
+            ckBar.style.width = pct + '%';
+            
+            const data = {};
+            ckBoxes.forEach(b => data[b.dataset.key] = b.checked);
+            localStorage.setItem(CK_KEY, JSON.stringify(data));
+        }
+
+        try {
+            const data = JSON.parse(localStorage.getItem(CK_KEY) || '{}');
+            ckBoxes.forEach(b => b.checked = !!data[b.dataset.key]);
+            updateCK();
+        } catch(e) {}
+
+        ckBoxes.forEach(b => b.addEventListener('change', updateCK));
+
+        // Acknowledgement LocalStorage
+        const ACK_KEY = 'baobab_guidelines_ack';
+        function saveAck() {
+            const name = document.getElementById('ackName').value.trim();
+            if(!name) { alert('Please enter your name.'); return; }
+            localStorage.setItem(ACK_KEY, name);
+            showReceipt(name);
+        }
+        function showReceipt(name) {
+            const rec = document.getElementById('ackReceipt');
+            rec.innerHTML = `<i class="fas fa-shield-check"></i> Digitally acknowledged by <strong>${name}</strong> on this device.`;
+            rec.style.display = 'block';
+            document.getElementById('ackName').disabled = true;
+            document.getElementById('ackBtn').disabled = true;
+        }
+        if(localStorage.getItem(ACK_KEY)) { showReceipt(localStorage.getItem(ACK_KEY)); }
+
+        // Quiz
+        function checkQuiz() {
+            const selected = document.querySelector('input[name="q"]:checked');
+            const fb = document.getElementById('quizFeedback');
+            if(!selected) return;
+            if(selected.value === "1") {
+                fb.textContent = "Correct! All communications must remain on the platform.";
+                fb.style.color = "var(--canopy-green)";
+            } else {
+                fb.textContent = "Incorrect. Sharing personal contact info violates Safeguarding policy.";
+                fb.style.color = "#D32F2F";
+            }
+        }
+
+        // Sidebar Spy
+        const sections = document.querySelectorAll('.framework-block');
+        const navLinks = document.querySelectorAll('.sidebar-nav a[href^="#"]');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                if (scrollY >= (section.offsetTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) link.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
