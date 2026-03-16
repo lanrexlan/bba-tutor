@@ -198,38 +198,43 @@
         .jd-meta-item { display: flex; align-items: center; gap: .5rem; font-size: .9rem; color: var(--text-medium); background: var(--earth-cream); padding: .5rem 1rem; border-radius: 8px; font-weight: 600; }
         .jd-meta-item i { color: var(--canopy-green); }
         
-.jd-section { margin-bottom: 2rem; }
+/* Wrapped the section in a premium dark card */
+        .jd-section { 
+            background: var(--deep-charcoal); 
+            padding: 1.8rem 2rem; 
+            border-radius: 16px; 
+            margin-bottom: 2rem; 
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
         
-        /* Changed heading to deep green for a crisp, professional look */
+        /* Crisp white heading */
         .jd-section h4 { 
-            color: var(--canopy-green-dark); 
+            color: #ffffff; 
             font-size: 1.25rem; 
             margin-bottom: 1rem; 
             display: flex; 
             align-items: center; 
             gap: .5rem; 
             font-family: 'DM Sans', sans-serif;
-            font-weight: 800;
+            font-weight: 700;
         }
         
-        /* Made the icon a slightly warmer gold to pop against the green */
-        .jd-section h4 i { color: var(--sunset-gold-warm); }
+        /* Gold icon to pop against the dark background */
+        .jd-section h4 i { color: var(--sunset-gold); }
         
-        /* Changed text to Deep Charcoal for maximum contrast and readability */
+        /* Bright white/slightly off-white text for perfect readability */
         .jd-section p { 
-            color: var(--deep-charcoal); 
+            color: rgba(255, 255, 255, 0.92); 
             font-size: .95rem; 
             line-height: 1.7; 
             margin-bottom: 1rem; 
-            font-weight: 500;
         }
         
         .jd-section ul { 
             padding-left: 1.5rem; 
-            color: var(--deep-charcoal); 
+            color: rgba(255, 255, 255, 0.92); 
             font-size: .95rem; 
             line-height: 1.7; 
-            font-weight: 500;
         }
         
         .jd-section li { margin-bottom: .5rem; }
