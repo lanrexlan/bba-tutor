@@ -43,14 +43,13 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; font-size: 18px; }
-        @media (max-width: 992px) { html { font-size: 16px; } }
 
         body { font-family: 'DM Sans', sans-serif; color: var(--text-dark); background-color: var(--warm-white); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
         h1, h2, h3, h4, h5 { font-family: 'Playfair Display', serif; font-weight: 700; line-height: 1.2; color: var(--baobab-brown-dark); }
         ul { list-style: none; }
         a { text-decoration: none; color: inherit; transition: var(--transition); }
 
-        .container { max-width: var(--max-w); margin: 0 auto; padding: 0 var(--section-px); position: relative; }
+        .container { max-width: var(--max-w); margin: 0 auto; padding: 0 2rem; position: relative; }
         .section { padding: var(--section-py) 0; position: relative; }
         .t-cen { text-align: center; }
         
@@ -89,7 +88,6 @@
         .nav-menu { display: flex; gap: 1.5rem; align-items: center; }
         .nav-link { font-weight: 600; font-size: .9rem; color: var(--text-medium); }
         .nav-link:hover, .nav-link.active { color: var(--sunset-gold); }
-        .nav-buttons { display: flex; gap: .5rem; }
         
         /* Mobile Menu */
         .ham { display: none; flex-direction: column; gap: 5px; padding: .4rem; background: none; border: none; cursor: pointer; }
@@ -148,7 +146,7 @@
 
         /* Interactive Tools */
         .interactive-tool { background: var(--white); border-radius: var(--r-card); padding: 2.5rem; box-shadow: 0 8px 24px var(--shadow-warm); border: 2px dashed var(--canopy-green-light); margin-bottom: 2rem; }
-        .tool-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .tool-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap:1rem;}
         .tool-header h3 { margin: 0; font-size: 1.4rem; color: var(--canopy-green-dark); }
         
         /* Phrase Grid */
@@ -189,16 +187,27 @@
         .footer-link:hover { color: var(--sunset-gold); padding-left: 5px; }
         .footer-bottom { text-align: center; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); font-size: .8rem; color: rgba(255,255,255,0.4); }
 
+        /* =========================================
+           MOBILE RESPONSIVENESS FIXES
+           ========================================= */
         @media (max-width: 992px) {
+            html { font-size: 16px; }
             .nav-menu { display: none; }
             .ham { display: flex; }
-            .content-layout { grid-template-columns: 1fr; }
-            .content-sidebar { display: none; }
+            .content-layout { grid-template-columns: 1fr; gap: 2rem; }
+            .content-sidebar { position: static; }
         }
         @media (max-width: 768px) {
+            .hero { padding: 7rem 0 4rem; }
             .hero-title { font-size: 2.2rem; }
+            .container { padding: 0 1.5rem; }
+            .interactive-tool { padding: 1.5rem; }
+            .panel-grid, .phrase-grid { grid-template-columns: 1fr; }
             .rubric-row { flex-direction: column; align-items: flex-start; gap: .5rem; }
             .rubric-slider-container { width: 100%; }
+            .block-header h2 { font-size: 1.8rem; }
+            .tab-btn { padding: .5rem 1rem; font-size: .85rem; }
+            .tab-panel { padding: 1.5rem; }
         }
     </style>
 </head>
@@ -214,16 +223,16 @@
                     </div>
                 </a>
                 
+                <button class="ham" id="ham" aria-label="Toggle navigation">
+                    <span></span><span></span><span></span>
+                </button>
+
                 <ul class="nav-menu">
                     <li><a href="index.html#features" class="nav-link">Features</a></li>
                     <li><a href="index.html#why-us" class="nav-link">Why Choose Us</a></li>
                     <li><a href="teaching-framework.html" class="nav-link active">Teaching Framework</a></li>
                     <li><a href="index.html#apply" class="nav-link">Open Roles</a></li>
                 </ul>
-
-                <button class="ham" id="ham" aria-label="Toggle navigation">
-                    <span></span><span></span><span></span>
-                </button>
             </div>
         </div>
         
@@ -232,6 +241,9 @@
             <a href="index.html#why-us">Why Choose Us</a>
             <a href="teaching-framework.html">Teaching Framework</a>
             <a href="index.html#apply">Open Roles</a>
+            <div style="margin-top: 1rem;">
+                <a href="index.html#apply" class="btn btn-gold" style="width: 100%; justify-content: center;">Apply Now</a>
+            </div>
         </div>
     </header>
 
@@ -515,7 +527,7 @@
                     <h4><i class="fas fa-book-open"></i> Teaching Resources</h4>
                     <a href="teaching-framework.html" class="footer-link">The Baobab Framework</a>
                     <a href="tutor-support.html" class="footer-link">Tutor Support & FAQs</a>
-                    <a href="tech-check.html" class="footer-link">Tech Requirements</a>
+                    <a href="tech-hub.html" class="footer-link">Tech Requirements</a>
                 </div>
                 <div class="footer-section">
                     <h4><i class="fas fa-headset"></i> Support</h4>
@@ -560,10 +572,8 @@
         // Subject Tabs
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
-                // Remove active classes
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
                 document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-                // Add active to clicked
                 btn.classList.add('active');
                 document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
             });
@@ -611,15 +621,14 @@
             document.getElementById('totalScore').style.color = total >= 12 ? 'var(--canopy-green)' : (total >= 8 ? 'var(--sunset-gold)' : '#D32F2F');
         }
 
-        // Smooth scrolling and sidebar active state
+        // Sidebar Spy
         const sections = document.querySelectorAll('.framework-block');
         const navLinks = document.querySelectorAll('.sidebar-nav a[href^="#"]');
 
         window.addEventListener('scroll', () => {
             let current = '';
             sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                if (scrollY >= (sectionTop - 150)) {
+                if (scrollY >= (section.offsetTop - 150)) {
                     current = section.getAttribute('id');
                 }
             });

@@ -2,7 +2,7 @@
 <html lang="en-GB">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" type="image/png" sizes="32x32" href="/Images/logo.jpg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/Images/Logo_Baobab.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tutor Support Hub - Baobab Digital Academy</title>
     
@@ -39,7 +39,6 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; font-size: 18px; }
-        @media (max-width: 992px) { html { font-size: 16px; } }
 
         body { font-family: 'DM Sans', sans-serif; color: var(--text-dark); background-color: var(--warm-white); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
         h1, h2, h3, h4, h5 { font-family: 'Playfair Display', serif; font-weight: 700; line-height: 1.2; color: var(--baobab-brown-dark); }
@@ -180,12 +179,26 @@
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
+        /* =========================================
+           MOBILE RESPONSIVENESS FIXES
+           ========================================= */
         @media (max-width: 992px) {
+            html { font-size: 16px; }
             .nav-menu { display: none; }
             .ham { display: flex; }
-            .content-layout { grid-template-columns: 1fr; }
-            .content-sidebar { display: none; }
+            .content-layout { grid-template-columns: 1fr; gap: 2rem; }
+            .content-sidebar { position: static; }
             .grid-2, .checklist-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .hero { padding: 7rem 0 4rem; }
+            .hero-title { font-size: 2.2rem; }
+            .container { padding: 0 1.5rem; }
+            .interactive-tool { padding: 1.5rem; }
+            .block-header h2 { font-size: 1.8rem; }
+            .searchbar { flex-direction: column; align-items: stretch; }
+            .acc-header { padding: 1rem 1.25rem; font-size: .95rem; }
+            .acc-content { padding: 0 1.25rem 1.25rem; }
         }
     </style>
 </head>
@@ -207,18 +220,18 @@
                 
                 <ul class="nav-menu">
                     <li><a href="index.html#features" class="nav-link">Features</a></li>
-                    <li><a href="index.html#why-us" class="nav-link">Why Choose Us</a></li>
                     <li><a href="teaching-framework.html" class="nav-link">Teaching Framework</a></li>
                     <li><a href="tutor-support.html" class="nav-link active">Support Hub</a></li>
+                    <li><a href="tech-hub.html" class="nav-link">Tech Hub</a></li>
                 </ul>
             </div>
         </div>
         
         <div class="mob-menu" id="mob">
             <a href="index.html#features">Features</a>
-            <a href="index.html#why-us">Why Choose Us</a>
             <a href="teaching-framework.html">Teaching Framework</a>
             <a href="tutor-support.html">Support Hub</a>
+            <a href="tech-hub.html">Tech Hub</a>
             <div style="margin-top: 1rem;">
                 <a href="index.html#apply" class="btn btn-gold" style="width: 100%; justify-content: center;">Apply Now</a>
             </div>
@@ -431,7 +444,7 @@
                     <h4><i class="fas fa-book-open"></i> Teaching Resources</h4>
                     <a href="teaching-framework.html" class="footer-link">The Baobab Framework</a>
                     <a href="tutor-support.html" class="footer-link">Tutor Support & FAQs</a>
-                    <a href="tech-check.html" class="footer-link">Tech Requirements</a>
+                    <a href="tech-hub.html" class="footer-link">Tech Requirements</a>
                 </div>
                 <div class="footer-section">
                     <h4><i class="fas fa-headset"></i> Support</h4>
