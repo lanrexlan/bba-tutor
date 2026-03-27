@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Baobab Online Academy – Tutor Assessment</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 44px 40px;
+      max-width: 580px;
+      width: 100%;
+      box-shadow: 0 8px 40px rgba(0, 100, 40, 0.12);
+      text-align: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 4px;
+    }
+    .brand-name {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #166534;
+    }
+    .brand-sub {
+      font-size: 0.82rem;
+      color: #6b7280;
+      margin-bottom: 28px;
+      letter-spacing: 0.3px;
+    }
+
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 16px;
+    }
+
+    .instructions {
+      background: #f9fafb;
+      border-left: 4px solid #16a34a;
+      border-radius: 8px;
+      padding: 18px 20px;
+      text-align: left;
+      margin: 0 0 28px;
+      font-size: 0.875rem;
+      color: #374151;
+      line-height: 1.8;
+    }
+    .instructions strong { color: #166534; }
+
+    /* ── Timer ── */
+    .timer-wrapper { display: none; margin-bottom: 8px; }
+
+    .timer-ring {
+      position: relative;
+      width: 160px;
+      height: 160px;
+      margin: 0 auto 12px;
+    }
+    .timer-ring svg { transform: rotate(-90deg); }
+    .timer-ring circle.bg  { fill: none; stroke: #e5e7eb; stroke-width: 8; }
+    .timer-ring circle.fg  {
+      fill: none;
+      stroke: #16a34a;
+      stroke-width: 8;
+      stroke-linecap: round;
+      stroke-dasharray: 440;
+      stroke-dashoffset: 0;
+      transition: stroke-dashoffset 1s linear, stroke 1s;
+    }
+    .timer-ring .inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .timer-digits {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: #166534;
+      letter-spacing: 2px;
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+    }
+    .timer-digits.warn { color: #dc2626; }
+    .timer-unit {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #9ca3af;
+      margin-top: 4px;
+    }
+
+    @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.5; } }
+    .pulsing { animation: pulse 1s infinite; }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-block;
+      padding: 14px 36px;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: background 0.2s, transform 0.15s;
+      text-decoration: none;
+    }
+    .btn-green  { background: #16a34a; color: #fff; }
+    .btn-green:hover  { background: #15803d; transform: translateY(-2px); }
+    .btn-blue   { background: #1d4ed8; color: #fff; display: none; margin-top: 16px; }
+    .btn-blue:hover   { background: #1e40af; transform: translateY(-2px); }
+    .btn-blue.visible { display: inline-block; }
+
+    /* ── Time Up ── */
+    .time-up-box {
+      display: none;
+      background: #fef2f2;
+      border: 2px solid #dc2626;
+      border-radius: 12px;
+      padding: 24px;
+      margin-top: 20px;
+    }
+    .time-up-box h2 { color: #dc2626; font-size: 1.4rem; margin-bottom: 8px; }
+    .time-up-box p  { color: #7f1d1d; font-size: 0.875rem; line-height: 1.6; }
+
+    footer {
+      margin-top: 36px;
+      font-size: 0.72rem;
+      color: #9ca3af;
+    }
+    footer a { color: #16a34a; text-decoration: none; }
+
+    @media (max-width: 480px) {
+      .card { padding: 28px 20px; }
+      .timer-digits { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+
+  <!-- Brand header -->
+  <div class="brand">
+    <span style="font-size:1.8rem">🌳</span>
+    <span class="brand-name">Baobab Online Academy</span>
+  </div>
+  <div class="brand-sub">Tutor Recruitment — Subject Knowledge Assessment</div>
+
+  <!-- Pre-start state -->
+  <div id="pre-start">
+    <div class="section-title">📋 Before You Begin</div>
+    <div class="instructions">
+      <strong>Please read carefully:</strong><br><br>
+      ⏱ &nbsp;You have <strong>30 minutes</strong> to complete this assessment.<br>
+      ▶ &nbsp;Your timer starts the moment you click <strong>"Start Assessment"</strong>.<br>
+      📝 &nbsp;The assessment form will open in a new tab — keep this page open.<br>
+      🔢 &nbsp;Show <strong>all working</strong> for any calculation questions.<br>
+      📌 &nbsp;Only answer the section for the <strong>subject you applied for</strong>.<br>
+      ✅ &nbsp;Submit the Google Form <strong>before</strong> the timer reaches zero.<br>
+      🔇 &nbsp;Find a quiet space and ensure a stable internet connection.
+    </div>
+    <button class="btn btn-green" onclick="startAssessment()">▶ &nbsp;Start Assessment</button>
+  </div>
+
+  <!-- Active timer state -->
+  <div class="timer-wrapper" id="timer-wrapper">
+    <p style="color:#6b7280; font-size:0.85rem; margin-bottom:16px;">
+      ⏱ &nbsp;Time remaining — submit the form before it reaches <strong>00:00</strong>
+    </p>
+
+    <div class="timer-ring">
+      <svg width="160" height="160" viewBox="0 0 160 160">
+        <circle class="bg" cx="80" cy="80" r="70"/>
+        <circle class="fg" id="ring-fg" cx="80" cy="80" r="70"/>
+      </svg>
+      <div class="inner">
+        <div class="timer-digits" id="digits">30:00</div>
+        <div class="timer-unit">remaining</div>
+      </div>
+    </div>
+
+    <a class="btn btn-blue visible" id="form-btn" href="#" target="_blank">
+      📝 &nbsp;Open Assessment Form
+    </a>
+
+    <div class="time-up-box" id="time-up">
+      <h2>⏰ Time's Up!</h2>
+      <p>
+        Your 30 minutes have elapsed. Please submit your Google Form <strong>immediately</strong>
+        if you have not already done so, then notify the Baobab recruitment team at
+        <a href="mailto:admin@baobabonlineacademy.com">admin@baobabonlineacademy.com</a>.
+      </p>
+    </div>
+  </div>
+
+  <footer>
+    Baobab Online Academy &bull; Deep Roots, Limitless Growth &bull;
+    <a href="https://www.baobabonlineacademy.com" target="_blank">baobabonlineacademy.com</a>
+  </footer>
+
+</div>
+
+<script>
+  // ── PASTE YOUR GOOGLE FORM SHARE URL HERE ──────────────────
+  var FORM_URL = 'YOUR_GOOGLE_FORM_SHARE_URL_HERE';
+  // ───────────────────────────────────────────────────────────
+
+  var TOTAL   = 30 * 60; // 30 minutes in seconds
+  var CIRCUMFERENCE = 2 * Math.PI * 70; // matches r="70" in SVG
+  var remaining = TOTAL;
+  var ticker    = null;
+
+  var ringFg    = document.getElementById('ring-fg');
+  var digits    = document.getElementById('digits');
+  var formBtn   = document.getElementById('form-btn');
+  var timeUpBox = document.getElementById('time-up');
+
+  ringFg.style.strokeDasharray  = CIRCUMFERENCE;
+  ringFg.style.strokeDashoffset = 0;
+
+  function startAssessment() {
+    document.getElementById('pre-start').style.display    = 'none';
+    document.getElementById('timer-wrapper').style.display = 'block';
+    formBtn.href = FORM_URL;
+    window.open(FORM_URL, '_blank');
+    ticker = setInterval(tick, 1000);
+  }
+
+  function tick() {
+    remaining--;
+    if (remaining <= 0) {
+      remaining = 0;
+      clearInterval(ticker);
+      digits.textContent = '00:00';
+      digits.classList.add('warn', 'pulsing');
+      ringFg.style.stroke = '#dc2626';
+      timeUpBox.style.display = 'block';
+      formBtn.style.display   = 'none';
+      return;
+    }
+    updateUI();
+  }
+
+  function updateUI() {
+    var m = Math.floor(remaining / 60);
+    var s = remaining % 60;
+    digits.textContent = pad(m) + ':' + pad(s);
+
+    // Ring progress
+    var progress = remaining / TOTAL;
+    ringFg.style.strokeDashoffset = CIRCUMFERENCE * (1 - progress);
+
+    // Warning colours under 5 minutes
+    if (remaining <= 300) {
+      digits.classList.add('warn');
+      ringFg.style.stroke = '#dc2626';
+    }
+  }
+
+  function pad(n) { return n < 10 ? '0' + n : String(n); }
+</script>
+
+</body>
+</html>
