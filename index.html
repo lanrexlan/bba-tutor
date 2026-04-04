@@ -356,7 +356,49 @@
             .jd-footer .btn { width: 100%; justify-content: center; }
         }
 
-    
+    /* ── Recruitment Closed Styles ── */
+#tutor-application-wrapper { display: none !important; }
+
+.recruitment-closed-banner {
+  background: #fff7ed;
+  border: 2px solid #f97316;
+  border-radius: 12px;
+  padding: 18px 24px;
+  text-align: center;
+  margin-bottom: 36px;
+}
+.recruitment-closed-banner h3 {
+  color: #9a3412;
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.recruitment-closed-banner p {
+  color: #7c2d12;
+  font-size: 0.875rem;
+}
+.badge-closed {
+  display: inline-block;
+  background: #6b7280;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 9999px;
+}
+.btn-role-closed {
+  background: #d1d5db !important;
+  color: #6b7280 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
     </style>
 </head>
 <body>
@@ -1359,6 +1401,74 @@ async function submitApplication(e) {
     document.body.style.overflow = 'hidden';
     closeApplicationForm();
 }
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  // ── 1. HIDE THE APPLICATION FORM ──────────────────────────────
+  // Wrap the form section's parent in a hidden div, or target it directly.
+  // Find the section containing "Tutor Application" heading and hide it.
+  document.querySelectorAll('h2, h3, h4, p, span').forEach(function (el) {
+    if (el.textContent.trim() === 'Tutor Application') {
+      // Walk up the DOM to the nearest <section> or top-level container
+      let container = el.parentElement;
+      while (container && container.tagName !== 'SECTION' && container.tagName !== 'BODY') {
+        container = container.parentElement;
+      }
+      if (container && container.tagName === 'SECTION') {
+        container.style.display = 'none';
+      }
+    }
+  });
+
+  // ── 2. INJECT "NOT RECRUITING" BANNER INTO OPEN ROLES ─────────
+  const rolesSection =
+    document.getElementById('roles') ||
+    Array.from(document.querySelectorAll('section')).find(function (s) {
+      return s.textContent.includes('Current Opportunities');
+    });
+
+  if (rolesSection) {
+    const banner = document.createElement('div');
+    banner.className = 'recruitment-closed-banner';
+    banner.innerHTML =
+      '<h3>🔒 Not Currently Recruiting</h3>' +
+      '<p>Both positions are now closed. We are not accepting new applications at this time. ' +
+      'Check back here when new roles open.</p>';
+
+    // Insert banner after the section heading
+    const heading = rolesSection.querySelector('h2, h3');
+    if (heading) {
+      heading.insertAdjacentElement('afterend', banner);
+    } else {
+      rolesSection.prepend(banner);
+    }
+  }
+
+  // ── 3. UPDATE ROLE CARDS ──────────────────────────────────────
+  // Replace "Priority Role" badge text with "Closed" styling
+  document.querySelectorAll('*').forEach(function (el) {
+    if (el.children.length === 0 && el.textContent.trim() === 'Priority Role') {
+      el.outerHTML = '<span class="badge-closed">Closed</span>';
+    }
+  });
+
+  // Replace "View Full Details" buttons
+  document.querySelectorAll('button, a').forEach(function (el) {
+    if (el.textContent.trim() === 'View Full Details') {
+      el.outerHTML =
+        '<button class="btn-role-closed" disabled>Applications Closed</button>';
+    }
+  });
+
+  // ── 4. HIDE "APPLY NOW" BUTTONS ───────────────────────────────
+  document.querySelectorAll('button, a').forEach(function (el) {
+    if (el.textContent.trim() === 'Apply Now') {
+      el.style.display = 'none';
+    }
+  });
+
+});
 </script>
 </body>
 </html>
