@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tutor Dashboard v2 - Baobab Online Academy</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="/Images/logo.jpg">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/scripts/tutor-dashboard-backend.js"></script>
+  <style>
+    :root{--primary:#00695C;--primary-light:#4DB6AC;--secondary:#FF6B35;--bg:#F8FAFC;--surface:#fff;--muted:#64748B;--text:#1E293B;--border:#E2E8F0;--success:#00A86B;--danger:#D32F2F;--warning:#F59E0B;--shadow:0 10px 25px rgba(15,23,42,.08)}
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--text)}
+    header{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10}
+    .header-inner{max-width:1180px;margin:0 auto;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .brand{display:flex;gap:12px;align-items:center}.brand-icon{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;display:grid;place-items:center}.brand h1{font-size:18px;margin:0;color:var(--primary)}.brand p{margin:0;color:var(--muted);font-size:12px}
+    .user-chip{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px}.avatar{width:36px;height:36px;border-radius:50%;background:var(--primary);color:#fff;display:grid;place-items:center;font-weight:700}
+    main{max-width:1180px;margin:0 auto;padding:24px 20px 48px}.topline{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:22px}.topline h2{font-size:28px;margin:0}.topline p{color:var(--muted);margin:6px 0 0}.btn{border:0;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px}.btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff}.btn-secondary{background:#EEF2F7;color:var(--text)}.btn-danger{background:#FEE2E2;color:#991B1B}.btn:disabled{opacity:.6;cursor:not-allowed}
+    .grid{display:grid;gap:16px}.stats{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:20px}.card{background:var(--surface);border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}.stat{padding:20px}.stat i{font-size:20px;color:var(--primary)}.stat-value{font-size:30px;font-weight:800;margin:12px 0 4px}.stat-label{color:var(--muted);font-size:13px}.card-header{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.card-title{font-weight:800}.card-subtitle{font-size:13px;color:var(--muted);margin-top:3px}.card-body{padding:18px 20px}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.tab{background:#EEF2F7;color:var(--muted);border:0;border-radius:999px;padding:9px 13px;font-weight:700;cursor:pointer}.tab.active{background:var(--primary);color:#fff}.section{display:none}.section.active{display:block}.table-wrap{overflow:auto;border:1px solid var(--border);border-radius:14px}table{width:100%;border-collapse:collapse;min-width:760px}th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--border);font-size:14px}th{background:#F1F5F9;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.04em}tr:last-child td{border-bottom:0}.badge{border-radius:999px;padding:4px 8px;font-size:12px;font-weight:700;display:inline-block}.badge.success{background:#DCFCE7;color:#166534}.badge.primary{background:#E0F2FE;color:#075985}.empty{padding:36px;text-align:center;color:var(--muted)}.empty i{font-size:40px;color:#CBD5E1;margin-bottom:10px}.modal{position:fixed;inset:0;background:rgba(15,23,42,.58);display:none;align-items:center;justify-content:center;padding:20px;z-index:30}.modal.active{display:flex}.modal-card{background:#fff;border-radius:18px;max-width:560px;width:100%;max-height:90vh;overflow:auto}.modal-head{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}.modal-head h3{margin:0}.modal-body{padding:20px}.form-grid{display:grid;gap:14px}.field label{display:block;font-size:13px;font-weight:700;margin-bottom:6px}.field input,.field select,.field textarea{width:100%;border:1px solid var(--border);border-radius:10px;padding:11px 12px;font:inherit}.field textarea{min-height:90px;resize:vertical}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}.alert{padding:12px 14px;border-radius:12px;margin-bottom:16px;display:none}.alert.error{background:#FEE2E2;color:#991B1B}.alert.success{background:#DCFCE7;color:#166534}.loading{display:grid;place-items:center;min-height:300px;color:var(--muted)}
+    @media(max-width:850px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.topline h2{font-size:24px}}@media(max-width:520px){.stats{grid-template-columns:1fr}.header-inner{align-items:flex-start}.user-chip{display:none}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="brand"><div class="brand-icon"><i class="fas fa-chalkboard-teacher"></i></div><div><h1>Baobab Tutor</h1><p>Assignment-based dashboard</p></div></div>
+      <div class="user-chip"><div class="avatar" id="avatar">TU</div><div><strong id="userName">Tutor</strong><br><span id="userEmail">Loading...</span></div></div>
+    </div>
+  </header>
+
+  <main>
+    <div class="topline">
+      <div><h2>Welcome back, <span id="firstName">Tutor</span></h2><p>View assigned students, add scores, and record progress using the new backend.</p></div>
+      <div class="actions"><button class="btn btn-secondary" id="refreshBtn"><i class="fas fa-refresh"></i>Refresh</button><button class="btn btn-danger" id="logoutBtn"><i class="fas fa-sign-out-alt"></i>Logout</button></div>
+    </div>
+
+    <div id="message" class="alert"></div>
+    <div id="loading" class="loading"><div><i class="fas fa-spinner fa-spin"></i> Loading dashboard...</div></div>
+    <div id="dashboard" style="display:none">
+      <div class="grid stats">
+        <div class="card stat"><i class="fas fa-users"></i><div class="stat-value" id="studentCount">0</div><div class="stat-label">Assigned Students</div></div>
+        <div class="card stat"><i class="fas fa-book"></i><div class="stat-value" id="subjectCount">0</div><div class="stat-label">Assigned Subjects</div></div>
+        <div class="card stat"><i class="fas fa-clipboard-check"></i><div class="stat-value" id="assessmentCount">0</div><div class="stat-label">Assessments</div></div>
+        <div class="card stat"><i class="fas fa-chart-line"></i><div class="stat-value" id="progressCount">0</div><div class="stat-label">Progress Records</div></div>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" data-section="students">Students</button>
+        <button class="tab" data-section="assessments">Assessments</button>
+        <button class="tab" data-section="progress">Progress</button>
+        <button class="tab" data-section="schedule">Schedule</button>
+      </div>
+
+      <section id="students" class="section active card"><div class="card-header"><div><div class="card-title">My Students</div><div class="card-subtitle">Students assigned by admin</div></div><button class="btn btn-primary" data-open="progress"><i class="fas fa-plus"></i>Add Progress</button></div><div class="card-body" id="studentsBody"></div></section>
+      <section id="assessments" class="section card"><div class="card-header"><div><div class="card-title">Assessments</div><div class="card-subtitle">Scores submitted through secure RPC</div></div><button class="btn btn-primary" data-open="assessment"><i class="fas fa-plus"></i>Add Score</button></div><div class="card-body" id="assessmentsBody"></div></section>
+      <section id="progress" class="section card"><div class="card-header"><div><div class="card-title">Progress Records</div><div class="card-subtitle">Progress notes and learning goals</div></div><button class="btn btn-primary" data-open="progress"><i class="fas fa-plus"></i>Add Progress</button></div><div class="card-body" id="progressBody"></div></section>
+      <section id="schedule" class="section card"><div class="card-header"><div><div class="card-title">Schedule</div><div class="card-subtitle">Lessons visible through RLS</div></div></div><div class="card-body" id="scheduleBody"></div></section>
+    </div>
+  </main>
+
+  <div class="modal" id="assessmentModal"><div class="modal-card"><div class="modal-head"><h3>Add Assessment Score</h3><button class="btn btn-secondary" data-close="assessmentModal">Close</button></div><div class="modal-body"><form id="assessmentForm" class="form-grid"><div class="field"><label>Student *</label><select name="child_id" required></select></div><div class="field"><label>Subject *</label><select name="subject_id" required></select></div><div class="field"><label>Title *</label><input name="title" required placeholder="e.g. Chapter 5 Quiz"></div><div class="field"><label>Type</label><select name="type"><option value="quiz">Quiz</option><option value="test">Test</option><option value="assignment">Assignment</option><option value="project">Project</option><option value="oral_exam">Oral Exam</option></select></div><div class="field"><label>Grade</label><input name="grade" type="number" min="0" step="0.01"></div><div class="field"><label>Max Grade</label><input name="max_grade" type="number" min="1" step="0.01" value="100"></div><div class="field"><label>Feedback</label><textarea name="feedback"></textarea></div><div class="field"><label>Description</label><textarea name="description"></textarea></div><button class="btn btn-primary" type="submit"><i class="fas fa-save"></i>Save Score</button></form></div></div></div>
+  <div class="modal" id="progressModal"><div class="modal-card"><div class="modal-head"><h3>Add Progress Record</h3><button class="btn btn-secondary" data-close="progressModal">Close</button></div><div class="modal-body"><form id="progressForm" class="form-grid"><div class="field"><label>Student *</label><select name="child_id" required></select></div><div class="field"><label>Subject *</label><select name="subject_id" required></select></div><div class="field"><label>Score</label><input name="score" type="number" min="0" max="100" step="0.01"></div><div class="field"><label>Strengths</label><textarea name="strengths"></textarea></div><div class="field"><label>Areas of Improvement</label><textarea name="areas_of_improvement"></textarea></div><div class="field"><label>Goals</label><textarea name="goals"></textarea></div><div class="field"><label>Notes</label><textarea name="notes"></textarea></div><button class="btn btn-primary" type="submit"><i class="fas fa-save"></i>Save Progress</button></form></div></div></div>
+
+  <script>
+    let state = { profile:null, students:[], subjects:[], assessments:[], progress:[], lessons:[] };
+    const $ = (id) => document.getElementById(id);
+    function initials(name){return (name||'Tutor').split(' ').map(x=>x[0]).join('').slice(0,2).toUpperCase() || 'TU'}
+    function fmtDate(v){return v ? new Date(v).toLocaleDateString('en-GB') : '—'}
+    function showMessage(text,type='success'){const el=$('message');el.textContent=text;el.className='alert '+type;el.style.display='block';setTimeout(()=>el.style.display='none',5000)}
+    function tableOrEmpty(rows, empty, columns, render){if(!rows.length)return `<div class="empty"><i class="fas fa-inbox"></i><h3>${empty}</h3></div>`;return `<div class="table-wrap"><table><thead><tr>${columns.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>${rows.map(render).join('')}</tbody></table></div>`}
+    function populateSelects(){document.querySelectorAll('select[name="child_id"]').forEach(s=>{s.innerHTML='<option value="">Select student</option>'+state.students.map(x=>`<option value="${x.id}">${x.name}</option>`).join('')});document.querySelectorAll('select[name="subject_id"]').forEach(s=>{s.innerHTML='<option value="">Select subject</option>'+state.subjects.map(x=>`<option value="${x.id}">${x.name}</option>`).join('')})}
+    function render(){
+      const p=state.profile||{}; $('userName').textContent=p.full_name||'Tutor'; $('userEmail').textContent=p.email||''; $('avatar').textContent=initials(p.full_name); $('firstName').textContent=(p.full_name||'Tutor').split(' ')[0];
+      $('studentCount').textContent=state.students.length; $('subjectCount').textContent=state.subjects.length; $('assessmentCount').textContent=state.assessments.length; $('progressCount').textContent=state.progress.length;
+      $('studentsBody').innerHTML=tableOrEmpty(state.students,'No students assigned yet',['Student','Grade','Subject','Parent','Status'],s=>`<tr><td><strong>${s.name}</strong></td><td>${s.grade_level||'—'}</td><td>${s.subject_name||'General'}</td><td>${s.parent_name||'—'}</td><td><span class="badge success">${s.status||'active'}</span></td></tr>`);
+      $('assessmentsBody').innerHTML=tableOrEmpty(state.assessments,'No assessments yet',['Title','Student','Subject','Grade','Date'],a=>`<tr><td><strong>${a.title||'Assessment'}</strong></td><td>${a.child?.name||'—'}</td><td>${a.subject?.name||'—'}</td><td>${a.grade??'—'} / ${a.max_grade??100}</td><td>${fmtDate(a.conducted_at)}</td></tr>`);
+      $('progressBody').innerHTML=tableOrEmpty(state.progress,'No progress records yet',['Student','Subject','Score','Strengths','Date'],r=>`<tr><td>${r.child?.name||'—'}</td><td>${r.subject?.name||'—'}</td><td>${r.score??'—'}</td><td>${r.strengths||'—'}</td><td>${fmtDate(r.recorded_at)}</td></tr>`);
+      $('scheduleBody').innerHTML=tableOrEmpty(state.lessons,'No lessons visible yet',['Title','Student','Subject','When','Status'],l=>`<tr><td><strong>${l.title||'Lesson'}</strong></td><td>${l.child?.name||l.children?.name||'—'}</td><td>${l.subject?.name||l.subjects?.name||'—'}</td><td>${l.scheduled_at?new Date(l.scheduled_at).toLocaleString('en-GB'):'—'}</td><td><span class="badge primary">${l.status||'scheduled'}</span></td></tr>`);
+      populateSelects();
+    }
+    async function load(){ $('loading').style.display='grid'; $('dashboard').style.display='none'; try{ const data=await window.baobabTutorBackend.bootstrap(); state={...state,...data,progress:data.progress||[]}; render(); $('dashboard').style.display='block'; }catch(e){showMessage(e.message||'Failed to load dashboard','error')}finally{$('loading').style.display='none'}}
+    document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));b.classList.add('active');$(b.dataset.section).classList.add('active')}));
+    document.querySelectorAll('[data-open="assessment"]').forEach(b=>b.addEventListener('click',()=>{$('assessmentModal').classList.add('active')}));
+    document.querySelectorAll('[data-open="progress"]').forEach(b=>b.addEventListener('click',()=>{$('progressModal').classList.add('active')}));
+    document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>$(b.dataset.close).classList.remove('active')));
+    $('refreshBtn').addEventListener('click',load);
+    $('logoutBtn').addEventListener('click',async()=>{await window.baobabTutorBackend.client.auth.signOut(); location.href='/';});
+    $('assessmentForm').addEventListener('submit',async(e)=>{e.preventDefault();const body=Object.fromEntries(new FormData(e.target).entries());try{await window.baobabTutorBackend.addAssessment(body);$('assessmentModal').classList.remove('active');e.target.reset();showMessage('Assessment saved');await load();}catch(err){showMessage(err.message,'error')}});
+    $('progressForm').addEventListener('submit',async(e)=>{e.preventDefault();const body=Object.fromEntries(new FormData(e.target).entries());try{await window.baobabTutorBackend.addProgress(body);$('progressModal').classList.remove('active');e.target.reset();showMessage('Progress record saved');await load();}catch(err){showMessage(err.message,'error')}});
+    document.addEventListener('DOMContentLoaded',load);
+  </script>
+</body>
+</html>
