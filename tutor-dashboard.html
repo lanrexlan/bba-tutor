@@ -1588,74 +1588,91 @@
 
   <script>
   // =========================
-  // Tutors Project Supabase
+  // Baobab_Parents Supabase
   // =========================
-  const SUPABASE_URL = 'https://qlvijhpijwwlrzaixbrg.supabase.co';
-  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsdmlqaHBpand3bHJ6YWl4YnJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI0MDg3NjksImV4cCI6MjA2Nzk4NDc2OX0.9x_IylmCpoYudGhxiy9432NIpzd0uHqnwUsPm6AvHqs';
+  const SUPABASE_URL = 'https://vcxdkacxbjsgaoxbhsip.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZjeGRrYWN4YmpzZ2FveGJoc2lwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI5MDQ5ODMsImV4cCI6MjA2ODQ4MDk4M30.T9KhHWzHZWyaZvyeFXtBu8tPLY9JOn6_wCHcH8B46FU';
   const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  // =========================
-  // API Bridge (Edge Function)
-  // =========================
-  // IMPORTANT: Replace YOUR_TUTORS_REF with your Tutors project ref
-  // For local dev with Supabase CLI: http://localhost:54321/functions/v1/tutor-api
-  const FN_BASE =
-    (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
-      ? 'http://localhost:54321/functions/v1/tutor-api'
-      : 'https://qlvijhpijwwlrzaixbrg.functions.supabase.co/tutor-api';
-
-  async function getAccessToken() {
-    const { data: { session } } = await supabase.auth.getSession();
-    return session?.access_token || null;
-  }
-
-  async function apiRequest(resource, { method = 'GET', data = null, params = {} } = {}) {
-    const token = await getAccessToken();
-    if (!token) throw new Error('Not authenticated');
-
-    const url = new URL(FN_BASE);
-    url.searchParams.set('resource', resource);
-    Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, String(v)));
-
-    const res = await fetch(url.toString(), {
-      method,
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        ...(data ? { 'Content-Type': 'application/json' } : {})
-      },
-      body: data ? JSON.stringify(data) : undefined
+  function uniqueBy(items, key) {
+    const seen = new Set();
+    return items.filter(item => {
+      const value = item && item[key];
+      if (!value || seen.has(value)) return false;
+      seen.add(value);
+      return true;
     });
-
-    const payload = await res.json().catch(() => ({}));
-    if (!res.ok) {
-      throw new Error(payload?.error || `API error ${res.status}`);
-    }
-    return payload;
   }
+
+  function mapAssignedStudent(row) {
+    return {
+      id: row.child_id,
+      name: row.child_name,
+      grade_level: row.grade_level,
+      class_type: row.class_type,
+      status: row.child_status || 'active',
+      assignment_id: row.assignment_id,
+      assignment_status: row.assignment_status,
+      subject_id: row.subject_id,
+      subject_name: row.subject_name,
+      parent_id: row.parent_id,
+      parent_name: row.parent_name,
+      parent_email: row.parent_email
+    };
+  }
+
+  function mapAssignedSubject(row) {
+    return { id: row.subject_id, name: row.subject_name, is_active: row.subject_is_active };
+  }
+
+  function mapReportCard(row) { return { id: row.assessment_id, child_id: row.child_id, subject_id: row.subject_id, tutor_id: row.tutor_id, title: row.title, description: row.description, type: row.assessment_type, grade: row.grade, max_grade: row.max_grade, percentage_score: row.percentage_score, feedback: row.feedback, conducted_at: row.conducted_at, created_at: row.created_at, updated_at: row.updated_at, child: { id: row.child_id, name: row.child_name, grade_level: row.grade_level }, subject: { id: row.subject_id, name: row.subject_name }, tutor: { id: row.tutor_id, full_name: row.tutor_name } }; }
+  function mapProgressFeed(row) { return { id: row.progress_record_id, child_id: row.child_id, subject_id: row.subject_id, recorded_by: row.tutor_id, score: row.score, strengths: row.strengths, areas_of_improvement: row.areas_of_improvement, goals: row.goals, notes: row.notes, recorded_at: row.recorded_at, created_at: row.created_at, child: { id: row.child_id, name: row.child_name, grade_level: row.grade_level }, subject: { id: row.subject_id, name: row.subject_name }, tutor: { id: row.tutor_id, full_name: row.tutor_name } }; }
 
   const api = {
-    // Reads
-    bootstrap:       () => apiRequest('bootstrap'),
-    profile:         () => apiRequest('profile'),
-    students:        () => apiRequest('children'),
-    subjects:        () => apiRequest('subjects'),
-    lessons:         () => apiRequest('lessons'),
-    progress:        () => apiRequest('progress'),
-    assessments:     () => apiRequest('assessments'),
-    classrooms:      () => apiRequest('classrooms'),
-    // Writes
-    addProgress:     (body) => apiRequest('progress',   { method: 'POST', data: body }),
-    addClassroom:    (body) => apiRequest('classroom',  { method: 'POST', data: body }),
-    addAssessment:   (body) => apiRequest('assessment', { method: 'POST', data: body }),
-    addLesson:       (body) => apiRequest('lesson',     { method: 'POST', data: body }),
-    // Deletes
-    delProgress:     (id) => apiRequest('progress',   { method: 'DELETE', params: { id } }),
-    delClassroom:    (id) => apiRequest('classroom',  { method: 'DELETE', params: { id } }),
-    delAssessment:   (id) => apiRequest('assessment', { method: 'DELETE', params: { id } }),
-    delLesson:       (id) => apiRequest('lesson',     { method: 'DELETE', params: { id } })
+    async profile(userId) {
+      return await supabase.from('tutor_profiles').select('*').eq('user_id', userId).maybeSingle();
+    },
+    async bootstrap(userId) {
+      const [profileResult, assignmentsResult, assessmentsResult, progressResult, lessonsResult, classroomsResult] = await Promise.all([
+        this.profile(userId),
+        supabase.from('tutor_assigned_students').select('*').order('child_name', { ascending: true }),
+        supabase.from('student_report_cards').select('*').order('conducted_at', { ascending: false }),
+        supabase.from('student_progress_feed').select('*').order('recorded_at', { ascending: false }),
+        supabase.from('lessons').select('*, children(id,name,grade_level), subjects(id,name)').order('scheduled_at', { ascending: true }),
+        supabase.from('google_classroom_links').select('*, children(id,name), subjects(id,name)').order('created_at', { ascending: false })
+      ]);
+      for (const result of [profileResult, assignmentsResult, assessmentsResult, progressResult, lessonsResult, classroomsResult]) {
+        if (result.error) throw result.error;
+      }
+      const assignments = assignmentsResult.data || [];
+      return {
+        profile: profileResult.data,
+        assignments,
+        students: uniqueBy(assignments.map(mapAssignedStudent), 'id'),
+        subjects: uniqueBy(assignments.filter(row => row.subject_id).map(mapAssignedSubject), 'id'),
+        assessments: (assessmentsResult.data || []).map(mapReportCard),
+        progress: (progressResult.data || []).map(mapProgressFeed),
+        lessons: (lessonsResult.data || []).map(lesson => ({ ...lesson, child: lesson.children || null, subject: lesson.subjects || null })),
+        classrooms: (classroomsResult.data || []).map(classroom => ({ ...classroom, child: classroom.children || null, subject: classroom.subjects || null }))
+      };
+    },
+    async addProgress(body) {
+      const { data, error } = await supabase.rpc('add_progress_record', { p_child_id: body.child_id, p_subject_id: body.subject_id, p_score: body.score === '' ? null : Number(body.score), p_strengths: body.strengths || null, p_areas_of_improvement: body.areas_of_improvement || null, p_goals: body.goals || null, p_notes: body.notes || null, p_recorded_at: body.recorded_at || new Date().toISOString() });
+      if (error) throw error; return data;
+    },
+    async addAssessment(body) {
+      const { data, error } = await supabase.rpc('add_assessment_score', { p_child_id: body.child_id, p_subject_id: body.subject_id, p_title: body.title, p_grade: body.grade === '' ? null : Number(body.grade), p_max_grade: body.max_grade === '' ? 100 : Number(body.max_grade), p_type: body.type || 'quiz', p_description: body.description || null, p_feedback: body.feedback || null, p_conducted_at: body.conducted_at || new Date().toISOString() });
+      if (error) throw error; return data;
+    },
+    addClassroom: (body) => supabase.from('google_classroom_links').insert(body),
+    addLesson: (body) => supabase.from('lessons').insert(body),
+    delProgress: (id) => supabase.from('progress_records').delete().eq('id', id),
+    delClassroom: (id) => supabase.from('google_classroom_links').delete().eq('id', id),
+    delAssessment: (id) => supabase.from('assessments').delete().eq('id', id),
+    delLesson: (id) => supabase.from('lessons').delete().eq('id', id)
   };
 
-  // =========================
+// =========================
   // State
   // =========================
   let currentUser = null;
@@ -1779,6 +1796,10 @@
   }
   async function loadSubjectsForSelect(selectId) {
     const select = document.getElementById(selectId);
+    if (!tutorData.subjects.length) {
+      select.innerHTML = '<option value="">No subject assignments found. Ask admin to assign subjects before adding scores.</option>';
+      return;
+    }
     select.innerHTML = '<option value="">Select a subject</option>';
     tutorData.subjects.forEach(subject => {
       select.innerHTML += `<option value="${subject.id}">${subject.name}</option>`;
@@ -1791,12 +1812,13 @@
   async function ensureAuth() {
     try {
       const { data: { session} } = await supabase.auth.getSession();
-      if (!session?.user) return null;
+      if (!session?.user) { window.location.href = '/tutor-login.html'; return null; }
       currentUser = session.user;
 
       // Fetch Parents tutor profile via bridge
-      const { profile } = await api.profile();
-      currentTutorProfile = profile; // { id, email, full_name, phone, status, hourly_rate, created_at }
+      const profileResult = await api.profile(currentUser.id);
+      if (profileResult.error) throw profileResult.error;
+      currentTutorProfile = profileResult.data;
       return currentUser;
     } catch (error) {
       console.error('Authentication check failed:', error);
@@ -1853,7 +1875,7 @@
       if (!currentTutorProfile) return;
 
       // Single roundtrip for all lists
-      const data = await api.bootstrap();
+      const data = await api.bootstrap(currentUser.id);
 
       tutorData.students        = data.students || [];
       tutorData.subjects        = data.subjects || [];
@@ -1961,7 +1983,7 @@
         <div class="empty-state">
           <i class="fas fa-user-graduate"></i>
           <h3>No students assigned</h3>
-          <p>Students will appear here once they're assigned to your classes</p>
+          <p>No students assigned yet. Ask an admin to assign students to your tutor profile.</p>
         </div>
       `;
     } else {
@@ -2076,7 +2098,7 @@
         <div class="empty-state">
           <i class="fas fa-chart-line"></i>
           <h3>No progress records</h3>
-          <p>Add progress records to track student development</p>
+          <p>Add progress records once subject assignments exist.</p>
         </div>
       `;
     } else {
@@ -2131,7 +2153,7 @@
         <div class="empty-state">
           <i class="fas fa-clipboard-check"></i>
           <h3>No assessments</h3>
-          <p>Create assessments to track student performance</p>
+          <p>Create assessments after subject assignments are set by an admin.</p>
         </div>
       `;
     } else {
@@ -2194,7 +2216,7 @@
         <div class="empty-state">
           <i class="fas fa-calendar-plus"></i>
           <h3>No lessons scheduled</h3>
-          <p>Schedule your first lesson to get started</p>
+          <p>No scheduled lessons found for your assigned students.</p>
         </div>
       `;
     } else {
